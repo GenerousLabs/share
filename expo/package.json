@@ -20,6 +20,7 @@
     "expo": "~39.0.2",
     "expo-asset": "~8.2.0",
     "expo-constants": "~9.2.0",
+    "expo-file-system": "~9.2.0",
     "expo-font": "~8.3.0",
     "expo-linking": "^1.0.1",
     "expo-splash-screen": "~0.6.2",
