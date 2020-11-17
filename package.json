@@ -1,0 +1,8 @@
+{
+  "name": "share",
+  "version": "0.1.0",
+  "repository": "git@github.com:GenerousLabs/share.git",
+  "author": "Generous Labs",
+  "license": "AGPL-3.0-or-later",
+  "private": true
+}
