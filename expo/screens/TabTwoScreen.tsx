@@ -1,15 +1,43 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import * as FileSystem from "expo-file-system";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { Text, View } from "../components/Themed";
+
+const getFiles = () => {
+  if (FileSystem.documentDirectory === null) {
+    throw new Error("No document directory #dtn4Oy");
+  }
+  return FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+};
 
 export default function TabTwoScreen() {
+  const [files, setFiles] = React.useState<string[]>([]);
+  React.useEffect(() => {
+    getFiles()
+      .then(async (files) => {
+        if (files.length === 0) {
+          await FileSystem.writeAsStringAsync(
+            FileSystem.documentDirectory + "example.txt",
+            "An example file"
+          );
+        }
+        setFiles(files);
+      })
+      .catch((error) => {
+        console.error("getFiles() error #pvP9vj");
+        console.error(error);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.js" />
+      <View>
+        <Text>A little more again</Text>
+        {files.map((file) => (
+          <Text key={file}>{file}</Text>
+        ))}
+      </View>
     </View>
   );
 }
