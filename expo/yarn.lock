@@ -3662,10 +3662,10 @@ expo-font@~8.3.0:
     fbjs "1.0.0"
     fontfaceobserver "^2.1.0"
 
-expo-fs@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/expo-fs/-/expo-fs-0.1.0.tgz#8507480f6681bd452f319b0182b9689140563697"
-  integrity sha512-XKpS/eBNcnNCEQ+6UeOuwDRmGCKAtCGfLKTM6Wxo6dIecXvCN6YtaVEyJMkxJ5LbxmfPGO7pv+nCXkpYNuHhww==
+expo-fs@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/expo-fs/-/expo-fs-0.1.1.tgz#e48bbc236b51818a92dab4f9f7737485ed746f34"
+  integrity sha512-w9xbCAGF8ESKGXpx0Db1rPPLLN24NhPZye+JJybDn6cnDnuVPj3VfQQXC5/u0dt9P/fd7FKluP+lL+gsZ5dX9Q==
   dependencies:
     buffer "^6.0.2"
     expo-file-system "^9.2.0"
