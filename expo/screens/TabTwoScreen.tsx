@@ -1,15 +1,10 @@
-import * as React from "react";
-import { StyleSheet, Button, Alert } from "react-native";
 import * as FileSystem from "expo-file-system";
-import git from "isomorphic-git/index";
-import http from "isomorphic-git/http/web/index";
 import expoFs from "expo-fs";
-import { Buffer } from "buffer";
-
+import http from "isomorphic-git/http/web/index";
+import git from "isomorphic-git/index";
+import * as React from "react";
+import { Alert, Button, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
-import { EncodingType } from "expo-file-system";
-
-(globalThis as any).Buffer = Buffer;
 
 const getFilesFactory = (setFiles: (files: string[]) => void) => async (
   path: string
