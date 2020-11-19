@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
 import expoFs from "expo-fs";
-import http from "isomorphic-git/http/web";
-import git from "isomorphic-git";
+import http from "isomorphic-git/http/web/index";
+import git from "isomorphic-git/index";
 import * as React from "react";
 import { Alert, Button, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
