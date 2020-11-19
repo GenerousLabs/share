@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
 import expoFs from "expo-fs";
-import http from "isomorphic-git/http/web/index";
-import git from "isomorphic-git/index";
+import http from "isomorphic-git/http/web";
+import git from "isomorphic-git";
 import * as React from "react";
 import { Alert, Button, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
@@ -44,6 +44,7 @@ const clone = async () => {
       dir: "repo",
       // corsProxy: "https://cors.isomorphic-git.org",
       url: "https://github.com/chmac/do-test.git",
+      // url: "https://github.com/unicorn-utterances/unicorn-utterances.git",
       ref: "master",
       singleBranch: true,
       depth: 1,
