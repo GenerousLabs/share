@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { HttpClient } from 'isomorphic-git';
+import fs from "fs";
+import { HttpClient } from "isomorphic-git";
 
 export type FS = {
   promises: {
@@ -22,8 +22,8 @@ export type Headers = {
 };
 
 export type GitParams = {
-  fs: FS;
-  http: HttpClient;
+  // fs: FS;
+  // http: HttpClient;
   headers?: Headers;
   dir: string;
   author?: {

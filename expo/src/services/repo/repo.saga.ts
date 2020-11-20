@@ -1,20 +1,39 @@
-import { AnyAction } from "@reduxjs/toolkit";
-import { call, takeEvery } from "typed-redux-saga/macro";
+import { call, put, select, takeEvery } from "typed-redux-saga/macro";
+import { getOrThrow, selectAssert } from "../../utils/getOrThrow.util";
 import { gitAddAndCommit } from "../git/git.service";
-import { commitAll } from "./repo.actions";
+import { commitAll, commitAllError } from "./repo.actions";
+import { selectRepoById, updateOneRepo } from "./repo.state";
 
-export function* commitAllEffect(action: AnyAction) {
-  const { repoId, message, ...gitBaseParams } = action.payload;
+export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
+  const { repoId, message } = action.payload;
 
-  console.log("Got a commitAll action #sEpx3w");
-  return;
+  const repo = yield* select(
+    selectAssert(selectRepoById, "Repo not found #6jBGXO"),
+    repoId
+  );
 
-  const dir = "/repo1";
+  if (typeof repo === "undefined") {
+    yield put(commitAllError({ repoId, message: "Repo not found. #6KfG2D" }));
+    return;
+  }
+
+  const repoPath = repo.path;
+
   const newCommitHash = yield* call(gitAddAndCommit, {
-    ...gitBaseParams,
     message,
-    dir,
+    dir: repoPath,
   });
+
+  if (typeof newCommitHash === "string") {
+    yield* put(
+      updateOneRepo({
+        id: repoId,
+        changes: {
+          headCommitObjectId: newCommitHash,
+        },
+      })
+    );
+  }
 }
 
 export default function* repoSaga() {

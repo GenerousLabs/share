@@ -1,8 +1,7 @@
-import ExpoFs from "expo-fs";
-import { StaticLifecycle } from "react";
-import { GitParams } from "../../shared.types";
-import git from "isomorphic-git";
 import Bluebird from "bluebird";
+import git from "isomorphic-git";
+import { gitFsHttp } from "../../shared.constants";
+import { GitParams } from "../../shared.types";
 
 export type StatusMatrixLine = [string, 0 | 1, 0 | 1 | 2, 0 | 1 | 2 | 3];
 export type StatusMatrix = StatusMatrixLine[];
@@ -24,7 +23,7 @@ export const gitAddAllFromStatusMatrix = async (
 
     // If this file is not up to date in the index, add it to the index now
     if (stageStatus !== 2) {
-      await git.add({ ...gitBaseParams, filepath });
+      await git.add({ ...gitFsHttp, ...gitBaseParams, filepath });
     }
 
     return true;
@@ -46,7 +45,10 @@ export const gitAddAndCommit = async (
 ) => {
   const { message, ...gitBaseParams } = params;
 
-  const statusMatrix = await git.statusMatrix(gitBaseParams);
+  const statusMatrix = await git.statusMatrix({
+    ...gitFsHttp,
+    ...gitBaseParams,
+  });
 
   const filesToCommit = await gitAddAllFromStatusMatrix({
     ...gitBaseParams,
@@ -54,7 +56,10 @@ export const gitAddAndCommit = async (
   });
 
   if (filesToCommit) {
-    const newCommitHash = await git.commit(params);
+    const newCommitHash = await git.commit({
+      ...gitFsHttp,
+      ...params,
+    });
     return newCommitHash;
   }
   return false;
