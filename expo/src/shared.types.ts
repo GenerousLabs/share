@@ -1,5 +1,4 @@
 import fs from "fs";
-import { HttpClient } from "isomorphic-git";
 
 export type FS = {
   promises: {
