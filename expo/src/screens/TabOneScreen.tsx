@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
-
-import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { commitAll } from "../services/repo/repo.actions";
 import { RootDispatch } from "../store";
 
 export default function TabOneScreen() {
