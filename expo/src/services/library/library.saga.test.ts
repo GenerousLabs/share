@@ -68,7 +68,7 @@ describe("library.saga", () => {
         .put(
           createNewOfferError({
             message: "Repo does not exist #xJeqQd",
-            repoId: "repo1",
+            meta: { repoId: "repo1" },
           })
         )
         .next()

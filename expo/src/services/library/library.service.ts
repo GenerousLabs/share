@@ -1,4 +1,7 @@
+import { gitFsHttp } from "../../shared.constants";
+import { join } from "../fs/fs.service";
 import matter from "gray-matter";
+import { Library } from "./library.state";
 
 export type Offer = {
   id: string;
@@ -25,4 +28,20 @@ export const offerToString = ({ offer }: { offer: Offer }) => {
   return output;
 };
 
-export const writeOffer;
+export const readOfferFromDisk = async ({
+  directoryPath,
+}: {
+  directoryPath: string;
+}) => {
+  const { fs } = gitFsHttp;
+
+  const indexPath = join(directoryPath, "index.md");
+
+  const markdownWithFrontmatter = await fs.promises.readFile(indexPath, {
+    encoding: "utf8",
+  });
+
+  const { content, data } = matter(markdownWithFrontmatter as string);
+
+  return { ...data, bodyMarkdown: content } as Omit<Offer, "repoId">;
+};

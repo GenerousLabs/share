@@ -1,4 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { Offer } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -6,16 +7,16 @@ export type Library = {
   id: string;
 };
 
-const libraryAdapter = createEntityAdapter<Library>();
+const offerAdapter = createEntityAdapter<Offer>();
 
 const librarySlice = createSlice({
   name: "SHARE/library",
-  initialState: libraryAdapter.getInitialState(),
+  initialState: offerAdapter.getInitialState(),
   reducers: {
-    upsertOne: libraryAdapter.upsertOne,
+    upsertOneOffer: offerAdapter.upsertOne,
   },
 });
 
-export const { upsertOne } = librarySlice.actions;
+export const { upsertOneOffer } = librarySlice.actions;
 
 export default librarySlice.reducer;
