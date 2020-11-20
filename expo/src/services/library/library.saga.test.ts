@@ -6,9 +6,6 @@ import { selectRepoById } from "../repo/repo.state";
 import { createNewOffer } from "./library.actions";
 import { createNewOfferEffect } from "./library.saga";
 
-/*
- */
-
 describe("library.saga", () => {
   describe("createNewOfferEffect()", () => {
     it("Creates a new offer #nsn5S8", () => {
