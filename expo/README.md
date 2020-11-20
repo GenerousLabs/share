@@ -11,3 +11,9 @@ This folder is an [expo](https://expo.io) app.
   - Unfortunately it doesn't seem to work as a local install
 - `yarn` will install our dependencies
 - `yarn start` will run expo
+
+## Stack
+
+- TypeScript
+- redux, redux-saga
+- Recommend React Native Debugger
