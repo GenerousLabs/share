@@ -1,7 +1,7 @@
 import Bluebird from "bluebird";
-import { trim, trimStart, trimEnd } from "lodash";
-import { gitFsHttp, PATH_SEPARATOR } from "../../shared.constants";
+import { trim, trimEnd, trimStart } from "lodash";
 import { groupBy } from "remeda";
+import { gitFsHttp, PATH_SEPARATOR } from "../../shared.constants";
 
 export const getDirectories = async () => {};
 
