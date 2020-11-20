@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../components/Themed";
-import { commitAll } from "../services/repo/repo.actions";
+import { commitAll } from "../services/repo/repo.state";
 import { RootDispatch } from "../store";
 
 export default function TabOneScreen() {

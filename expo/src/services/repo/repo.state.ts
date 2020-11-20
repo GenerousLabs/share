@@ -1,9 +1,11 @@
 import {
+  createAction,
   createEntityAdapter,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "repo" as const;
 
@@ -41,3 +43,18 @@ export default repoSlice.reducer;
 
 export const selectRepoById = (state: RootState, _id: string) =>
   repoSelectors.selectById(state[REDUCER_KEY], _id);
+
+export const commitAll = createAction<{ repoId: string; message: string }>(
+  "SHARE/repo/commitAll"
+);
+
+export const commitAllError = makeErrorActionCreator("SHARE/repo/commitAll");
+
+export const loadRepoContents = createAction<{ repoId: string }>(
+  "SHARE/repo/loadRepoContents"
+);
+
+export const loadRepoContentsError = createAction<{
+  repoId: string;
+  message: string;
+}>("SHARE/repo/loadRepoContents/ERROR");
