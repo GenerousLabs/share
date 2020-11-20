@@ -1,5 +1,5 @@
 import { call, put, select, takeEvery } from "typed-redux-saga/macro";
-import { getOrThrow, selectAssert } from "../../utils/getOrThrow.util";
+import { invariantSelector } from "../../utils/getOrThrow.util";
 import { gitAddAndCommit } from "../git/git.service";
 import { commitAll, commitAllError } from "./repo.actions";
 import { selectRepoById, updateOneRepo } from "./repo.state";
@@ -8,7 +8,7 @@ export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
   const { repoId, message } = action.payload;
 
   const repo = yield* select(
-    selectAssert(selectRepoById, "Repo not found #6jBGXO"),
+    invariantSelector(selectRepoById, "Repo not found #6jBGXO"),
     repoId
   );
 
