@@ -1,10 +1,14 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { RootDispatch } from "../store";
 
 export default function TabOneScreen() {
+  const dispatch: RootDispatch = useDispatch();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
@@ -13,7 +17,14 @@ export default function TabOneScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
+      <View>
+        <Button
+          title="Dispatch something"
+          onPress={() => {
+            dispatch(commitAll({ repoId: "repo1", message: "From button" }));
+          }}
+        />
+      </View>
     </View>
   );
 }
