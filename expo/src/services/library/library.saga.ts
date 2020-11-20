@@ -1,12 +1,10 @@
 import fs from "expo-fs";
 import slugify from "slugify";
-import invariant from "tiny-invariant";
-import { call, put, select } from "typed-redux-saga/macro";
-import { RootState } from "../../store";
+import { call, put, select, takeEvery } from "typed-redux-saga/macro";
 import { join } from "../fs/fs.service";
 import { commitAll } from "../repo/repo.actions";
 import { selectRepoById } from "../repo/repo.state";
-import { createNewOffer } from "./library.actions";
+import { createNewOffer, createNewOfferError } from "./library.actions";
 import { offerToString } from "./library.service";
 
 export function* createNewOfferEffect(
@@ -15,7 +13,16 @@ export function* createNewOfferEffect(
   const { offer } = action.payload;
 
   const repo = yield* select(selectRepoById, offer.repoId);
-  invariant(repo, `Failed to find repo #NT2f2V ${offer.repoId}`);
+
+  if (typeof repo === "undefined") {
+    yield put(
+      createNewOfferError({
+        message: "Repo does not exist #xJeqQd",
+        repoId: offer.repoId,
+      })
+    );
+    return;
+  }
 
   const repoPath = repo.path;
 
@@ -36,4 +43,8 @@ export function* createNewOfferEffect(
       message: "Creating a new offer",
     })
   );
+}
+
+export default function* librarySaga() {
+  yield takeEvery(createNewOffer, createNewOfferEffect);
 }

@@ -1,9 +1,9 @@
-import { describe, it } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import fs from "expo-fs";
 import { testSaga } from "redux-saga-test-plan";
 import { commitAll } from "../repo/repo.actions";
 import { selectRepoById } from "../repo/repo.state";
-import { createNewOffer } from "./library.actions";
+import { createNewOffer, createNewOfferError } from "./library.actions";
 import { createNewOfferEffect } from "./library.saga";
 
 describe("library.saga", () => {
@@ -41,7 +41,38 @@ describe("library.saga", () => {
           { encoding: "utf8" }
         )
         .next()
-        .put(commitAll({ repoId: "repo1", message: "Creating a new offer" }));
+        .put(commitAll({ repoId: "repo1", message: "Creating a new offer" }))
+        .next()
+        .isDone();
+    });
+
+    it("Throws for a non existent repoId #dussrU", () => {
+      testSaga(
+        createNewOfferEffect,
+        createNewOffer({
+          offer: {
+            id: "offer1",
+            uuid: "offer1-uuid",
+            bodyMarkdown: "An offer example",
+            mine: true,
+            proximity: 0,
+            repoId: "repo1",
+            shareToProximity: 1,
+            title: "An example offer",
+          },
+        })
+      )
+        .next()
+        .select(selectRepoById, "repo1")
+        .next()
+        .put(
+          createNewOfferError({
+            message: "Repo does not exist #xJeqQd",
+            repoId: "repo1",
+          })
+        )
+        .next()
+        .isDone();
     });
   });
 });
