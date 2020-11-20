@@ -29,6 +29,9 @@ export const getMockStore = () => {
       entities: {
         repo1: {
           repoId: "repo1",
+          uuid: "uuid-example-repo",
+          title: "An example repo",
+          descriptionMarkdown: "This is a fake repo",
           path: "/repo1/",
           headCommitObjectId: "",
           lastFetchTimestamp: 0,

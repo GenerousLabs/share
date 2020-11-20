@@ -9,8 +9,11 @@ import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "repo" as const;
 
-type Repo = {
+export type Repo = {
   repoId: string;
+  uuid: string;
+  title: string;
+  descriptionMarkdown: string;
   path: string;
   commitsAheadOfOrigin?: number;
   commitsBehindOrigin?: number;
@@ -58,3 +61,13 @@ export const loadRepoContentsError = createAction<{
   repoId: string;
   message: string;
 }>("SHARE/repo/loadRepoContents/ERROR");
+
+const CREATE_REPO = "SHARE/repo/createRepo" as const;
+export const createRepo = createAction<{
+  path: string;
+  repoId: string;
+  uuid: string;
+  title: string;
+  descriptionMarkdown: string;
+}>(CREATE_REPO);
+export const createRepoError = makeErrorActionCreator(CREATE_REPO);

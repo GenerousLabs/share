@@ -4,9 +4,12 @@ import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
 import { loadOffer } from "../library/library.state";
+import { initRepo } from "./repo.service";
 import {
   commitAll,
   commitAllError,
+  createRepo,
+  createRepoError,
   loadRepoContents,
   selectRepoById,
   updateOneRepo,
@@ -64,9 +67,22 @@ export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
   }
 }
 
+export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
+  try {
+    yield* call(initRepo, action.payload);
+  } catch (error) {
+    createRepoError({
+      error,
+      message: "createRepo() error #ceAsr8",
+      meta: { payload: action.payload },
+    });
+  }
+}
+
 export default function* repoSaga() {
   yield all([
     takeEvery(commitAll, commitAllEffect),
     takeEvery(loadRepoContents, loadRepoContentsEffect),
+    takeEvery(createRepo, createRepoEffect),
   ]);
 }

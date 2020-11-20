@@ -1,9 +1,12 @@
 import * as React from "react";
-import { Button, StyleSheet } from "react-native";
+import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../components/Themed";
-import { commitAll } from "../services/repo/repo.state";
+import { createRepo } from "../services/repo/repo.state";
 import { RootDispatch } from "../store";
+import * as FileSystem from "expo-file-system";
+
+(globalThis as any).FileSystem = FileSystem;
 
 export default function TabOneScreen() {
   const dispatch: RootDispatch = useDispatch();
@@ -18,9 +21,25 @@ export default function TabOneScreen() {
       />
       <View>
         <Button
-          title="Dispatch something"
+          title="Create new repo"
           onPress={() => {
-            dispatch(commitAll({ repoId: "repo1", message: "From button" }));
+            dispatch(
+              createRepo({
+                repoId: "re2",
+                title: "Testing repos",
+                descriptionMarkdown:
+                  "This is a test repo.\n\n- A list\n- With two items\n\nAnd more text",
+                path: "/re2/",
+                uuid: "re2-uuid-example",
+              })
+            );
+          }}
+        />
+        <Button
+          title="Delete re2"
+          onPress={async () => {
+            await FileSystem.deleteAsync(FileSystem.documentDirectory + "re2/");
+            Alert.alert("Done");
           }}
         />
       </View>

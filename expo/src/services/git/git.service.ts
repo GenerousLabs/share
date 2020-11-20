@@ -2,6 +2,7 @@ import Bluebird from "bluebird";
 import git from "isomorphic-git";
 import { gitFsHttp } from "../../shared.constants";
 import { GitParams } from "../../shared.types";
+import { Repo } from "../repo/repo.state";
 
 export type StatusMatrixLine = [string, 0 | 1, 0 | 1 | 2, 0 | 1 | 2 | 3];
 export type StatusMatrix = StatusMatrixLine[];
@@ -63,4 +64,9 @@ export const gitAddAndCommit = async (
     return newCommitHash;
   }
   return false;
+};
+
+export const initNewRepo = async ({ path }: { path: string }) => {
+  const { fs } = gitFsHttp;
+  await git.init({ fs, dir: path });
 };
