@@ -36,7 +36,7 @@ For example, the file layout on the server might look like:
   on the server.
   - `/user/commands.git/auth.yaml` - A file containing access keys which are
     permitted to access specific repositories. The server can use this file
-    to decide whether to accept or reject push operations based on the tokens
+    to decide whether to accept or reject pull operations based on the tokens
     in this file.
 
 In the future, we could also add extra commands like:
