@@ -1,4 +1,5 @@
 import "./patch-FileReader";
-import { Buffer } from "buffer";
+import "node-libs-react-native/globals";
+// import { Buffer } from "buffer";
 
-(globalThis as any).Buffer = Buffer;
+// (globalThis as any).Buffer = Buffer;
