@@ -16,4 +16,4 @@ This folder is an [expo](https://expo.io) app.
 
 - TypeScript
 - redux, redux-saga
-- Recommend React Native Debugger
+- Recommended: React Native Debugger
