@@ -5,6 +5,7 @@ import { Text, View } from "../components/Themed";
 import { createRepo } from "../services/repo/repo.state";
 import { RootDispatch } from "../store";
 import * as FileSystem from "expo-file-system";
+import { createAndShareZipFile } from "../services/zip/zip.service";
 
 (globalThis as any).FileSystem = FileSystem;
 
@@ -40,6 +41,13 @@ export default function TabOneScreen() {
           onPress={async () => {
             await FileSystem.deleteAsync(FileSystem.documentDirectory + "re2/");
             Alert.alert("Done");
+          }}
+        />
+        <Button
+          title="Export re2 as zip"
+          onPress={async () => {
+            await createAndShareZipFile({ path: "/re2" });
+            Alert.alert("Zip export finished #uuOdQ4");
           }}
         />
       </View>
