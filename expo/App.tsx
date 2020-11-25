@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import "./src/utils/monkeyPatches";
 
 import { Provider } from "react-redux";
