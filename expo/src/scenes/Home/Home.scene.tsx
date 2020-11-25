@@ -40,7 +40,7 @@ const Home = ({
               createRepo({
                 repoId: "re2",
                 title: "Testing repos",
-                descriptionMarkdown:
+                bodyMarkdown:
                   "This is a test repo.\n\n- A list\n- With two items\n\nAnd more text",
                 path: "/re2/",
                 uuid: "re2-uuid-example",

@@ -13,7 +13,7 @@ export type Repo = {
   repoId: string;
   uuid: string;
   title: string;
-  descriptionMarkdown: string;
+  bodyMarkdown: string;
   path: string;
   commitsAheadOfOrigin?: number;
   commitsBehindOrigin?: number;
@@ -24,7 +24,9 @@ export type Repo = {
 const repoAdapter = createEntityAdapter<Repo>({
   selectId: (repo) => repo.repoId,
 });
-const repoSelectors = repoAdapter.getSelectors();
+const repoSelectors = repoAdapter.getSelectors(
+  (state: RootState) => state.repo
+);
 
 const repoSlice = createSlice({
   name: "SHARE/repo",
@@ -46,8 +48,8 @@ export const { upsertOneRepo, updateOneRepo } = repoSlice.actions;
 
 export default repoSlice.reducer;
 
-export const selectRepoById = (state: RootState, _id: string) =>
-  repoSelectors.selectById(state[REDUCER_KEY], _id);
+export const selectRepoById = repoSelectors.selectById;
+export const selectAllRepos = repoSelectors.selectAll;
 
 export const commitAll = createAction<{ repoId: string; message: string }>(
   "SHARE/repo/commitAll"
@@ -70,6 +72,12 @@ export const createRepo = createAction<{
   repoId: string;
   uuid: string;
   title: string;
-  descriptionMarkdown: string;
+  bodyMarkdown: string;
 }>(CREATE_REPO);
 export const createRepoError = makeErrorActionCreator(CREATE_REPO);
+
+const LOAD_FROM_FS = "SHARE/repo/loadRepoFromFilesystem" as const;
+export const loadRepoFromFilesystem = createAction<{ path: string }>(
+  LOAD_FROM_FS
+);
+export const loadRepoFromFilesystemError = makeErrorActionCreator(LOAD_FROM_FS);

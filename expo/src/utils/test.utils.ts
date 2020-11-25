@@ -1,17 +1,9 @@
-import {
-  configureStore,
-  createStore,
-  ThunkAction,
-  ThunkDispatch,
-} from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { Volume } from "memfs";
+import mockStore from "redux-mock-store";
 import reducer from "../root.reducer";
 import { FS } from "../shared.types";
-import mockStore from "redux-mock-store";
-import { getDefaultMiddleware } from "@reduxjs/toolkit";
 import { RootDispatch, RootState } from "../store";
-import thunk from "@reduxjs/toolkit";
-import { Library } from "../services/library/library.state";
 
 export const getEmptyFilesystem = () => {
   return (Volume.fromJSON({
@@ -31,7 +23,7 @@ export const getMockStore = () => {
           repoId: "repo1",
           uuid: "uuid-example-repo",
           title: "An example repo",
-          descriptionMarkdown: "This is a fake repo",
+          bodyMarkdown: "This is a fake repo",
           path: "/repo1/",
           headCommitObjectId: "",
           lastFetchTimestamp: 0,

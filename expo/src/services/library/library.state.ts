@@ -28,7 +28,8 @@ export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
 );
 
 export const createNewOffer = createAction<{
-  offer: Offer;
+  // There's no `id` passed to `createNewOffer()` it's generated
+  offer: Omit<Offer, "id">;
 }>("SHARE/library/createNewOffer");
 
 export const createNewOfferError = makeErrorActionCreator(

@@ -3,14 +3,17 @@ import { call, put, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
-import { loadOffer } from "../library/library.state";
-import { initRepo } from "./repo.service";
+import { loadOffer, loadOfferError } from "../library/library.state";
+import { startupAction } from "../startup/startup.state";
+import { getRepoParamsFromFilesystem, initRepo } from "./repo.service";
 import {
   commitAll,
   commitAllError,
   createRepo,
   createRepoError,
   loadRepoContents,
+  loadRepoFromFilesystem,
+  loadRepoFromFilesystemError,
   selectRepoById,
   updateOneRepo,
   upsertOneRepo,
@@ -97,10 +100,47 @@ export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
   }
 }
 
+export function* loadRepoFromFilesystemEffect(
+  action: ReturnType<typeof loadRepoFromFilesystem>
+) {
+  try {
+    const repo = yield* call(getRepoParamsFromFilesystem, {
+      path: action.payload.path,
+    });
+
+    yield put(upsertOneRepo(repo));
+
+    yield put(loadRepoContents({ repoId: repo.repoId }));
+  } catch (error) {
+    console.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
+    yield put(
+      loadRepoFromFilesystemError({
+        message: "loadRepoFromFilesystem() error #HlT6yC",
+        error,
+      })
+    );
+  }
+}
+
+export function* startupSagaEffect() {
+  try {
+    yield put(loadRepoFromFilesystem({ path: "/re2/" }));
+  } catch (error) {
+    yield put(
+      loadRepoFromFilesystemError({
+        message: "repo.sagas startupSaga() error #roZbhL",
+        error,
+      })
+    );
+  }
+}
+
 export default function* repoSaga() {
   yield all([
     takeEvery(commitAll, commitAllEffect),
     takeEvery(loadRepoContents, loadRepoContentsEffect),
     takeEvery(createRepo, createRepoEffect),
+    takeEvery(loadRepoFromFilesystem, loadRepoFromFilesystemEffect),
+    takeEvery(startupAction, startupSagaEffect),
   ]);
 }
