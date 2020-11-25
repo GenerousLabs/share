@@ -41,6 +41,8 @@
     "jszip": "^3.5.0",
     "lodash": "^4.17.20",
     "node-libs-react-native": "^1.2.0",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^6.11.5",
