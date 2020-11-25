@@ -21,11 +21,11 @@ export const addDirectoryToZipFile = async ({
 
     if (entryStat.isDirectory()) {
       const zipFolderPath = join("/", path, dirEntry);
-      const zipFolder = zip.folder(entryPath) as JSZip;
+      const zipFolder = zip.folder(dirEntry) as JSZip;
       await addDirectoryToZipFile({ zip: zipFolder, path: entryPath });
     } else {
       const fileContents = await fs.promises.readFile(entryPath);
-      zip.file(entryPath, fileContents);
+      zip.file(dirEntry, fileContents);
     }
   });
 
