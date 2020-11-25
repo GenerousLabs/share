@@ -12,7 +12,6 @@ describe("library.saga", () => {
         createNewOfferEffect,
         createNewOffer({
           offer: {
-            id: "offer1",
             uuid: "offer1-uuid",
             bodyMarkdown: "An offer example",
             mine: true,
