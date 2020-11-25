@@ -43,5 +43,5 @@ export const readOfferFromDisk = async ({
 
   const { content, data } = matter(markdownWithFrontmatter as string);
 
-  return { ...data, bodyMarkdown: content } as Omit<Offer, "repoId">;
+  return { ...data, bodyMarkdown: content } as Omit<Offer, "id" | "repoId">;
 };
