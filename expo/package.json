@@ -43,6 +43,7 @@
     "node-libs-react-native": "^1.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^6.11.5",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-gesture-handler": "~1.7.0",
     "react-native-safe-area-context": "3.1.4",
@@ -53,7 +54,8 @@
     "remeda": "^0.0.27",
     "slugify": "^1.4.6",
     "tiny-invariant": "^1.1.0",
-    "typed-redux-saga": "^1.3.1"
+    "typed-redux-saga": "^1.3.1",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
@@ -64,6 +66,7 @@
     "@types/react-native": "~0.63.2",
     "@types/react-redux": "^7.1.11",
     "@types/redux-mock-store": "^1.0.2",
+    "@types/uuid": "^8.3.0",
     "babel-plugin-macros": "^2.8.0",
     "jest-expo": "~39.0.0",
     "memfs": "^3.2.0",
