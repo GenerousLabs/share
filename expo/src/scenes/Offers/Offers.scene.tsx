@@ -1,24 +1,14 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button, Text, View, TextInput, StyleSheet } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../../../types";
 import { MonoText } from "../../components/StyledText";
-import {
-  createNewOffer,
-  selectAllOffers,
-} from "../../services/library/library.state";
+import { selectAllOffers } from "../../services/library/library.state";
 import { RootDispatch, RootState } from "../../store";
-import { v4 as uuid } from "uuid";
-import { Offer } from "../../services/library/library.service";
-import { selectAllRepos } from "../../services/repo/repo.state";
-
-type Inputs = {
-  title: string;
-  bodyMarkdown: string;
-};
+import OfferForm from "./scenes/OfferForm/OfferForm.scene";
 
 const Offers = ({
   navigation,
@@ -26,22 +16,7 @@ const Offers = ({
   navigation: StackNavigationProp<RootStackParamList, "Offers">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const { control, handleSubmit, errors, reset } = useForm<Inputs>();
   const offers = useSelector((state: RootState) => selectAllOffers(state));
-  const [repo] = useSelector(selectAllRepos);
-
-  const onSubmit = (data: Inputs) => {
-    const offer: Omit<Offer, "id"> = {
-      uuid: uuid(),
-      mine: true,
-      proximity: 0,
-      shareToProximity: 1,
-      repoId: repo.repoId,
-      ...data,
-    };
-    dispatch(createNewOffer({ offer }));
-    console.log("Offers.scene onSubmit #ZaTu7o", data);
-  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -56,51 +31,18 @@ const Offers = ({
           }}
         />
       </View>
-      <View>
-        <Text>Offer title:</Text>
-        <Controller
-          control={control}
-          render={({ onChange, onBlur, value }) => (
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name="title"
-          rules={{ required: true }}
-          defaultValue=""
-        />
-        {errors.title && <Text>Title is a required field</Text>}
-        <Text>Enter a description</Text>
-        <Controller
-          control={control}
-          render={({ onChange, onBlur, value }) => (
-            <TextInput
-              style={styles.inputMultiline}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-              multiline={true}
-              numberOfLines={5}
-            />
-          )}
-          name="bodyMarkdown"
-          rules={{ required: true }}
-          defaultValue=""
-        />
-        {errors.bodyMarkdown && <Text>You need to enter some body text</Text>}
-        <Button title="Add offer to library" onPress={handleSubmit(onSubmit)} />
-      </View>
-      <View>
-        {offers.map((offer) => (
-          <View key={offer.id}>
-            <Text>{offer.title}</Text>
-            <Text>{offer.bodyMarkdown}</Text>
+      <OfferForm />
+      <FlatList
+        data={offers}
+        renderItem={(item) => (
+          <View>
+            <Text>{item.item.title}</Text>
+            <Text>{item.item.bodyMarkdown}</Text>
           </View>
-        ))}
-      </View>
+        )}
+        keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+      />
     </SafeAreaView>
   );
 };
@@ -108,6 +50,13 @@ const Offers = ({
 export default Offers;
 
 const styles = StyleSheet.create({
+  separator: {
+    marginVertical: 10,
+    height: 1,
+    width: "80%",
+    marginLeft: "10%",
+    backgroundColor: "blue",
+  },
   input: {
     borderColor: "black",
     borderWidth: 2,
