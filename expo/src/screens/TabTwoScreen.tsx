@@ -3,8 +3,11 @@ import expoFs from "expo-fs";
 import http from "isomorphic-git/http/web/index";
 import git from "isomorphic-git/index";
 import * as React from "react";
-import { Alert, Button, StyleSheet } from "react-native";
+import { Alert, Button, FlatList, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
 import { Text, View } from "../components/Themed";
+import { selectAllOffers } from "../services/library/library.state";
+import { RootState } from "../store";
 
 const getFilesFactory = (setFiles: (files: string[]) => void) => async (
   path: string
@@ -60,6 +63,10 @@ const clone = async () => {
 export default function TabTwoScreen() {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);
+  const offers = useSelector((state: RootState) =>
+    selectAllOffers(state.library)
+  );
+  console.log("TabTwoScreen rendered #gIe6PT");
 
   return (
     <View style={styles.container}>
@@ -86,6 +93,14 @@ export default function TabTwoScreen() {
           onPress={() => getFiles("repo/.git")}
         />
       </View>
+      <View style={styles.offers}>
+        {offers.map((offer) => (
+          <View key={offer.id} style={styles.offer}>
+            <Text style={styles.offerTitle}>{offer.title}</Text>
+            <Text>{offer.bodyMarkdown}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
@@ -99,5 +114,15 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 3,
     marginBottom: 3,
+  },
+  offers: {
+    width: "100%",
+  },
+  offer: {
+    width: "100%",
+  },
+  offerTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
