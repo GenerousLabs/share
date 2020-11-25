@@ -39,9 +39,6 @@ export function* createNewOfferEffect(
     const directoryPath = join(repoPath, directoryName);
     const offerPath = join(directoryPath, "index.md");
 
-    if (__DEV__)
-      console.log("createNewOfferEffect() about to write files #RxzVCm");
-
     yield call(fs.promises.mkdir, directoryPath);
     yield call(fs.promises.writeFile, offerPath, offerString, {
       encoding: "utf8",
