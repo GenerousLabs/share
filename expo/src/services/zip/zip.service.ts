@@ -42,12 +42,13 @@ export const createZipFile = async ({ path }: { path: string }) => {
   }
 
   const zip = new JSZip();
+  const zipExportFolder = zip.folder("export") as JSZip;
 
   try {
     const pathStat = await fs.promises.stat(path);
 
     if (pathStat.isDirectory()) {
-      await addDirectoryToZipFile({ zip, path });
+      await addDirectoryToZipFile({ zip: zipExportFolder, path });
 
       const zipContents = await zip.generateAsync({ type: "uint8array" });
       const zipContentsBase64 = uintArrayToBase64({ input: zipContents });
