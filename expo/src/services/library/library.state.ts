@@ -8,10 +8,6 @@ import { Offer } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
-export type Library = {
-  id: string;
-};
-
 const offerAdapter = createEntityAdapter<Offer>();
 
 const librarySlice = createSlice({
