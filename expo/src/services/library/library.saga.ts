@@ -84,8 +84,6 @@ export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
 }
 
 export default function* librarySaga() {
-  if (__DEV__) console.log("librarySaga() invoked #DHp2Bs");
-
   yield all([
     takeEvery(createNewOffer, createNewOfferEffect),
     takeEvery(loadOffer, loadOfferEffect),
