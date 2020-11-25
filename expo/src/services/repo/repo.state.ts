@@ -17,11 +17,13 @@ export type Repo = {
   path: string;
   commitsAheadOfOrigin?: number;
   commitsBehindOrigin?: number;
-  headCommitObjectId: string;
-  lastFetchTimestamp: number;
+  headCommitObjectId?: string;
+  lastFetchTimestamp?: number;
 };
 
-const repoAdapter = createEntityAdapter<Repo>();
+const repoAdapter = createEntityAdapter<Repo>({
+  selectId: (repo) => repo.repoId,
+});
 const repoSelectors = repoAdapter.getSelectors();
 
 const repoSlice = createSlice({

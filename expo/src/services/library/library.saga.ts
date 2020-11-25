@@ -16,39 +16,54 @@ import {
 export function* createNewOfferEffect(
   action: ReturnType<typeof createNewOffer>
 ) {
-  const { offer } = action.payload;
+  try {
+    if (__DEV__) console.log("createNewOfferEffect() invoked #WlMjtH");
 
-  const repo = yield* select(selectRepoById, offer.repoId);
+    const { offer } = action.payload;
 
-  if (typeof repo === "undefined") {
+    const repo = yield* select(selectRepoById, offer.repoId);
+
+    if (typeof repo === "undefined") {
+      yield put(
+        createNewOfferError({
+          message: "Repo does not exist #xJeqQd",
+          meta: { repoId: offer.repoId },
+        })
+      );
+      return;
+    }
+
+    const repoPath = repo.path;
+
+    const offerString = offerToString({ offer });
+
+    const directoryName = slugify(offer.title, { lower: true });
+    const directoryPath = join(repoPath, directoryName);
+    const offerPath = join(directoryPath, "index.md");
+
+    if (__DEV__)
+      console.log("createNewOfferEffect() about to write files #RxzVCm");
+
+    yield call(fs.promises.mkdir, directoryPath);
+    yield call(fs.promises.writeFile, offerPath, offerString, {
+      encoding: "utf8",
+    });
+
     yield put(
-      createNewOfferError({
-        message: "Repo does not exist #xJeqQd",
-        meta: { repoId: offer.repoId },
+      commitAll({
+        repoId: offer.repoId,
+        message: "Creating a new offer",
       })
     );
-    return;
+  } catch (error) {
+    yield put(
+      createNewOfferError({
+        message: "createNewOfferEffect() error #i6Sj2b",
+        error,
+        meta: { action },
+      })
+    );
   }
-
-  const repoPath = repo.path;
-
-  const offerString = offerToString({ offer });
-
-  const directoryName = slugify(offer.title, { lower: true });
-  const directoryPath = join(repoPath, directoryName);
-  const offerPath = join(directoryPath, "index.md");
-
-  yield* call(fs.promises.mkdir, directoryPath);
-  yield* call(fs.promises.writeFile, offerPath, offerString, {
-    encoding: "utf8",
-  });
-
-  yield* put(
-    commitAll({
-      repoId: offer.repoId,
-      message: "Creating a new offer",
-    })
-  );
 }
 
 export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
@@ -69,6 +84,8 @@ export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
 }
 
 export default function* librarySaga() {
+  if (__DEV__) console.log("librarySaga() invoked #DHp2Bs");
+
   yield all([
     takeEvery(createNewOffer, createNewOfferEffect),
     takeEvery(loadOffer, loadOfferEffect),

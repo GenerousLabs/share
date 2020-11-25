@@ -13,6 +13,7 @@ import {
   loadRepoContents,
   selectRepoById,
   updateOneRepo,
+  upsertOneRepo,
 } from "./repo.state";
 
 export function* loadRepoContentsEffect(
@@ -63,13 +64,30 @@ export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
       yield* put(loadRepoContents({ repoId }));
     }
   } catch (error) {
-    yield put(commitAllError({ error, message: "Unknown error. #6qOvlk" }));
+    console.error("commitAllEffct() unknown error #UEQp4W", error);
+    yield put(
+      commitAllError({
+        error,
+        message: "commitAllEffect() unknown error. #6qOvlk",
+      })
+    );
   }
 }
 
 export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
   try {
     yield* call(initRepo, action.payload);
+
+    yield* put(upsertOneRepo(action.payload));
+
+    yield* put(
+      commitAll({
+        repoId: action.payload.repoId,
+        message: "createRepo() #N0d4Y1",
+      })
+    );
+
+    // TODO Do we want to push this repo?
   } catch (error) {
     createRepoError({
       error,
