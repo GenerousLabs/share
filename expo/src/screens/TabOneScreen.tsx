@@ -1,11 +1,12 @@
+import * as FileSystem from "expo-file-system";
 import * as React from "react";
 import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../components/Themed";
+import { createNewOffer, loadOffer } from "../services/library/library.state";
 import { createRepo } from "../services/repo/repo.state";
-import { RootDispatch } from "../store";
-import * as FileSystem from "expo-file-system";
 import { createAndShareZipFile } from "../services/zip/zip.service";
+import { RootDispatch } from "../store";
 
 (globalThis as any).FileSystem = FileSystem;
 
@@ -33,6 +34,33 @@ export default function TabOneScreen() {
                 path: "/re2/",
                 uuid: "re2-uuid-example",
               })
+            );
+          }}
+        />
+        <Button
+          title="Create new asset"
+          onPress={() => {
+            dispatch(
+              createNewOffer({
+                offer: {
+                  bodyMarkdown: "A new offer",
+                  id: "offer1",
+                  mine: true,
+                  proximity: 0,
+                  repoId: "re2",
+                  shareToProximity: 1,
+                  title: "An offer",
+                  uuid: "uuid-example",
+                },
+              })
+            );
+          }}
+        />
+        <Button
+          title="Load offer"
+          onPress={() => {
+            dispatch(
+              loadOffer({ repoId: "re2", directoryPath: "/re2/doesnotexist/" })
             );
           }}
         />
