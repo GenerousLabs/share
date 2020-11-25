@@ -1,7 +1,7 @@
-import { all } from "bluebird";
 import fs from "expo-fs";
 import slugify from "slugify";
-import { call, put, select, takeEvery } from "typed-redux-saga/macro";
+import { call, put, select } from "typed-redux-saga/macro";
+import { all, takeEvery } from "redux-saga/effects";
 import { join } from "../fs/fs.service";
 import { commitAll, selectRepoById } from "../repo/repo.state";
 import { offerToString, readOfferFromDisk } from "./library.service";
