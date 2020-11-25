@@ -1,6 +1,6 @@
 import Bluebird from "bluebird";
 import git from "isomorphic-git";
-import { gitFsHttp } from "../../shared.constants";
+import { gitFsHttp, GIT_AUTHOR_NAME } from "../../shared.constants";
 import { GitParams } from "../../shared.types";
 import { Repo } from "../repo/repo.state";
 
@@ -60,6 +60,9 @@ export const gitAddAndCommit = async (
     const newCommitHash = await git.commit({
       ...gitFsHttp,
       ...params,
+      author: {
+        name: GIT_AUTHOR_NAME,
+      },
     });
     return newCommitHash;
   }
