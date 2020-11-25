@@ -66,7 +66,6 @@ export default function TabTwoScreen() {
   const offers = useSelector((state: RootState) =>
     selectAllOffers(state.library)
   );
-  console.log("TabTwoScreen rendered #gIe6PT");
 
   return (
     <View style={styles.container}>
