@@ -17,8 +17,6 @@ export function* createNewOfferEffect(
   action: ReturnType<typeof createNewOffer>
 ) {
   try {
-    if (__DEV__) console.log("createNewOfferEffect() invoked #WlMjtH");
-
     const { offer } = action.payload;
 
     const repo = yield* select(selectRepoById, offer.repoId);
@@ -67,17 +65,17 @@ export function* createNewOfferEffect(
 }
 
 export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
-  const { directoryPath, repoId } = action.payload;
   try {
+    const { directoryPath, repoId } = action.payload;
+
     const offer = yield* call(readOfferFromDisk, { directoryPath });
 
-    yield put(upsertOneOffer({ ...offer, repoId }));
+    yield put(upsertOneOffer({ ...offer, id: directoryPath, repoId }));
   } catch (error) {
     yield put(
       loadOfferError({
         error,
         message: "Unknown error. #arGvI7",
-        meta: { repoId, directoryPath },
       })
     );
   }
