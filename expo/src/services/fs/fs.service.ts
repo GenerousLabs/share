@@ -49,7 +49,7 @@ export const getDirectoryContents = async ({ path }: { path: string }) => {
     return { name: entry, path: entryPath, stat };
   });
 
-  const { directories, files } = groupBy(stats, (entry) => {
+  const { directories = [], files = [] } = groupBy(stats, (entry) => {
     return entry.stat.isDirectory() ? "directories" : "files";
   });
 
