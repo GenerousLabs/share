@@ -22,6 +22,8 @@ export const { upsertOneOffer } = librarySlice.actions;
 
 export default librarySlice.reducer;
 
+export const { selectAll: selectAllOffers } = offerAdapter.getSelectors();
+
 export const createNewOffer = createAction<{
   offer: Offer;
 }>("SHARE/library/createNewOffer");
