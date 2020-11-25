@@ -1,0 +1,26 @@
+diff --git a/node_modules/isomorphic-git/index.cjs b/node_modules/isomorphic-git/index.cjs
+index 62b114c..fded671 100644
+--- a/node_modules/isomorphic-git/index.cjs
++++ b/node_modules/isomorphic-git/index.cjs
+@@ -4295,6 +4295,8 @@ async function browserDeflate(buffer) {
+ function testCompressionStream() {
+   try {
+     const cs = new CompressionStream('deflate');
++    // Test if `Blob.stream` is present. React Native does not have the `stream` method
++    new Blob([]).stream()
+     if (cs) return true
+   } catch (_) {
+     // no bother
+diff --git a/node_modules/isomorphic-git/index.js b/node_modules/isomorphic-git/index.js
+index b6c4df5..cb09df1 100644
+--- a/node_modules/isomorphic-git/index.js
++++ b/node_modules/isomorphic-git/index.js
+@@ -4289,6 +4289,8 @@ async function browserDeflate(buffer) {
+ function testCompressionStream() {
+   try {
+     const cs = new CompressionStream('deflate');
++    // Test if `Blob.stream` is present. React Native does not have the `stream` method
++    new Blob([]).stream()
+     if (cs) return true
+   } catch (_) {
+     // no bother
