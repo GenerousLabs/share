@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 import { Offer } from "./library.service";
 
@@ -22,7 +23,9 @@ export const { upsertOneOffer } = librarySlice.actions;
 
 export default librarySlice.reducer;
 
-export const { selectAll: selectAllOffers } = offerAdapter.getSelectors();
+export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
+  (state: RootState) => state.library
+);
 
 export const createNewOffer = createAction<{
   offer: Offer;

@@ -63,9 +63,7 @@ const clone = async () => {
 export default function TabTwoScreen() {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);
-  const offers = useSelector((state: RootState) =>
-    selectAllOffers(state.library)
-  );
+  const offers = useSelector(selectAllOffers);
 
   return (
     <View style={styles.container}>
