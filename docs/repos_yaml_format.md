@@ -25,7 +25,6 @@ Each entry contains the following fields:
     - See
       [git-remote-encrypted](https://github.com/GenerousLabs/git-remote-encrypted/)
       for more information about the encryption scheme in use
-- `keys`
 - `id` - A unique identifier for this repo
   - Must be unique in the file
 - `slug` - A "slug" version of the `name`
