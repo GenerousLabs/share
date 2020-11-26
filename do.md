@@ -1,0 +1,5 @@
+- [ ] Define the format for a `me` repo
+  - Add a type field to the repos list
+- [ ] Add tags to offers
+- [ ] p2 Add server to host git repos
+- [ ] p3 Add password key derivation to encryption
