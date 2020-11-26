@@ -7,6 +7,7 @@ Each entry contains the following fields:
 
 - `name`\* string - A human readable name for this repo
 - `remotes`\* - A sequence (array) of mappings (object) of the following shape:
+  - NOTE: Only a single entry in `remotes` is currently supported.
   - `url`\* string - A git URL (currently only http(s) urls are supported)
     - Can contain `user:pass@` to authenticate the url
   - `headers` - A mapping (object) containing header names and values
