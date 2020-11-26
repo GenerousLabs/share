@@ -5,9 +5,9 @@ sequence (array) of mappings (objects).
 
 Each entry contains the following fields:
 
-- `name` string - A human readable name for this repo
+- `name`\* string - A human readable name for this repo
 - `remotes` - A sequence (array) of mappings (object) of the following shape:
-  - `url` string - A git URL (currently only http(s) urls are supported)
+  - `url`\* string - A git URL (currently only http(s) urls are supported)
     - Can contain `user:pass@` to authenticate the url
   - `headers` - A mapping (object) containing header names and values
     - These should be passed to the remote, potentially for authentication
@@ -25,7 +25,10 @@ Each entry contains the following fields:
     - See
       [git-remote-encrypted](https://github.com/GenerousLabs/git-remote-encrypted/)
       for more information about the encryption scheme in use
-- `id` - A unique identifier for this repo
+- `id`\* - A unique identifier for this repo
   - Must be unique in the file
-- `slug` - A "slug" version of the `name`
+- `slug`\* - A "slug" version of the `name`
   - This can be used in naming the repo folder on disk
+  - Must be unique in the file
+
+Fields marked \* are required, the rest are optional.
