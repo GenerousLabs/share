@@ -2,15 +2,18 @@ import * as FileSystem from "expo-file-system";
 import * as React from "react";
 import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
-import { Text, View } from "../components/Themed";
-import { createNewOffer, loadOffer } from "../services/library/library.state";
-import { createRepo } from "../services/repo/repo.state";
-import { createAndShareZipFile } from "../services/zip/zip.service";
-import { RootDispatch } from "../store";
+import { Text, View } from "../../components/Themed";
+import {
+  createNewOffer,
+  loadOffer,
+} from "../../services/library/library.state";
+import { createRepo } from "../../services/repo/repo.state";
+import { createAndShareZipFile } from "../../services/zip/zip.service";
+import { RootDispatch } from "../../store";
 
 (globalThis as any).FileSystem = FileSystem;
 
-export default function TabOneScreen() {
+export default function TabOne() {
   const dispatch: RootDispatch = useDispatch();
 
   return (

@@ -5,9 +5,9 @@ import git from "isomorphic-git/index";
 import * as React from "react";
 import { Alert, Button, FlatList, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import { Text, View } from "../components/Themed";
-import { selectAllOffers } from "../services/library/library.state";
-import { RootState } from "../store";
+import { Text, View } from "../../components/Themed";
+import { selectAllOffers } from "../../services/library/library.state";
+import { RootState } from "../../store";
 
 const getFilesFactory = (setFiles: (files: string[]) => void) => async (
   path: string
@@ -60,7 +60,7 @@ const clone = async () => {
   Alert.alert("Clone finished #iOXriG");
 };
 
-export default function TabTwoScreen() {
+export default function TabTwo() {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);
   const offers = useSelector(selectAllOffers);
