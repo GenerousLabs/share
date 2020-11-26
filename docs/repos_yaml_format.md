@@ -6,7 +6,7 @@ sequence (array) of mappings (objects).
 Each entry contains the following fields:
 
 - `name`\* string - A human readable name for this repo
-- `remotes` - A sequence (array) of mappings (object) of the following shape:
+- `remotes`\* - A sequence (array) of mappings (object) of the following shape:
   - `url`\* string - A git URL (currently only http(s) urls are supported)
     - Can contain `user:pass@` to authenticate the url
   - `headers` - A mapping (object) containing header names and values
