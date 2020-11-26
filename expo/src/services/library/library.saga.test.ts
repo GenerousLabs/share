@@ -1,4 +1,4 @@
-import { describe, it } from "@jest/globals";
+import { describe, it, expect } from "@jest/globals";
 import fs from "expo-fs";
 import { testSaga } from "redux-saga-test-plan";
 import { commitAll, selectRepoById } from "../repo/repo.state";
@@ -39,6 +39,10 @@ describe("library.saga", () => {
           { encoding: "utf8" }
         )
         .next()
+        // .inspect((value) => {
+        //   expect((value as any).type).toEqual("PUT");
+        //   expect(value).toEqual({ type: "PUT" });
+        // })
         .put(commitAll({ repoId: "repo1", message: "Creating a new offer" }))
         .next()
         .isDone();
