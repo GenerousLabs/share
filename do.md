@@ -1,3 +1,7 @@
+- [ ] Add logging infrastructure
+  - Maybe winston?
+  - Prep to be able to show logs to the user in the UI
+  - Save to a file maybe?
 - [ ] Define the format for a `me` repo
   - Add a type field to the repos list
 - [ ] Add tags to offers
