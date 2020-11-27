@@ -7,7 +7,6 @@ import {
   createNewOfferAction,
   loadOfferAction,
 } from "../../services/library/library.state";
-import { createRepoAction } from "../../services/repo/repo.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -25,7 +24,7 @@ export default function TabOne() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <View>
-        <Button
+        {/* <Button
           title="Create new repo"
           onPress={() => {
             dispatch(
@@ -40,7 +39,7 @@ export default function TabOne() {
             );
           }}
         />
-        <Button
+        <Button */}
           title="Create new asset"
           onPress={() => {
             dispatch(

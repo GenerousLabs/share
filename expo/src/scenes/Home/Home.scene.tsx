@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../../types";
 import { MonoText } from "../../components/StyledText";
 import { createNewOfferAction } from "../../services/library/library.state";
-import { createRepoAction } from "../../services/repo/repo.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -33,7 +32,7 @@ const Home = ({
         />
       </View>
       <View>
-        <Button
+        {/* <Button
           title="Create new repo"
           onPress={() => {
             dispatch(
@@ -47,7 +46,7 @@ const Home = ({
               })
             );
           }}
-        />
+        /> */}
         <Button
           title="Create new asset"
           onPress={() => {
