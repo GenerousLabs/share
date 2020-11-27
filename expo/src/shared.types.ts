@@ -49,6 +49,8 @@ export type RepoInRedux = RepoOnDisk & {
   path: string;
   /** The name of the folder this repo sits inside. */
   basename: string;
+  /** The type of repo this is. */
+  type: RepoType;
   /** Our latest commit. */
   headCommitObjectId?: string;
   /** When did we last fetch. Undefined until we have fetched at least once. */
