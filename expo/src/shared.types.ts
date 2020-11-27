@@ -44,3 +44,15 @@ export type Offer = {
   title: string;
   bodyMarkdown: string;
 };
+
+export type Repo = {
+  repoId: string;
+  uuid: string;
+  title: string;
+  bodyMarkdown: string;
+  path: string;
+  commitsAheadOfOrigin?: number;
+  commitsBehindOrigin?: number;
+  headCommitObjectId?: string;
+  lastFetchTimestamp?: number;
+};

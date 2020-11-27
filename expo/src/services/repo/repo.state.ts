@@ -4,22 +4,11 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { Repo } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "repo" as const;
-
-export type Repo = {
-  repoId: string;
-  uuid: string;
-  title: string;
-  bodyMarkdown: string;
-  path: string;
-  commitsAheadOfOrigin?: number;
-  commitsBehindOrigin?: number;
-  headCommitObjectId?: string;
-  lastFetchTimestamp?: number;
-};
 
 const repoAdapter = createEntityAdapter<Repo>({
   selectId: (repo) => repo.repoId,
