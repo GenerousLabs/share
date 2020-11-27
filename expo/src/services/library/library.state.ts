@@ -61,8 +61,6 @@ export const selectAllOfferTags = createSelector(
 );
 export const selectAllFilterTags = (state: RootState) =>
   state.library.filters.tags;
-// TODO - Do we put the "selected" tags into redux?
-// - Then no need to validate them...
 export const selectFilteredOffers = createSelector(
   [selectAllOffers, (state: RootState) => state.library.filters],
   (offers, filters) => {
