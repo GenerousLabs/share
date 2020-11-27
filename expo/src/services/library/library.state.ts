@@ -1,9 +1,13 @@
 import {
+  combineReducers,
   createAction,
   createEntityAdapter,
+  createSelector,
   createSlice,
+  PayloadAction,
 } from "@reduxjs/toolkit";
-import { OfferInRedux, OfferOnDisk, RepoOnDisk } from "../../shared.types";
+import { intersection, uniq } from "remeda";
+import { OfferInRedux, OfferOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
@@ -11,20 +15,61 @@ export const REDUCER_KEY = "library" as const;
 
 const offerAdapter = createEntityAdapter<OfferInRedux>();
 
-const librarySlice = createSlice({
-  name: "SHARE/library",
+const offerSlice = createSlice({
+  name: "SHARE/library/offers",
   initialState: offerAdapter.getInitialState(),
   reducers: {
     upsertOneOffer: offerAdapter.upsertOne,
   },
 });
 
-export const { upsertOneOffer } = librarySlice.actions;
+export const { upsertOneOffer } = offerSlice.actions;
 
-export default librarySlice.reducer;
+type FilterState = {
+  tags: string[];
+};
+const filterInitialState: FilterState = {
+  tags: [],
+};
+
+const filterSlice = createSlice({
+  name: "SHARE/library/filters",
+  initialState: filterInitialState,
+  reducers: {
+    setFilterTags: (state, action: PayloadAction<{ tags: string[] }>) => {
+      state.tags = action.payload.tags;
+    },
+  },
+});
+
+const libraryReducer = combineReducers({
+  offers: offerSlice.reducer,
+  filters: filterSlice.reducer,
+});
+
+export default libraryReducer;
 
 export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
-  (state: RootState) => state.library
+  (state: RootState) => state.library.offers
+);
+export const selectAllOfferTags = createSelector(
+  [selectAllOffers],
+  (offers) => {
+    const tags = uniq(offers.flatMap((offer) => offer.tags)).sort();
+    return tags;
+  }
+);
+export const selectAllFilterTags = (state: RootState) =>
+  state.library.filters.tags;
+// TODO - Do we put the "selected" tags into redux?
+// - Then no need to validate them...
+export const selectFilteredOffers = createSelector(
+  [selectAllOffers, (state: RootState) => state.library.filters],
+  (offers, filters) => {
+    return offers.filter((offer) => {
+      return intersection(offer.tags, filters.tags).length > 0;
+    });
+  }
 );
 
 const CREATE_LIBRARY = "SHARE/library/createNewLibrary";
