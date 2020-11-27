@@ -38,33 +38,38 @@ export default repoSlice.reducer;
 export const selectRepoById = repoSelectors.selectById;
 export const selectAllRepos = repoSelectors.selectAll;
 
-export const commitAll = createAction<{ repoId: string; message: string }>(
+export const commitAllAction = createAction<{
+  repoId: string;
+  message: string;
+}>("SHARE/repo/commitAll");
+
+export const commitAllErrorAction = makeErrorActionCreator(
   "SHARE/repo/commitAll"
 );
 
-export const commitAllError = makeErrorActionCreator("SHARE/repo/commitAll");
-
-export const loadRepoContents = createAction<{ repoId: string }>(
+export const loadRepoContentsAction = createAction<{ repoId: string }>(
   "SHARE/repo/loadRepoContents"
 );
 
-export const loadRepoContentsError = createAction<{
+export const loadRepoContentsErrorAction = createAction<{
   repoId: string;
   message: string;
 }>("SHARE/repo/loadRepoContents/ERROR");
 
 const CREATE_REPO = "SHARE/repo/createRepo" as const;
-export const createRepo = createAction<{
+export const createRepoAction = createAction<{
   path: string;
   repoId: string;
   uuid: string;
   title: string;
   bodyMarkdown: string;
 }>(CREATE_REPO);
-export const createRepoError = makeErrorActionCreator(CREATE_REPO);
+export const createRepoErrorAction = makeErrorActionCreator(CREATE_REPO);
 
 const LOAD_FROM_FS = "SHARE/repo/loadRepoFromFilesystem" as const;
-export const loadRepoFromFilesystem = createAction<{ path: string }>(
+export const loadRepoFromFilesystemAction = createAction<{ path: string }>(
   LOAD_FROM_FS
 );
-export const loadRepoFromFilesystemError = makeErrorActionCreator(LOAD_FROM_FS);
+export const loadRepoFromFilesystemErrorAction = makeErrorActionCreator(
+  LOAD_FROM_FS
+);

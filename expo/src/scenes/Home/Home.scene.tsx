@@ -6,8 +6,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../../types";
 import { MonoText } from "../../components/StyledText";
-import { createNewOffer } from "../../services/library/library.state";
-import { createRepo } from "../../services/repo/repo.state";
+import { createNewOfferAction } from "../../services/library/library.state";
+import { createRepoAction } from "../../services/repo/repo.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -37,7 +37,7 @@ const Home = ({
           title="Create new repo"
           onPress={() => {
             dispatch(
-              createRepo({
+              createRepoAction({
                 repoId: "re2",
                 title: "Testing repos",
                 bodyMarkdown:
@@ -52,7 +52,7 @@ const Home = ({
           title="Create new asset"
           onPress={() => {
             dispatch(
-              createNewOffer({
+              createNewOfferAction({
                 offer: {
                   bodyMarkdown: "A new offer",
                   id: "offer1",

@@ -3,18 +3,18 @@ import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
 import { all, takeEvery } from "redux-saga/effects";
 import { join } from "../fs/fs.service";
-import { commitAll, selectRepoById } from "../repo/repo.state";
+import { commitAllAction, selectRepoById } from "../repo/repo.state";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
-  createNewOffer,
+  createNewOfferAction,
   createNewOfferError,
-  loadOffer,
+  loadOfferAction,
   loadOfferError,
   upsertOneOffer,
 } from "./library.state";
 
 export function* createNewOfferEffect(
-  action: ReturnType<typeof createNewOffer>
+  action: ReturnType<typeof createNewOfferAction>
 ) {
   try {
     const { offer, repoId } = action.payload;
@@ -45,7 +45,7 @@ export function* createNewOfferEffect(
     });
 
     yield put(
-      commitAll({
+      commitAllAction({
         repoId: repoId,
         message: "Creating a new offer",
       })
@@ -61,7 +61,7 @@ export function* createNewOfferEffect(
   }
 }
 
-export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
+export function* loadOfferEffect(action: ReturnType<typeof loadOfferAction>) {
   try {
     const { directoryPath, repoId } = action.payload;
 
@@ -80,7 +80,7 @@ export function* loadOfferEffect(action: ReturnType<typeof loadOffer>) {
 
 export default function* librarySaga() {
   yield all([
-    takeEvery(createNewOffer, createNewOfferEffect),
-    takeEvery(loadOffer, loadOfferEffect),
+    takeEvery(createNewOfferAction, createNewOfferEffect),
+    takeEvery(loadOfferAction, loadOfferEffect),
   ]);
 }

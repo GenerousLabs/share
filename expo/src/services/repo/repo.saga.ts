@@ -3,24 +3,24 @@ import { call, put, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
-import { loadOffer, loadOfferError } from "../library/library.state";
+import { loadOfferAction, loadOfferError } from "../library/library.state";
 import { startupAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem, initRepo } from "./repo.service";
 import {
-  commitAll,
-  commitAllError,
-  createRepo,
-  createRepoError,
-  loadRepoContents,
-  loadRepoFromFilesystem,
-  loadRepoFromFilesystemError,
+  commitAllAction,
+  commitAllErrorAction,
+  createRepoAction,
+  createRepoErrorAction,
+  loadRepoContentsAction,
+  loadRepoFromFilesystemAction,
+  loadRepoFromFilesystemErrorAction,
   selectRepoById,
   updateOneRepo,
   upsertOneRepo,
 } from "./repo.state";
 
 export function* loadRepoContentsEffect(
-  action: ReturnType<typeof loadRepoContents>
+  action: ReturnType<typeof loadRepoContentsAction>
 ) {
   const { repoId } = action.payload;
 
@@ -34,11 +34,11 @@ export function* loadRepoContentsEffect(
   });
 
   for (const directory of directories) {
-    yield* put(loadOffer({ repoId, directoryPath: directory.path }));
+    yield* put(loadOfferAction({ repoId, directoryPath: directory.path }));
   }
 }
 
-export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
+export function* commitAllEffect(action: ReturnType<typeof commitAllAction>) {
   try {
     const { repoId, message } = action.payload;
 
@@ -64,12 +64,12 @@ export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
         })
       );
 
-      yield* put(loadRepoContents({ repoId }));
+      yield* put(loadRepoContentsAction({ repoId }));
     }
   } catch (error) {
     console.error("commitAllEffct() unknown error #UEQp4W", error);
     yield put(
-      commitAllError({
+      commitAllErrorAction({
         error,
         message: "commitAllEffect() unknown error. #6qOvlk",
       })
@@ -77,14 +77,14 @@ export function* commitAllEffect(action: ReturnType<typeof commitAll>) {
   }
 }
 
-export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
+export function* createRepoEffect(action: ReturnType<typeof createRepoAction>) {
   try {
     yield* call(initRepo, action.payload);
 
     yield* put(upsertOneRepo(action.payload));
 
     yield* put(
-      commitAll({
+      commitAllAction({
         repoId: action.payload.repoId,
         message: "createRepo() #N0d4Y1",
       })
@@ -92,7 +92,7 @@ export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
 
     // TODO Do we want to push this repo?
   } catch (error) {
-    createRepoError({
+    createRepoErrorAction({
       error,
       message: "createRepo() error #ceAsr8",
       meta: { payload: action.payload },
@@ -101,7 +101,7 @@ export function* createRepoEffect(action: ReturnType<typeof createRepo>) {
 }
 
 export function* loadRepoFromFilesystemEffect(
-  action: ReturnType<typeof loadRepoFromFilesystem>
+  action: ReturnType<typeof loadRepoFromFilesystemAction>
 ) {
   try {
     const repo = yield* call(getRepoParamsFromFilesystem, {
@@ -110,11 +110,11 @@ export function* loadRepoFromFilesystemEffect(
 
     yield put(upsertOneRepo(repo));
 
-    yield put(loadRepoContents({ repoId: repo.repoId }));
+    yield put(loadRepoContentsAction({ repoId: repo.repoId }));
   } catch (error) {
     console.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
     yield put(
-      loadRepoFromFilesystemError({
+      loadRepoFromFilesystemErrorAction({
         message: "loadRepoFromFilesystem() error #HlT6yC",
         error,
       })
@@ -124,10 +124,10 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* startupSagaEffect() {
   try {
-    yield put(loadRepoFromFilesystem({ path: "/re2/" }));
+    yield put(loadRepoFromFilesystemAction({ path: "/re2/" }));
   } catch (error) {
     yield put(
-      loadRepoFromFilesystemError({
+      loadRepoFromFilesystemErrorAction({
         message: "repo.sagas startupSaga() error #roZbhL",
         error,
       })
@@ -137,10 +137,10 @@ export function* startupSagaEffect() {
 
 export default function* repoSaga() {
   yield all([
-    takeEvery(commitAll, commitAllEffect),
-    takeEvery(loadRepoContents, loadRepoContentsEffect),
-    takeEvery(createRepo, createRepoEffect),
-    takeEvery(loadRepoFromFilesystem, loadRepoFromFilesystemEffect),
+    takeEvery(commitAllAction, commitAllEffect),
+    takeEvery(loadRepoContentsAction, loadRepoContentsEffect),
+    takeEvery(createRepoAction, createRepoEffect),
+    takeEvery(loadRepoFromFilesystemAction, loadRepoFromFilesystemEffect),
     takeEvery(startupAction, startupSagaEffect),
   ]);
 }

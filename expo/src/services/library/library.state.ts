@@ -27,7 +27,7 @@ export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
   (state: RootState) => state.library
 );
 
-export const createNewOffer = createAction<{
+export const createNewOfferAction = createAction<{
   // There's no `id` passed to `createNewOffer()` it's generated
   offer: OfferOnDisk;
   repoId: string;
@@ -38,7 +38,7 @@ export const createNewOfferError = makeErrorActionCreator(
 );
 
 const LOAD_OFFER = "SHARE/library/loadOffer" as const;
-export const loadOffer = createAction<{
+export const loadOfferAction = createAction<{
   repoId: string;
   directoryPath: string;
 }>(LOAD_OFFER);

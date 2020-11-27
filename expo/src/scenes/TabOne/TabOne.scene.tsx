@@ -4,10 +4,10 @@ import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../../components/Themed";
 import {
-  createNewOffer,
-  loadOffer,
+  createNewOfferAction,
+  loadOfferAction,
 } from "../../services/library/library.state";
-import { createRepo } from "../../services/repo/repo.state";
+import { createRepoAction } from "../../services/repo/repo.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -29,7 +29,7 @@ export default function TabOne() {
           title="Create new repo"
           onPress={() => {
             dispatch(
-              createRepo({
+              createRepoAction({
                 repoId: "re2",
                 title: "Testing repos",
                 bodyMarkdown:
@@ -44,7 +44,7 @@ export default function TabOne() {
           title="Create new asset"
           onPress={() => {
             dispatch(
-              createNewOffer({
+              createNewOfferAction({
                 offer: {
                   bodyMarkdown: "A new offer",
                   id: "offer1",
@@ -63,7 +63,10 @@ export default function TabOne() {
           title="Load offer"
           onPress={() => {
             dispatch(
-              loadOffer({ repoId: "re2", directoryPath: "/re2/doesnotexist/" })
+              loadOfferAction({
+                repoId: "re2",
+                directoryPath: "/re2/doesnotexist/",
+              })
             );
           }}
         />

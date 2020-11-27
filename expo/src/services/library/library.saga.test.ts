@@ -1,16 +1,16 @@
 import { describe, it, expect } from "@jest/globals";
 import fs from "expo-fs";
 import { testSaga } from "redux-saga-test-plan";
-import { commitAll, selectRepoById } from "../repo/repo.state";
+import { commitAllAction, selectRepoById } from "../repo/repo.state";
 import { createNewOfferEffect } from "./library.saga";
-import { createNewOffer, createNewOfferError } from "./library.state";
+import { createNewOfferAction, createNewOfferError } from "./library.state";
 
 describe("library.saga", () => {
   describe("createNewOfferEffect()", () => {
     it("Creates a new offer #nsn5S8", () => {
       testSaga(
         createNewOfferEffect,
-        createNewOffer({
+        createNewOfferAction({
           offer: {
             uuid: "offer1-uuid",
             bodyMarkdown: "An offer example",
@@ -43,7 +43,9 @@ describe("library.saga", () => {
         //   expect((value as any).type).toEqual("PUT");
         //   expect(value).toEqual({ type: "PUT" });
         // })
-        .put(commitAll({ repoId: "repo1", message: "Creating a new offer" }))
+        .put(
+          commitAllAction({ repoId: "repo1", message: "Creating a new offer" })
+        )
         .next()
         .isDone();
     });
@@ -51,7 +53,7 @@ describe("library.saga", () => {
     it("Terminates with an error for a non existent repoId #dussrU", () => {
       testSaga(
         createNewOfferEffect,
-        createNewOffer({
+        createNewOfferAction({
           offer: {
             uuid: "offer1-uuid",
             bodyMarkdown: "An offer example",
