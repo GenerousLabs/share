@@ -1,7 +1,6 @@
+import matter from "gray-matter";
 import { gitFsHttp } from "../../shared.constants";
 import { join } from "../fs/fs.service";
-import matter from "gray-matter";
-import { Library } from "./library.state";
 
 export type Offer = {
   id: string;
