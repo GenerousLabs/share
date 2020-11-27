@@ -4,15 +4,13 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { Repo } from "../../shared.types";
+import { RepoInRedux } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "repo" as const;
 
-const repoAdapter = createEntityAdapter<Repo>({
-  selectId: (repo) => repo.repoId,
-});
+const repoAdapter = createEntityAdapter<RepoInRedux>();
 const repoSelectors = repoAdapter.getSelectors(
   (state: RootState) => state.repo
 );

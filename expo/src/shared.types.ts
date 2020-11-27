@@ -31,32 +31,29 @@ export type GitParams = {
   };
 };
 
-export type Repo = {
-  repoId: string;
+/** Each repo contains an index.md file which specifies the following fields. */
+export type RepoOnDisk = {
   uuid: string;
   title: string;
   bodyMarkdown: string;
-  path: string;
-  commitsAheadOfOrigin?: number;
-  commitsBehindOrigin?: number;
-  headCommitObjectId?: string;
-  lastFetchTimestamp?: number;
 };
 
-/**
- * This type expands on what is stored in the file itself, and adds some
- * metadata that we calculate after reading the offer from disk.
- */
-export type Offer = OfferOnDisk & {
-  /** This ID is generated locally */
+export type RepoInRedux = RepoOnDisk & {
   id: string;
+  /** The full system path to the repo folder on disk. */
+  path: string;
+  /** Our latest commit. */
+  headCommitObjectId?: string;
+  /** When did we last fetch. Undefined until we have fetched at least once. */
+  lastFetchTimestamp?: number;
   /**
-   * Each offer is contained in a repo, this tracks the ID of that repo (not the
-   * uuid)
-   */
-  repoId: string;
-  /** Is this an offer which I own, which means I can edit it */
-  mine: boolean;
+   * How many commits do we have locally that have not been pushed to the origin
+   * remote. Can be undefined if unknown. */
+  commitsAheadOfOrigin?: number;
+  /**
+   * If our upstream origin branch is ahead, we can track that here. In theory
+   * this should never happen as we always pull rather than fetch, but... */
+  commitsBehindOrigin?: number;
 };
 
 /**
@@ -75,4 +72,20 @@ export type OfferOnDisk = {
   shareToProximity: number;
   /** A markdown string that describes this offer */
   bodyMarkdown: string;
+};
+
+/**
+ * This type expands on what is stored in the file itself, and adds some
+ * metadata that we calculate after reading the offer from disk.
+ */
+export type OfferInRedux = OfferOnDisk & {
+  /** This ID is generated locally */
+  id: string;
+  /**
+   * Each offer is contained in a repo, this tracks the ID of that repo (not the
+   * uuid)
+   */
+  repoId: string;
+  /** Is this an offer which I own, which means I can edit it */
+  mine: boolean;
 };

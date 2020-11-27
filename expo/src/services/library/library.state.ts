@@ -3,13 +3,13 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { Offer } from "../../shared.types";
+import { OfferInRedux, OfferOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "library" as const;
 
-const offerAdapter = createEntityAdapter<Offer>();
+const offerAdapter = createEntityAdapter<OfferInRedux>();
 
 const librarySlice = createSlice({
   name: "SHARE/library",
@@ -29,7 +29,8 @@ export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
 
 export const createNewOffer = createAction<{
   // There's no `id` passed to `createNewOffer()` it's generated
-  offer: Omit<Offer, "id">;
+  offer: OfferOnDisk;
+  repoId: string;
 }>("SHARE/library/createNewOffer");
 
 export const createNewOfferError = makeErrorActionCreator(

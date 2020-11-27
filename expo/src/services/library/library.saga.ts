@@ -17,15 +17,15 @@ export function* createNewOfferEffect(
   action: ReturnType<typeof createNewOffer>
 ) {
   try {
-    const { offer } = action.payload;
+    const { offer, repoId } = action.payload;
 
-    const repo = yield* select(selectRepoById, offer.repoId);
+    const repo = yield* select(selectRepoById, repoId);
 
     if (typeof repo === "undefined") {
       yield put(
         createNewOfferError({
           message: "Repo does not exist #xJeqQd",
-          meta: { repoId: offer.repoId },
+          meta: { repoId },
         })
       );
       return;
@@ -46,7 +46,7 @@ export function* createNewOfferEffect(
 
     yield put(
       commitAll({
-        repoId: offer.repoId,
+        repoId: repoId,
         message: "Creating a new offer",
       })
     );

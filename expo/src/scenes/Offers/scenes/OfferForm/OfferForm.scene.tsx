@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { createNewOffer } from "../../../../services/library/library.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
-import { Offer } from "../../../../shared.types";
+import { OfferInRedux } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 
 type Inputs = {
@@ -23,7 +23,7 @@ const OfferForm = () => {
   // TODO Provide a meaningful way to choose a repo here
   const onSubmit = (data: Inputs) => {
     debugger;
-    const offer: Omit<Offer, "id"> = {
+    const offer: Omit<OfferInRedux, "id"> = {
       uuid: uuid(),
       mine: true,
       proximity: 0,

@@ -14,12 +14,12 @@ describe("library.saga", () => {
           offer: {
             uuid: "offer1-uuid",
             bodyMarkdown: "An offer example",
-            mine: true,
             proximity: 0,
-            repoId: "repo1",
             shareToProximity: 1,
             title: "An example offer",
+            tags: [],
           },
+          repoId: "repo1",
         })
       )
         .next()
@@ -35,7 +35,7 @@ describe("library.saga", () => {
         .call(
           fs.promises.writeFile,
           "/repo1/an-example-offer/index.md",
-          "---\nuuid: offer1-uuid\nmine: true\nproximity: 0\nshareToProximity: 1\ntitle: An example offer\n---\nAn offer example\n",
+          "---\nuuid: offer1-uuid\nproximity: 0\nshareToProximity: 1\ntitle: An example offer\ntags: []\n---\nAn offer example\n",
           { encoding: "utf8" }
         )
         .next()
@@ -48,20 +48,19 @@ describe("library.saga", () => {
         .isDone();
     });
 
-    it("Throws for a non existent repoId #dussrU", () => {
+    it("Terminates with an error for a non existent repoId #dussrU", () => {
       testSaga(
         createNewOfferEffect,
         createNewOffer({
           offer: {
-            id: "offer1",
             uuid: "offer1-uuid",
             bodyMarkdown: "An offer example",
-            mine: true,
             proximity: 0,
-            repoId: "repo1",
             shareToProximity: 1,
             title: "An example offer",
+            tags: [],
           },
+          repoId: "repo1",
         })
       )
         .next()
