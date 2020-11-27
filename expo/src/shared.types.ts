@@ -43,16 +43,36 @@ export type Repo = {
   lastFetchTimestamp?: number;
 };
 
-export type Offer = {
+/**
+ * This type expands on what is stored in the file itself, and adds some
+ * metadata that we calculate after reading the offer from disk.
+ */
+export type Offer = OfferOnDisk & {
+  /** This ID is generated locally */
   id: string;
-  uuid: string;
+  /**
+   * Each offer is contained in a repo, this tracks the ID of that repo (not the
+   * uuid)
+   */
   repoId: string;
   /** Is this an offer which I own, which means I can edit it */
   mine: boolean;
+};
+
+/**
+ * These properties are stored in the markdown file.
+ */
+export type OfferOnDisk = {
+  /** The uuid specified by the offer itself */
+  uuid: string;
+  /** The title of this offer */
+  title: string;
+  /** A set of tags, each a single string (no leading #, etc) */
+  tags: string[];
   /** How close to me is this offer? 0 = mine, 1 = a friend of mine, etc. */
   proximity: number;
   /** How far is this to be shared? 1 = my friends, 2 = their friends, etc */
   shareToProximity: number;
-  title: string;
+  /** A markdown string that describes this offer */
   bodyMarkdown: string;
 };
