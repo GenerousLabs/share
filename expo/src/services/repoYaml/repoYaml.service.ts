@@ -1,8 +1,9 @@
 import { isArray, isObject } from "lodash";
-import { first } from "remeda";
 
 export type RepoYaml = {
+  id: string;
   name: string;
+  slug: string;
   remotes: {
     url: string;
     headers?: {
@@ -15,8 +16,6 @@ export type RepoYaml = {
     };
     keyPassword?: string;
   }[];
-  id: string;
-  slug: string;
 };
 
 export const _isRequiredString = (input: any): input is string => {
