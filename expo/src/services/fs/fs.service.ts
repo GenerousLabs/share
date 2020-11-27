@@ -2,7 +2,7 @@ import Bluebird from "bluebird";
 import * as FileSystem from "expo-file-system";
 import { trim, trimEnd, trimStart } from "lodash";
 import { groupBy } from "remeda";
-import { gitFsHttp, PATH_SEPARATOR } from "../../shared.constants";
+import { ENOENT, gitFsHttp, PATH_SEPARATOR } from "../../shared.constants";
 
 export const getDirectories = async () => {};
 
@@ -54,4 +54,36 @@ export const getDirectoryContents = async ({ path }: { path: string }) => {
   });
 
   return { directories, files };
+};
+
+export const doesDirectoryExist = async ({ path }: { path: string }) => {
+  const { fs } = gitFsHttp;
+
+  return fs.promises.stat(path).then(
+    (stat) => {
+      return stat.isDirectory();
+    },
+    (error) => {
+      if (error.code === ENOENT) {
+        return false;
+      }
+      throw error;
+    }
+  );
+};
+
+export const doesFileExist = async ({ path }: { path: string }) => {
+  const { fs } = gitFsHttp;
+
+  return await fs.promises.stat(path).then(
+    (stat) => {
+      return stat.isFile();
+    },
+    (error) => {
+      if (error.code === ENOENT) {
+        return false;
+      }
+      throw error;
+    }
+  );
 };

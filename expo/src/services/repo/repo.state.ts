@@ -4,7 +4,7 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { RepoInRedux } from "../../shared.types";
+import { RepoInRedux, RepoOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
@@ -55,16 +55,6 @@ export const loadRepoContentsErrorAction = createAction<{
   repoId: string;
   message: string;
 }>("SHARE/repo/loadRepoContents/ERROR");
-
-const CREATE_REPO = "SHARE/repo/createRepo" as const;
-export const createRepoAction = createAction<{
-  path: string;
-  repoId: string;
-  uuid: string;
-  title: string;
-  bodyMarkdown: string;
-}>(CREATE_REPO);
-export const createRepoErrorAction = makeErrorActionCreator(CREATE_REPO);
 
 const LOAD_FROM_FS = "SHARE/repo/loadRepoFromFilesystem" as const;
 export const loadRepoFromFilesystemAction = createAction<{ path: string }>(

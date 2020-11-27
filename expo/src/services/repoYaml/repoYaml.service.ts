@@ -3,7 +3,8 @@ import { isArray, isObject } from "lodash";
 export type RepoYaml = {
   id: string;
   name: string;
-  slug: string;
+  /** The folder name  */
+  basename: string;
   remotes: {
     url: string;
     headers?: {
@@ -16,6 +17,8 @@ export type RepoYaml = {
     };
     keyPassword?: string;
   }[];
+  /** Is this a repo that I'm following (which means its read only to me) */
+  following: boolean;
 };
 
 export const _isRequiredString = (input: any): input is string => {

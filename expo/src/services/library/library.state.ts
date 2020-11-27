@@ -3,7 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
-import { OfferInRedux, OfferOnDisk } from "../../shared.types";
+import { OfferInRedux, OfferOnDisk, RepoOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 
@@ -27,20 +27,26 @@ export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
   (state: RootState) => state.library
 );
 
+const CREATE_LIBRARY = "SHARE/library/createNewLibrary";
+export const createNewLibraryAction = createAction<{
+  title: string;
+  bodyMarkdown: string;
+}>(CREATE_LIBRARY);
+export const createNewLibraryErrorAction = makeErrorActionCreator(
+  CREATE_LIBRARY
+);
+
+const CREATE_OFFER = "SHARE/library/createNewOffer";
 export const createNewOfferAction = createAction<{
   // There's no `id` passed to `createNewOffer()` it's generated
   offer: OfferOnDisk;
   repoId: string;
-}>("SHARE/library/createNewOffer");
-
-export const createNewOfferError = makeErrorActionCreator(
-  "SHARE/library/createNewOffer"
-);
+}>(CREATE_OFFER);
+export const createNewOfferError = makeErrorActionCreator(CREATE_OFFER);
 
 const LOAD_OFFER = "SHARE/library/loadOffer" as const;
 export const loadOfferAction = createAction<{
   repoId: string;
   directoryPath: string;
 }>(LOAD_OFFER);
-
 export const loadOfferError = makeErrorActionCreator(LOAD_OFFER);

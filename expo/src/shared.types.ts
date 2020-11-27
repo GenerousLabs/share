@@ -1,4 +1,5 @@
 import fs from "fs";
+import { RepoType } from "./shared.constants";
 
 export type FS = {
   promises: {
@@ -31,10 +32,14 @@ export type GitParams = {
   };
 };
 
-/** Each repo contains an index.md file which specifies the following fields. */
-export type RepoOnDisk = {
+export type RepoOnDiskFrontMatter = {
   uuid: string;
+  type: RepoType;
   title: string;
+};
+
+/** Each repo contains an index.md file which specifies the following fields. */
+export type RepoOnDisk = RepoOnDiskFrontMatter & {
   bodyMarkdown: string;
 };
 
@@ -42,6 +47,8 @@ export type RepoInRedux = RepoOnDisk & {
   id: string;
   /** The full system path to the repo folder on disk. */
   path: string;
+  /** The name of the folder this repo sits inside. */
+  basename: string;
   /** Our latest commit. */
   headCommitObjectId?: string;
   /** When did we last fetch. Undefined until we have fetched at least once. */
@@ -88,4 +95,20 @@ export type OfferInRedux = OfferOnDisk & {
   repoId: string;
   /** Is this an offer which I own, which means I can edit it */
   mine: boolean;
+};
+
+export type ConnectionInRedux = {
+  /** The id that I refer to this connection by */
+  id: string;
+  /** The name that I assign to this connection */
+  name: string;
+  /** Any private notes that I keep in relation to this connection */
+  notes: string;
+  /** The ID of the "mine" repo, my half of the connection channel */
+  myRepoId: string;
+  /**
+   * The ID of their repo, their half of the connection channel. Undefined if it
+   * has not been set (which means I've sent an invitation and am awaiting a
+   * response.) */
+  theirRepoId?: string;
 };

@@ -1,42 +1,160 @@
 import matter from "gray-matter";
-import invariant from "tiny-invariant";
-import { gitFsHttp } from "../../shared.constants";
-import { join, mkdirp } from "../fs/fs.service";
-import { gitAddAndCommit, initNewRepo } from "../git/git.service";
-import { Repo } from "./repo.state";
+import { v4 as generateUuid } from "uuid";
+import { gitFsHttp, RepoType } from "../../shared.constants";
+import {
+  RepoInRedux,
+  RepoOnDisk,
+  RepoOnDiskFrontMatter,
+} from "../../shared.types";
+import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
+import { gitInitNewRepo } from "../git/git.service";
 
-export default {};
-
-export const initRepo = async ({
+export const _initRepo = async ({
   path,
-  repoId,
   uuid,
   title,
+  type,
   bodyMarkdown,
-}: {
-  path: string;
-  repoId: string;
-  uuid: string;
-  title: string;
-  bodyMarkdown: string;
-}) => {
+}: RepoOnDisk & { path: string }) => {
   const { fs } = gitFsHttp;
 
   if (__DEV__)
-    console.log("repo.servce / initRepo() invoked #eQ4V3I", { path });
+    console.log("repo.servce / initRepo() invoked #eQ4V3I", {
+      path,
+      title,
+      type,
+      uuid,
+      bodyMarkdown,
+    });
+
+  const pathExists = await doesDirectoryExist({ path });
+  if (pathExists) {
+    throw new Error("Trying to create repo that already exists. #VMTD9k");
+  }
 
   await mkdirp({ path });
-  await initNewRepo({ path });
+  await gitInitNewRepo({ path });
 
   const indexPath = join(path, "index.md");
 
   const markdownWithFrontmatter = matter.stringify(bodyMarkdown, {
     title,
+    type,
     uuid,
   });
 
   await fs.promises.writeFile(indexPath, markdownWithFrontmatter, {
     encoding: "utf8",
+  });
+
+  // NOTE: We might choose some local id generation in the future. These IDs are
+  // not supposed to be persistent, but only unique within our redux
+  // collections.
+  const id = uuid;
+
+  return {
+    id,
+    uuid,
+    path,
+  };
+};
+
+export const initMeRepo = async (): Promise<RepoInRedux> => {
+  const uuid = generateUuid();
+  const title = "me";
+  const path = "/repos/me/";
+  const bodyMarkdown = "This repo contains my configuration and settings.";
+  const type = RepoType.me;
+
+  const repo = await _initRepo({
+    path,
+    title,
+    uuid,
+    type,
+    bodyMarkdown,
+  });
+
+  return {
+    basename: "me",
+    title,
+    bodyMarkdown,
+    type,
+    ...repo,
+  };
+};
+
+export const initControlRepo = async (): Promise<RepoInRedux> => {
+  const uuid = generateUuid();
+  const path = "/repos/control/";
+  const title = "control";
+  const type = RepoType.control;
+  const bodyMarkdown = "This repo contains commands I send to the server.";
+
+  const repo = await _initRepo({
+    path,
+    title,
+    uuid,
+    type,
+    bodyMarkdown,
+  });
+
+  return {
+    basename: "me",
+    title,
+    bodyMarkdown,
+    type,
+    ...repo,
+  };
+};
+
+export const initLibraryRepo = async ({
+  bodyMarkdown,
+  title,
+  uuid,
+  basename,
+}: Omit<RepoOnDisk, "type"> & { basename: string }): Promise<RepoInRedux> => {
+  const path = join("/repos/mine/", basename);
+  const type = RepoType.library;
+
+  const repo = await _initRepo({
+    path,
+    title,
+    uuid,
+    type,
+    bodyMarkdown,
+  });
+
+  return {
+    basename,
+    title,
+    bodyMarkdown,
+    type,
+    ...repo,
+  };
+};
+
+export const initConnectionRepo = async ({
+  bodyMarkdown,
+  title,
+  uuid,
+  connectionBasename,
+  mine,
+}: Omit<RepoOnDisk, "type"> & {
+  connectionBasename: string;
+  mine: boolean;
+}) => {
+  const path = join(
+    "/repos/connections/",
+    connectionBasename,
+    mine ? "mine" : "theirs"
+  );
+
+  const commitHash = await _initRepo({
+    path,
+    title,
+    uuid,
+    type: RepoType.connectoin,
+    bodyMarkdown,
   });
 };
 
@@ -54,17 +172,15 @@ export const getRepoParamsFromFilesystem = async ({
   })) as string;
 
   const matterOutput = matter(markdownWithFrontmatter);
-  const data = matterOutput.data as Partial<
-    Omit<Repo, "repoId" | "path" | "bodyMarkdown">
-  >;
+  const data = matterOutput.data as Partial<RepoOnDiskFrontMatter>;
 
   // TODO Properly validate data here
-  const validatedData = data as Omit<Repo, "repoId" | "path" | "bodyMarkdown">;
+  const validatedData = data as RepoOnDiskFrontMatter;
 
   return {
-    repoId: path,
+    id: validatedData.uuid,
     path,
     bodyMarkdown: matterOutput.content,
-    ...data,
-  } as Repo;
+    ...validatedData,
+  } as RepoInRedux;
 };

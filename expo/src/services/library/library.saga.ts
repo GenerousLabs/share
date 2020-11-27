@@ -1,17 +1,59 @@
 import fs from "expo-fs";
+import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
-import { all, takeEvery } from "redux-saga/effects";
+import { v4 as generateUuid } from "uuid";
 import { join } from "../fs/fs.service";
-import { commitAllAction, selectRepoById } from "../repo/repo.state";
+import { initLibraryRepo } from "../repo/repo.service";
+import {
+  commitAllAction,
+  selectRepoById,
+  upsertOneRepo,
+} from "../repo/repo.state";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
+  createNewLibraryAction,
+  createNewLibraryErrorAction,
   createNewOfferAction,
   createNewOfferError,
   loadOfferAction,
   loadOfferError,
   upsertOneOffer,
 } from "./library.state";
+
+export function* createNewLibraryEffect(
+  action: ReturnType<typeof createNewLibraryAction>
+) {
+  try {
+    const { title, bodyMarkdown } = action.payload;
+
+    const basename = slugify(title);
+    const uuid = generateUuid();
+
+    const repo = yield* call(initLibraryRepo, {
+      basename,
+      uuid,
+      title,
+      bodyMarkdown,
+    });
+
+    yield* put(upsertOneRepo(repo));
+
+    yield* put(
+      commitAllAction({
+        repoId: repo.id,
+        message: "Initial commit. #hhpj2X",
+      })
+    );
+  } catch (error) {
+    yield put(
+      createNewLibraryErrorAction({
+        message: "createNewLibraryEffect() error #MAqjTm",
+        error,
+      })
+    );
+  }
+}
 
 export function* createNewOfferEffect(
   action: ReturnType<typeof createNewOfferAction>
@@ -80,6 +122,7 @@ export function* loadOfferEffect(action: ReturnType<typeof loadOfferAction>) {
 
 export default function* librarySaga() {
   yield all([
+    takeEvery(createNewLibraryAction, createNewLibraryEffect),
     takeEvery(createNewOfferAction, createNewOfferEffect),
     takeEvery(loadOfferAction, loadOfferEffect),
   ]);
