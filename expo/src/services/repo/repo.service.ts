@@ -3,7 +3,6 @@ import invariant from "tiny-invariant";
 import { gitFsHttp } from "../../shared.constants";
 import { join, mkdirp } from "../fs/fs.service";
 import { gitAddAndCommit, initNewRepo } from "../git/git.service";
-import { Offer } from "../library/library.service";
 import { Repo } from "./repo.state";
 
 export default {};

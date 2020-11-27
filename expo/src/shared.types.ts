@@ -30,3 +30,17 @@ export type GitParams = {
     email?: string;
   };
 };
+
+export type Offer = {
+  id: string;
+  uuid: string;
+  repoId: string;
+  /** Is this an offer which I own, which means I can edit it */
+  mine: boolean;
+  /** How close to me is this offer? 0 = mine, 1 = a friend of mine, etc. */
+  proximity: number;
+  /** How far is this to be shared? 1 = my friends, 2 = their friends, etc */
+  shareToProximity: number;
+  title: string;
+  bodyMarkdown: string;
+};

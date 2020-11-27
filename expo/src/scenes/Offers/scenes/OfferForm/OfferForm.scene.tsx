@@ -4,9 +4,9 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
-import { Offer } from "../../../../services/library/library.service";
 import { createNewOffer } from "../../../../services/library/library.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
+import { Offer } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 
 type Inputs = {

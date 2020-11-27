@@ -3,9 +3,9 @@ import {
   createEntityAdapter,
   createSlice,
 } from "@reduxjs/toolkit";
+import { Offer } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
-import { Offer } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
