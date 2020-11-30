@@ -54,14 +54,13 @@ const Home = ({
               createNewOfferAction({
                 offer: {
                   bodyMarkdown: "A new offer",
-                  id: "offer1",
-                  mine: true,
                   proximity: 0,
-                  repoId: "re2",
                   shareToProximity: 1,
                   title: "An offer",
                   uuid: "uuid-example",
+                  tags: [],
                 },
+                repoId: "re2",
               })
             );
           }}
