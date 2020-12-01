@@ -99,6 +99,7 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* startupSagaEffect() {
   try {
+    // TODO: Load the me & control repos here
     yield put(loadRepoFromFilesystemAction({ path: "/re2/" }));
   } catch (error) {
     yield put(
