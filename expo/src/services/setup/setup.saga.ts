@@ -1,12 +1,12 @@
 import { all, takeEvery } from "redux-saga/effects";
-import { call, put, select } from "typed-redux-saga/macro";
-import { initControlRepo, initMeRepo } from "../repo/repo.service";
+import { call, put } from "typed-redux-saga/macro";
+import { createControlRepo, createMeRepo } from "../repo/repo.service";
 import { commitAllAction, upsertOneRepo } from "../repo/repo.state";
 import { setupAction, setupErrorAction } from "./setup.state";
 
 export function* setupEffect() {
   try {
-    const meRepo = yield* call(initMeRepo);
+    const meRepo = yield* call(createMeRepo);
 
     yield* put(upsertOneRepo(meRepo));
 
@@ -17,7 +17,7 @@ export function* setupEffect() {
       })
     );
 
-    const controlRepo = yield* call(initControlRepo);
+    const controlRepo = yield* call(createControlRepo);
 
     yield* put(upsertOneRepo(controlRepo));
 

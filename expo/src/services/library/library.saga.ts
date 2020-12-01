@@ -4,7 +4,7 @@ import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { join } from "../fs/fs.service";
-import { initLibraryRepo } from "../repo/repo.service";
+import { createLibraryRepo } from "../repo/repo.service";
 import {
   commitAllAction,
   selectRepoById,
@@ -30,7 +30,7 @@ export function* createNewLibraryEffect(
     const basename = slugify(title);
     const uuid = generateUuid();
 
-    const repo = yield* call(initLibraryRepo, {
+    const repo = yield* call(createLibraryRepo, {
       basename,
       uuid,
       title,

@@ -9,7 +9,11 @@ import {
 import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
 import { gitInitNewRepo } from "../git/git.service";
 
-export const _initRepo = async ({
+/**
+ * Create the new directory, call git init, and then save the repo details into
+ * the `/index.md` file.
+ */
+export const _createRepo = async ({
   path,
   uuid,
   title,
@@ -59,14 +63,14 @@ export const _initRepo = async ({
   };
 };
 
-export const initMeRepo = async (): Promise<RepoInRedux> => {
+export const createMeRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
   const title = "me";
   const path = "/repos/me/";
   const bodyMarkdown = "This repo contains my configuration and settings.";
   const type = RepoType.me;
 
-  const repo = await _initRepo({
+  const repo = await _createRepo({
     path,
     title,
     uuid,
@@ -83,14 +87,14 @@ export const initMeRepo = async (): Promise<RepoInRedux> => {
   };
 };
 
-export const initControlRepo = async (): Promise<RepoInRedux> => {
+export const createControlRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
   const path = "/repos/control/";
   const title = "control";
   const type = RepoType.control;
   const bodyMarkdown = "This repo contains commands I send to the server.";
 
-  const repo = await _initRepo({
+  const repo = await _createRepo({
     path,
     title,
     uuid,
@@ -107,7 +111,7 @@ export const initControlRepo = async (): Promise<RepoInRedux> => {
   };
 };
 
-export const initLibraryRepo = async ({
+export const createLibraryRepo = async ({
   bodyMarkdown,
   title,
   uuid,
@@ -116,7 +120,7 @@ export const initLibraryRepo = async ({
   const path = join("/repos/mine/", basename);
   const type = RepoType.library;
 
-  const repo = await _initRepo({
+  const repo = await _createRepo({
     path,
     title,
     uuid,
@@ -133,7 +137,7 @@ export const initLibraryRepo = async ({
   };
 };
 
-export const initConnectionRepo = async ({
+export const createConnectionRepo = async ({
   bodyMarkdown,
   title,
   uuid,
@@ -149,7 +153,7 @@ export const initConnectionRepo = async ({
     mine ? "mine" : "theirs"
   );
 
-  const commitHash = await _initRepo({
+  const commitHash = await _createRepo({
     path,
     title,
     uuid,
