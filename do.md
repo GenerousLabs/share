@@ -1,9 +1,10 @@
+- [ ] Put real repos into the repo startup saga
 - [ ] Add logging infrastructure
   - Maybe winston?
   - Prep to be able to show logs to the user in the UI
   - Save to a file maybe?
 - [ ] Define the format for a `me` repo
   - Add a type field to the repos list
-- [ ] Add tags to offers
+- [x] Add tags to offers
 - [ ] p2 Add server to host git repos
 - [ ] p3 Add password key derivation to encryption
