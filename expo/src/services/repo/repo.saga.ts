@@ -97,7 +97,7 @@ export function* loadRepoFromFilesystemEffect(
   }
 }
 
-export function* startupSagaEffect() {
+export function* repoStartupEffect() {
   try {
     // TODO: Load the me & control repos here
     yield put(loadRepoFromFilesystemAction({ path: "/re2/" }));
@@ -116,6 +116,6 @@ export default function* repoSaga() {
     takeEvery(commitAllAction, commitAllEffect),
     takeEvery(loadRepoContentsAction, loadRepoContentsEffect),
     takeEvery(loadRepoFromFilesystemAction, loadRepoFromFilesystemEffect),
-    takeEvery(startupAction, startupSagaEffect),
+    takeEvery(startupAction, repoStartupEffect),
   ]);
 }
