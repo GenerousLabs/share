@@ -2,6 +2,11 @@ import matter from "gray-matter";
 import { v4 as generateUuid } from "uuid";
 import { gitFsHttp, RepoType } from "../../shared.constants";
 import {
+  CONTROL_REPO_PATH,
+  ME_REPO_GITDIR,
+  ME_REPO_PATH,
+} from "../../shared.paths";
+import {
   RepoInRedux,
   RepoOnDisk,
   RepoOnDiskFrontMatter,
@@ -11,7 +16,9 @@ import { gitInitNewRepo } from "../git/git.service";
 
 /**
  * Create the new directory, call git init, and then save the repo details into
- * the `/index.md` file.
+ * the `/index.md` file. If `keys` are not supplied, they will be created.
+ * NOTE: This function creates the file, but does not commit anything into the
+ * new repo. The commit action should be dispatched immediately after this.
  */
 export const _createRepo = async ({
   path,
@@ -66,7 +73,7 @@ export const _createRepo = async ({
 export const createMeRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
   const title = "me";
-  const path = "/repos/me/";
+  const path = ME_REPO_PATH;
   const bodyMarkdown = "This repo contains my configuration and settings.";
   const type = RepoType.me;
 
@@ -89,7 +96,7 @@ export const createMeRepo = async (): Promise<RepoInRedux> => {
 
 export const createControlRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
-  const path = "/repos/control/";
+  const path = CONTROL_REPO_PATH;
   const title = "control";
   const type = RepoType.control;
   const bodyMarkdown = "This repo contains commands I send to the server.";

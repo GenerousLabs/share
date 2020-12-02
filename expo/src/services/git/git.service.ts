@@ -1,7 +1,9 @@
 import Bluebird from "bluebird";
 import git from "isomorphic-git";
+import original from "original";
 import { gitFsHttp, GIT_AUTHOR_NAME } from "../../shared.constants";
-import { GitParams } from "../../shared.types";
+import { FS, GitParams, Headers } from "../../shared.types";
+import { join } from "../fs/fs.service";
 
 export type StatusMatrixLine = [string, 0 | 1, 0 | 1 | 2, 0 | 1 | 2 | 3];
 export type StatusMatrix = StatusMatrixLine[];
@@ -71,4 +73,68 @@ export const gitAddAndCommit = async (
 export const gitInitNewRepo = async ({ path }: { path: string }) => {
   const { fs } = gitFsHttp;
   await git.init({ fs, dir: path });
+};
+
+/**
+ * Given a source repo git directory, set the remote URL (prefixed with
+ * `encrypted::`).
+ */
+export const gitSetEncryptedRemote = async ({
+  sourceGitDir,
+  encryptedRemoteUrl,
+}: {
+  sourceGitDir: string;
+  encryptedRemoteUrl: string;
+}) => {
+  const { fs } = gitFsHttp;
+
+  await git.addRemote({
+    fs,
+    gitdir: sourceGitDir,
+    remote: "origin",
+    // TODO Figure out a better way to prefix `encrypted::`
+    url: `encrypted::${encryptedRemoteUrl}`,
+    force: true,
+  });
+};
+
+/**
+ * Given the source repo git directory, add the `http.extraHeader` setting(s)
+ * to the `.git/encrypted/` git repository.
+ *
+ * NOTE: These settings are ignored by `isomorphic-git`, we store them here
+ * only as a convenience.
+ */
+export const gitSetEncryptedExtraHeaders = async ({
+  encryptedRemoteUrl,
+  headers,
+  sourceGitDir,
+  fs = gitFsHttp.fs,
+}: {
+  sourceGitDir: string;
+  encryptedRemoteUrl: string;
+  headers: Headers;
+  fs: FS;
+}) => {
+  const encryptedGitDir = join(sourceGitDir, "/encrypted/.git/");
+  const urlOrigin = original(encryptedRemoteUrl);
+
+  // First, remove any existing headers, we want this function to idempoetently
+  // set all the headers for a given origin.
+  await git.setConfig({
+    fs,
+    gitdir: encryptedGitDir,
+    path: `http.${urlOrigin}.extraHeader`,
+    value: undefined,
+  });
+
+  await Bluebird.each(Object.entries(headers), ([key, val]) => {
+    return git.setConfig({
+      fs,
+      gitdir: encryptedGitDir,
+      path: `http.${urlOrigin}.extraHeader`,
+      value: [key, val].join(": "),
+      append: true,
+    });
+  });
 };

@@ -1,5 +1,6 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
+import { CONTROL_REPO_PATH, ME_REPO_PATH } from "../../shared.paths";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
@@ -99,8 +100,8 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* repoStartupEffect() {
   try {
-    // TODO: Load the me & control repos here
-    yield put(loadRepoFromFilesystemAction({ path: "/re2/" }));
+    yield put(loadRepoFromFilesystemAction({ path: ME_REPO_PATH }));
+    yield put(loadRepoFromFilesystemAction({ path: CONTROL_REPO_PATH }));
   } catch (error) {
     yield put(
       loadRepoFromFilesystemErrorAction({
