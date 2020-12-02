@@ -18,7 +18,7 @@ export type FS = {
 };
 
 export type Headers = {
-  [x: string]: string;
+  [name: string]: string;
 };
 
 export type GitParams = {
