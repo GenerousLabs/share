@@ -164,7 +164,7 @@ export const createConnectionRepo = async ({
     path,
     title,
     uuid,
-    type: RepoType.connectoin,
+    type: RepoType.connection,
     bodyMarkdown,
   });
 };

@@ -15,5 +15,5 @@ export enum RepoType {
   me = "me",
   control = "control",
   library = "library",
-  connectoin = "connection",
+  connection = "connection",
 }
