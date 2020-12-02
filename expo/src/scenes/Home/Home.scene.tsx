@@ -77,6 +77,17 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
+            title="Delete repos"
+            onPress={async () => {
+              await FileSystem.deleteAsync(
+                FileSystem.documentDirectory + "repos/"
+              );
+              Alert.alert("Done");
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
             title="Create new asset"
             onPress={() => {
               dispatch(
