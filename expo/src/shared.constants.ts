@@ -1,9 +1,10 @@
 import fs from "expo-fs";
 import http from "isomorphic-git/http/web";
+import { FS } from "./shared.types";
 
 export const PATH_SEPARATOR = "/" as const;
 
-export const gitFsHttp = { fs, http };
+export const gitFsHttp = { fs: (fs as unknown) as FS, http };
 
 export const ENOENT = "ENOENT" as const;
 
