@@ -8,75 +8,19 @@ import {
 } from "./repoYaml.service";
 
 describe("repoYaml.service", () => {
-  const exampleHeaders = {
-    Authorization: "Bearer exampletoken",
-  };
   const exmampleKeys = {
     content: "VI1e1NjTfbLaIJ8St1HpIJL0yvITZ/v6vSnVbh0F1P0=",
     filenames: "VI2e1NjTfbLaIJ8St1HpIJL0yvITZ/v6vSnVbh0F1P0=",
     salt: "VI3e1NjTfbLaIJ8St1HpIJL0yvITZ/v6vSnVbh0F1P0=",
   };
-  const exampleRemote = {
-    url: "https://example.tld/user/repo.git",
-  };
   const example = {
-    name: "repo example",
-    remotes: [exampleRemote],
     id: "repo-example",
-    slug: "repo-example",
+    name: "repo example",
+    basename: "repo-example",
+    type: "library",
+    remoteUrl: "http://u:token@localhost:8000/user/repo.git",
+    isReadOnly: false,
   };
-
-  describe("_isRequiredString()", () => {
-    it("Returns false for undefined #OnQsck", () => {
-      expect(_isRequiredString(undefined)).toEqual(false);
-    });
-
-    it("Returns false for an empty string #HohERD", () => {
-      expect(_isRequiredString("")).toEqual(false);
-    });
-
-    it("Returns true for a string of 1 character #uPAoUx", () => {
-      expect(_isRequiredString("a")).toEqual(true);
-    });
-  });
-
-  describe("_isOptionalString()", () => {
-    it("Returns true for undefined #0JyPrw", () => {
-      expect(_isOptionalString(undefined)).toEqual(true);
-    });
-
-    it("Returns false for an empty string #qFSxyS", () => {
-      expect(_isOptionalString("")).toEqual(false);
-    });
-
-    it("Returns true for a string of 1 character #FTJhV5", () => {
-      expect(_isOptionalString("a")).toEqual(true);
-    });
-  });
-
-  describe("isValidRemote()", () => {
-    it("Returns true for a minimally valid remote #ToYjVh", () => {
-      expect(isValidRemote(exampleRemote)).toEqual(true);
-    });
-
-    it("Returns true for a valid remote with all properties #7F9t47", () => {
-      expect(
-        isValidRemote({
-          ...exampleRemote,
-          keys: exmampleKeys,
-          headers: exampleHeaders,
-          keyPassword: "example",
-        })
-      ).toEqual(true);
-    });
-
-    it("Returns false for a remote missing one key #wyh76b", () => {
-      const { content } = exmampleKeys;
-      expect(isValidRemote({ ...exampleRemote, keys: { content } })).toEqual(
-        false
-      );
-    });
-  });
 
   describe("isRepoYaml()", () => {
     it("Fails for an empty object #haHqU5", () => {
@@ -87,20 +31,28 @@ describe("repoYaml.service", () => {
       expect(isRepoYaml(example)).toEqual(true);
     });
 
+    it("Returns false for any additional properties #ZK2Nzy", () => {
+      expect(isRepoYaml({ ...example, foo: "bar" })).toEqual(false);
+    });
+
     it("Fails for a missing key #PCwIJs", () => {
       expect(
         isRepoYaml({
           ...example,
-          remotes: [
-            {
-              ...exampleRemote,
-              keys: {
-                content: exmampleKeys.content,
-              },
-            },
-          ],
+          keysContentBase64: exmampleKeys.content,
         })
       ).toEqual(false);
+    });
+
+    it("Succeeds with all keys present #LlkSgH", () => {
+      expect(
+        isRepoYaml({
+          ...example,
+          keysContentBase64: exmampleKeys.content,
+          keysFilenamesBase64: exmampleKeys.filenames,
+          keysSaltBase64: exmampleKeys.salt,
+        })
+      ).toEqual(true);
     });
 
     it("Fails for an entry missing id #ZrpRAg", () => {

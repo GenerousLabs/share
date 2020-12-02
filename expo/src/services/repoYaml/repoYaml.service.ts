@@ -1,25 +1,5 @@
-import { isArray, isObject } from "lodash";
-
-export type RepoYaml = {
-  id: string;
-  name: string;
-  /** The folder name  */
-  basename: string;
-  remotes: {
-    url: string;
-    headers?: {
-      [name: string]: string;
-    };
-    keys?: {
-      content: string;
-      filenames: string;
-      salt: string;
-    };
-    keyPassword?: string;
-  }[];
-  /** Is this a repo that I'm following (which means its read only to me) */
-  following: boolean;
-};
+import { isObject } from "lodash";
+import { RepoYaml, RepoYamlSchema } from "../../shared.types";
 
 export const _isRequiredString = (input: any): input is string => {
   if (typeof input === "string" && input.length > 0) {
@@ -72,32 +52,5 @@ export const isValidRemote = (remote: any) => {
   return true;
 };
 
-export const isRepoYaml = (obj: any): obj is RepoYaml => {
-  // NOTE: We need to cast the result to `boolean` here otherwise typescript
-  // will say that `obj` is now of type `object` and then all the following
-  // properties will be considered invalid.
-  if (!isObject(obj) as boolean) {
-    return false;
-  }
-
-  if (
-    !_isRequiredString(obj.name) ||
-    !_isRequiredString(obj.id) ||
-    !_isRequiredString(obj.slug)
-  ) {
-    return false;
-  }
-
-  // NOTE: For now fail if `remotes` is more than 1 element long
-  if (!isArray(obj.remotes) || obj.remotes.length !== 1) {
-    return false;
-  }
-
-  const [firstRemote] = obj.remotes;
-
-  if (!isValidRemote(firstRemote)) {
-    return false;
-  }
-
-  return true;
-};
+export const isRepoYaml = (obj: unknown): obj is RepoYaml =>
+  RepoYamlSchema.check(obj);

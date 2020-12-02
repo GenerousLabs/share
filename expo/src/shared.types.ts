@@ -1,4 +1,5 @@
 import fs from "fs";
+import * as zod from "zod";
 import { RepoType } from "./shared.constants";
 
 export type FS = {
@@ -32,6 +33,13 @@ export type GitParams = {
   };
 };
 
+export type LibraryInRedux = {
+  id: string;
+  name: string;
+  url: string;
+  basename: string;
+};
+
 export type RepoOnDiskFrontMatter = {
   uuid: string;
   type: RepoType;
@@ -43,14 +51,42 @@ export type RepoOnDisk = RepoOnDiskFrontMatter & {
   bodyMarkdown: string;
 };
 
-export type RepoInRedux = RepoOnDisk & {
-  id: string;
-  /** The full system path to the repo folder on disk. */
-  path: string;
-  /** The name of the folder this repo sits inside. */
-  basename: string;
-  /** The type of repo this is. */
-  type: RepoType;
+export const RepoYamlKeySchema = zod.object({
+  keysContentBase64: zod.string(),
+  keysFilenamesBase64: zod.string(),
+  keysSaltBase64: zod.string(),
+});
+export const RepoYamlSchema = zod
+  .object({
+    id: zod.string(),
+    name: zod.string(),
+    basename: zod.string(),
+    type: zod.nativeEnum(RepoType),
+    remoteUrl: zod.string(),
+    isReadOnly: zod.boolean(),
+    keysContentBase64: zod.string().optional(),
+    keysFilenamesBase64: zod.string().optional(),
+    keysSaltBase64: zod.string().optional(),
+  })
+  .refine((obj) => {
+    // If any 1 key is present, they must all be present
+    if (
+      typeof obj.keysContentBase64 !== "undefined" ||
+      typeof obj.keysFilenamesBase64 !== "undefined" ||
+      typeof obj.keysSaltBase64 !== "undefined"
+    ) {
+      const { keysContentBase64, keysFilenamesBase64, keysSaltBase64 } = obj;
+      return RepoYamlKeySchema.check({
+        keysContentBase64,
+        keysFilenamesBase64,
+        keysSaltBase64,
+      });
+    }
+    return true;
+  });
+export type RepoYaml = zod.infer<typeof RepoYamlSchema>;
+
+export type RepoGitMetadata = {
   /** Our latest commit. */
   headCommitObjectId?: string;
   /** When did we last fetch. Undefined until we have fetched at least once. */
@@ -64,6 +100,8 @@ export type RepoInRedux = RepoOnDisk & {
    * this should never happen as we always pull rather than fetch, but... */
   commitsBehindOrigin?: number;
 };
+
+export type RepoInRedux = RepoOnDisk & RepoYaml & RepoGitMetadata;
 
 /**
  * These properties are stored in the markdown file.
