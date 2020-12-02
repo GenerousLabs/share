@@ -4,7 +4,7 @@ import { gitFsHttp, RepoType } from "../../shared.constants";
 import { ME_REPO_GITDIR, ME_REPO_PATH, REPOS_PATH } from "../../shared.paths";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { getRemoteParamsForRepo } from "../git/services/remote/remote.service";
-import { createControlRepo, createMeRepo } from "../repo/repo.service";
+import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
 import { commitAllSagaAction, upsertOneRepo } from "../repo/repo.state";
 import { setupSagaAction, setupErrorAction } from "./setup.state";
 import { gitApi } from "isomorphic-git-remote-encrypted";
@@ -93,15 +93,15 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
     // debugger;
     console.log("chmac step 2 #dvcKMa");
 
-    const controlRepo = yield* call(createControlRepo);
+    const commandsRepo = yield* call(createCommandsRepo);
 
-    yield* put(upsertOneRepo(controlRepo));
+    yield* put(upsertOneRepo(commandsRepo));
 
     yield* call(
       commitAllEffect,
       commitAllSagaAction({
-        repoId: controlRepo.id,
-        message: "Initial control commit. #Nn0SdS",
+        repoId: commandsRepo.id,
+        message: "Initial commands commit. #Nn0SdS",
       })
     );
 

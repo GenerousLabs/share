@@ -13,7 +13,8 @@ export const GIT_AUTHOR_NAME = "Generous User" as const;
 // This is an enum in TypeScript and then a plain object in JavaScript
 export enum RepoType {
   me = "me",
-  control = "control",
+  commands = "commands",
   library = "library",
   connection = "connection",
+  subscription = "subscription",
 }

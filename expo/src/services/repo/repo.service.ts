@@ -2,7 +2,7 @@ import matter from "gray-matter";
 import { v4 as generateUuid } from "uuid";
 import { gitFsHttp, RepoType } from "../../shared.constants";
 import {
-  CONTROL_REPO_PATH,
+  COMMANDS_REPO_PATH,
   ME_REPO_GITDIR,
   ME_REPO_PATH,
 } from "../../shared.paths";
@@ -94,11 +94,11 @@ export const createMeRepo = async (): Promise<RepoInRedux> => {
   };
 };
 
-export const createControlRepo = async (): Promise<RepoInRedux> => {
+export const createCommandsRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
-  const path = CONTROL_REPO_PATH;
-  const title = "control";
-  const type = RepoType.control;
+  const path = COMMANDS_REPO_PATH;
+  const title = "commands";
+  const type = RepoType.commands;
   const bodyMarkdown = "This repo contains commands I send to the server.";
 
   const repo = await _createRepo({
