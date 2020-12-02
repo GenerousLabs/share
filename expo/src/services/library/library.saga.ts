@@ -4,6 +4,7 @@ import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { join } from "../fs/fs.service";
+import { commitAllEffect } from "../repo/repo.saga";
 import { createLibraryRepo } from "../repo/repo.service";
 import {
   commitAllAction,
@@ -39,14 +40,15 @@ export function* createNewLibraryEffect(
 
     yield* put(upsertOneRepo(repo));
 
-    yield* put(
+    yield* call(
+      commitAllEffect,
       commitAllAction({
         repoId: repo.id,
         message: "Initial commit. #hhpj2X",
       })
     );
   } catch (error) {
-    yield put(
+    yield* put(
       createNewLibraryErrorAction({
         message: "createNewLibraryEffect() error #MAqjTm",
         error,
@@ -64,7 +66,7 @@ export function* createNewOfferEffect(
     const repo = yield* select(selectRepoById, repoId);
 
     if (typeof repo === "undefined") {
-      yield put(
+      yield* put(
         createNewOfferError({
           message: "Repo does not exist #xJeqQd",
           meta: { repoId },
@@ -81,19 +83,20 @@ export function* createNewOfferEffect(
     const directoryPath = join(repoPath, directoryName);
     const offerPath = join(directoryPath, "index.md");
 
-    yield call(fs.promises.mkdir, directoryPath);
-    yield call(fs.promises.writeFile, offerPath, offerString, {
+    yield* call(fs.promises.mkdir, directoryPath);
+    yield* call(fs.promises.writeFile, offerPath, offerString, {
       encoding: "utf8",
     });
 
-    yield put(
+    yield* call(
+      commitAllEffect,
       commitAllAction({
         repoId: repoId,
         message: "Creating a new offer",
       })
     );
   } catch (error) {
-    yield put(
+    yield* put(
       createNewOfferError({
         message: "createNewOfferEffect() error #i6Sj2b",
         error,

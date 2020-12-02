@@ -4,6 +4,7 @@ import { CONTROL_REPO_PATH, ME_REPO_PATH } from "../../shared.paths";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
+import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferAction } from "../library/library.state";
 import { startupAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem } from "./repo.service";
@@ -33,7 +34,10 @@ export function* loadRepoContentsEffect(
   });
 
   for (const directory of directories) {
-    yield* put(loadOfferAction({ repoId, directoryPath: directory.path }));
+    yield* call(
+      loadOfferEffect,
+      loadOfferAction({ repoId, directoryPath: directory.path })
+    );
   }
 }
 
@@ -84,12 +88,17 @@ export function* loadRepoFromFilesystemEffect(
       path: action.payload.path,
     });
 
-    yield put(upsertOneRepo(repo));
+    yield* put(upsertOneRepo(repo));
 
-    yield put(loadRepoContentsAction({ repoId: repo.id }));
+    // We `yield* call()` here so that this generator only completes AFTER the
+    // nested call to `loadRepoContents` has itself completed.
+    yield* call(
+      loadRepoContentsEffect,
+      loadRepoContentsAction({ repoId: repo.id })
+    );
   } catch (error) {
     console.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
-    yield put(
+    yield* put(
       loadRepoFromFilesystemErrorAction({
         message: "loadRepoFromFilesystem() error #HlT6yC",
         error,
@@ -100,10 +109,16 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* repoStartupEffect() {
   try {
-    yield put(loadRepoFromFilesystemAction({ path: ME_REPO_PATH }));
-    yield put(loadRepoFromFilesystemAction({ path: CONTROL_REPO_PATH }));
+    yield* call(
+      loadRepoFromFilesystemEffect,
+      loadRepoFromFilesystemAction({ path: ME_REPO_PATH })
+    );
+    yield* call(
+      loadRepoFromFilesystemEffect,
+      loadRepoFromFilesystemAction({ path: CONTROL_REPO_PATH })
+    );
   } catch (error) {
-    yield put(
+    yield* put(
       loadRepoFromFilesystemErrorAction({
         message: "repo.sagas startupSaga() error #roZbhL",
         error,
