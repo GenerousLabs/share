@@ -1,12 +1,14 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as FileSystem from "expo-file-system";
 import React from "react";
-import { Alert, Button, View } from "react-native";
+import { Alert, Button, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../../types";
 import { MonoText } from "../../components/StyledText";
 import { createNewOfferAction } from "../../services/library/library.state";
+import { setupAction } from "../../services/setup/setup.state";
+import { startupAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -31,7 +33,7 @@ const Home = ({
           }}
         />
       </View>
-      <View>
+      <View style={styles.buttonContainer}>
         {/* <Button
           title="Create new repo"
           onPress={() => {
@@ -47,41 +49,84 @@ const Home = ({
             );
           }}
         /> */}
-        <Button
-          title="Create new asset"
-          onPress={() => {
-            dispatch(
-              createNewOfferAction({
-                offer: {
-                  bodyMarkdown: "A new offer",
-                  proximity: 0,
-                  shareToProximity: 1,
-                  title: "An offer",
-                  uuid: "uuid-example",
-                  tags: [],
-                },
-                repoId: "re2",
-              })
-            );
-          }}
-        />
-        <Button
-          title="Delete re2"
-          onPress={async () => {
-            await FileSystem.deleteAsync(FileSystem.documentDirectory + "re2/");
-            Alert.alert("Done");
-          }}
-        />
-        <Button
-          title="Export re2 as zip"
-          onPress={async () => {
-            await createAndShareZipFile({ path: "/re2" });
-            Alert.alert("Zip export finished #uuOdQ4");
-          }}
-        />
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Run setup"
+            onPress={async () => {
+              dispatch(
+                setupAction({
+                  config: {
+                    remote: {
+                      hostname: "192.168.178.59:8000",
+                      token: "abc123",
+                      username: "alice",
+                    },
+                  },
+                })
+              );
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Run startup"
+            onPress={async () => {
+              dispatch(startupAction());
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Create new asset"
+            onPress={() => {
+              dispatch(
+                createNewOfferAction({
+                  offer: {
+                    bodyMarkdown: "A new offer",
+                    proximity: 0,
+                    shareToProximity: 1,
+                    title: "An offer",
+                    uuid: "uuid-example",
+                    tags: [],
+                  },
+                  repoId: "re2",
+                })
+              );
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Export re2 as zip"
+            onPress={async () => {
+              await createAndShareZipFile({ path: "/re2" });
+              Alert.alert("Zip export finished #uuOdQ4");
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Export repos as zip"
+            onPress={async () => {
+              await createAndShareZipFile({ path: "/repos" });
+              Alert.alert("Zip export finished #znvf34");
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
 export default Home;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    width: "100%",
+    alignContent: "center",
+  },
+  buttonWrapper: {
+    marginVertical: 3,
+    width: "60%",
+  },
+});
