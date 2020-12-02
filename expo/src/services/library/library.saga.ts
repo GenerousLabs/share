@@ -15,10 +15,10 @@ import { offerToString, readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryAction,
   createNewLibraryErrorAction,
-  createNewOfferError,
   createNewOfferSagaAction,
-  loadOfferError,
+  createNewOfferError,
   loadOfferSagaAction,
+  loadOfferError,
   upsertOneOffer,
 } from "./library.state";
 
