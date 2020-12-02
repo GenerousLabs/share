@@ -38,7 +38,7 @@ export default repoSlice.reducer;
 export const selectRepoById = repoSelectors.selectById;
 export const selectAllRepos = repoSelectors.selectAll;
 
-export const commitAllAction = createAction<{
+export const commitAllSagaAction = createAction<{
   repoId: string;
   message: string;
 }>("SHARE/repo/commitAll");
@@ -47,7 +47,7 @@ export const commitAllErrorAction = makeErrorActionCreator(
   "SHARE/repo/commitAll"
 );
 
-export const loadRepoContentsAction = createAction<{ repoId: string }>(
+export const loadRepoContentsSagaAction = createAction<{ repoId: string }>(
   "SHARE/repo/loadRepoContents"
 );
 
@@ -57,7 +57,7 @@ export const loadRepoContentsErrorAction = createAction<{
 }>("SHARE/repo/loadRepoContents/ERROR");
 
 const LOAD_FROM_FS = "SHARE/repo/loadRepoFromFilesystem" as const;
-export const loadRepoFromFilesystemAction = createAction<{ path: string }>(
+export const loadRepoFromFilesystemSagaAction = createAction<{ path: string }>(
   LOAD_FROM_FS
 );
 export const loadRepoFromFilesystemErrorAction = makeErrorActionCreator(

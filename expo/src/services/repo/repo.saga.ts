@@ -5,14 +5,14 @@ import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit } from "../git/git.service";
 import { loadOfferEffect } from "../library/library.saga";
-import { loadOfferAction } from "../library/library.state";
-import { startupAction } from "../startup/startup.state";
+import { loadOfferSagaAction } from "../library/library.state";
+import { startupSagaAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem } from "./repo.service";
 import {
-  commitAllAction,
+  commitAllSagaAction,
   commitAllErrorAction,
-  loadRepoContentsAction,
-  loadRepoFromFilesystemAction,
+  loadRepoContentsSagaAction,
+  loadRepoFromFilesystemSagaAction,
   loadRepoFromFilesystemErrorAction,
   selectRepoById,
   updateOneRepo,
@@ -20,7 +20,7 @@ import {
 } from "./repo.state";
 
 export function* loadRepoContentsEffect(
-  action: ReturnType<typeof loadRepoContentsAction>
+  action: ReturnType<typeof loadRepoContentsSagaAction>
 ) {
   const { repoId } = action.payload;
 
@@ -36,12 +36,14 @@ export function* loadRepoContentsEffect(
   for (const directory of directories) {
     yield* call(
       loadOfferEffect,
-      loadOfferAction({ repoId, directoryPath: directory.path })
+      loadOfferSagaAction({ repoId, directoryPath: directory.path })
     );
   }
 }
 
-export function* commitAllEffect(action: ReturnType<typeof commitAllAction>) {
+export function* commitAllEffect(
+  action: ReturnType<typeof commitAllSagaAction>
+) {
   try {
     const { repoId, message } = action.payload;
 
@@ -67,7 +69,7 @@ export function* commitAllEffect(action: ReturnType<typeof commitAllAction>) {
         })
       );
 
-      yield* put(loadRepoContentsAction({ repoId }));
+      yield* put(loadRepoContentsSagaAction({ repoId }));
     }
   } catch (error) {
     console.error("commitAllEffct() unknown error #UEQp4W", error);
@@ -81,7 +83,7 @@ export function* commitAllEffect(action: ReturnType<typeof commitAllAction>) {
 }
 
 export function* loadRepoFromFilesystemEffect(
-  action: ReturnType<typeof loadRepoFromFilesystemAction>
+  action: ReturnType<typeof loadRepoFromFilesystemSagaAction>
 ) {
   try {
     const repo = yield* call(getRepoParamsFromFilesystem, {
@@ -94,7 +96,7 @@ export function* loadRepoFromFilesystemEffect(
     // nested call to `loadRepoContents` has itself completed.
     yield* call(
       loadRepoContentsEffect,
-      loadRepoContentsAction({ repoId: repo.id })
+      loadRepoContentsSagaAction({ repoId: repo.id })
     );
   } catch (error) {
     console.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
@@ -111,11 +113,11 @@ export function* repoStartupEffect() {
   try {
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemAction({ path: ME_REPO_PATH })
+      loadRepoFromFilesystemSagaAction({ path: ME_REPO_PATH })
     );
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemAction({ path: CONTROL_REPO_PATH })
+      loadRepoFromFilesystemSagaAction({ path: CONTROL_REPO_PATH })
     );
   } catch (error) {
     yield* put(
@@ -129,9 +131,9 @@ export function* repoStartupEffect() {
 
 export default function* repoSaga() {
   yield all([
-    takeEvery(commitAllAction, commitAllEffect),
-    takeEvery(loadRepoContentsAction, loadRepoContentsEffect),
-    takeEvery(loadRepoFromFilesystemAction, loadRepoFromFilesystemEffect),
-    takeEvery(startupAction, repoStartupEffect),
+    takeEvery(commitAllSagaAction, commitAllEffect),
+    takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
+    takeEvery(loadRepoFromFilesystemSagaAction, loadRepoFromFilesystemEffect),
+    takeEvery(startupSagaAction, repoStartupEffect),
   ]);
 }

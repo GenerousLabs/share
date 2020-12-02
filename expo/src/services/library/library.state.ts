@@ -80,7 +80,7 @@ export const createNewLibraryErrorAction = makeErrorActionCreator(
 );
 
 const CREATE_OFFER = "SHARE/library/createNewOffer";
-export const createNewOfferAction = createAction<{
+export const createNewOfferSagaAction = createAction<{
   // There's no `id` passed to `createNewOffer()` it's generated
   offer: OfferOnDisk;
   repoId: string;
@@ -88,7 +88,7 @@ export const createNewOfferAction = createAction<{
 export const createNewOfferError = makeErrorActionCreator(CREATE_OFFER);
 
 const LOAD_OFFER = "SHARE/library/loadOffer" as const;
-export const loadOfferAction = createAction<{
+export const loadOfferSagaAction = createAction<{
   repoId: string;
   directoryPath: string;
 }>(LOAD_OFFER);

@@ -4,8 +4,8 @@ import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../../components/Themed";
 import {
-  createNewOfferAction,
-  loadOfferAction,
+  createNewOfferSagaAction,
+  loadOfferSagaAction,
 } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
@@ -43,7 +43,7 @@ export default function TabOne() {
           title="Create new asset"
           onPress={() => {
             dispatch(
-              createNewOfferAction({
+              createNewOfferSagaAction({
                 offer: {
                   bodyMarkdown: "A new offer",
                   id: "offer1",
@@ -62,7 +62,7 @@ export default function TabOne() {
           title="Load offer"
           onPress={() => {
             dispatch(
-              loadOfferAction({
+              loadOfferSagaAction({
                 repoId: "re2",
                 directoryPath: "/re2/doesnotexist/",
               })

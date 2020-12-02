@@ -33,5 +33,5 @@ export const { setSetupComplete } = setupSlice.actions;
 export default setupSlice.reducer;
 
 const SETUP = "SHARE/setup/setup";
-export const setupAction = createAction<{ config: Config }>(SETUP);
+export const setupSagaAction = createAction<{ config: Config }>(SETUP);
 export const setupErrorAction = makeErrorActionCreator(SETUP);

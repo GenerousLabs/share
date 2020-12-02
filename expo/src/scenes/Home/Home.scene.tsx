@@ -6,9 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../../types";
 import { MonoText } from "../../components/StyledText";
-import { createNewOfferAction } from "../../services/library/library.state";
-import { setupAction } from "../../services/setup/setup.state";
-import { startupAction } from "../../services/startup/startup.state";
+import { createNewOfferSagaAction } from "../../services/library/library.state";
+import { setupSagaAction } from "../../services/setup/setup.state";
+import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -54,7 +54,7 @@ const Home = ({
             title="Run setup"
             onPress={async () => {
               dispatch(
-                setupAction({
+                setupSagaAction({
                   config: {
                     remote: {
                       hostname: "192.168.178.59:8000",
@@ -71,7 +71,7 @@ const Home = ({
           <Button
             title="Run startup"
             onPress={async () => {
-              dispatch(startupAction());
+              dispatch(startupSagaAction());
             }}
           />
         </View>
@@ -91,7 +91,7 @@ const Home = ({
             title="Create new asset"
             onPress={() => {
               dispatch(
-                createNewOfferAction({
+                createNewOfferSagaAction({
                   offer: {
                     bodyMarkdown: "A new offer",
                     proximity: 0,

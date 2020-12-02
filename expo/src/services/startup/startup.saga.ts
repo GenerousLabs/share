@@ -1,7 +1,7 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { put, select } from "typed-redux-saga/macro";
 import { RootState } from "../../store";
-import { maybeStartupAction, startupAction } from "./startup.state";
+import { maybeStartupSagaAction, startupSagaAction } from "./startup.state";
 
 export function* maybeStartupEffect() {
   const isSetupComplete = yield* select(
@@ -9,10 +9,10 @@ export function* maybeStartupEffect() {
   );
 
   if (isSetupComplete) {
-    yield put(startupAction);
+    yield put(startupSagaAction);
   }
 }
 
 export default function* startupSaga() {
-  yield all([takeEvery(maybeStartupAction, maybeStartupEffect)]);
+  yield all([takeEvery(maybeStartupSagaAction, maybeStartupEffect)]);
 }

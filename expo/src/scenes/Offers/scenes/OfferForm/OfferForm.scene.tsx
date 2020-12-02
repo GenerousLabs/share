@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from "uuid";
-import { createNewOfferAction } from "../../../../services/library/library.state";
+import { createNewOfferSagaAction } from "../../../../services/library/library.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
 import { OfferInRedux } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
@@ -30,7 +30,7 @@ const OfferForm = () => {
       shareToProximity: 1,
       ...data,
     };
-    dispatch(createNewOfferAction({ offer }));
+    dispatch(createNewOfferSagaAction({ offer }));
   };
 
   if (repos.length === 0) {

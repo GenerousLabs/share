@@ -7,7 +7,7 @@ import { join } from "../fs/fs.service";
 import { commitAllEffect } from "../repo/repo.saga";
 import { createLibraryRepo } from "../repo/repo.service";
 import {
-  commitAllAction,
+  commitAllSagaAction,
   selectRepoById,
   upsertOneRepo,
 } from "../repo/repo.state";
@@ -15,10 +15,10 @@ import { offerToString, readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryAction,
   createNewLibraryErrorAction,
-  createNewOfferAction,
   createNewOfferError,
-  loadOfferAction,
+  createNewOfferSagaAction,
   loadOfferError,
+  loadOfferSagaAction,
   upsertOneOffer,
 } from "./library.state";
 
@@ -42,7 +42,7 @@ export function* createNewLibraryEffect(
 
     yield* call(
       commitAllEffect,
-      commitAllAction({
+      commitAllSagaAction({
         repoId: repo.id,
         message: "Initial commit. #hhpj2X",
       })
@@ -58,7 +58,7 @@ export function* createNewLibraryEffect(
 }
 
 export function* createNewOfferEffect(
-  action: ReturnType<typeof createNewOfferAction>
+  action: ReturnType<typeof createNewOfferSagaAction>
 ) {
   try {
     const { offer, repoId } = action.payload;
@@ -90,7 +90,7 @@ export function* createNewOfferEffect(
 
     yield* call(
       commitAllEffect,
-      commitAllAction({
+      commitAllSagaAction({
         repoId: repoId,
         message: "Creating a new offer",
       })
@@ -106,7 +106,9 @@ export function* createNewOfferEffect(
   }
 }
 
-export function* loadOfferEffect(action: ReturnType<typeof loadOfferAction>) {
+export function* loadOfferEffect(
+  action: ReturnType<typeof loadOfferSagaAction>
+) {
   try {
     const { directoryPath, repoId } = action.payload;
 
@@ -126,7 +128,7 @@ export function* loadOfferEffect(action: ReturnType<typeof loadOfferAction>) {
 export default function* librarySaga() {
   yield all([
     takeEvery(createNewLibraryAction, createNewLibraryEffect),
-    takeEvery(createNewOfferAction, createNewOfferEffect),
-    takeEvery(loadOfferAction, loadOfferEffect),
+    takeEvery(createNewOfferSagaAction, createNewOfferEffect),
+    takeEvery(loadOfferSagaAction, loadOfferEffect),
   ]);
 }

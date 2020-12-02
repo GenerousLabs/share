@@ -5,8 +5,8 @@ import { ME_REPO_GITDIR, ME_REPO_PATH, REPOS_PATH } from "../../shared.paths";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { getRemoteParamsForRepo } from "../git/services/remote/remote.service";
 import { createControlRepo, createMeRepo } from "../repo/repo.service";
-import { commitAllAction, upsertOneRepo } from "../repo/repo.state";
-import { setupAction, setupErrorAction } from "./setup.state";
+import { commitAllSagaAction, upsertOneRepo } from "../repo/repo.state";
+import { setupSagaAction, setupErrorAction } from "./setup.state";
 import { gitApi } from "isomorphic-git-remote-encrypted";
 import {
   createKeys,
@@ -15,14 +15,14 @@ import {
   ensureDirectoryExists,
   getKeysFromDisk,
 } from "git-encrypted";
-import { maybeStartupAction } from "../startup/startup.state";
+import { maybeStartupSagaAction } from "../startup/startup.state";
 import {
   gitSetEncryptedExtraHeaders,
   gitSetEncryptedRemote,
 } from "../git/git.service";
 import { commitAllEffect } from "../repo/repo.saga";
 
-export function* setupEffect(action: ReturnType<typeof setupAction>) {
+export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
   try {
     const { config } = action.payload;
     const { fs, http } = gitFsHttp;
@@ -41,7 +41,7 @@ export function* setupEffect(action: ReturnType<typeof setupAction>) {
     // starts it immediately, and then continues...
     yield* call(
       commitAllEffect,
-      commitAllAction({
+      commitAllSagaAction({
         repoId: meRepo.id,
         message: "Initial me commit. #bISz6d",
       })
@@ -99,13 +99,13 @@ export function* setupEffect(action: ReturnType<typeof setupAction>) {
 
     yield* call(
       commitAllEffect,
-      commitAllAction({
+      commitAllSagaAction({
         repoId: controlRepo.id,
         message: "Initial control commit. #Nn0SdS",
       })
     );
 
-    yield* put(maybeStartupAction());
+    yield* put(maybeStartupSagaAction());
 
     // - setup the remote service
     // - ????
@@ -122,5 +122,5 @@ export function* setupEffect(action: ReturnType<typeof setupAction>) {
 }
 
 export default function* setupSaga() {
-  yield all([takeEvery(setupAction, setupEffect)]);
+  yield all([takeEvery(setupSagaAction, setupEffect)]);
 }

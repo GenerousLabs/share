@@ -2,7 +2,7 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import reducer from "./root.reducer";
 import rootSaga from "./root.saga";
-import { maybeStartupAction } from "./services/startup/startup.state";
+import { maybeStartupSagaAction } from "./services/startup/startup.state";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -18,7 +18,7 @@ const store = configureStore({
 
 sagaMiddleware.run(rootSaga);
 
-store.dispatch(maybeStartupAction());
+store.dispatch(maybeStartupSagaAction());
 
 export default store;
 
