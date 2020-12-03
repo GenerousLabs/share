@@ -2,8 +2,43 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { Volume } from "memfs";
 import mockStore from "redux-mock-store";
 import reducer from "../root.reducer";
+import { RepoType } from "../shared.constants";
 import { FS } from "../shared.types";
 import { RootDispatch, RootState } from "../store";
+
+const preloadedState = {
+  connection: {
+    ids: [],
+    entities: {},
+  },
+  library: {
+    filters: { tags: [] },
+    offers: {
+      ids: [],
+      entities: {},
+    },
+  },
+  repo: {
+    ids: ["repo1"],
+    entities: {
+      repo1: {
+        id: "uuid-example-repo",
+        uuid: "uuid-example-repo",
+        type: RepoType.library,
+        title: "An example repo",
+        name: "My own name",
+        bodyMarkdown: "This is a fake repo",
+        headCommitObjectId: "",
+        lastFetchTimestamp: 0,
+        isReadOnly: false,
+        remoteUrl: "",
+      },
+    },
+  },
+  setup: {
+    isSetupComplete: true,
+  },
+};
 
 export const getEmptyFilesystem = () => {
   return (Volume.fromJSON({
@@ -15,43 +50,12 @@ export const getEmptyFilesystem = () => {
 
 export const getMockStore = () => {
   const middlewares = getDefaultMiddleware();
-  return mockStore<RootState, RootDispatch>(middlewares)({
-    repo: {
-      ids: ["repo1"],
-      entities: {
-        repo1: {
-          repoId: "repo1",
-          uuid: "uuid-example-repo",
-          title: "An example repo",
-          bodyMarkdown: "This is a fake repo",
-          path: "/repo1/",
-          headCommitObjectId: "",
-          lastFetchTimestamp: 0,
-        },
-      },
-    },
-    library: {
-      ids: [],
-      entities: {},
-    },
-  });
+  return mockStore<RootState, RootDispatch>(middlewares)(preloadedState);
 };
 
 export const getEmptyStore = () => {
   return configureStore({
     reducer,
-    preloadedState: {
-      repo: {
-        ids: ["repo1"],
-        entities: {
-          repo1: {
-            repoId: "repo1",
-            path: "/repo1/",
-            headCommitObjectId: "",
-            lastFetchTimestamp: 0,
-          },
-        },
-      },
-    },
+    preloadedState: preloadedState,
   });
 };
