@@ -4131,10 +4131,10 @@ expo-font@~8.3.0:
     fbjs "1.0.0"
     fontfaceobserver "^2.1.0"
 
-expo-fs@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/expo-fs/-/expo-fs-0.1.5.tgz#af473862d28f8a187e29f35f21f27bc1e51ac454"
-  integrity sha512-kTKRrVMj/XpFshDieMw5RYK7Xq+Php4QbsRbtId/rAYnBOp/2d+hzqYmQvnkMd3IgctzyiQPuFTJKTgesSg9Eg==
+expo-fs@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/expo-fs/-/expo-fs-0.2.0.tgz#9949904b0a7153b3f129011437e9bcc3f3fabd5a"
+  integrity sha512-2rASLJMkaU47AS7las5X4gApOPaoDBjpLCBj48kNgfkE8BpkjImjabqOFv+0eCnnl5XJll1UQ2ScT+DK5TqU6Q==
   dependencies:
     buffer "^6.0.2"
     expo-file-system "^9.2.0"
@@ -4684,10 +4684,10 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-encrypted@0.2.0, git-encrypted@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/git-encrypted/-/git-encrypted-0.2.0.tgz#70ec387f1138df97c913a5f08d25e748b2584265"
-  integrity sha512-WVjQ88DOqLNs9ThgQXozD22kXmMRyUDmK6EHsdiF2u5c0TCbvf/U3sDyKCWQ3i8r7SCahGoacTKhAt1ffI2jOw==
+git-encrypted@0.3.0, git-encrypted@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/git-encrypted/-/git-encrypted-0.3.0.tgz#0841a11f9e99261714219dd130096993a61d8bed"
+  integrity sha512-aBRCVZEhGwTBP6UBO6SBnbGlnVbbqwtm28LhqhMMr6kiGf/HiMWh6B/Q7x8bsPMmy+Qz4e9Ph1VYt/4/vzTDiA==
   dependencies:
     bluebird "^3.7.2"
     debug "^4.3.1"
@@ -4695,8 +4695,10 @@ git-encrypted@0.2.0, git-encrypted@^0.2.0:
     isomorphic-git "^1.8.0"
     pako "^1.0.11"
     remeda "^0.0.23"
+    superpathjoin "^2.0.1"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
+    zod "^1.11.11"
 
 glob@7.1.6, glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4:
   version "7.1.6"
@@ -5374,14 +5376,15 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-isomorphic-git-remote-encrypted@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.2.0.tgz#7f8c6c6db2d236b30461af895a0a3dddc95c9391"
-  integrity sha512-RMCcil8ljcpcbZm1o3AdqhrA4jqiKS/DYgSVP3MpumOaDq78kXDm58F3bTOJ2uAlNuN7VHNdpELRUB/XsYvv2g==
+isomorphic-git-remote-encrypted@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.3.0.tgz#f784c5bb706ae644139e409bf3b7ebf89c0dd140"
+  integrity sha512-MTJRnA2F3c7zh9E/sz57hkRBu2jcGyjuBftU+UrukO83vETZtttG1cnEiJCVGDZx+hhTku1wSbf6TvKfcVfrTw==
   dependencies:
     debug "^4.3.1"
-    git-encrypted "^0.2.0"
+    git-encrypted "^0.3.0"
     isomorphic-git "^1.8.0"
+    superpathjoin "^2.0.1"
 
 isomorphic-git@^1.8.0:
   version "1.8.0"
