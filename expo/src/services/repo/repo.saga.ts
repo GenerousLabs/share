@@ -28,9 +28,10 @@ export function* loadRepoContentsEffect(
     invariantSelector(selectRepoById, "Repo not found #6jBGXO"),
     repoId
   );
+  const path = getRepoPath(repo);
 
   const { directories } = yield* call(getDirectoryContents, {
-    path: repo.path,
+    path,
   });
 
   for (const directory of directories) {
