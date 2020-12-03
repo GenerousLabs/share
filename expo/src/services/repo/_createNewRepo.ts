@@ -11,7 +11,7 @@ import {
   gitPush,
   gitSetRemote,
 } from "../git/git.service";
-import { createNewRemoteForRepo } from "../git/services/remote/remote.service";
+import { createNewRemoteForRepo } from "../remote/remote.service";
 import { getRepoPath } from "./repo.service";
 
 /**

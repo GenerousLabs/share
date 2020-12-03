@@ -2,9 +2,9 @@
  * One day this might become extensible. For now, we assume a standard layout.
  */
 
-import { RepoType } from "../../../../shared.constants";
-import { RepoInRedux } from "../../../../shared.types";
-import { getConfigFromFilesystem } from "../../../config/config.service";
+import { RepoType } from "../../shared.constants";
+import { RepoInRedux } from "../../shared.types";
+import { getConfigFromFilesystem } from "../config/config.service";
 
 /**
  * In theory, this function could call an API to request a new repo, be given a
