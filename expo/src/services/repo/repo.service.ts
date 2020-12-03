@@ -10,13 +10,7 @@ import { assertNever } from "../../utils/never.utils";
 import { join } from "../fs/fs.service";
 import { _createNewRepo } from "./_createNewRepo";
 
-export const getRepoPath = ({
-  uuid,
-  type,
-}: {
-  uuid: string;
-  type: RepoType;
-}) => {
+export const getRepoPath = ({ id, type }: { id: string; type: RepoType }) => {
   switch (type) {
     case RepoType.me: {
       return join(REPOS_PATH, "me");
@@ -26,7 +20,7 @@ export const getRepoPath = ({
     }
     case RepoType.library:
     case RepoType.connection: {
-      return join(REPOS_PATH, uuid);
+      return join(REPOS_PATH, id);
     }
   }
   assertNever(type);

@@ -54,7 +54,7 @@ export function* commitAllEffect(
       repoId
     );
 
-    const repoPath = getRepoPath({ uuid: repo.uuid, type: repo.type });
+    const repoPath = getRepoPath({ id: repo.uuid, type: repo.type });
 
     const newCommitHash = yield* call(gitAddAndCommit, {
       message,
@@ -125,12 +125,12 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* repoStartupEffect() {
   try {
-    const mePath = getRepoPath({ uuid: "", type: RepoType.me });
+    const mePath = getRepoPath({ id: "", type: RepoType.me });
     yield* call(
       loadRepoFromFilesystemEffect,
       loadRepoFromFilesystemSagaAction({ path: mePath })
     );
-    const commandsPath = getRepoPath({ uuid: "", type: RepoType.commands });
+    const commandsPath = getRepoPath({ id: "", type: RepoType.commands });
     yield* call(
       loadRepoFromFilesystemEffect,
       loadRepoFromFilesystemSagaAction({ path: commandsPath })

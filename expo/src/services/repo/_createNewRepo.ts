@@ -38,7 +38,7 @@ export const _createNewRepo = async ({
       bodyMarkdown,
     });
 
-  const path = getRepoPath({ uuid, type });
+  const path = getRepoPath({ id: uuid, type });
 
   const pathExists = await doesDirectoryExist({ path });
   if (pathExists) {
