@@ -1,13 +1,16 @@
 import { encryptedInit } from "git-encrypted";
 import matter from "gray-matter";
-import {
-  gitApi,
-  simplePushWithOptionalEncryption,
-} from "isomorphic-git-remote-encrypted";
+import { gitApi } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp } from "../../shared.constants";
-import { RepoOnDisk } from "../../shared.types";
+import { RepoInRedux, RepoOnDisk } from "../../shared.types";
+import { timestampSeconds } from "../../utils/time.utils";
 import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
-import { gitInitNewRepo, gitSetRemote } from "../git/git.service";
+import {
+  gitAddAndCommit,
+  gitInitNewRepo,
+  gitPush,
+  gitSetRemote,
+} from "../git/git.service";
 import { createNewRemoteForRepo } from "../git/services/remote/remote.service";
 import { getRepoPath } from "./repo.service";
 
@@ -23,7 +26,8 @@ export const _createNewRepo = async ({
   title,
   type,
   bodyMarkdown,
-}: RepoOnDisk) => {
+  encryptThisRepo = true,
+}: RepoOnDisk & { encryptThisRepo?: boolean }): Promise<RepoInRedux> => {
   const { fs } = gitFsHttp;
 
   if (__DEV__)
@@ -70,37 +74,56 @@ export const _createNewRepo = async ({
   // NOTE: The `encryptedRemoteUrl` does not have the `encrypted::` prefix,
   // because that's the remote URL as seen from the perspective of the "source"
   // repository.
-  const encryptedRemoteUrl = meRepoRemote.url;
-  const remoteUrl = `encrypted::${encryptedRemoteUrl}`;
+  const encryptedRemoteUrl = encryptThisRepo ? meRepoRemote.url : undefined;
+  const remoteUrl = encryptThisRepo
+    ? `encrypted::${encryptedRemoteUrl}`
+    : meRepoRemote.url;
 
-  /**
-   * TODO Fold these 2 functions into 1 and move to isomorphic-git-remote-encrypted
-   */
-  await encryptedInit({
-    ...gitFsHttp,
-    encryptedRemoteUrl,
-    gitApi,
-    gitdir,
-  });
+  // NOTE: This style of if syntax is required for TypeScript to accept that
+  // inside this block `encryptedRemoteUrl` is a string.
+  if (typeof encryptedRemoteUrl === "string") {
+    await encryptedInit({
+      ...gitFsHttp,
+      encryptedRemoteUrl,
+      gitApi,
+      gitdir,
+    });
+  }
 
   await gitSetRemote({
     path,
     remoteUrl,
   });
 
-  await simplePushWithOptionalEncryption({
-    ...gitFsHttp,
-    gitdir,
-    ref: "refs/heads/master",
-    remoteRef: "refs/heads/master",
-    remote: "origin",
+  const newCommitHash = await gitAddAndCommit({
+    message: "Initial me commit. #bISz6d",
+    dir: path,
   });
+
+  if (typeof newCommitHash !== "string") {
+    console.error("Failed to commit while creating repo #FFplUv", {
+      uuid,
+      title,
+      type,
+      bodyMarkdown,
+      path,
+    });
+    throw new Error("Failed to commit while creating repo #f2zvVQ");
+  }
+
+  await gitPush({ path: path });
 
   return {
     id,
     uuid,
-    path,
     isReadOnly: false,
     remoteUrl,
+    bodyMarkdown,
+    name: title,
+    title,
+    type,
+    headCommitObjectId: newCommitHash,
+    commitsAheadOfOrigin: 0,
+    lastFetchTimestamp: timestampSeconds(),
   };
 };

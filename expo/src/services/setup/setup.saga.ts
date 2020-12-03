@@ -24,20 +24,6 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
 
     yield* put(upsertOneRepo(meRepo));
 
-    // NOTE: This does not wait for the action's SAGA to have completd, it only
-    // starts it immediately, and then continues...
-    yield* call(
-      commitAllEffect,
-      commitAllSagaAction({
-        repoId: meRepo.id,
-        message: "Initial me commit. #bISz6d",
-      })
-    );
-
-    /**
-     * TODO Fold these 2 functions into 1 and move to isomorphic-git-remote-encrypted
-     */
-
     const commandsRepo = yield* call(createCommandsRepo);
 
     yield* put(upsertOneRepo(commandsRepo));

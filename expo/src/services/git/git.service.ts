@@ -67,7 +67,7 @@ export const gitAddAndCommit = async (
     });
     return newCommitHash;
   }
-  return false;
+  return;
 };
 
 export const gitInitNewRepo = async ({ path }: { path: string }) => {

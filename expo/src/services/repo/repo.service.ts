@@ -32,71 +32,48 @@ export const getRepoPath = ({
   assertNever(type);
 };
 
-export const createMeRepo = async (): Promise<RepoInRedux> => {
+export const createMeRepo = async () => {
   const uuid = generateUuid();
   const title = "Me";
   const bodyMarkdown = "This repo contains my configuration and settings.";
   const type = RepoType.me;
 
-  const repo = await _createNewRepo({
+  return _createNewRepo({
     title,
     uuid,
     type,
     bodyMarkdown,
   });
-
-  return {
-    name: title,
-    title,
-    bodyMarkdown,
-    type,
-    ...repo,
-  };
 };
 
-export const createCommandsRepo = async (): Promise<RepoInRedux> => {
+export const createCommandsRepo = async () => {
   const uuid = generateUuid();
   const title = "Commands";
   const type = RepoType.commands;
   const bodyMarkdown = "This repo contains commands I send to the server.";
 
-  const repo = await _createNewRepo({
+  return _createNewRepo({
     title,
     uuid,
     type,
     bodyMarkdown,
+    encryptThisRepo: false,
   });
-
-  return {
-    name: title,
-    title,
-    bodyMarkdown,
-    type,
-    ...repo,
-  };
 };
 
 export const createLibraryRepo = async ({
   bodyMarkdown,
   title,
   uuid,
-}: Omit<RepoOnDisk, "type"> & { basename: string }): Promise<RepoInRedux> => {
+}: Omit<RepoOnDisk, "type"> & { basename: string }) => {
   const type = RepoType.library;
 
-  const repo = await _createNewRepo({
+  return _createNewRepo({
     title,
     uuid,
     type,
     bodyMarkdown,
   });
-
-  return {
-    name: title,
-    title,
-    bodyMarkdown,
-    type,
-    ...repo,
-  };
 };
 
 // TODO Figure out how this should work, this is really a stub
