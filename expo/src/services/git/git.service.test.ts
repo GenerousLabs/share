@@ -1,9 +1,7 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it } from "@jest/globals";
 import git from "isomorphic-git";
 import { Volume } from "memfs";
-import { gitFsHttp } from "../../shared.constants";
 import { FS } from "../../shared.types";
-import { gitSetEncryptedExtraHeaders } from "./git.service";
 
 const mockGetNewGitConfigFS = () => {
   const vol = Volume.fromJSON({
