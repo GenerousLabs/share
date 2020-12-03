@@ -1,5 +1,6 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
+import { RepoType } from "../../shared.constants";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit, gitPush } from "../git/git.service";
@@ -124,13 +125,15 @@ export function* loadRepoFromFilesystemEffect(
 
 export function* repoStartupEffect() {
   try {
+    const mePath = getRepoPath({ uuid: "", type: RepoType.me });
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: "/repos/me/" })
+      loadRepoFromFilesystemSagaAction({ path: mePath })
     );
+    const commandsPath = getRepoPath({ uuid: "", type: RepoType.commands });
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: "/repos/commands/" })
+      loadRepoFromFilesystemSagaAction({ path: commandsPath })
     );
   } catch (error) {
     yield* put(
