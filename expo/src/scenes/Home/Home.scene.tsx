@@ -57,9 +57,10 @@ const Home = ({
                 setupSagaAction({
                   config: {
                     remote: {
-                      hostname: "192.168.178.59:8000",
+                      protocol: "http",
+                      host: "192.168.178.59:8000",
                       token: "abc123",
-                      username: "alice",
+                      username: "x4",
                     },
                   },
                 })
