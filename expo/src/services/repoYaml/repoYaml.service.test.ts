@@ -1,11 +1,5 @@
-import { describe, it, expect } from "@jest/globals";
-import { is } from "bluebird";
-import {
-  isRepoYaml,
-  isValidRemote,
-  _isOptionalString,
-  _isRequiredString,
-} from "./repoYaml.service";
+import { describe, expect, it } from "@jest/globals";
+import { isRepoYaml } from "./repoYaml.service";
 
 describe("repoYaml.service", () => {
   const exmampleKeys = {
