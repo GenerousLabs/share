@@ -1,11 +1,11 @@
-import { encryptedInit, getKeysFromDisk } from "git-encrypted";
+import { encryptedInit } from "git-encrypted";
 import matter from "gray-matter";
 import {
   gitApi,
   simplePushWithOptionalEncryption,
 } from "isomorphic-git-remote-encrypted";
-import { gitFsHttp, RepoType } from "../../shared.constants";
-import { RepoInRedux, RepoOnDisk } from "../../shared.types";
+import { gitFsHttp } from "../../shared.constants";
+import { RepoOnDisk } from "../../shared.types";
 import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
 import { gitInitNewRepo, gitSetRemote } from "../git/git.service";
 import { createNewRemoteForRepo } from "../git/services/remote/remote.service";
