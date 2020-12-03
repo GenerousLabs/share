@@ -109,15 +109,6 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            title="Export re2 as zip"
-            onPress={async () => {
-              await createAndShareZipFile({ path: "/re2" });
-              Alert.alert("Zip export finished #uuOdQ4");
-            }}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
             title="Export repos as zip"
             onPress={async () => {
               await createAndShareZipFile({ path: "/repos" });
