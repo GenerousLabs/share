@@ -3,7 +3,7 @@ import git from "isomorphic-git";
 import { simplePushWithOptionalEncryption } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp, GIT_AUTHOR_NAME } from "../../shared.constants";
 import { GitParams } from "../../shared.types";
-import { join } from "../fs/fs.service";
+import { join, mkdirp } from "../fs/fs.service";
 
 export type StatusMatrixLine = [string, 0 | 1, 0 | 1 | 2, 0 | 1 | 2 | 3];
 export type StatusMatrix = StatusMatrixLine[];
@@ -72,6 +72,7 @@ export const gitAddAndCommit = async (
 
 export const gitInitNewRepo = async ({ path }: { path: string }) => {
   const { fs } = gitFsHttp;
+  await mkdirp({ path });
   await git.init({ fs, dir: path });
 };
 

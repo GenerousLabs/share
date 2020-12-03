@@ -47,7 +47,6 @@ export const _createNewRepo = async ({
 
   const gitdir = join(path, ".git");
 
-  await mkdirp({ path });
   await gitInitNewRepo({ path });
 
   const indexPath = join(path, "index.md");
