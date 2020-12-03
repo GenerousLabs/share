@@ -1,6 +1,9 @@
 import Bluebird from "bluebird";
 import git from "isomorphic-git";
-import { simplePushWithOptionalEncryption } from "isomorphic-git-remote-encrypted";
+import {
+  simplePullWithOptionalEncryption,
+  simplePushWithOptionalEncryption,
+} from "isomorphic-git-remote-encrypted";
 import { gitFsHttp, GIT_AUTHOR_NAME } from "../../shared.constants";
 import { GitParams } from "../../shared.types";
 import { join, mkdirp } from "../fs/fs.service";
@@ -104,10 +107,9 @@ export const gitSetRemote = async ({
  * the `origin` remote.
  */
 export const gitPush = async ({ path }: { path: string }) => {
-  const gitdir = join(path, ".git");
   return simplePushWithOptionalEncryption({
     ...gitFsHttp,
-    gitdir,
+    dir: path,
     ref: "refs/heads/master",
     remoteRef: "refs/heads/master",
     remote: "origin",
@@ -119,6 +121,11 @@ export const gitPush = async ({ path }: { path: string }) => {
  * the `origin` remote.
  */
 export const gitPull = async ({ path }: { path: string }) => {
-  const gitdir = join(path, ".git");
-  throw new Error("Not yet properly implemented. #G70M4T");
+  return simplePullWithOptionalEncryption({
+    ...gitFsHttp,
+    dir: path,
+    ref: "refs/heads/master",
+    remoteRef: "refs/heads/master",
+    remote: "origin",
+  });
 };

@@ -51,38 +51,41 @@ export type RepoOnDisk = RepoOnDiskFrontMatter & {
   bodyMarkdown: string;
 };
 
-export const RepoYamlKeySchema = zod.object({
+export const RepoYamlKeysSchema = zod.object({
   keysContentBase64: zod.string(),
   keysFilenamesBase64: zod.string(),
   keysSaltBase64: zod.string(),
 });
-export const RepoYamlSchema = zod
-  .object({
-    id: zod.string(),
-    name: zod.string(),
-    type: zod.nativeEnum(RepoType),
-    remoteUrl: zod.string(),
-    isReadOnly: zod.boolean(),
-    keysContentBase64: zod.string().optional(),
-    keysFilenamesBase64: zod.string().optional(),
-    keysSaltBase64: zod.string().optional(),
-  })
-  .refine((obj) => {
-    // If any 1 key is present, they must all be present
-    if (
-      typeof obj.keysContentBase64 !== "undefined" ||
-      typeof obj.keysFilenamesBase64 !== "undefined" ||
-      typeof obj.keysSaltBase64 !== "undefined"
-    ) {
-      const { keysContentBase64, keysFilenamesBase64, keysSaltBase64 } = obj;
-      return RepoYamlKeySchema.check({
-        keysContentBase64,
-        keysFilenamesBase64,
-        keysSaltBase64,
-      });
-    }
-    return true;
-  });
+export const RepoYamlBaseSchema = zod.object({
+  id: zod.string(),
+  name: zod.string(),
+  type: zod.nativeEnum(RepoType),
+  remoteUrl: zod.string(),
+  isReadOnly: zod.boolean(),
+});
+export const RepoYamlBaseWithKeysSchema = RepoYamlBaseSchema.merge(
+  RepoYamlKeysSchema
+);
+export const RepoYamlSchema = zod.union([
+  RepoYamlBaseSchema,
+  RepoYamlBaseWithKeysSchema,
+]);
+// .refine((obj) => {
+//   // If any 1 key is present, they must all be present
+//   if (
+//     "keysContentBase64" in obj ||
+//     "keysFilenamesBase64" in obj ||
+//     "keysSaltBase64" in obj
+//   ) {
+//     const { keysContentBase64, keysFilenamesBase64, keysSaltBase64 } = obj;
+//     return RepoYamlKeysSchema.check({
+//       keysContentBase64,
+//       keysFilenamesBase64,
+//       keysSaltBase64,
+//     });
+//   }
+//   return true;
+// });
 export type RepoYaml = zod.infer<typeof RepoYamlSchema>;
 export type RepoYamlWithoutKeys = Omit<
   RepoYaml,

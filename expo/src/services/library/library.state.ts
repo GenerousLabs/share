@@ -6,7 +6,7 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { KEYS } from "git-encrypted";
+import { KeysBase64 } from "git-encrypted";
 import { intersection, uniq } from "remeda";
 import { OfferInRedux, OfferOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
@@ -79,7 +79,7 @@ const SUBSCRIBE_LIBRARY = "SHARE/library/subscribeToLibrary";
 export const subscribeToLibrarySagaAction = createAction<{
   remoteUrl: string;
   name: string;
-  keys: KEYS;
+  keysBase64: KeysBase64;
 }>(SUBSCRIBE_LIBRARY);
 export const subscribeToLibraryError = makeErrorActionCreator(
   SUBSCRIBE_LIBRARY

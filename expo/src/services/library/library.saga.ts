@@ -1,11 +1,17 @@
+import { nanoid } from "@reduxjs/toolkit";
 import fs from "expo-fs";
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
+import { RepoType } from "../../shared.constants";
 import { join } from "../fs/fs.service";
 import { commitAllEffect } from "../repo/repo.saga";
-import { createLibraryRepo, getRepoPath } from "../repo/repo.service";
+import {
+  cloneNewLibraryRepo,
+  createLibraryRepo,
+  getRepoPath,
+} from "../repo/repo.service";
 import {
   commitAllSagaAction,
   selectRepoById,
@@ -26,11 +32,17 @@ import {
 export function* subscribeToLibraryEffect(
   action: ReturnType<typeof subscribeToLibrarySagaAction>
 ) {
-  /**
-   * - Create a new repo
-   * - Set the keys
-   * - Load its contents
-   */
+  const { name, keysBase64, remoteUrl } = action.payload;
+  const id = nanoid();
+
+  const path = yield* call(getRepoPath, { type: RepoType.library, id });
+
+  yield* call(cloneNewLibraryRepo, { path, remoteUrl, keysBase64 });
+
+  console.log("subscribeToLibraryEffect() #ezVpNx", name, remoteUrl);
+
+  // TODO - Load the repo into redux after it has downloaded
+  throw new Error("Needs to be implemented here. #M3ulny");
 }
 
 export function* createNewLibraryEffect(
@@ -138,6 +150,7 @@ export function* loadOfferEffect(
 
 export default function* librarySaga() {
   yield all([
+    takeEvery(subscribeToLibrarySagaAction, subscribeToLibraryEffect),
     takeEvery(createNewLibraryAction, createNewLibraryEffect),
     takeEvery(createNewOfferSagaAction, createNewOfferEffect),
     takeEvery(loadOfferSagaAction, loadOfferEffect),

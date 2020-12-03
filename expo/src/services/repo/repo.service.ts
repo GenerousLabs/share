@@ -1,4 +1,6 @@
+import { KeysBase64 } from "git-encrypted";
 import matter from "gray-matter";
+import { simpleEncryptedClone } from "isomorphic-git-remote-encrypted";
 import { v4 as generateUuid } from "uuid";
 import { gitFsHttp, REPOS_PATH, RepoType } from "../../shared.constants";
 import {
@@ -115,4 +117,21 @@ export const getRepoParamsFromFilesystem = async ({
     bodyMarkdown: matterOutput.content,
     ...validatedData,
   } as RepoOnDisk & Pick<RepoInRedux, "id">;
+};
+
+export const cloneNewLibraryRepo = async ({
+  path,
+  remoteUrl,
+  keysBase64,
+}: {
+  path: string;
+  remoteUrl: string;
+  keysBase64: KeysBase64;
+}) => {
+  await simpleEncryptedClone({
+    ...gitFsHttp,
+    dir: path,
+    url: remoteUrl,
+    keysBase64,
+  });
 };
