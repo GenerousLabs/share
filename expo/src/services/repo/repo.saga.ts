@@ -97,11 +97,13 @@ export function* loadRepoFromFilesystemEffect(
   action: ReturnType<typeof loadRepoFromFilesystemSagaAction>
 ) {
   try {
+    // TODO Fix this
+    throw new Error("Needs implementation fix. #2ybMIL");
     const repo = yield* call(getRepoParamsFromFilesystem, {
       path: action.payload.path,
     });
 
-    yield* put(upsertOneRepo(repo));
+    yield* put(upsertOneRepo(repo as any));
 
     // We `yield* call()` here so that this generator only completes AFTER the
     // nested call to `loadRepoContents` has itself completed.
@@ -124,11 +126,11 @@ export function* repoStartupEffect() {
   try {
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: ME_REPO_PATH })
+      loadRepoFromFilesystemSagaAction({ path: "/repos/me/" })
     );
     yield* call(
       loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: COMMANDS_REPO_PATH })
+      loadRepoFromFilesystemSagaAction({ path: "/repos/commands/" })
     );
   } catch (error) {
     yield* put(
