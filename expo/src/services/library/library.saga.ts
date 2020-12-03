@@ -1,10 +1,10 @@
-import { nanoid } from "@reduxjs/toolkit";
 import fs from "expo-fs";
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { RepoType } from "../../shared.constants";
+import { generateId } from "../../utils/id.utils";
 import { join } from "../fs/fs.service";
 import { commitAllEffect } from "../repo/repo.saga";
 import {
@@ -33,7 +33,8 @@ export function* subscribeToLibraryEffect(
   action: ReturnType<typeof subscribeToLibrarySagaAction>
 ) {
   const { name, keysBase64, remoteUrl } = action.payload;
-  const id = nanoid();
+
+  const id = yield* call(generateId);
 
   const path = yield* call(getRepoPath, { type: RepoType.library, id });
 
