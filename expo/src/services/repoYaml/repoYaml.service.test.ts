@@ -16,7 +16,6 @@ describe("repoYaml.service", () => {
   const example = {
     id: "repo-example",
     name: "repo example",
-    basename: "repo-example",
     type: "library",
     remoteUrl: "http://u:token@localhost:8000/user/repo.git",
     isReadOnly: false,
