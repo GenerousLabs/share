@@ -5,7 +5,7 @@ import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { join } from "../fs/fs.service";
 import { commitAllEffect } from "../repo/repo.saga";
-import { createLibraryRepo } from "../repo/repo.service";
+import { createLibraryRepo, getRepoPath } from "../repo/repo.service";
 import {
   commitAllSagaAction,
   selectRepoById,
@@ -86,7 +86,7 @@ export function* createNewOfferEffect(
       return;
     }
 
-    const repoPath = repo.path;
+    const repoPath = getRepoPath(repo);
 
     const offerString = offerToString({ offer });
 
