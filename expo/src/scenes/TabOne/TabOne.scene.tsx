@@ -44,12 +44,14 @@ export default function TabOne() {
           onPress={() => {
             dispatch(
               createNewOfferSagaAction({
+                repoId: "re2",
                 offer: {
                   bodyMarkdown: "A new offer",
                   proximity: 0,
                   shareToProximity: 1,
                   title: "An offer",
                   uuid: "uuid-example",
+                  tags: [],
                 },
               })
             );

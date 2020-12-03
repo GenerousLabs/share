@@ -28,9 +28,10 @@ const OfferForm = () => {
       mine: true,
       proximity: 0,
       shareToProximity: 1,
+      tags: [],
       ...data,
     };
-    dispatch(createNewOfferSagaAction({ offer }));
+    dispatch(createNewOfferSagaAction({ repoId: "re2", offer }));
   };
 
   if (repos.length === 0) {
@@ -53,17 +54,13 @@ const OfferForm = () => {
             onValueChange={(value) => onChange(value)}
           >
             {repos.map((repo) => (
-              <Picker.Item
-                key={repo.repoId}
-                label={repo.title}
-                value={repo.repoId}
-              />
+              <Picker.Item key={repo.id} label={repo.title} value={repo.id} />
             ))}
           </Picker>
         )}
         name="repoId"
         rules={{ required: true }}
-        defaultValue={repos[0].repoId}
+        defaultValue={repos[0].id}
       />
       <Text>Offer title:</Text>
       <Controller
