@@ -28,14 +28,6 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
 
     yield* put(upsertOneRepo(commandsRepo));
 
-    yield* call(
-      commitAllEffect,
-      commitAllSagaAction({
-        repoId: commandsRepo.id,
-        message: "Initial commands commit. #Nn0SdS",
-      })
-    );
-
     yield* put(maybeStartupSagaAction());
 
     // - setup the remote service
