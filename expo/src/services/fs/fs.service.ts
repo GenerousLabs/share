@@ -1,26 +1,12 @@
 import Bluebird from "bluebird";
 import * as FileSystem from "expo-file-system";
-import { trim, trimEnd, trimStart } from "lodash";
 import { groupBy } from "remeda";
-import { ENOENT, gitFsHttp, PATH_SEPARATOR } from "../../shared.constants";
+import { superpathjoin } from "superpathjoin";
+import { ENOENT, gitFsHttp } from "../../shared.constants";
 
 export const getDirectories = async () => {};
 
-export const join = (...pathPieces: (string | undefined | null)[]) => {
-  // Trim any leading / trailing slashes except from the beginning or the end of
-  // the entire path.
-  return pathPieces
-    .filter((val): val is string => typeof val === "string")
-    .map((part, i, pieces) => {
-      if (i === 0) {
-        return trimEnd(part, PATH_SEPARATOR);
-      } else if (i + 1 === pieces.length) {
-        return trimStart(part, PATH_SEPARATOR);
-      }
-      return trim(part, PATH_SEPARATOR);
-    })
-    .join(PATH_SEPARATOR);
-};
+export const join = superpathjoin;
 
 export const mkdirp = async ({ path }: { path: string }) => {
   // We can use FileSystem directly, which has its own `mkdir -p` equivalent
