@@ -60,7 +60,6 @@ export const RepoYamlSchema = zod
   .object({
     id: zod.string(),
     name: zod.string(),
-    basename: zod.string(),
     type: zod.nativeEnum(RepoType),
     remoteUrl: zod.string(),
     isReadOnly: zod.boolean(),
@@ -85,6 +84,10 @@ export const RepoYamlSchema = zod
     return true;
   });
 export type RepoYaml = zod.infer<typeof RepoYamlSchema>;
+export type RepoYamlWithoutKeys = Omit<
+  RepoYaml,
+  "keysContentBase64" | "keysFilenamesBase64" | "keysSaltBase64"
+>;
 
 export type RepoGitMetadata = {
   /** Our latest commit. */
@@ -101,7 +104,7 @@ export type RepoGitMetadata = {
   commitsBehindOrigin?: number;
 };
 
-export type RepoInRedux = RepoOnDisk & RepoYaml & RepoGitMetadata;
+export type RepoInRedux = RepoOnDisk & RepoYamlWithoutKeys & RepoGitMetadata;
 
 /**
  * These properties are stored in the markdown file.

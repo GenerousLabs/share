@@ -6,6 +6,7 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { KEYS } from "git-encrypted";
 import { intersection, uniq } from "remeda";
 import { OfferInRedux, OfferOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
@@ -68,6 +69,20 @@ export const selectFilteredOffers = createSelector(
       return intersection(offer.tags, filters.tags).length > 0;
     });
   }
+);
+
+const SUBSCRIBE_LIBRARY = "SHARE/library/subscribeToLibrary";
+/**
+ * Given the name, url (including access credentials) and decryption keys,
+ * subscribe to a repo that has been shared with you.
+ */
+export const subscribeToLibrarySagaAction = createAction<{
+  remoteUrl: string;
+  name: string;
+  keys: KEYS;
+}>(SUBSCRIBE_LIBRARY);
+export const subscribeToLibraryError = makeErrorActionCreator(
+  SUBSCRIBE_LIBRARY
 );
 
 const CREATE_LIBRARY = "SHARE/library/createNewLibrary";

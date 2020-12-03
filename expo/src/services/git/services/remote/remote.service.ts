@@ -3,33 +3,32 @@
  */
 
 import { RepoType } from "../../../../shared.constants";
-import { Headers } from "../../../../shared.types";
+import { RepoInRedux } from "../../../../shared.types";
 import { getConfigFromFilesystem } from "../../../config/config.service";
 
-export const getRemoteParamsForRepo = async ({
-  repoUuid,
+/**
+ * In theory, this function could call an API to request a new repo, be given a
+ * new token to authenticate, and so on. For now, we use one token everywhere.
+ */
+export const createNewRemoteForRepo = async ({
+  repo: { type, uuid },
 }: {
-  repoUuid: string;
-  repoType: RepoType;
-  repoBasename: string;
+  repo: Pick<RepoInRedux, "type" | "uuid">;
 }): Promise<{
   url: string;
-  headers: Headers;
 }> => {
-  const { remote } = await getConfigFromFilesystem();
+  const {
+    remote: { protocol, host, token, username },
+  } = await getConfigFromFilesystem();
 
-  // TODO What about library repos? Do we need to get their tokens...
-  // - Maybe not, maybe this is only for our "own" repos?
+  const repoName =
+    type === RepoType.me
+      ? "me"
+      : type === RepoType.commands
+      ? "commands"
+      : uuid;
 
-  // const protocol = remote.hostname.startsWith("localhost:") ? "http" : "https";
-  // DEV - Hardcode this for now
-  const protocol = "http";
-
-  // return `https://u:${remote.token}@${remote.hostname}/${remote.username}/${repoUuid}`;
   return {
-    url: `${protocol}://${remote.hostname}/${remote.username}/${repoUuid}.git`,
-    headers: {
-      Authorization: `Bearer ${remote.token}`,
-    },
+    url: `${protocol}://u:${token}@${host}/${username}/${repoName}.git`,
   };
 };

@@ -1,84 +1,44 @@
 import matter from "gray-matter";
 import { v4 as generateUuid } from "uuid";
-import { gitFsHttp, RepoType } from "../../shared.constants";
-import {
-  COMMANDS_REPO_PATH,
-  ME_REPO_GITDIR,
-  ME_REPO_PATH,
-} from "../../shared.paths";
+import { gitFsHttp, REPOS_PATH, RepoType } from "../../shared.constants";
 import {
   RepoInRedux,
   RepoOnDisk,
   RepoOnDiskFrontMatter,
 } from "../../shared.types";
-import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
-import { gitInitNewRepo } from "../git/git.service";
+import { assertNever } from "../../utils/never.utils";
+import { join } from "../fs/fs.service";
+import { _createNewRepo } from "./_createNewRepo";
 
-/**
- * Create the new directory, call git init, and then save the repo details into
- * the `/index.md` file. If `keys` are not supplied, they will be created.
- * NOTE: This function creates the file, but does not commit anything into the
- * new repo. The commit action should be dispatched immediately after this.
- */
-export const _createRepo = async ({
-  path,
+export const getRepoPath = ({
   uuid,
-  title,
   type,
-  bodyMarkdown,
-}: RepoOnDisk & { path: string }) => {
-  const { fs } = gitFsHttp;
-
-  if (__DEV__)
-    console.log("repo.servce / initRepo() invoked #eQ4V3I", {
-      path,
-      title,
-      type,
-      uuid,
-      bodyMarkdown,
-    });
-
-  const pathExists = await doesDirectoryExist({ path });
-  if (pathExists) {
-    throw new Error("Trying to create repo that already exists. #VMTD9k");
+}: {
+  uuid: string;
+  type: RepoType;
+}) => {
+  switch (type) {
+    case RepoType.me: {
+      return join(REPOS_PATH, "me");
+    }
+    case RepoType.commands: {
+      return join(REPOS_PATH, "commands");
+    }
+    case RepoType.library:
+    case RepoType.connection: {
+      return join(REPOS_PATH, uuid);
+    }
   }
-
-  await mkdirp({ path });
-  await gitInitNewRepo({ path });
-
-  const indexPath = join(path, "index.md");
-
-  const markdownWithFrontmatter = matter.stringify(bodyMarkdown, {
-    title,
-    type,
-    uuid,
-  });
-
-  await fs.promises.writeFile(indexPath, markdownWithFrontmatter, {
-    encoding: "utf8",
-  });
-
-  // NOTE: We might choose some local id generation in the future. These IDs are
-  // not supposed to be persistent, but only unique within our redux
-  // collections.
-  const id = uuid;
-
-  return {
-    id,
-    uuid,
-    path,
-  };
+  assertNever(type);
 };
 
 export const createMeRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
-  const title = "me";
-  const path = ME_REPO_PATH;
+  const title = "Me";
   const bodyMarkdown = "This repo contains my configuration and settings.";
   const type = RepoType.me;
 
-  const repo = await _createRepo({
-    path,
+  const repo = await _createNewRepo({
     title,
     uuid,
     type,
@@ -86,7 +46,7 @@ export const createMeRepo = async (): Promise<RepoInRedux> => {
   });
 
   return {
-    basename: "me",
+    name: title,
     title,
     bodyMarkdown,
     type,
@@ -96,13 +56,11 @@ export const createMeRepo = async (): Promise<RepoInRedux> => {
 
 export const createCommandsRepo = async (): Promise<RepoInRedux> => {
   const uuid = generateUuid();
-  const path = COMMANDS_REPO_PATH;
-  const title = "commands";
+  const title = "Commands";
   const type = RepoType.commands;
   const bodyMarkdown = "This repo contains commands I send to the server.";
 
-  const repo = await _createRepo({
-    path,
+  const repo = await _createNewRepo({
     title,
     uuid,
     type,
@@ -110,7 +68,7 @@ export const createCommandsRepo = async (): Promise<RepoInRedux> => {
   });
 
   return {
-    basename: "me",
+    name: title,
     title,
     bodyMarkdown,
     type,
@@ -122,13 +80,10 @@ export const createLibraryRepo = async ({
   bodyMarkdown,
   title,
   uuid,
-  basename,
 }: Omit<RepoOnDisk, "type"> & { basename: string }): Promise<RepoInRedux> => {
-  const path = join("/repos/mine/", basename);
   const type = RepoType.library;
 
-  const repo = await _createRepo({
-    path,
+  const repo = await _createNewRepo({
     title,
     uuid,
     type,
@@ -136,7 +91,7 @@ export const createLibraryRepo = async ({
   });
 
   return {
-    basename,
+    name: title,
     title,
     bodyMarkdown,
     type,
@@ -144,24 +99,19 @@ export const createLibraryRepo = async ({
   };
 };
 
+// TODO Figure out how this should work, this is really a stub
 export const createConnectionRepo = async ({
   bodyMarkdown,
   title,
   uuid,
-  connectionBasename,
-  mine,
 }: Omit<RepoOnDisk, "type"> & {
   connectionBasename: string;
   mine: boolean;
 }) => {
-  const path = join(
-    "/repos/connections/",
-    connectionBasename,
-    mine ? "mine" : "theirs"
-  );
+  throw new Error("Not yet properly implemented #UoD9Qz");
+  const type = RepoType.connection;
 
-  const commitHash = await _createRepo({
-    path,
+  const commitHash = await _createNewRepo({
     title,
     uuid,
     type: RepoType.connection,
@@ -169,6 +119,7 @@ export const createConnectionRepo = async ({
   });
 };
 
+// TODO Figure out how to get the data which is only in repos.yaml here
 export const getRepoParamsFromFilesystem = async ({
   path,
 }: {
@@ -190,8 +141,7 @@ export const getRepoParamsFromFilesystem = async ({
 
   return {
     id: validatedData.uuid,
-    path,
     bodyMarkdown: matterOutput.content,
     ...validatedData,
-  } as RepoInRedux;
+  } as RepoOnDisk & Pick<RepoInRedux, "id">;
 };

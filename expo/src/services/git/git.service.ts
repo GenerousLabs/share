@@ -1,8 +1,8 @@
 import Bluebird from "bluebird";
 import git from "isomorphic-git";
-import original from "original";
+import { simplePushWithOptionalEncryption } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp, GIT_AUTHOR_NAME } from "../../shared.constants";
-import { FS, GitParams, Headers } from "../../shared.types";
+import { GitParams } from "../../shared.types";
 import { join } from "../fs/fs.service";
 
 export type StatusMatrixLine = [string, 0 | 1, 0 | 1 | 2, 0 | 1 | 2 | 3];
@@ -79,21 +79,45 @@ export const gitInitNewRepo = async ({ path }: { path: string }) => {
  * Given a source repo git directory, set the remote URL (prefixed with
  * `encrypted::`).
  */
-export const gitSetEncryptedRemote = async ({
-  sourceGitDir,
-  encryptedRemoteUrl,
+export const gitSetRemote = async ({
+  path,
+  remoteUrl,
 }: {
-  sourceGitDir: string;
-  encryptedRemoteUrl: string;
+  path: string;
+  remoteUrl: string;
 }) => {
   const { fs } = gitFsHttp;
+  const gitdir = join(path, ".git");
 
   await git.addRemote({
     fs,
-    gitdir: sourceGitDir,
+    gitdir,
     remote: "origin",
-    // TODO Figure out a better way to prefix `encrypted::`
-    url: `encrypted::${encryptedRemoteUrl}`,
+    url: remoteUrl,
     force: true,
   });
+};
+
+/**
+ * A simple equivalent to `git push` which always uses the `master` branch and
+ * the `origin` remote.
+ */
+export const gitPush = async ({ path }: { path: string }) => {
+  const gitdir = join(path, ".git");
+  return simplePushWithOptionalEncryption({
+    ...gitFsHttp,
+    gitdir,
+    ref: "refs/heads/master",
+    remoteRef: "refs/heads/master",
+    remote: "origin",
+  });
+};
+
+/**
+ * A simple equivalent to `git pull` which always uses the `master` branch and
+ * the `origin` remote.
+ */
+export const gitPull = async ({ path }: { path: string }) => {
+  const gitdir = join(path, ".git");
+  throw new Error("Not yet properly implemented. #G70M4T");
 };

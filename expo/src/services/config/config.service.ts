@@ -1,7 +1,12 @@
 import fs from "expo-fs";
 
 export type Config = {
-  remote: { hostname: string; username: string; token: string };
+  remote: {
+    protocol: string;
+    host: string;
+    username: string;
+    token: string;
+  };
 };
 
 const CONFIG_PATH = "/repos/config.json";

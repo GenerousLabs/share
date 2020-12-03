@@ -2,6 +2,8 @@ import fs from "expo-fs";
 import http from "isomorphic-git/http/web";
 import { FS } from "./shared.types";
 
+export const REPOS_PATH = "/repos/";
+
 export const PATH_SEPARATOR = "/" as const;
 
 export const gitFsHttp = { fs: (fs as unknown) as FS, http };
@@ -16,5 +18,4 @@ export enum RepoType {
   commands = "commands",
   library = "library",
   connection = "connection",
-  subscription = "subscription",
 }

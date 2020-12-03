@@ -26,12 +26,21 @@ const repoSlice = createSlice({
       action: PayloadAction<{ id: string; headCommitObjectId: string }>
     ) => {
       const { id, headCommitObjectId } = action.payload;
-      state.entities[id]?.commitsAheadOfOrigin;
+      const repo = state.entities[id];
+      if (typeof repo === "undefined") {
+        throw new Error("Invalid repo ID #Dy21TB");
+      }
+      repo.commitsAheadOfOrigin = (repo.commitsAheadOfOrigin || 0) + 1;
+      repo.headCommitObjectId = headCommitObjectId;
     },
   },
 });
 
-export const { upsertOneRepo, updateOneRepo } = repoSlice.actions;
+export const {
+  upsertOneRepo,
+  updateOneRepo,
+  setNewCommitHash,
+} = repoSlice.actions;
 
 export default repoSlice.reducer;
 

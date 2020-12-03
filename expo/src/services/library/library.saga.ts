@@ -15,12 +15,23 @@ import { offerToString, readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryAction,
   createNewLibraryErrorAction,
-  createNewOfferSagaAction,
   createNewOfferError,
-  loadOfferSagaAction,
+  createNewOfferSagaAction,
   loadOfferError,
+  loadOfferSagaAction,
+  subscribeToLibrarySagaAction,
   upsertOneOffer,
 } from "./library.state";
+
+export function* subscribeToLibraryEffect(
+  action: ReturnType<typeof subscribeToLibrarySagaAction>
+) {
+  /**
+   * - Create a new repo
+   * - Set the keys
+   * - Load its contents
+   */
+}
 
 export function* createNewLibraryEffect(
   action: ReturnType<typeof createNewLibraryAction>

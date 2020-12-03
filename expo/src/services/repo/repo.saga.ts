@@ -1,20 +1,20 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
-import { COMMANDS_REPO_PATH, ME_REPO_PATH } from "../../shared.paths";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
-import { gitAddAndCommit } from "../git/git.service";
+import { gitAddAndCommit, gitPush } from "../git/git.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
 import { startupSagaAction } from "../startup/startup.state";
-import { getRepoParamsFromFilesystem } from "./repo.service";
+import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
-  commitAllSagaAction,
   commitAllErrorAction,
+  commitAllSagaAction,
   loadRepoContentsSagaAction,
-  loadRepoFromFilesystemSagaAction,
   loadRepoFromFilesystemErrorAction,
+  loadRepoFromFilesystemSagaAction,
   selectRepoById,
+  setNewCommitHash,
   updateOneRepo,
   upsertOneRepo,
 } from "./repo.state";
@@ -52,7 +52,7 @@ export function* commitAllEffect(
       repoId
     );
 
-    const repoPath = repo.path;
+    const repoPath = getRepoPath({ uuid: repo.uuid, type: repo.type });
 
     const newCommitHash = yield* call(gitAddAndCommit, {
       message,
@@ -61,10 +61,20 @@ export function* commitAllEffect(
 
     if (typeof newCommitHash === "string") {
       yield* put(
+        setNewCommitHash({
+          id: repoId,
+          headCommitObjectId: newCommitHash,
+        })
+      );
+
+      // TODO Move these 2 into an effect so we can update the state afterwards
+      // TODO Make pushing conditional after a commit
+      yield* call(gitPush, { path: repoPath });
+      yield* put(
         updateOneRepo({
           id: repoId,
           changes: {
-            headCommitObjectId: newCommitHash,
+            commitsAheadOfOrigin: 0,
           },
         })
       );
