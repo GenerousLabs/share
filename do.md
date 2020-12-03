@@ -1,3 +1,14 @@
+- [ ] Write to and read from repos.yaml
+  - As a fallback?
+  - Write into the file after successfully importing and then it's only
+    written to after successful initialisation
+- [ ] Do we redux-persist?
+  - If so, we can potentially consider the redux state to be somewhat persistent
+  - Could deploy a "regenerate state" function later
+- [ ] Add function to grant user read-only (pull-only) access to a repo
+  - Write into the commands repo
+  - Need to define the format of the commands repo
+- [ ] How do we package a
 - [ ] Put real repos into the repo startup saga
 - [ ] Add logging infrastructure
   - Maybe winston?
