@@ -15,7 +15,7 @@ import reducer from "./root.reducer";
 import rootSaga from "./root.saga";
 import { maybeStartupSagaAction } from "./services/startup/startup.state";
 
-const persistConfig = {
+export const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   version: 1,
