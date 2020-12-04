@@ -2,7 +2,9 @@ import fs from "expo-fs";
 import http from "isomorphic-git/http/web";
 import { FS } from "./shared.types";
 
-export const REPOS_PATH = "/repos/";
+export const REPOS_PATH = "/repos/" as const;
+export const LOGS_PATH = "/logs/" as const;
+export const ALL_PATHS = [REPOS_PATH, LOGS_PATH] as const;
 
 export const PATH_SEPARATOR = "/" as const;
 
