@@ -2,7 +2,8 @@ import Bluebird from "bluebird";
 import * as FileSystem from "expo-file-system";
 import { groupBy } from "remeda";
 import { superpathjoin } from "superpathjoin";
-import { ENOENT, gitFsHttp } from "../../shared.constants";
+import { ENOENT, gitFsHttp, REPOS_PATH } from "../../shared.constants";
+import { logDirPath } from "../log/log.service";
 
 export const getDirectories = async () => {};
 
@@ -72,4 +73,11 @@ export const doesFileExist = async ({ path }: { path: string }) => {
       throw error;
     }
   );
+};
+
+export const DANGEROUS_deleteEverything = async () => {
+  const DELETE_EVERYTHING_PATHS = [REPOS_PATH, logDirPath];
+  await Bluebird.each(DELETE_EVERYTHING_PATHS, (path) => {
+    FileSystem.deleteAsync(path, { idempotent: true });
+  });
 };
