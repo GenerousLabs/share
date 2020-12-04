@@ -130,6 +130,22 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
     namespace,
     meta,
   });
+
+  try {
+    if (__DEV__) {
+      if (typeof console !== "undefined") {
+        console.log("namespace #8N9FkO", typeof namespace, namespace);
+        if (level in console) {
+          console[level](`${namespace} ${message}`, meta);
+        } else {
+          console.log(`${namespace} ${message}`, meta);
+        }
+      }
+    }
+  } catch (error) {
+    // Silently ignore console fail errors
+  }
+
   // NOTE: We don't await here, we want `_log()` to return instantly
   _appendLineToLogFile({ filename, line }).catch((error) => {
     // NOTE: We need to use the `console` here as this is a logger error
