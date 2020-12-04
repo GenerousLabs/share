@@ -153,7 +153,17 @@ const Home = ({
             color="grey"
             title="DANGEROUS reset the whole application"
             onPress={() => {
-              dispatch(DANGEROUS_setupResetSagaAction());
+              Alert.alert(
+                "DANGEROUS",
+                "Are you sure you want to DELETE EVERYTHING FOREVER? There is absolutely NO UNDO.",
+                [
+                  {
+                    text: "Yes",
+                    onPress: () => dispatch(DANGEROUS_setupResetSagaAction()),
+                  },
+                  { text: "No" },
+                ]
+              );
             }}
           />
         </View>
