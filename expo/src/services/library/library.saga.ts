@@ -16,7 +16,7 @@ import {
 import {
   commitAllSagaAction,
   selectRepoById,
-  upsertOneRepo,
+  addOneRepoAction,
 } from "../repo/repo.state";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
@@ -27,7 +27,7 @@ import {
   loadOfferError,
   loadOfferSagaAction,
   subscribeToLibrarySagaAction,
-  upsertOneOffer,
+  upsertOneOfferAction,
 } from "./library.state";
 
 const log = rootLogger.extend("library.saga");
@@ -65,7 +65,7 @@ export function* createNewLibraryEffect(
       bodyMarkdown,
     });
 
-    yield* put(upsertOneRepo(repo));
+    yield* put(addOneRepoAction(repo));
 
     yield* call(
       commitAllEffect,
@@ -141,7 +141,7 @@ export function* loadOfferEffect(
 
     const offer = yield* call(readOfferFromDisk, { directoryPath });
 
-    yield put(upsertOneOffer({ ...offer, id: directoryPath, repoId }));
+    yield put(upsertOneOfferAction({ ...offer, id: directoryPath, repoId }));
   } catch (error) {
     yield put(
       loadOfferError({

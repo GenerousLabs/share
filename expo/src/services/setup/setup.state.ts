@@ -17,7 +17,7 @@ const setupSlice = createSlice({
   name: "SHARE/setup",
   initialState,
   reducers: {
-    setSetupComplete: (state) => {
+    setSetupCompleteAction: (state) => {
       state.isSetupComplete = true;
     },
   },
@@ -28,7 +28,7 @@ const setupSlice = createSlice({
   },
 });
 
-export const { setSetupComplete } = setupSlice.actions;
+export const { setSetupCompleteAction } = setupSlice.actions;
 
 export default setupSlice.reducer;
 

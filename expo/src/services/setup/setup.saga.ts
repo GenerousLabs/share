@@ -5,10 +5,10 @@ import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { rootLogger } from "../log/log.service";
 import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
-import { upsertOneRepo } from "../repo/repo.state";
+import { addOneRepoAction } from "../repo/repo.state";
 import { maybeStartupSagaAction } from "../startup/startup.state";
 import {
-  setSetupComplete,
+  setSetupCompleteAction,
   setupErrorAction,
   setupSagaAction,
 } from "./setup.state";
@@ -26,13 +26,13 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
 
     const meRepo = yield* call(createMeRepo);
 
-    yield* put(upsertOneRepo(meRepo));
+    yield* put(addOneRepoAction(meRepo));
 
     const commandsRepo = yield* call(createCommandsRepo);
 
-    yield* put(upsertOneRepo(commandsRepo));
+    yield* put(addOneRepoAction(commandsRepo));
 
-    yield* put(setSetupComplete());
+    yield* put(setSetupCompleteAction());
 
     yield* put(maybeStartupSagaAction());
   } catch (error) {

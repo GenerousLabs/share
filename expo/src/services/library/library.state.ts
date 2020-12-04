@@ -20,11 +20,11 @@ const offerSlice = createSlice({
   name: "SHARE/library/offers",
   initialState: offerAdapter.getInitialState(),
   reducers: {
-    upsertOneOffer: offerAdapter.upsertOne,
+    upsertOneOfferAction: offerAdapter.upsertOne,
   },
 });
 
-export const { upsertOneOffer } = offerSlice.actions;
+export const { upsertOneOfferAction } = offerSlice.actions;
 
 type FilterState = {
   tags: string[];
@@ -37,11 +37,13 @@ const filterSlice = createSlice({
   name: "SHARE/library/filters",
   initialState: filterInitialState,
   reducers: {
-    setFilterTags: (state, action: PayloadAction<{ tags: string[] }>) => {
+    setFilterTagsAction: (state, action: PayloadAction<{ tags: string[] }>) => {
       state.tags = action.payload.tags;
     },
   },
 });
+
+export const { setFilterTagsAction } = filterSlice.actions;
 
 const libraryReducer = combineReducers({
   offers: offerSlice.reducer,

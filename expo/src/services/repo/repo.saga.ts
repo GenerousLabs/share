@@ -10,15 +10,15 @@ import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
+  addOneRepoAction,
   commitAllErrorAction,
   commitAllSagaAction,
   loadRepoContentsSagaAction,
   loadRepoFromFilesystemErrorAction,
   loadRepoFromFilesystemSagaAction,
   selectRepoById,
-  setNewCommitHash,
-  updateOneRepo,
-  upsertOneRepo,
+  setNewCommitHashAction,
+  updateOneRepoAction,
 } from "./repo.state";
 
 const log = rootLogger.extend("repo.saga");
@@ -66,7 +66,7 @@ export function* commitAllEffect(
 
     if (typeof newCommitHash === "string") {
       yield* put(
-        setNewCommitHash({
+        setNewCommitHashAction({
           id: repoId,
           headCommitObjectId: newCommitHash,
         })
@@ -76,7 +76,7 @@ export function* commitAllEffect(
       // TODO Make pushing conditional after a commit
       yield* call(gitPush, { path: repoPath });
       yield* put(
-        updateOneRepo({
+        updateOneRepoAction({
           id: repoId,
           changes: {
             commitsAheadOfOrigin: 0,
@@ -107,7 +107,7 @@ export function* loadRepoFromFilesystemEffect(
       path: action.payload.path,
     });
 
-    yield* put(upsertOneRepo(repo as any));
+    yield* put(addOneRepoAction(repo as any));
 
     // We `yield* call()` here so that this generator only completes AFTER the
     // nested call to `loadRepoContents` has itself completed.
