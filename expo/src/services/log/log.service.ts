@@ -147,6 +147,7 @@ export const getLogs = async ({ skipDays = 0 }: { skipDays?: number } = {}) => {
 export const deleteLogs = async ({
   skipDays = 0,
 }: { skipDays?: number } = {}) => {
+  // TODO Implement deleteLogs()
+  throw new Error("Yet to be implemented. #rCOtsm");
   const filenames = await FileSystem.readDirectoryAsync(logDirPath);
-  // TODO
 };
