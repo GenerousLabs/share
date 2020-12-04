@@ -1,7 +1,7 @@
 import { all } from "redux-saga/effects";
-import { put, select, take } from "typed-redux-saga/macro";
+import { put, select, take, takeEvery } from "typed-redux-saga/macro";
 import { RootState } from "../../store";
-import { startupSagaAction } from "./startup.state";
+import { startupResetSagaAction, startupSagaAction } from "./startup.state";
 
 export function* maybeStartupEffect() {
   while (true) {
@@ -21,6 +21,19 @@ export function* maybeStartupEffect() {
   }
 }
 
+export function* startupResetEffect() {
+  throw new Error("Not yet implemented. #QRsLaz");
+  /**
+   * - Delete /repos/
+   * - Delete /logs/
+   * - Empty AsyncStorage
+   * - Purge redux persist
+   */
+}
+
 export default function* startupSaga() {
-  yield all([maybeStartupEffect()]);
+  yield all([
+    maybeStartupEffect(),
+    takeEvery(startupResetSagaAction, startupResetEffect),
+  ]);
 }
