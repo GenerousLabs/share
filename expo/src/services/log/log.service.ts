@@ -134,10 +134,13 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
   try {
     if (__DEV__) {
       if (typeof console !== "undefined") {
+        const consoleString = `${namespace} ${message}`;
+        const args =
+          typeof meta === "undefined" ? [consoleString] : [consoleString, meta];
         if (level in console) {
-          console[level](`${namespace} ${message}`, meta);
+          console[level](...args);
         } else {
-          console.log(`${namespace} ${message}`, meta);
+          console.log(...args);
         }
       }
     }
