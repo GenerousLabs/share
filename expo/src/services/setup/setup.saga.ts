@@ -3,6 +3,7 @@ import { all, takeEvery } from "redux-saga/effects";
 import { call, put } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { writeConfigToFilesystem } from "../config/config.service";
+import { rootLogger } from "../log/log.service";
 import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
 import { upsertOneRepo } from "../repo/repo.state";
 import { maybeStartupSagaAction } from "../startup/startup.state";
@@ -11,6 +12,8 @@ import {
   setupErrorAction,
   setupSagaAction,
 } from "./setup.state";
+
+const log = rootLogger.extend("setup.saga");
 
 export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
   try {
@@ -33,7 +36,7 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
 
     yield* put(maybeStartupSagaAction());
   } catch (error) {
-    console.error("setupErrorAction #SEU3lx", error);
+    log.error("setupErrorAction #SEU3lx", error);
     yield* put(
       setupErrorAction({
         message: "Setup error #BaTVXH",

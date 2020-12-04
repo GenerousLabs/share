@@ -11,8 +11,11 @@ import {
   gitPush,
   gitSetRemote,
 } from "../git/git.service";
+import { rootLogger } from "../log/log.service";
 import { createNewRemoteForRepo } from "../remote/remote.service";
 import { getRepoPath } from "./repo.service";
+
+const log = rootLogger.extend("_createNewRepo");
 
 /**
  * Create the new directory, call git init, and then save the repo details into
@@ -30,13 +33,12 @@ export const _createNewRepo = async ({
 }: RepoOnDisk & { encryptThisRepo?: boolean }): Promise<RepoInRedux> => {
   const { fs } = gitFsHttp;
 
-  if (__DEV__)
-    console.log("repo.servce / initRepo() invoked #eQ4V3I", {
-      title,
-      type,
-      uuid,
-      bodyMarkdown,
-    });
+  log.debug("repo.servce / initRepo() invoked #eQ4V3I", {
+    title,
+    type,
+    uuid,
+    bodyMarkdown,
+  });
 
   const path = getRepoPath({ id: uuid, type });
 
@@ -100,7 +102,7 @@ export const _createNewRepo = async ({
   });
 
   if (typeof newCommitHash !== "string") {
-    console.error("Failed to commit while creating repo #FFplUv", {
+    log.error("Failed to commit while creating repo #FFplUv", {
       uuid,
       title,
       type,

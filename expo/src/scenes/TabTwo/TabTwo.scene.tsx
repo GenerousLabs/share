@@ -3,11 +3,13 @@ import expoFs from "expo-fs";
 import http from "isomorphic-git/http/web/index";
 import git from "isomorphic-git/index";
 import * as React from "react";
-import { Alert, Button, FlatList, StyleSheet } from "react-native";
+import { Alert, Button, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
 import { Text, View } from "../../components/Themed";
 import { selectAllOffers } from "../../services/library/library.state";
-import { RootState } from "../../store";
+import { rootLogger } from "../../services/log/log.service";
+
+const log = rootLogger.extend("TabTwo");
 
 const getFilesFactory = (setFiles: (files: string[]) => void) => async (
   path: string
@@ -18,7 +20,7 @@ const getFilesFactory = (setFiles: (files: string[]) => void) => async (
   const files = await FileSystem.readDirectoryAsync(
     FileSystem.documentDirectory + path
   ).catch((error) => {
-    console.error("getFiles() error #5kfMMR", error);
+    log.error("getFiles() error #5kfMMR", error);
   });
   if (typeof files !== "undefined") {
     setFiles(files);
@@ -30,8 +32,8 @@ const getFilesFactory = (setFiles: (files: string[]) => void) => async (
 const del = async () => {
   await FileSystem.deleteAsync(FileSystem.documentDirectory + "repo").catch(
     (error) => {
-      console.error("del() error #ap4gPi");
-      console.error(error);
+      log.error("del() error #ap4gPi");
+      log.error(error);
     }
   );
 };
@@ -39,7 +41,7 @@ const del = async () => {
 const clone = async () => {
   await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "repo");
 
-  console.log("Starting clone #JyjafF");
+  log.debug("Starting clone #JyjafF");
   await git
     .clone({
       fs: expoFs,
@@ -53,8 +55,8 @@ const clone = async () => {
       depth: 1,
     })
     .catch((error) => {
-      console.error("clone() error #CuZ9Xi");
-      console.error(error);
+      log.error("clone() error #CuZ9Xi");
+      log.error(error);
     });
 
   Alert.alert("Clone finished #iOXriG");

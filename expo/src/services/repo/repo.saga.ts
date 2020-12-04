@@ -6,6 +6,7 @@ import { getDirectoryContents } from "../fs/fs.service";
 import { gitAddAndCommit, gitPush } from "../git/git.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
+import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
@@ -19,6 +20,8 @@ import {
   updateOneRepo,
   upsertOneRepo,
 } from "./repo.state";
+
+const log = rootLogger.extend("repo.saga");
 
 export function* loadRepoContentsEffect(
   action: ReturnType<typeof loadRepoContentsSagaAction>
@@ -84,7 +87,7 @@ export function* commitAllEffect(
       yield* put(loadRepoContentsSagaAction({ repoId }));
     }
   } catch (error) {
-    console.error("commitAllEffct() unknown error #UEQp4W", error);
+    log.error("commitAllEffct() unknown error #UEQp4W", error);
     yield put(
       commitAllErrorAction({
         error,
@@ -113,7 +116,7 @@ export function* loadRepoFromFilesystemEffect(
       loadRepoContentsSagaAction({ repoId: repo.id })
     );
   } catch (error) {
-    console.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
+    log.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
     yield* put(
       loadRepoFromFilesystemErrorAction({
         message: "loadRepoFromFilesystem() error #HlT6yC",

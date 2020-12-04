@@ -146,11 +146,13 @@ const Home = ({
             title="Show logs"
             onPress={async () => {
               try {
-                const log = await getLogs();
-                console.log("log #kP1xw6", log);
-                Alert.alert(`Log file`, log);
+                const logs = await getLogs();
+                // NOTE: We don't use `log.()` here because we don't want to log
+                // the logs again
+                console.log("log #kP1xw6", logs);
+                Alert.alert(`Log file`, logs);
               } catch (error) {
-                console.error(error);
+                log.error(error);
               }
             }}
           />

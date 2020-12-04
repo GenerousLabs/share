@@ -18,8 +18,12 @@ const logLevelMap = Object.fromEntries(
   logLevels.map((level, index) => [level, index])
 ) as Record<LogLevel, number>;
 
-type LogFunction = (level: LogLevel, message: string, meta?: any) => void;
-type LogLevelFunction = (message: string, meta?: any) => void;
+type LogLevelFunction = (message: string, ...meta: any[]) => void;
+
+type LogFunction = (
+  level: LogLevel,
+  ...rest: Parameters<LogLevelFunction>
+) => void;
 type LogBase = LogFunction & Record<LogLevel, LogLevelFunction>;
 type Log = LogBase & {
   extend: (namespace: string) => LogBase;
@@ -71,6 +75,13 @@ export const _appendLineToLogFile = async ({
   });
 };
 
+export const _metaToString = (meta: any[]): string => {
+  if (meta.length === 1) {
+    return JSON.stringify(meta[0]);
+  }
+  return JSON.stringify(meta);
+};
+
 export const buildLogLine = ({
   date,
   level,
@@ -82,7 +93,7 @@ export const buildLogLine = ({
   level: LogLevel;
   message: string;
   namespace: string;
-  meta?: any;
+  meta?: any[];
 }) => {
   const dateLevel = [date, level];
   const withNamespace =
@@ -91,8 +102,8 @@ export const buildLogLine = ({
   if (typeof meta === "undefined") {
     return lineBase.join(LINE_PART_SEPARATOR);
   }
-  const metaJson = JSON.stringify(meta);
-  return lineBase.concat(metaJson).join(LINE_PART_SEPARATOR);
+  const metaString = _metaToString(meta);
+  return lineBase.concat(metaString).join(LINE_PART_SEPARATOR);
 };
 
 export const _getDateString = (dayjs: Dayjs) => {
@@ -120,7 +131,14 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
   });
   // NOTE: We don't await here, we want `_log()` to return instantly
   _appendLineToLogFile({ filename, line }).catch((error) => {
-    console.error("log.service _log threw #X1YVjd", error);
+    // NOTE: We need to use the `console` here as this is a logger error
+    try {
+      if (typeof console !== "undefined" && "error" in console) {
+        console.error("log.service _log threw #X1YVjd", error);
+      }
+    } catch (error) {
+      // Silently swallow logging errors if the console is not available
+    }
   });
 };
 

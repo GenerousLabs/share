@@ -6,6 +6,7 @@ import { v4 as generateUuid } from "uuid";
 import { RepoType } from "../../shared.constants";
 import { generateId } from "../../utils/id.utils";
 import { join } from "../fs/fs.service";
+import { rootLogger } from "../log/log.service";
 import { commitAllEffect } from "../repo/repo.saga";
 import {
   cloneNewLibraryRepo,
@@ -29,6 +30,8 @@ import {
   upsertOneOffer,
 } from "./library.state";
 
+const log = rootLogger.extend("library.saga");
+
 export function* subscribeToLibraryEffect(
   action: ReturnType<typeof subscribeToLibrarySagaAction>
 ) {
@@ -40,7 +43,7 @@ export function* subscribeToLibraryEffect(
 
   yield* call(cloneNewLibraryRepo, { path, remoteUrl, keysBase64 });
 
-  console.log("subscribeToLibraryEffect() #ezVpNx", name, remoteUrl);
+  log.debug("subscribeToLibraryEffect() #ezVpNx", name, remoteUrl);
 
   // TODO - Load the repo into redux after it has downloaded
   throw new Error("Needs to be implemented here. #M3ulny");
