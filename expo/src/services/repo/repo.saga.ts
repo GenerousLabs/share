@@ -10,7 +10,7 @@ import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
-  addOneRepoAction,
+  addOneRepoSagaAction,
   commitAllErrorAction,
   commitAllSagaAction,
   loadRepoContentsSagaAction,
@@ -107,7 +107,7 @@ export function* loadRepoFromFilesystemEffect(
       path: action.payload.path,
     });
 
-    yield* put(addOneRepoAction(repo as any));
+    yield* put(addOneRepoSagaAction(repo as any));
 
     // We `yield* call()` here so that this generator only completes AFTER the
     // nested call to `loadRepoContents` has itself completed.

@@ -16,8 +16,9 @@ import {
 import {
   commitAllSagaAction,
   selectRepoById,
-  addOneRepoAction,
+  addOneRepoSagaAction,
 } from "../repo/repo.state";
+import { addOneRepoEffect } from "../repoYaml/repoYaml.saga";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
   createNewLibrarySagaAction,
@@ -65,7 +66,7 @@ export function* createNewLibraryEffect(
       bodyMarkdown,
     });
 
-    yield* put(addOneRepoAction(repo));
+    yield* call(addOneRepoEffect, addOneRepoSagaAction(repo));
 
     yield* call(
       commitAllEffect,

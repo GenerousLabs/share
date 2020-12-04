@@ -19,7 +19,7 @@ const repoSlice = createSlice({
   name: "SHARE/repo",
   initialState: repoAdapter.getInitialState(),
   reducers: {
-    addOneRepoAction: repoAdapter.addOne,
+    addOneRepoSagaAction: repoAdapter.addOne,
     updateOneRepoAction: repoAdapter.updateOne,
     setNewCommitHashAction: (
       state,
@@ -37,7 +37,7 @@ const repoSlice = createSlice({
 });
 
 export const {
-  addOneRepoAction,
+  addOneRepoSagaAction,
   updateOneRepoAction,
   setNewCommitHashAction,
 } = repoSlice.actions;
