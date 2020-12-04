@@ -1,6 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as FileSystem from "expo-file-system";
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ import {
   createNewOfferSagaAction,
   subscribeToLibrarySagaAction,
 } from "../../services/library/library.state";
+import { getLogs, log } from "../../services/log/log.service";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
@@ -21,6 +22,9 @@ const Home = ({
   navigation: StackNavigationProp<RootStackParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  useEffect(() => {
+    log.debug("useEffect() #SiaYlJ");
+  });
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -120,6 +124,21 @@ const Home = ({
             onPress={async () => {
               await createAndShareZipFile({ path: "/repos" });
               Alert.alert("Zip export finished #znvf34");
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            color="lightblue"
+            title="Show logs"
+            onPress={async () => {
+              try {
+                const log = await getLogs();
+                console.log("log #kP1xw6", log);
+                Alert.alert(`Log file`, log);
+              } catch (error) {
+                console.error(error);
+              }
             }}
           />
         </View>
