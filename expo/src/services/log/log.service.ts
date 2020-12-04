@@ -7,6 +7,7 @@
 import dayjsBase, { Dayjs } from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
 import * as FileSystem from "expo-file-system";
+import { LOGS_PATH } from "../../shared.constants";
 import { join } from "../fs/fs.service";
 
 const LINE_PART_SEPARATOR = " " as const;
@@ -31,7 +32,7 @@ type Log = LogBase & {
 
 const dayjsUtc = dayjsBase.extend(utcPlugin);
 
-export const logDirPath = FileSystem.documentDirectory + "/logs/";
+const logDirPath = FileSystem.documentDirectory + LOGS_PATH;
 
 export const _getFilePath = (filename: string) => join(logDirPath, filename);
 
