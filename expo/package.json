@@ -32,6 +32,7 @@
     "@reduxjs/toolkit": "^1.4.0",
     "bluebird": "^3.7.2",
     "buffer": "^6.0.2",
+    "dayjs": "^1.9.6",
     "debug": "^4.3.1",
     "expo": "~39.0.2",
     "expo-asset": "~8.2.0",
