@@ -135,7 +135,7 @@ export const _logFactory = (namespaces: string[] = []): Log => {
   return logFn;
 };
 
-export const log = _logFactory();
+export const rootLogger = _logFactory();
 
 export const getLogs = async ({ skipDays = 0 }: { skipDays?: number } = {}) => {
   const dayjs = dayjsUtc.utc().subtract(skipDays, "day");

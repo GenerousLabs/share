@@ -10,11 +10,13 @@ import {
   createNewOfferSagaAction,
   subscribeToLibrarySagaAction,
 } from "../../services/library/library.state";
-import { getLogs, log } from "../../services/log/log.service";
+import { getLogs, rootLogger } from "../../services/log/log.service";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { persistConfig, RootDispatch } from "../../store";
+
+const log = rootLogger.extend("Home");
 
 const Home = ({
   navigation,
