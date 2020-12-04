@@ -6,11 +6,12 @@
     - Later: shard logs based on date or something
     - Reading & writing the whole file could get costly fast
     - Shard by day and then add a "reset all logs" function
+- [ ] Sort offers by createdAt / updatedAt dates
 - [ ] Write to and read from repos.yaml
   - As a fallback?
   - Write into the file after successfully importing and then it's only
     written to after successful initialisation
-- [ ] Do we redux-persist?
+- [x] Do we redux-persist?
   - If so, we can potentially consider the redux state to be somewhat persistent
   - Could deploy a "regenerate state" function later
 - [ ] Add function to grant user read-only (pull-only) access to a repo
