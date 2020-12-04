@@ -4,17 +4,19 @@ import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import { purgeStoredState } from "redux-persist";
 import { RootStackParamList } from "../../navigation";
 import {
   createNewOfferSagaAction,
   subscribeToLibrarySagaAction,
 } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
-import { setupSagaAction } from "../../services/setup/setup.state";
+import {
+  DANGEROUS_setupResetSagaAction,
+  setupSagaAction,
+} from "../../services/setup/setup.state";
 import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { persistConfig, RootDispatch } from "../../store";
+import { RootDispatch } from "../../store";
 
 const log = rootLogger.extend("Home");
 
@@ -160,9 +162,9 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             color="grey"
-            title="Flush redux persist"
+            title="DANGEROUS reset the whole application"
             onPress={() => {
-              purgeStoredState(persistConfig);
+              dispatch(DANGEROUS_setupResetSagaAction());
             }}
           />
         </View>

@@ -35,3 +35,9 @@ export default setupSlice.reducer;
 const SETUP = "SHARE/setup/setup";
 export const setupSagaAction = createAction<{ config: Config }>(SETUP);
 export const setupErrorAction = makeErrorActionCreator(SETUP);
+
+/**
+ * This action triggers a complete reset of the application. It is *extremely*
+ * destructive.
+ */
+export const DANGEROUS_setupResetSagaAction = createAction("SHARE/setup/reset");
