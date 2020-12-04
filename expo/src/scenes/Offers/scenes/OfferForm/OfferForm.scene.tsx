@@ -4,9 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as generateUuid } from "uuid";
+import { selectMyLibraries } from "../../../../services/library/library.selectors";
 import { createNewOfferSagaAction } from "../../../../services/library/library.state";
-import { selectAllRepos } from "../../../../services/repo/repo.state";
-import { OfferInRedux } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 
 type Inputs = {
@@ -18,7 +17,7 @@ type Inputs = {
 const OfferForm = () => {
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors, reset } = useForm<Inputs>();
-  const repos = useSelector(selectAllRepos);
+  const libraries = useSelector(selectMyLibraries);
 
   // TODO Provide a meaningful way to choose a repo here
   const onSubmit = (data: Inputs) => {
@@ -38,7 +37,7 @@ const OfferForm = () => {
     );
   };
 
-  if (repos.length === 0) {
+  if (libraries.length === 0) {
     return (
       <View>
         <Text>Create a repo first to be able to create offers.</Text>
@@ -57,14 +56,14 @@ const OfferForm = () => {
             style={styles.input}
             onValueChange={(value) => onChange(value)}
           >
-            {repos.map((repo) => (
+            {libraries.map((repo) => (
               <Picker.Item key={repo.id} label={repo.title} value={repo.id} />
             ))}
           </Picker>
         )}
         name="repoId"
         rules={{ required: true }}
-        defaultValue={repos[0].id}
+        defaultValue={libraries[0].id}
       />
       <Text>Offer title:</Text>
       <Controller
