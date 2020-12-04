@@ -77,14 +77,6 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            title="Run startup"
-            onPress={async () => {
-              dispatch(startupSagaAction());
-            }}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
             title="Import repo"
             onPress={async () => {
               dispatch(
