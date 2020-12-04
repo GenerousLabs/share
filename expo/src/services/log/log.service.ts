@@ -27,7 +27,7 @@ type LogFunction = (
 ) => void;
 type LogBase = LogFunction & Record<LogLevel, LogLevelFunction>;
 type Log = LogBase & {
-  extend: (namespace: string) => LogBase;
+  extend: (namespace: string) => Log;
 };
 
 const dayjsUtc = dayjsBase.extend(utcPlugin);
@@ -143,7 +143,7 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
   });
 };
 
-export const _logFactory = (namespaces: string[] = []): Log => {
+export const _logFactory = (namespaces: string[] = []) => {
   const namespace = namespaces.join(NAMESPACE_DELIMITER);
   const logFn = _logFunctionFactory(namespace) as Log;
   logLevels.forEach((level) => {
