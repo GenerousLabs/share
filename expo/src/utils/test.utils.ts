@@ -6,7 +6,11 @@ import { RepoType } from "../shared.constants";
 import { FS } from "../shared.types";
 import { RootDispatch, RootState } from "../store";
 
-const preloadedState = {
+const preloadedState: RootState = {
+  _persist: {
+    rehydrated: true,
+    version: 1,
+  },
   connection: {
     ids: [],
     entities: {},

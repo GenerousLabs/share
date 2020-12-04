@@ -1,20 +1,44 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import { AsyncStorage } from "react-native";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 import reducer from "./root.reducer";
 import rootSaga from "./root.saga";
 import { maybeStartupSagaAction } from "./services/startup/startup.state";
 
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+  version: 1,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
-  reducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleWare) => [
     ...getDefaultMiddleWare({
-      // thunk: false,
+      thunk: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }),
     sagaMiddleware,
   ],
 });
+
+export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 
