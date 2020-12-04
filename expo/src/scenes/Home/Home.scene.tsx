@@ -1,11 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as FileSystem from "expo-file-system";
 import React, { useEffect } from "react";
-import { Alert, Button, StyleSheet, View } from "react-native";
+import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
-import { RootStackParamList } from "../../../types";
-import { MonoText } from "../../components/StyledText";
+import { RootStackParamList } from "../../navigation";
 import {
   createNewOfferSagaAction,
   subscribeToLibrarySagaAction,
@@ -29,16 +28,27 @@ const Home = ({
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View>
-        <MonoText>Welcome to Home</MonoText>
+        <Text style={styles.title}>Home</Text>
       </View>
-      <View>
-        <Button
-          title="View offers"
-          color="red"
-          onPress={() => {
-            navigation.navigate("Offers");
-          }}
-        />
+      <View style={styles.navButtonWrapper}>
+        <View style={styles.navButton}>
+          <Button
+            title="View libraries"
+            color="green"
+            onPress={() => {
+              navigation.navigate("Libraries");
+            }}
+          />
+        </View>
+        <View style={styles.navButton}>
+          <Button
+            title="View offers"
+            color="red"
+            onPress={() => {
+              navigation.navigate("Offers");
+            }}
+          />
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
@@ -150,6 +160,17 @@ const Home = ({
 export default Home;
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 40,
+  },
+  navButtonWrapper: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  navButton: {
+    flex: 1,
+    paddingHorizontal: 6,
+  },
   buttonContainer: {
     width: "100%",
     alignContent: "center",
