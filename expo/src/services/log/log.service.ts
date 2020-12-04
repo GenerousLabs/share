@@ -1,3 +1,9 @@
+/**
+ * TODO
+ *
+ * - [ ] Add the option to disable / enable log levels
+ *   - Where do we store the value?
+ */
 import dayjsBase, { Dayjs } from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
 import * as FileSystem from "expo-file-system";
