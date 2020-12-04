@@ -19,7 +19,7 @@ import {
 } from "../repo/repo.state";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
-  createNewLibraryAction,
+  createNewLibrarySagaAction,
   createNewLibraryErrorAction,
   createNewOfferError,
   createNewOfferSagaAction,
@@ -47,7 +47,7 @@ export function* subscribeToLibraryEffect(
 }
 
 export function* createNewLibraryEffect(
-  action: ReturnType<typeof createNewLibraryAction>
+  action: ReturnType<typeof createNewLibrarySagaAction>
 ) {
   try {
     const { title, bodyMarkdown } = action.payload;
@@ -152,7 +152,7 @@ export function* loadOfferEffect(
 export default function* librarySaga() {
   yield all([
     takeEvery(subscribeToLibrarySagaAction, subscribeToLibraryEffect),
-    takeEvery(createNewLibraryAction, createNewLibraryEffect),
+    takeEvery(createNewLibrarySagaAction, createNewLibraryEffect),
     takeEvery(createNewOfferSagaAction, createNewOfferEffect),
     takeEvery(loadOfferSagaAction, loadOfferEffect),
   ]);

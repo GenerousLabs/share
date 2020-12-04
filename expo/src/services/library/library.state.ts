@@ -86,7 +86,7 @@ export const subscribeToLibraryError = makeErrorActionCreator(
 );
 
 const CREATE_LIBRARY = "SHARE/library/createNewLibrary";
-export const createNewLibraryAction = createAction<{
+export const createNewLibrarySagaAction = createAction<{
   title: string;
   bodyMarkdown: string;
 }>(CREATE_LIBRARY);
