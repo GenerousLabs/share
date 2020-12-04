@@ -14,7 +14,6 @@ import {
   DANGEROUS_setupResetSagaAction,
   setupSagaAction,
 } from "../../services/setup/setup.state";
-import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 
@@ -96,12 +95,10 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            title="Delete repos"
-            onPress={async () => {
-              await FileSystem.deleteAsync(
-                FileSystem.documentDirectory + "repos/"
-              );
-              Alert.alert("Done");
+            title="Log error"
+            color="darkred"
+            onPress={() => {
+              log.error("An error #SENEUH", new Error("Awry #PYShEI"));
             }}
           />
         </View>
