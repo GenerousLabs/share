@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import { purgeStoredState } from "redux-persist";
 import { RootStackParamList } from "../../navigation";
 import {
   createNewOfferSagaAction,
@@ -13,7 +14,7 @@ import { getLogs, log } from "../../services/log/log.service";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { startupSagaAction } from "../../services/startup/startup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { RootDispatch } from "../../store";
+import { persistConfig, RootDispatch } from "../../store";
 
 const Home = ({
   navigation,
@@ -149,6 +150,15 @@ const Home = ({
               } catch (error) {
                 console.error(error);
               }
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            color="grey"
+            title="Flush redux persist"
+            onPress={() => {
+              purgeStoredState(persistConfig);
             }}
           />
         </View>
