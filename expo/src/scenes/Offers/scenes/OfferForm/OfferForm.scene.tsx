@@ -3,7 +3,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { v4 as uuid } from "uuid";
+import { v4 as generateUuid } from "uuid";
 import { createNewOfferSagaAction } from "../../../../services/library/library.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
 import { OfferInRedux } from "../../../../shared.types";
@@ -22,16 +22,20 @@ const OfferForm = () => {
 
   // TODO Provide a meaningful way to choose a repo here
   const onSubmit = (data: Inputs) => {
-    debugger;
-    const offer: Omit<OfferInRedux, "id"> = {
-      uuid: uuid(),
-      mine: true,
-      proximity: 0,
-      shareToProximity: 1,
-      tags: [],
-      ...data,
-    };
-    dispatch(createNewOfferSagaAction({ repoId: "re2", offer }));
+    const uuid = generateUuid();
+    dispatch(
+      createNewOfferSagaAction({
+        repoId: data.repoId,
+        offer: {
+          uuid,
+          proximity: 0,
+          shareToProximity: 1,
+          tags: [],
+          bodyMarkdown: data.bodyMarkdown,
+          title: data.title,
+        },
+      })
+    );
   };
 
   if (repos.length === 0) {
