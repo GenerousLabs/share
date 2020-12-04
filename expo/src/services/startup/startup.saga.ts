@@ -1,18 +1,26 @@
-import { all, takeEvery } from "redux-saga/effects";
-import { put, select } from "typed-redux-saga/macro";
+import { all } from "redux-saga/effects";
+import { put, select, take } from "typed-redux-saga/macro";
 import { RootState } from "../../store";
-import { maybeStartupSagaAction, startupSagaAction } from "./startup.state";
+import { startupSagaAction } from "./startup.state";
 
 export function* maybeStartupEffect() {
-  const isSetupComplete = yield* select(
-    (state: RootState) => state.setup.isSetupComplete
-  );
+  while (true) {
+    const action = yield* take("*");
 
-  if (isSetupComplete) {
-    yield put(startupSagaAction);
+    const { isRehydrated, isSetupComplete } = yield* select(
+      (state: RootState) => ({
+        isSetupComplete: state.setup.isSetupComplete,
+        isRehydrated: state._persist.rehydrated,
+      })
+    );
+
+    if (isRehydrated && isSetupComplete) {
+      yield* put(startupSagaAction());
+      break;
+    }
   }
 }
 
 export default function* startupSaga() {
-  yield all([takeEvery(maybeStartupSagaAction, maybeStartupEffect)]);
+  yield all([maybeStartupEffect()]);
 }
