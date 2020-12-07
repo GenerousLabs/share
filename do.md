@@ -6,8 +6,7 @@
     - Later: shard logs based on date or something
     - Reading & writing the whole file could get costly fast
     - Shard by day and then add a "reset all logs" function
-- [ ] Add createdAt / updatedAt fields to Offers
-- [ ] Sort offers by createdAt / updatedAt dates
+- [x] Add createdAt / updatedAt fields to Offers
 - [x] Write to and read from repos.yaml
   - As a fallback?
   - Write into the file after successfully importing and then it's only
