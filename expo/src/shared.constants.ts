@@ -21,3 +21,9 @@ export enum RepoType {
   library = "library",
   connection = "connection",
 }
+
+// NOTE: These 3 are copied to `server/src/constants.ts` file and must be
+// manually kept in sync in both.
+export const READ_TOKENS_FILE_NAME = "read_tokens.txt" as const;
+export const MINIMUM_USERNAME_LENGTH = 3 as const;
+export const MINIMUM_TOKEN_LENGTH = 20 as const;
