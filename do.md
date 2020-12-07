@@ -46,6 +46,8 @@
 - [ ] p3 Add password key derivation to encryption
 - [ ] Move reposYaml to be a sub service of repos
   - I don't need to access it directly
+- [ ] Implement the load repo from filesystem
+  - In theory can be done later
 
 ## Friends of friends
 
