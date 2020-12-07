@@ -54,6 +54,10 @@ update actions. If a saga needs to update redux state, it can dispatch a
 state update action immediately when it starts, potentially with an identical
 payload.
 
+Saga trigger actions should be called `SagaAction` and should be defined and
+exported from the saga file. In some way, they are completely separate from
+"redux" state actions.
+
 ## Consequences
 
 If this pattern is rigorously followed, I can safely trigger a saga via
