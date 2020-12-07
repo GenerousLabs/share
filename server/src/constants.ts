@@ -4,7 +4,11 @@ import { join } from "path";
 export const REPOS_ROOT = join(__dirname, "../data/repos");
 export const COMMANDS_REPO_NAME = "commands.git" as const;
 
-export const USER_TOKEN_PATH = join(REPOS_ROOT, "commands", "user_tokens.yaml");
+export const USER_TOKEN_PATH = join(
+  REPOS_ROOT,
+  "commands.git",
+  "user_tokens.yaml"
+);
 
 export const READ_TOKENS_FILE_NAME = "read_tokens.txt" as const;
 
