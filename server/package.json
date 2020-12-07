@@ -8,6 +8,9 @@
   },
   "author": "Generous Labs",
   "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "build": "yarn lint && yarn build-ts",
     "build-ts": "ncc build src/server.ts -o dist",
