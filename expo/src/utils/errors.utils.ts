@@ -1,4 +1,4 @@
-import { createAction } from "@reduxjs/toolkit";
+import { ActionCreator, AnyAction, createAction } from "@reduxjs/toolkit";
 
 export type SerializableError = {
   code?: string;
@@ -17,22 +17,27 @@ export const getSerializableError = (error: Error): SerializableError => {
   return { message, code, data };
 };
 
-export const makeErrorActionCreator = (baseActionType: string) => {
+export const makeErrorActionCreator = (
+  baseActionType: string | ActionCreator<AnyAction>
+) => {
   return createAction(
     baseActionType + "/ERROR",
     ({
       error,
       message,
+      isFatal = false,
       meta,
     }: {
       error?: Error;
       message: string;
+      isFatal?: boolean;
       meta?: {};
     }) => {
       const cleanError =
         typeof error === "undefined" ? undefined : getSerializableError(error);
       return {
         payload: { error: cleanError, message, meta },
+        meta: { isFatal },
       };
     }
   );
