@@ -1,1 +1,1 @@
-export const timestampSeconds = () => Math.round(Date.now() / 1e3);
+export const getTimestampSeconds = () => Math.round(Date.now() / 1e3);

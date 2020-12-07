@@ -3,7 +3,7 @@ import matter from "gray-matter";
 import { gitApi } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp } from "../../shared.constants";
 import { RepoInRedux, RepoOnDisk } from "../../shared.types";
-import { timestampSeconds } from "../../utils/time.utils";
+import { getTimestampSeconds } from "../../utils/time.utils";
 import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
 import {
   gitAddAndCommit,
@@ -32,6 +32,7 @@ export const _createNewRepo = async ({
   encryptThisRepo = true,
 }: RepoOnDisk & { encryptThisRepo?: boolean }): Promise<RepoInRedux> => {
   const { fs } = gitFsHttp;
+  const now = getTimestampSeconds();
 
   log.debug("repo.servce / initRepo() invoked #eQ4V3I", {
     title,
@@ -125,6 +126,6 @@ export const _createNewRepo = async ({
     type,
     headCommitObjectId: newCommitHash,
     commitsAheadOfOrigin: 0,
-    lastFetchTimestamp: timestampSeconds(),
+    lastFetchTimestamp: now,
   };
 };
