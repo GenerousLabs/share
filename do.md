@@ -6,6 +6,7 @@
     - Later: shard logs based on date or something
     - Reading & writing the whole file could get costly fast
     - Shard by day and then add a "reset all logs" function
+- [ ] Add createdAt / updatedAt fields to Offers
 - [ ] Sort offers by createdAt / updatedAt dates
 - [ ] Write to and read from repos.yaml
   - As a fallback?
@@ -24,6 +25,11 @@
 - [x] Add tags to offers
 - [ ] p2 Add server to host git repos
 - [ ] p3 Add password key derivation to encryption
+
+## Friends of friends
+
+- [ ] Dedupe items by uuid
+  - Maybe favour the proximity?
 
 ## Later
 
