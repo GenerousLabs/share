@@ -27,6 +27,12 @@
 - [ ] p2 Add server to host git repos
 - [ ] p3 Add password key derivation to encryption
 
+## Low priority
+
+- [ ] Refactor creating repos into a saga
+  - Right now it's a function that returns a RepoInRedux
+  - It should be a saga that pushes to redux on its own
+
 ## Friends of friends
 
 - [ ] Dedupe items by uuid
