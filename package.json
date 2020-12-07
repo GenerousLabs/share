@@ -4,5 +4,8 @@
   "repository": "git@github.com:GenerousLabs/share.git",
   "author": "Generous Labs",
   "license": "AGPL-3.0-or-later",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "husky": "^4.3.5"
+  }
 }
