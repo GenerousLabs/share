@@ -5,6 +5,11 @@
   "author": "Generous Labs",
   "license": "AGPL-3.0-or-later",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd expo && yarn lint && cd ../server && yarn lint"
+    }
+  },
   "devDependencies": {
     "husky": "^4.3.5"
   }

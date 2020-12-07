@@ -10,11 +10,6 @@
     "test": "jest --watchAll",
     "postinstall": "patch-package"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
-  },
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
