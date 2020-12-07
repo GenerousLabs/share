@@ -11,6 +11,7 @@ import { intersection, uniq } from "remeda";
 import { OfferInRedux, OfferOnDisk } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
+import { getTimestampSeconds } from "../../utils/time.utils";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -95,13 +96,6 @@ export const createNewLibrarySagaAction = createAction<{
 export const createNewLibraryErrorAction = makeErrorActionCreator(
   CREATE_LIBRARY
 );
-
-const CREATE_OFFER = "SHARE/library/createNewOffer";
-export const createNewOfferSagaAction = createAction<{
-  offer: OfferOnDisk;
-  repoId: string;
-}>(CREATE_OFFER);
-export const createNewOfferError = makeErrorActionCreator(CREATE_OFFER);
 
 const LOAD_OFFER = "SHARE/library/loadOffer" as const;
 export const loadOfferSagaAction = createAction<{

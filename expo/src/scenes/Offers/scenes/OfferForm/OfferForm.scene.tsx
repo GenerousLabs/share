@@ -4,8 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as generateUuid } from "uuid";
+import { createNewOfferSagaAction } from "../../../../services/library/library.saga";
 import { selectMyLibraries } from "../../../../services/library/library.selectors";
-import { createNewOfferSagaAction } from "../../../../services/library/library.state";
 import { RootDispatch } from "../../../../store";
 
 type Inputs = {

@@ -3,10 +3,8 @@ import * as React from "react";
 import { Alert, Button, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import { Text, View } from "../../components/Themed";
-import {
-  createNewOfferSagaAction,
-  loadOfferSagaAction,
-} from "../../services/library/library.state";
+import { createNewOfferSagaAction } from "../../services/library/library.saga";
+import { loadOfferSagaAction } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
 

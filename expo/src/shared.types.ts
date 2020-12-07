@@ -112,7 +112,7 @@ export type RepoInRedux = RepoOnDisk & RepoYamlWithoutKeys & RepoGitMetadata;
 /**
  * These properties are stored in the markdown file.
  */
-export type OfferOnDisk = {
+export type OfferOnDiskFrontmatter = {
   /** The uuid specified by the offer itself */
   uuid: string;
   /** The title of this offer */
@@ -123,6 +123,11 @@ export type OfferOnDisk = {
   proximity: number;
   /** How far is this to be shared? 1 = my friends, 2 = their friends, etc */
   shareToProximity: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type OfferOnDisk = OfferOnDiskFrontmatter & {
   /** A markdown string that describes this offer */
   bodyMarkdown: string;
 };

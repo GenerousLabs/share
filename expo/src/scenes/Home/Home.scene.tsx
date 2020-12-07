@@ -1,14 +1,11 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import * as FileSystem from "expo-file-system";
 import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../navigation";
-import {
-  createNewOfferSagaAction,
-  subscribeToLibrarySagaAction,
-} from "../../services/library/library.state";
+import { createNewOfferSagaAction } from "../../services/library/library.saga";
+import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
 import {
   DANGEROUS_setupResetSagaAction,

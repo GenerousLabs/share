@@ -2,8 +2,8 @@ import { describe, it, expect } from "@jest/globals";
 import fs from "expo-fs";
 import { testSaga } from "redux-saga-test-plan";
 import { commitAllSagaAction, selectRepoById } from "../repo/repo.state";
-import { createNewOfferEffect } from "./library.saga";
-import { createNewOfferSagaAction, createNewOfferError } from "./library.state";
+import { createNewOfferSagaAction, createNewOfferEffect } from "./library.saga";
+import { createNewOfferError } from "./sagas/createNewOfferSaga";
 
 describe("library.saga", () => {
   describe("createNewOfferEffect()", () => {
