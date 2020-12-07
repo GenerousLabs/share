@@ -22,6 +22,19 @@
 - [x] Define the format for a `me` repo
   - Add a type field to the repos list
 - [x] Add tags to offers
+- [ ] Create connection flow
+  - [ ] Generate an invite
+    - Create a repo
+    - Grant access
+  - [ ] Accept an invite
+    - Import the repo
+    - Create a repo
+    - Post a ping message
+    - Grant access
+  - [ ] Confirm connection
+    - Import the repo
+    - Read the ping message
+    - Post a pong message
 
 ## Low priority
 
