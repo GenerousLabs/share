@@ -8,10 +8,11 @@
     - Shard by day and then add a "reset all logs" function
 - [ ] Add createdAt / updatedAt fields to Offers
 - [ ] Sort offers by createdAt / updatedAt dates
-- [ ] Write to and read from repos.yaml
+- [x] Write to and read from repos.yaml
   - As a fallback?
   - Write into the file after successfully importing and then it's only
     written to after successful initialisation
+  - When do we read from this? Only on re-setup I guess, which is later.
 - [x] Do we redux-persist?
   - If so, we can potentially consider the redux state to be somewhat persistent
   - Could deploy a "regenerate state" function later
@@ -33,5 +34,6 @@
 
 ## Later
 
+- [ ] Implement setup from an existing me repo
 - [ ] Running setup on an existing repo will fail in odd ways see #1
 - [ ] Implement deleteLogs() #rCOtsm
