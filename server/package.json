@@ -1,0 +1,63 @@
+{
+  "name": "generous-share-server",
+  "version": "0.1.0",
+  "description": "Git based server backend for the Generous Share app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/generouslabs/share.git"
+  },
+  "author": "Generous Labs",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "build": "yarn lint && yarn build-ts",
+    "build-ts": "ncc build src/server.ts -o dist",
+    "debug": "yarn build && yarn watch-debug",
+    "format": "prettier --write src/",
+    "lint": "yarn format && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+    "serve": "node dist/",
+    "serve-debug": "nodemon --inspect dist/",
+    "start": "yarn build && yarn serve",
+    "test": "jest --forceExit --coverage --verbose",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "watch-node": "nodemon dist/",
+    "watch-test": "yarn test -- --watchAll",
+    "watch-ts": "tsc -w"
+  },
+  "dependencies": {
+    "@chmac/node-git-server": "^0.6.3",
+    "async": "^3.1.0",
+    "bluebird": "^3.5.5",
+    "dotenv": "^8.2.0",
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.19",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^7.23.0",
+    "@types/async": "^3.0.2",
+    "@types/bluebird": "^3.5.27",
+    "@types/chai": "^4.2.3",
+    "@types/concurrently": "^4.1.0",
+    "@types/eslint": "^6.1.1",
+    "@types/jest": "^24.0.23",
+    "@types/js-yaml": "^3.12.5",
+    "@types/lodash": "^4.14.141",
+    "@types/node": "^12.7.8",
+    "@types/shelljs": "^0.8.5",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "@vercel/ncc": "^0.25.0",
+    "chai": "^4.2.0",
+    "concurrently": "^5.0.0",
+    "eslint": "^6.4.0",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^2.1.1",
+    "shelljs": "^0.8.3",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}
