@@ -122,6 +122,7 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             title="Export repos as zip"
+            color="#116530"
             onPress={async () => {
               await createAndShareZipFile({ path: "/repos" });
               Alert.alert("Zip export finished #znvf34");
