@@ -3,13 +3,16 @@ import winston from "winston";
 
 const devTransports = [
   new winston.transports.Console({
-    level: "devug",
+    level: "debug",
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.simple()
     ),
   }),
-  new winston.transports.File({ filename: "debug.log", level: "debug" }),
+  new winston.transports.File({
+    filename: "../data/debug.log",
+    level: "debug",
+  }),
 ];
 
 const prodTransports = [
@@ -35,7 +38,7 @@ const options: winston.LoggerOptions = {
 const logger = winston.createLogger(options);
 
 if (process.env.NODE_ENV !== "production") {
-  logger.debug("Logging initialized at debug level");
+  logger.debug("Logging initialized at debug level #tKMPf1");
 }
 
 export default logger;
