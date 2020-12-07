@@ -22,14 +22,14 @@
 - [x] Define the format for a `me` repo
   - Add a type field to the repos list
 - [x] Add tags to offers
-- [ ] p2 Add server to host git repos
-- [ ] p3 Add password key derivation to encryption
 
 ## Low priority
 
 - [ ] Refactor creating repos into a saga
   - Right now it's a function that returns a RepoInRedux
   - It should be a saga that pushes to redux on its own
+- [ ] p2 Add server to host git repos
+- [ ] p3 Add password key derivation to encryption
 
 ## Friends of friends
 
