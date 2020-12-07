@@ -3,7 +3,7 @@ import fs from "expo-fs";
 import { testSaga } from "redux-saga-test-plan";
 import { commitAllSagaAction, selectRepoById } from "../repo/repo.state";
 import { createNewOfferSagaAction, createNewOfferEffect } from "./library.saga";
-import { createNewOfferError } from "./sagas/createNewOfferSaga";
+import { createNewOfferError } from "./sagas/createNewOffer.saga";
 
 describe("library.saga", () => {
   describe("createNewOfferEffect()", () => {

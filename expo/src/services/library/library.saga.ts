@@ -25,12 +25,12 @@ import {
   subscribeToLibrarySagaAction,
   upsertOneOfferAction,
 } from "./library.state";
-import createNewOfferSaga from "./sagas/createNewOfferSaga";
+import createNewOfferSaga from "./sagas/createNewOffer.saga";
 
 export {
   createNewOfferEffect,
   createNewOfferSagaAction,
-} from "./sagas/createNewOfferSaga";
+} from "./sagas/createNewOffer.saga";
 
 const log = rootLogger.extend("library.saga");
 
