@@ -4,7 +4,7 @@ import { gitApi } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp } from "../../shared.constants";
 import { RepoInRedux, RepoOnDisk } from "../../shared.types";
 import { getTimestampSeconds } from "../../utils/time.utils";
-import { doesDirectoryExist, join, mkdirp } from "../fs/fs.service";
+import { doesDirectoryExist, join } from "../fs/fs.service";
 import {
   gitAddAndCommit,
   gitInitNewRepo,
