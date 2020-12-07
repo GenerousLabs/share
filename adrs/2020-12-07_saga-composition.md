@@ -33,6 +33,8 @@ There are some packages which try to help with this.
 - [redux-saga-promise](https://github.com/adobe/redux-saga-promise) creates
   "promsie actions" which can be resolved in sagas. They can then be awaited
   with `putResolve()` in other sagas, amongst other things.
+- [redxu-saga-promise-actions](https://github.com/tomekkleszcz/redux-saga-promise-actions)
+  is very similar to redux-saga-promise but written in TypeScript.
 - [typescript-fsa-redux-saga](https://github.com/aikoven/typescript-fsa-redux-saga)
   automates disaptching started, finished, error actions within a saga.
 - [redux-saga-try-catch](https://github.com/killtheliterate/redux-saga-try-catch)
