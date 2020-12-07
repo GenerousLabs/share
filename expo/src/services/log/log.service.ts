@@ -8,7 +8,7 @@ import dayjsBase, { Dayjs } from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
 import * as FileSystem from "expo-file-system";
 import { LOGS_PATH } from "../../shared.constants";
-import { join } from "../fs/fs.service";
+import { appendLineTofile, getFileContents, join } from "../fs/fs.service";
 
 const LINE_PART_SEPARATOR = " " as const;
 const NAMESPACE_DELIMITER = ":" as const;
@@ -35,46 +35,6 @@ const dayjsUtc = dayjsBase.extend(utcPlugin);
 const logDirPath = FileSystem.documentDirectory + LOGS_PATH;
 
 export const _getFilePath = (filename: string) => join(logDirPath, filename);
-
-const _getExistingFileContents = async (filepath: string) => {
-  try {
-    // NOTE: We need the `await` here for this catch block to catch
-    return await FileSystem.readAsStringAsync(filepath, {
-      encoding: "utf8",
-    });
-  } catch (error) {
-    // In the event of any error (expo's error codes are impossible to discern),
-    // check if the file exists, and if not, return an empty string, otherwise
-    // re throw whatever error we caught.
-    const stats = await FileSystem.getInfoAsync(filepath);
-    if (!stats.exists) {
-      // If the file does not exist, check to make sure that its containing
-      // directory does exist
-      const dirStats = await FileSystem.getInfoAsync(logDirPath);
-      if (!dirStats.isDirectory) {
-        await FileSystem.makeDirectoryAsync(logDirPath);
-      }
-
-      return "";
-    }
-    throw error;
-  }
-};
-
-export const _appendLineToLogFile = async ({
-  filename,
-  line,
-}: {
-  filename: string;
-  line: string;
-}) => {
-  const filepath = _getFilePath(filename);
-  const existingContents = await _getExistingFileContents(filepath);
-  const newContents = `${existingContents}\n${line}`;
-  await FileSystem.writeAsStringAsync(filepath, newContents, {
-    encoding: "utf8",
-  });
-};
 
 export const _metaToString = (meta: any[]): string => {
   if (meta.length === 1) {
@@ -149,7 +109,8 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
   }
 
   // NOTE: We don't await here, we want `_log()` to return instantly
-  _appendLineToLogFile({ filename, line }).catch((error) => {
+  const filepath = _getFilePath(filename);
+  appendLineTofile({ filepath, line }).catch((error) => {
     // NOTE: We need to use the `console` here as this is a logger error
     try {
       if (typeof console !== "undefined" && "error" in console) {
@@ -178,7 +139,7 @@ export const getLogs = async ({ skipDays = 0 }: { skipDays?: number } = {}) => {
   const dayjs = dayjsUtc.utc().subtract(skipDays, "day");
   const filename = _getFileName(dayjs);
   const filepath = _getFilePath(filename);
-  return await _getExistingFileContents(filepath);
+  return await getFileContents({ filepath, createParentDir: false });
 };
 
 export const deleteLogs = async ({
