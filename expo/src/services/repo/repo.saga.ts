@@ -53,7 +53,7 @@ export function* commitAllEffect(
     const { repoId, message } = action.payload;
 
     const repo = yield* select(
-      invariantSelector(selectRepoById, "Repo not found #6jBGXO"),
+      invariantSelector(selectRepoById, "Repo not found #p9DvsA"),
       repoId
     );
 
