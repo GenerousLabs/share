@@ -28,6 +28,10 @@ export const getRepoPath = ({ id, type }: { id: string; type: RepoType }) => {
   assertNever(type);
 };
 
+// NOTE: This is weird, we should probably invoke a saga which in turn calls
+// this function. Calling a function and then invoking a saga with its return
+// value is weird.
+// TODO Refactor this into a saga
 export const createMeRepo = async () => {
   const uuid = generateUuid();
   const title = "Me";

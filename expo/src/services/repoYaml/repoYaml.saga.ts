@@ -1,16 +1,10 @@
-import { all, takeEvery } from "typed-redux-saga/dist";
-import { rootLogger } from "../log/log.service";
-import { addOneRepoSagaAction } from "../repo/repo.state";
+import { all } from "typed-redux-saga/macro";
+import saveRepoToReposYamlSaga from "./sagas/saveRepoToReposYaml.saga";
+export {
+  saveRepoToReposYamlSagaAction,
+  saveRepoToReposYamlEffect,
+} from "./sagas/saveRepoToReposYaml.saga";
 
-const log = rootLogger.extend("repoYaml");
-
-export function* addOneRepoEffect(
-  action: ReturnType<typeof addOneRepoSagaAction>
-) {
-  // Write the repo into our `repos.yaml` file
-  log.debug("addOneRepoEffect() #K2X6P8", { action });
-}
-
-export default function* repoSaga() {
-  yield all([takeEvery(addOneRepoSagaAction, addOneRepoEffect)]);
+export default function* repoYamlSaga() {
+  yield all([saveRepoToReposYamlSaga()]);
 }

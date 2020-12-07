@@ -9,8 +9,12 @@ import { persistConfig } from "../../store";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
 import { rootLogger } from "../log/log.service";
+import {
+  createNewRepoEffect,
+  createNewRepoSagaAction,
+} from "../repo/repo.saga";
 import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
-import { addOneRepoSagaAction } from "../repo/repo.state";
+import { addOneRepoAction } from "../repo/repo.state";
 import { maybeStartupSagaAction } from "../startup/startup.state";
 import {
   DANGEROUS_setupResetSagaAction,
@@ -31,12 +35,13 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
     yield* call(writeConfigToFilesystem, { config });
 
     const meRepo = yield* call(createMeRepo);
-
-    yield* put(addOneRepoSagaAction(meRepo));
+    yield* call(createNewRepoEffect, createNewRepoSagaAction({ repo: meRepo }));
 
     const commandsRepo = yield* call(createCommandsRepo);
-
-    yield* put(addOneRepoSagaAction(commandsRepo));
+    yield* call(
+      createNewRepoEffect,
+      createNewRepoSagaAction({ repo: commandsRepo })
+    );
 
     yield* put(setSetupCompleteAction());
 

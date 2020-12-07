@@ -10,7 +10,7 @@ import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
-  addOneRepoSagaAction,
+  addOneRepoAction,
   commitAllErrorAction,
   commitAllSagaAction,
   loadRepoContentsSagaAction,
@@ -20,6 +20,12 @@ import {
   setNewCommitHashAction,
   updateOneRepoAction,
 } from "./repo.state";
+import createNewRepoSaga from "./sagas/createNewRepo.saga";
+
+export {
+  createNewRepoSagaAction,
+  createNewRepoEffect,
+} from "./sagas/createNewRepo.saga";
 
 const log = rootLogger.extend("repo.saga");
 
@@ -102,12 +108,13 @@ export function* loadRepoFromFilesystemEffect(
 ) {
   try {
     // TODO Fix this
-    throw new Error("Needs implementation fix. #2ybMIL");
+    log.error("loadRepoFromFilesystemEffect() needs implementation. #2ybMIL");
+    return;
     const repo = yield* call(getRepoParamsFromFilesystem, {
       path: action.payload.path,
     });
 
-    yield* put(addOneRepoSagaAction(repo as any));
+    yield* put(addOneRepoAction(repo as any));
 
     // We `yield* call()` here so that this generator only completes AFTER the
     // nested call to `loadRepoContents` has itself completed.
@@ -150,6 +157,7 @@ export function* repoStartupEffect() {
 
 export default function* repoSaga() {
   yield all([
+    createNewRepoSaga(),
     takeEvery(commitAllSagaAction, commitAllEffect),
     takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
     takeEvery(loadRepoFromFilesystemSagaAction, loadRepoFromFilesystemEffect),

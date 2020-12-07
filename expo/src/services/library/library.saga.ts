@@ -13,16 +13,15 @@ import {
   createLibraryRepo,
   getRepoPath,
 } from "../repo/repo.service";
+import { commitAllSagaAction, selectRepoById } from "../repo/repo.state";
 import {
-  commitAllSagaAction,
-  selectRepoById,
-  addOneRepoSagaAction,
-} from "../repo/repo.state";
-import { addOneRepoEffect } from "../repoYaml/repoYaml.saga";
+  saveRepoToReposYamlEffect,
+  saveRepoToReposYamlSagaAction,
+} from "../repoYaml/repoYaml.saga";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
-  createNewLibrarySagaAction,
   createNewLibraryErrorAction,
+  createNewLibrarySagaAction,
   createNewOfferError,
   createNewOfferSagaAction,
   loadOfferError,
@@ -66,7 +65,10 @@ export function* createNewLibraryEffect(
       bodyMarkdown,
     });
 
-    yield* call(addOneRepoEffect, addOneRepoSagaAction(repo));
+    yield* call(
+      saveRepoToReposYamlEffect,
+      saveRepoToReposYamlSagaAction({ repo })
+    );
 
     yield* call(
       commitAllEffect,
