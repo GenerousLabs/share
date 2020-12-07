@@ -1,60 +1,132 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import fs from "fs";
+import yaml from "js-yaml";
 import { join } from "path";
-import { constants, readConfigFromFile } from "plans";
-import { ME_REPO_NAME, REPOS_ROOT } from "../../constants";
-import logger from "../../util/logger";
+import {
+  COMMANDS_REPO_NAME,
+  ENOENT,
+  MINIMUM_TOKEN_LENGTH,
+  MINIMUM_USERNAME_LENGTH,
+  READ_TOKENS_FILE_NAME,
+  REPOS_ROOT,
+  USER_TOKEN_PATH,
+} from "../../constants";
 import { splitRepo } from "../../util/repoNames";
 
-export const getRepoPath = ({ org, repo }: { org: string; repo: string }) => {
-  return join(REPOS_ROOT, org, repo);
+export const _getReadTokensPath = ({
+  org,
+  repo,
+}: {
+  org: string;
+  repo: string;
+}) => {
+  return join(REPOS_ROOT, org, COMMANDS_REPO_NAME, repo, READ_TOKENS_FILE_NAME);
 };
 
-export const addConfigFileToRepoPath = (repoPath: string) =>
-  join(repoPath, constants.CONFIG_FILENAME);
+export const _parseTokensYaml = ({ input }: { input: string }) => {
+  const userTokenMap = yaml.safeLoad(input) as {
+    [userId: string]: string;
+  };
 
-export const getConfigForRepoPath = async (repoPath: string) => {
+  const filteredEntries = Object.entries(userTokenMap).filter(
+    ([username, token]) => {
+      if (
+        typeof username !== "string" ||
+        username.length < MINIMUM_USERNAME_LENGTH ||
+        typeof token !== "string" ||
+        token.length < MINIMUM_TOKEN_LENGTH
+      ) {
+        return false;
+      }
+      return true;
+    }
+  );
+
+  const output = Object.fromEntries(filteredEntries);
+
+  return output;
+};
+
+export const _getUserToken = async ({
+  user,
+}: {
+  user: string;
+}): Promise<string | undefined> => {
+  const userTokensString = await fs.promises.readFile(USER_TOKEN_PATH, {
+    encoding: "utf8",
+  });
+
+  const tokenMap = _parseTokensYaml({ input: userTokensString });
+
+  if (user in tokenMap) {
+    return tokenMap[user];
+  }
+};
+
+export const _getReadTokensForRepo = async ({
+  org,
+  repo,
+}: {
+  org: string;
+  repo: string;
+}): Promise<string[]> => {
+  const readTokensPath = _getReadTokensPath({ org, repo });
   try {
-    const { org } = splitRepo(repoPath);
-
-    const diskPath = getRepoPath({ org, repo: ME_REPO_NAME });
-    const configFilePath = addConfigFileToRepoPath(diskPath);
-
-    // NOTE: We `return await` here to ensure that the catch block in this try /
-    // catch is triggered if this throws.
-    return await readConfigFromFile({ fs, configFilePath });
+    const tokensString = await fs.promises.readFile(readTokensPath, {
+      encoding: "utf8",
+    });
+    const tokens = tokensString.split("\n");
+    return tokens;
   } catch (error) {
-    logger.error("Error loading config #OM0gH6", error);
-    throw new Error("Auth fail. #kdmkwX");
+    if (error.code === ENOENT) {
+      return [];
+    }
+    throw error;
   }
 };
 
-export const checkReadPermissions = async ({
+/**
+ * Check if a user can read this repository.
+ *
+ * Look up the commands repo for this user, get the tokens file for this repo
+ * (if it exists), and check if the supplied token is valid.
+ */
+export const getIsValidReadToken = async ({
   repoPath,
   token,
 }: {
   repoPath: string;
   token: string;
 }) => {
-  const { private_token, sharing_token } = await getConfigForRepoPath(repoPath);
+  const { org, repo } = splitRepo(repoPath);
 
-  if (token === private_token || token === sharing_token) {
+  const tokens = await _getReadTokensForRepo({ org, repo });
+
+  if (tokens.includes(token)) {
     return true;
   }
-  throw new Error("Auth failure. #qcSHbN");
+
+  return false;
 };
 
-export const checkWritePermissions = async ({
+/**
+ * Check if a user can write to this repo.
+ *
+ * Look up the server's commands repo, get the tokens yaml dict, check if this
+ * token is valid for this user.
+ */
+export const getIsValidWriteToken = async ({
   repoPath,
   token,
 }: {
   repoPath: string;
   token: string;
 }) => {
-  const { private_token } = await getConfigForRepoPath(repoPath);
+  const { org } = splitRepo(repoPath);
+  const userToken = await _getUserToken({ user: org });
 
-  if (token === private_token) {
+  if (userToken === token) {
     return true;
   }
-  throw new Error("Auth failure. #XEWrYH");
+
+  return false;
 };

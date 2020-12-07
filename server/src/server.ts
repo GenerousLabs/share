@@ -1,8 +1,8 @@
 import Server from "@chmac/node-git-server";
 import path from "path";
 import {
-  checkReadPermissions,
-  checkWritePermissions,
+  getIsValidReadToken,
+  getIsValidWriteToken,
 } from "./services/repos/repos.service";
 import logger from "./util/logger";
 
@@ -28,22 +28,50 @@ const repos = new Server(path.join(__dirname, "../data/repos"), {
 
         try {
           if (type === "push") {
-            const allowed = await checkWritePermissions({ repoPath, token });
-            if (allowed) {
+            const isValidWriteToken = await getIsValidWriteToken({
+              repoPath,
+              token,
+            });
+
+            if (isValidWriteToken) {
               return resolve();
             }
+
+            logger.warn("Invalid write token for push request #uDCS0u", {
+              repoPath,
+              token,
+            });
+
             return reject();
           } else if (type === "fetch") {
-            const allowed = await checkReadPermissions({ repoPath, token });
-            if (allowed) {
+            const isValidWriteToken = await getIsValidWriteToken({
+              repoPath,
+              token,
+            });
+
+            if (isValidWriteToken) {
               return resolve();
             }
+
+            const isValidReadToken = await getIsValidReadToken({
+              repoPath,
+              token,
+            });
+
+            if (isValidReadToken) {
+              return resolve();
+            }
+
+            logger.warn(
+              "Invalid read / write token for fetch request #m9zh76",
+              { repoPath, token }
+            );
             return reject();
           } else {
-            return reject("Unknown error. #ftvkPh");
+            return reject("Unknown error. #sqzN0U");
           }
         } catch (error) {
-          logger.error("Error in authenticate() #OeGBID", error);
+          logger.error("Error in authenticate() #tOkULE", error);
           return reject(error);
         }
       });
@@ -82,5 +110,5 @@ repos.on("tag", (tag) => {
 */
 
 repos.listen(PORT, { enableCors: true, type: "http" }, () => {
-  logger.debug(`Listening on :${PORT}`);
+  logger.debug(`Listening on :${PORT} #OKzflB`);
 });
