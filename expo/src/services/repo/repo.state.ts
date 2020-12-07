@@ -1,9 +1,11 @@
 import {
   createAction,
   createEntityAdapter,
+  createSelector,
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
+import { RepoType } from "../../shared.constants";
 import { RepoInRedux } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
@@ -46,15 +48,12 @@ export default repoSlice.reducer;
 
 export const selectRepoById = repoSelectors.selectById;
 export const selectAllRepos = repoSelectors.selectAll;
-
-export const commitAllSagaAction = createAction<{
-  repoId: string;
-  message: string;
-}>("SHARE/repo/commitAll");
-
-export const commitAllErrorAction = makeErrorActionCreator(
-  "SHARE/repo/commitAll"
-);
+export const selectMeRepo = createSelector(selectAllRepos, (repos) => {
+  return repos.find((repo) => repo.type === RepoType.me);
+});
+export const selectCommandRepo = createSelector(selectAllRepos, (repos) => {
+  return repos.find((repo) => repo.type === RepoType.commands);
+});
 
 export const loadRepoContentsSagaAction = createAction<{ repoId: string }>(
   "SHARE/repo/loadRepoContents"

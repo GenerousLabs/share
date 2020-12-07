@@ -12,8 +12,16 @@ import { assertNever } from "../../utils/never.utils";
 import { join } from "../fs/fs.service";
 import { _createNewRepo } from "./_createNewRepo";
 
-export const getRepoPath = ({ id, type }: { id: string; type: RepoType }) => {
-  switch (type) {
+export const getRepoBasename = ({ id }: Pick<RepoInRedux, "id">) => {
+  return id;
+};
+
+export const getRepoPath = (
+  params:
+    | { type: RepoType.me | RepoType.commands }
+    | Pick<RepoInRedux, "id" | "type">
+) => {
+  switch (params.type) {
     case RepoType.me: {
       return join(REPOS_PATH, "me");
     }
@@ -22,10 +30,10 @@ export const getRepoPath = ({ id, type }: { id: string; type: RepoType }) => {
     }
     case RepoType.library:
     case RepoType.connection: {
-      return join(REPOS_PATH, id);
+      return join(REPOS_PATH, getRepoBasename({ id: params.id }));
     }
   }
-  assertNever(type);
+  assertNever(params);
 };
 
 // NOTE: This is weird, we should probably invoke a saga which in turn calls

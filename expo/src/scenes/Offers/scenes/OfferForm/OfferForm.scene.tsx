@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as generateUuid } from "uuid";
+import { createReadAuthTokenForRepoSagaAction } from "../../../../services/commands/commands.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/library.saga";
 import { selectMyLibraries } from "../../../../services/library/library.selectors";
 import { RootDispatch } from "../../../../store";
@@ -100,6 +101,19 @@ const OfferForm = () => {
       />
       {errors.bodyMarkdown && <Text>You need to enter some body text</Text>}
       <Button title="Add offer to library" onPress={handleSubmit(onSubmit)} />
+      <View style={styles.authButtonWrapper}>
+        <Button
+          color="darkred"
+          title="Create a new auth token for this repo"
+          onPress={() => {
+            dispatch(
+              createReadAuthTokenForRepoSagaAction({
+                repoId: libraries[0].id,
+              })
+            );
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -118,5 +132,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 4,
     margin: 10,
+  },
+  authButtonWrapper: {
+    marginTop: 40,
   },
 });

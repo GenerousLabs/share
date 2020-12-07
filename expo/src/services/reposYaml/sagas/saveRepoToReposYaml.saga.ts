@@ -1,10 +1,9 @@
 import { createAction } from "@reduxjs/toolkit";
-import { all, call, put, takeEvery } from "typed-redux-saga/macro";
+import { call, put, takeEvery } from "typed-redux-saga/macro";
 import { RepoInRedux } from "../../../shared.types";
 import { makeErrorActionCreator } from "../../../utils/errors.utils";
 import { rootLogger } from "../../log/log.service";
-import { commitAllEffect } from "../../repo/repo.saga";
-import { commitAllSagaAction } from "../../repo/repo.state";
+import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { addNewRepoToReposYaml } from "../reposYaml.service";
 
 const log = rootLogger.extend("repoYaml").extend("saveRepoToReposYaml");
@@ -43,7 +42,5 @@ export function* saveRepoToReposYamlEffect(
 }
 
 export default function* saveRepoToReposYamlSaga() {
-  yield all([
-    takeEvery(saveRepoToReposYamlSagaAction, saveRepoToReposYamlEffect),
-  ]);
+  yield takeEvery(saveRepoToReposYamlSagaAction, saveRepoToReposYamlEffect);
 }
