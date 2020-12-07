@@ -24,7 +24,7 @@
 - [x] Add tags to offers
 - [ ] Create connection flow
   - [ ] Generate an invite
-    - Create a repo
+    - Create a connection repo
     - Grant access
   - [ ] Accept an invite
     - Import the repo
@@ -35,6 +35,7 @@
     - Import the repo
     - Read the ping message
     - Post a pong message
+- [ ] Kill the console.error() on key creation
 
 ## Low priority
 
