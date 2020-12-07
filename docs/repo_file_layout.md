@@ -42,3 +42,12 @@ conceptually speaking.
   - Some of these are mine, some were shared by friends
 - `/following.yaml` - Details on repos which are shared with me that I'm
   following (reading).
+
+## commands repo
+
+I give the server commands here. At the moment, these are only which keys are
+allowed to access which repos.
+
+- `/repo-path-name/read_tokens.txt` - This file contains the
+  permissions for the repo at `/user/repo-path-name`, one per line, no empty
+  lines.
