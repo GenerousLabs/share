@@ -43,6 +43,8 @@
   - It should be a saga that pushes to redux on its own
 - [ ] p2 Add server to host git repos
 - [ ] p3 Add password key derivation to encryption
+- [ ] Move reposYaml to be a sub service of repos
+  - I don't need to access it directly
 
 ## Friends of friends
 
