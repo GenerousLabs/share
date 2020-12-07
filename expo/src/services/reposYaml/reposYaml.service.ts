@@ -7,6 +7,17 @@ import { RepoInRedux, RepoYaml, RepoYamlSchema } from "../../shared.types";
 import { doesFileExist, join } from "../fs/fs.service";
 import { getRepoPath } from "../repo/repo.service";
 
+/**
+ * NAMING
+ *
+ * The naming of the reposYaml service is wonky.
+ *
+ * The file is `repos.yaml` which is why it's called the "reposYaml" service.
+ * However, a single entity from the file is probably more accurately called a
+ * `yamlRepo`. Anyway, it's a mess, and one day could be cleaned up. Alas, not
+ * today.
+ */
+
 const { fs } = gitFsHttp;
 const reposYamlPath = join(REPOS_PATH, "me/repos.yaml");
 

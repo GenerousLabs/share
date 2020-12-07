@@ -5,6 +5,6 @@ export {
   saveRepoToReposYamlEffect,
 } from "./sagas/saveRepoToReposYaml.saga";
 
-export default function* repoYamlSaga() {
+export default function* reposYamlSaga() {
   yield all([saveRepoToReposYamlSaga()]);
 }

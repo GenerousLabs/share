@@ -6,7 +6,7 @@ import { makeErrorActionCreator } from "../../../utils/errors.utils";
 import {
   saveRepoToReposYamlEffect,
   saveRepoToReposYamlSagaAction,
-} from "../../repoYaml/sagas/saveRepoToReposYaml.saga";
+} from "../../reposYaml/sagas/saveRepoToReposYaml.saga";
 import { addOneRepoAction } from "../repo.state";
 
 export const createNewRepoSagaAction = createAction<{

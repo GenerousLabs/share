@@ -5,7 +5,7 @@ import { makeErrorActionCreator } from "../../../utils/errors.utils";
 import { rootLogger } from "../../log/log.service";
 import { commitAllEffect } from "../../repo/repo.saga";
 import { commitAllSagaAction } from "../../repo/repo.state";
-import { addNewRepoToReposYaml } from "../repoYaml.service";
+import { addNewRepoToReposYaml } from "../reposYaml.service";
 
 const log = rootLogger.extend("repoYaml").extend("saveRepoToReposYaml");
 

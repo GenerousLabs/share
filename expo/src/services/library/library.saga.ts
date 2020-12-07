@@ -17,7 +17,7 @@ import { commitAllSagaAction, selectRepoById } from "../repo/repo.state";
 import {
   saveRepoToReposYamlEffect,
   saveRepoToReposYamlSagaAction,
-} from "../repoYaml/repoYaml.saga";
+} from "../reposYaml/reposYaml.saga";
 import { offerToString, readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryErrorAction,

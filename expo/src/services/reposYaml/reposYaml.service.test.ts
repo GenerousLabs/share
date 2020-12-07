@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { isRepoYaml } from "./repoYaml.service";
+import { isRepoYaml } from "./reposYaml.service";
 
 describe("repoYaml.service", () => {
   const exmampleKeys = {
