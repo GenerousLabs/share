@@ -15,7 +15,7 @@
 - [x] Do we redux-persist?
   - If so, we can potentially consider the redux state to be somewhat persistent
   - Could deploy a "regenerate state" function later
-- [ ] Add function to grant user read-only (pull-only) access to a repo
+- [x] Add function to grant user read-only (pull-only) access to a repo
   - Write into the commands repo
   - Need to define the format of the commands repo
 - [x] Put real repos into the repo startup saga
