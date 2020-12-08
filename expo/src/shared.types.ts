@@ -52,15 +52,15 @@ export type RepoOnDisk = RepoOnDiskFrontMatter & {
 };
 
 export const RepoYamlKeysSchema = zod.object({
-  keysContentBase64: zod.string(),
-  keysFilenamesBase64: zod.string(),
-  keysSaltBase64: zod.string(),
+  keysContentBase64: zod.string().nonempty(),
+  keysFilenamesBase64: zod.string().nonempty(),
+  keysSaltBase64: zod.string().nonempty(),
 });
 export const RepoYamlBaseSchema = zod.object({
-  id: zod.string(),
-  name: zod.string(),
+  id: zod.string().nonempty(),
+  name: zod.string().nonempty(),
   type: zod.nativeEnum(RepoType),
-  remoteUrl: zod.string(),
+  remoteUrl: zod.string().nonempty(),
   isReadOnly: zod.boolean(),
 });
 export const RepoYamlBaseWithKeysSchema = RepoYamlBaseSchema.merge(
