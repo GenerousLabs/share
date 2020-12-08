@@ -11,6 +11,7 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import createSagaMiddleware from "redux-saga";
+import { promiseMiddleware } from "redux-saga-promise-actions";
 import reducer from "./root.reducer";
 import rootSaga from "./root.saga";
 import { maybeStartupSagaAction } from "./services/startup/startup.state";
@@ -34,6 +35,7 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
+    promiseMiddleware,
     sagaMiddleware,
   ],
 });
