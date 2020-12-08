@@ -30,7 +30,11 @@ export const _createNewRepo = async ({
   type,
   bodyMarkdown,
   encryptThisRepo = true,
-}: RepoOnDisk & { encryptThisRepo?: boolean }): Promise<RepoInRedux> => {
+  message,
+}: RepoOnDisk & {
+  encryptThisRepo?: boolean;
+  message: string;
+}): Promise<RepoInRedux> => {
   const { fs } = gitFsHttp;
   const now = getTimestampSeconds();
 
@@ -98,7 +102,7 @@ export const _createNewRepo = async ({
   });
 
   const newCommitHash = await gitAddAndCommit({
-    message: "Initial me commit. #bISz6d",
+    message,
     dir: path,
   });
 

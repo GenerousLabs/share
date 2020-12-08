@@ -45,20 +45,23 @@ export const createMeRepo = async () => {
   const title = "Me";
   const bodyMarkdown = "This repo contains my configuration and settings.";
   const type = RepoType.me;
+  const message = "Initial me commit. #bISz6d";
 
   return _createNewRepo({
     title,
     uuid,
     type,
     bodyMarkdown,
+    message,
   });
 };
 
 export const createCommandsRepo = async () => {
   const uuid = generateUuid();
   const title = "Commands";
-  const type = RepoType.commands;
   const bodyMarkdown = "This repo contains commands I send to the server.";
+  const type = RepoType.commands;
+  const message = "Initial commands commit. #Eys6ql";
 
   return _createNewRepo({
     title,
@@ -66,6 +69,7 @@ export const createCommandsRepo = async () => {
     type,
     bodyMarkdown,
     encryptThisRepo: false,
+    message,
   });
 };
 
@@ -75,32 +79,34 @@ export const createLibraryRepo = async ({
   uuid,
 }: Omit<RepoOnDisk, "type"> & { basename: string }) => {
   const type = RepoType.library;
+  const message = "Initial library commit. #cGqwkl";
 
   return _createNewRepo({
     title,
     uuid,
     type,
     bodyMarkdown,
+    message,
   });
 };
 
 // TODO Figure out how this should work, this is really a stub
 export const createConnectionRepo = async ({
-  bodyMarkdown,
-  title,
   uuid,
+  title,
+  bodyMarkdown,
 }: Omit<RepoOnDisk, "type"> & {
-  connectionBasename: string;
   mine: boolean;
 }) => {
-  throw new Error("Not yet properly implemented #UoD9Qz");
   const type = RepoType.connection;
+  const message = "Initial connection commit. #PLezPT";
 
-  const commitHash = await _createNewRepo({
+  return _createNewRepo({
     title,
     uuid,
-    type: RepoType.connection,
+    type,
     bodyMarkdown,
+    message,
   });
 };
 
