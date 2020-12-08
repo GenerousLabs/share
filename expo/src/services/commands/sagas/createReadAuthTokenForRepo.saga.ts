@@ -1,12 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
-import { all } from "bluebird";
-import { call, put, select, takeEvery } from "typed-redux-saga/macro";
-import { makeErrorActionCreator } from "../../../utils/errors.utils";
-import { selectCommandRepo, selectRepoById } from "../../repo/repo.state";
-import { addReadAuthTokenForRepo } from "../commands.service";
 import { customAlphabet } from "nanoid";
 import nolookalikes from "nanoid-dictionary/nolookalikes-safe";
+import { call, put, select, takeEvery } from "typed-redux-saga/macro";
+import { makeErrorActionCreator } from "../../../utils/errors.utils";
+import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
+import { selectCommandRepo, selectRepoById } from "../../repo/repo.state";
+import { addReadAuthTokenForRepo } from "../commands.service";
 
 export const _generateToken = customAlphabet(nolookalikes, 22);
 
@@ -33,10 +33,9 @@ export function* effectSaga(action: ReturnType<typeof sagaAction>) {
       throw new Error("Invalid repoId #Q8HMso");
     }
 
-    const commandRepo = yield* select(selectCommandRepo);
-    if (typeof commandRepo === "undefined") {
-      throw new Error("Failed to get command repo #YaLr7j");
-    }
+    const commandRepo = yield* select(
+      invariantSelector(selectCommandRepo, "Failed to get command repo #YaLr7j")
+    );
 
     yield* call(addReadAuthTokenForRepo, { repo, token });
 
