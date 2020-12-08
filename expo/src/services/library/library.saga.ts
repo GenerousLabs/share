@@ -8,8 +8,8 @@ import { rootLogger } from "../log/log.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
-  createNewRepoEffect,
-  createNewRepoSagaAction,
+  saveNewRepoToReduxEffect,
+  saveNewRepoToReduxSagaAction,
 } from "../repo/repo.saga";
 import {
   cloneNewLibraryRepo,
@@ -67,7 +67,10 @@ export function* createNewLibraryEffect(
       bodyMarkdown,
     });
 
-    yield* call(createNewRepoEffect, createNewRepoSagaAction({ repo }));
+    yield* call(
+      saveNewRepoToReduxEffect,
+      saveNewRepoToReduxSagaAction({ repo })
+    );
 
     yield* call(
       commitAllEffect,

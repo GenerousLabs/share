@@ -16,17 +16,16 @@ import {
   selectRepoById,
 } from "./repo.state";
 import commitAllSaga from "./sagas/commitAll.saga";
-import createNewRepoSaga from "./sagas/createNewRepo.saga";
-
-export {
-  createNewRepoSagaAction,
-  createNewRepoEffect,
-} from "./sagas/createNewRepo.saga";
+import saveNewRepoToReduxSaga from "./sagas/saveNewRepoToRedux.saga";
 
 export {
   sagaAction as commitAllSagaAction,
   sagaEffect as commitAllEffect,
 } from "./sagas/commitAll.saga";
+export {
+  sagaAction as saveNewRepoToReduxSagaAction,
+  sagaEffect as saveNewRepoToReduxEffect,
+} from "./sagas/saveNewRepoToRedux.saga";
 
 export const log = rootLogger.extend("repo.saga");
 
@@ -107,7 +106,7 @@ export function* repoStartupEffect() {
 
 export default function* repoSaga() {
   yield all([
-    createNewRepoSaga(),
+    saveNewRepoToReduxSaga(),
     commitAllSaga(),
     takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
     takeEvery(loadRepoFromFilesystemSagaAction, loadRepoFromFilesystemEffect),

@@ -9,15 +9,11 @@ import {
 } from "../../reposYaml/sagas/saveRepoToReposYaml.saga";
 import { addOneRepoAction } from "../repo.state";
 
-export const createNewRepoSagaAction = createAction<{
+export const sagaAction = createAction<{
   repo: RepoInRedux;
 }>("SHARE/repo/createNewRepo");
-export const createNewRepoError = makeErrorActionCreator(
-  createNewRepoSagaAction
-);
-export function* createNewRepoEffect(
-  action: ReturnType<typeof createNewRepoSagaAction>
-) {
+export const createNewRepoError = makeErrorActionCreator(sagaAction);
+export function* sagaEffect(action: ReturnType<typeof sagaAction>) {
   const { repo } = action.payload;
 
   // Add the repo to redux state
@@ -30,6 +26,6 @@ export function* createNewRepoEffect(
   );
 }
 
-export default function* createNewRepoSaga() {
-  yield takeEvery(createNewRepoSagaAction, createNewRepoEffect);
+export default function* saveNewRepoToReduxSaga() {
+  yield takeEvery(sagaAction, sagaEffect);
 }
