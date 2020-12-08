@@ -57,7 +57,6 @@ export const getYamlKeysIfEncryptedRepo = async ({
 
   if (!isEncryptedRemote) {
     return;
-    return {};
   }
   const repoPath = getRepoPath({ id: repo.id, type: repo.type });
   const gitdir = join(repoPath, ".git");
