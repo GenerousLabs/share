@@ -1,19 +1,64 @@
-export const createConnectionInvite = async ({
-  name,
-  notes,
-}: {
-  name: string;
-  notes: string;
-}) => {
-  // - Create the mine repo, including a new encryption key
-  // - Push it, thus validating the remote URL
-  // - Create a pull / read only key
-  // - Package the remote URL, fetch auth, and encryption key into some kind of
-  //   string that can be shared by a human
+import * as yaml from "js-yaml";
+import { gitFsHttp, RepoType } from "../../shared.constants";
+import {
+  ConnectionInRedux,
+  ConnectionOnDisk,
+  ConnectionSchema,
+} from "../../shared.types";
+import { getFileContents, join } from "../fs/fs.service";
+import { getRepoPath } from "../repo/repo.service";
+
+export const parseYaml = (input: string): ConnectionOnDisk[] => {
+  const unvalidated = yaml.safeLoad(input) as {
+    connections?: ConnectionOnDisk[];
+  };
+  if (
+    typeof unvalidated === "undefined" ||
+    typeof unvalidated.connections === "undefined"
+  ) {
+    return [];
+  }
+
+  const connections = unvalidated.connections.filter(ConnectionSchema.check);
+
+  return connections;
 };
 
-export const acceptConnectionInvite = async () => {
-  // createConnectionInvite()
-  // Unpack the string into remote, fetch auth, and encryption key
-  // Clone encrypted the repo
+export const yamlStringifyConnections = (connections: ConnectionOnDisk[]) => {
+  // NOTE: The file contains one key `connections:` which wraps the array
+  return yaml.safeDump({ connections });
+};
+
+export const getConnectionsYamlPath = () => {
+  const meRepoPath = getRepoPath({ type: RepoType.me });
+  const connectionsYamlPath = join(meRepoPath, "connections.yaml");
+  return connectionsYamlPath;
+};
+
+export const loadConnectionsFromConnectionsYaml = async () => {
+  const connectionsYamlPath = getConnectionsYamlPath();
+  const yamlString = await getFileContents({
+    filepath: connectionsYamlPath,
+    createParentDir: false,
+  });
+  const connections = parseYaml(yamlString);
+  return connections;
+};
+
+export const saveConnectionToConnectionsYaml = async (
+  connection: ConnectionInRedux
+) => {
+  const { fs } = gitFsHttp;
+  const connectionsYamlPath = getConnectionsYamlPath();
+  const connections = await loadConnectionsFromConnectionsYaml();
+  const existingConnection = connections.find((c) => c.id === connection.id);
+  if (typeof existingConnection !== "undefined") {
+    // TODO: Do we want to make this call idempotent?
+    throw new Error("Trying to add existing connection #0pzUCs");
+  }
+  const writeConnections = connections.concat(connection);
+  const yamlString = yamlStringifyConnections(writeConnections);
+  await fs.promises.writeFile(connectionsYamlPath, yamlString, {
+    encoding: "utf8",
+  });
 };

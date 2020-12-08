@@ -148,6 +148,18 @@ export type OfferInRedux = OfferOnDisk & {
   mine: boolean;
 };
 
+export const ConnectionSchema = zod.object({
+  id: zod.string().nonempty(),
+  name: zod.string().nonempty(),
+  notes: zod.string().nonempty(),
+  myRepoId: zod.string().nonempty(),
+  theirRepoId: zod.string().optional(),
+});
+
+export type ConnectionOnDisk = zod.infer<typeof ConnectionSchema>;
+
+// NOTE: This is a duplicate of ConnectionOnDisk, we can probably switch to
+// using that type directly, just can't figure out how to add comments.
 export type ConnectionInRedux = {
   /** The id that I refer to this connection by */
   id: string;

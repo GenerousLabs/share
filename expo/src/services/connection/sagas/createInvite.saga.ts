@@ -1,13 +1,18 @@
-import { call, put } from "typed-redux-saga/macro";
+import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
+import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import {
+  commitAllEffect,
+  commitAllSagaAction,
   saveNewRepoToReduxEffect,
   saveNewRepoToReduxSagaAction,
 } from "../../repo/repo.saga";
 import { createConnectionRepo } from "../../repo/repo.service";
+import { selectMeRepo } from "../../repo/repo.state";
+import { saveConnectionToConnectionsYaml } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
@@ -43,7 +48,18 @@ const saga = createAsyncPromiseSaga<
       myRepoId: repo.id,
     };
 
-    // TODO Save the connection to connections.yaml
+    const meRepo = yield* select(
+      invariantSelector(selectMeRepo, "Failed to find me repo #rMgyAc")
+    );
+
+    yield* call(saveConnectionToConnectionsYaml, connection);
+    yield* call(
+      commitAllEffect,
+      commitAllSagaAction({
+        repoId: meRepo.id,
+        message: "Saving a new connection #3UujQ1",
+      })
+    );
 
     yield* put(addOneConnectionAction(connection));
 
