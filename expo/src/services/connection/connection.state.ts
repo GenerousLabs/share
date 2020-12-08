@@ -9,8 +9,10 @@ const connectionSlice = createSlice({
   name: "SHARE/connection",
   initialState: connectionAdapter.getInitialState(),
   reducers: {
-    upsertOneConnectionAction: connectionAdapter.upsertOne,
+    addOneConnectionAction: connectionAdapter.addOne,
   },
 });
+
+export const { addOneConnectionAction } = connectionSlice.actions;
 
 export default connectionSlice.reducer;

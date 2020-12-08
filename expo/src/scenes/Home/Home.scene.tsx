@@ -4,6 +4,7 @@ import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { RootStackParamList } from "../../navigation";
+import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
@@ -116,6 +117,20 @@ const Home = ({
                   repoId: "re2",
                 })
               );
+            }}
+          />
+        </View>
+        <View style={styles.buttonWrapper}>
+          <Button
+            title="Create new invite"
+            onPress={async () => {
+              const invite = await dispatch(
+                createInviteSagaAction({
+                  name: "Alice",
+                  notes: "Inviting Alice",
+                })
+              );
+              Alert.alert("Invite created", JSON.stringify(invite));
             }}
           />
         </View>
