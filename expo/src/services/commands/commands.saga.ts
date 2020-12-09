@@ -2,8 +2,9 @@ import { all } from "typed-redux-saga/macro";
 import createReadAuthTokenforRepoSaga from "./sagas/createReadAuthTokenForRepo.saga";
 
 export {
-  sagaAction as createReadAuthTokenForRepoSagaAction,
-  effectSaga as createReadAuthTokenForRepoEffect,
+  request as createReadAuthTokenForRepoSagaAction,
+  failure as createReadAuthTokenForRepoError,
+  success as createReadAuthTokenForRepoSuccess,
 } from "./sagas/createReadAuthTokenForRepo.saga";
 
 export default function* commandsSaga() {
