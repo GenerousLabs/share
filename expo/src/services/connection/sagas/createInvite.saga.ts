@@ -23,7 +23,7 @@ import { addOneConnectionAction } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes">,
-  ConnectionInRedux
+  { inviteCode: string }
 >({
   prefix: "SHARE/connection/createInvite",
   *effect(action) {
@@ -97,9 +97,9 @@ const saga = createAsyncPromiseSaga<
       throw new Error("Cannot get keys for invite repo #v9vvan");
     }
 
-    const invite = createInviteCode({ myRemoteUrl, myKeysBase64 });
+    const inviteCode = createInviteCode({ myRemoteUrl, myKeysBase64 });
 
-    return connection;
+    return { inviteCode };
   },
 });
 
