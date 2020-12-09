@@ -4,6 +4,7 @@ import * as yaml from "js-yaml";
 import { pick } from "remeda";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { RepoInRedux, RepoYaml, RepoYamlSchema } from "../../shared.types";
+import { getKeysIfEncryptedRepo } from "../../utils/key.utils";
 import { doesFileExist, join } from "../fs/fs.service";
 import { getRepoPath } from "../repo/repo.service";
 
@@ -53,16 +54,12 @@ export const getYamlKeysIfEncryptedRepo = async ({
 }: {
   repo: RepoInRedux;
 }) => {
-  const { isEncryptedRemote } = getIsEncryptedRemoteUrl(repo.remoteUrl);
+  const keysBase64 = await getKeysIfEncryptedRepo({ repo });
 
-  if (!isEncryptedRemote) {
+  if (typeof keysBase64 === "undefined") {
     return;
   }
-  const repoPath = getRepoPath({ id: repo.id, type: repo.type });
-  const gitdir = join(repoPath, ".git");
-  // NOTE: Not all repos are encrypted, almost all, but not quite all
-  const keys = await getKeysFromDisk({ fs, gitdir });
-  const keysBase64 = keysToBase64({ keys });
+
   return {
     keysContentBase64: keysBase64.content,
     keysFilenamesBase64: keysBase64.filename,
