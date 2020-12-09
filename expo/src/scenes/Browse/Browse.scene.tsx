@@ -1,13 +1,13 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Header } from "react-native-elements";
+import React, { useCallback } from "react";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllOffers } from "../../services/library/library.state";
+import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
-import { RootStackParamList } from "../../shared.types";
+import { OfferInRedux, RootStackParamList } from "../../shared.types";
 
 const log = rootLogger.extend("Connection");
 
@@ -17,7 +17,17 @@ const Browse = ({
   navigation: DrawerNavigationProp<RootStackParamList, "Browse">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const offers = useSelector(selectAllOffers);
+  const offers = useSelector(selectAllImportedOffers);
+
+  const renderItem = useCallback(({ item: offer }: { item: OfferInRedux }) => {
+    return (
+      <Card>
+        <Card.Title>{offer.title}</Card.Title>
+        <Card.Divider />
+        <Text>{offer.bodyMarkdown}</Text>
+      </Card>
+    );
+  }, []);
 
   return (
     <View>
@@ -34,15 +44,7 @@ const Browse = ({
         <Text style={styles.title}>Browse</Text>
       </View>
       <View>
-        <FlatList
-          data={offers}
-          renderItem={(item) => (
-            <View>
-              <Text>{item.item.title}</Text>
-              <Text>{item.item.bodyMarkdown}</Text>
-            </View>
-          )}
-        />
+        <FlatList data={offers} renderItem={renderItem} />
       </View>
     </View>
   );
