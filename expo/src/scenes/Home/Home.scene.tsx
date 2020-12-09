@@ -11,7 +11,7 @@ import { getLogs, rootLogger } from "../../services/log/log.service";
 import { selectCommandRepo } from "../../services/repo/repo.state";
 import {
   DANGEROUS_setupResetSagaAction,
-  setupSagaAction
+  setupSagaAction,
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
