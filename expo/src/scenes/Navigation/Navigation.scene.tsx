@@ -14,6 +14,7 @@ import Home from "../Home/Home.scene";
 import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
 import Offers from "../Offers/Offers.scene";
+import YourStuff from "../YourStuff/YourStuff.scene";
 import BottomTabNavigator from "./scenes/BottomTabNavigator/BottomTabNavigator.scene";
 
 const Drawer = createDrawerNavigator();
@@ -45,6 +46,7 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
       >
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Browse" component={Browse} />
+        <Drawer.Screen name="Your Stuff" component={YourStuff} />
         <Drawer.Screen name="Connections" component={Connections} />
         <Drawer.Screen name="Libraries" component={Libraries} />
         <Drawer.Screen name="Offers" component={Offers} />

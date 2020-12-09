@@ -5,6 +5,7 @@ import { RepoType } from "./shared.constants";
 export type RootStackParamList = {
   Home: undefined;
   Browse: undefined;
+  YourStuff: undefined;
   Connections: undefined;
   Libraries: undefined;
   Offers: undefined;

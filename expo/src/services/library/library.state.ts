@@ -61,6 +61,9 @@ export const selectAllImportedOffers = createSelector(
   [selectAllOffers],
   (offers) => offers.filter((offer) => !offer.mine)
 );
+export const selectAllMyOffers = createSelector([selectAllOffers], (offers) =>
+  offers.filter((offer) => offer.mine)
+);
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],
   (offers) => {
