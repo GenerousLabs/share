@@ -6,6 +6,20 @@ Object {
   "combinator": false,
   "payload": Object {
     "args": Array [
+      "repo1",
+    ],
+    "selector": [Function],
+  },
+  "type": "SELECT",
+}
+`;
+
+exports[`createNewOfferEffect() Creates a new offer #nsn5S8 2`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [
       "/repos/repo1/an-example-offer/index.md",
       "---
 uuid: offer1-uuid
@@ -29,7 +43,7 @@ An offer example
 }
 `;
 
-exports[`createNewOfferEffect() Creates a new offer #nsn5S8 2`] = `
+exports[`createNewOfferEffect() Creates a new offer #nsn5S8 3`] = `
 Object {
   "@@redux-saga/IO": true,
   "combinator": false,
@@ -50,7 +64,48 @@ Object {
 }
 `;
 
+exports[`createNewOfferEffect() Creates a new offer #nsn5S8 4`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "action": Object {
+      "payload": Object {
+        "bodyMarkdown": "An offer example",
+        "createdAt": 1607000000,
+        "id": "offer1-uuid",
+        "mine": true,
+        "proximity": 0,
+        "repoId": "repo1",
+        "shareToProximity": 1,
+        "tags": Array [],
+        "title": "An example offer",
+        "updatedAt": 1607000000,
+        "uuid": "offer1-uuid",
+      },
+      "type": "SHARE/library/offers/addOneOfferAction",
+    },
+    "channel": undefined,
+  },
+  "type": "PUT",
+}
+`;
+
 exports[`createNewOfferEffect() Terminates with an error for a non existent repoId #dussrU 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [
+      "repo1",
+    ],
+    "selector": [Function],
+  },
+  "type": "SELECT",
+}
+`;
+
+exports[`createNewOfferEffect() Terminates with an error for a non existent repoId #dussrU 2`] = `
 Object {
   "@@redux-saga/IO": true,
   "combinator": false,
@@ -60,10 +115,30 @@ Object {
         "isFatal": false,
       },
       "payload": Object {
-        "error": undefined,
-        "message": "Repo does not exist #xJeqQd",
+        "error": Object {
+          "code": undefined,
+          "data": undefined,
+          "message": "Cannot read property 'type' of undefined",
+          "name": undefined,
+        },
+        "message": "createNewOfferEffect() error #i6Sj2b",
         "meta": Object {
-          "repoId": "repo1",
+          "action": Object {
+            "payload": Object {
+              "offer": Object {
+                "bodyMarkdown": "An offer example",
+                "createdAt": 1607000000,
+                "proximity": 0,
+                "shareToProximity": 1,
+                "tags": Array [],
+                "title": "An example offer",
+                "updatedAt": 1607000000,
+                "uuid": "offer1-uuid",
+              },
+              "repoId": "repo1",
+            },
+            "type": "SHARE/library/createNewOffer",
+          },
         },
       },
       "type": "SHARE/library/createNewOffer/ERROR",

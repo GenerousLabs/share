@@ -38,7 +38,7 @@ describe("createNewOfferEffect()", () => {
       })
     )
       .next()
-      .select(selectRepoById, "repo1")
+      .inspect((effect) => expect(effect).toMatchSnapshot())
       .next({
         id: "repo1",
         name: "repo1",
@@ -72,6 +72,8 @@ describe("createNewOfferEffect()", () => {
       .next()
       .inspect((effect) => expect(effect).toMatchSnapshot())
       .next()
+      .inspect((effect) => expect(effect).toMatchSnapshot())
+      .next()
       .isDone();
   });
 
@@ -91,7 +93,7 @@ describe("createNewOfferEffect()", () => {
       })
     )
       .next()
-      .select(selectRepoById, "repo1")
+      .inspect((effect) => expect(effect).toMatchSnapshot())
       .next()
       .inspect((effect) => expect(effect).toMatchSnapshot())
       // .put(

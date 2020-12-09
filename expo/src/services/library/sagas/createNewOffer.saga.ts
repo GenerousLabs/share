@@ -4,12 +4,14 @@ import slugify from "slugify";
 import { call, put, select, takeEvery } from "typed-redux-saga/macro";
 import { OfferOnDisk } from "../../../shared.types";
 import { makeErrorActionCreator } from "../../../utils/errors.utils";
+import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { getTimestampSeconds } from "../../../utils/time.utils";
 import { join } from "../../fs/fs.service";
 import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { getRepoPath } from "../../repo/repo.service";
 import { selectRepoById } from "../../repo/repo.state";
 import { offerToString } from "../library.service";
+import { addOneOfferAction } from "../library.state";
 
 export const createNewOfferSagaAction = createAction(
   "SHARE/library/createNewOffer",
@@ -43,17 +45,10 @@ export function* createNewOfferEffect(
   try {
     const { offer, repoId } = action.payload;
 
-    const repo = yield* select(selectRepoById, repoId);
-
-    if (typeof repo === "undefined") {
-      yield* put(
-        createNewOfferError({
-          message: "Repo does not exist #xJeqQd",
-          meta: { repoId },
-        })
-      );
-      return;
-    }
+    const repo = yield* select(
+      invariantSelector(selectRepoById, "Repo does not exist #xJeqQd"),
+      repoId
+    );
 
     const repoPath = getRepoPath(repo);
 
@@ -74,6 +69,10 @@ export function* createNewOfferEffect(
         repoId: repoId,
         message: "Creating a new offer",
       })
+    );
+
+    yield* put(
+      addOneOfferAction({ ...offer, id: offer.uuid, repoId, mine: true })
     );
   } catch (error) {
     yield* put(
