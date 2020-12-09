@@ -1,16 +1,16 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
-import { setupSagaAction } from "../../services/setup/setup.state";
-import { RootDispatch } from "../../store";
 import * as zod from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import Header from "../../components/Header/Header.component";
+import { setupSagaAction } from "../../services/setup/setup.state";
 import { SetupDrawerParamList } from "../../shared.types";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { RootDispatch } from "../../store";
 
 const Schema = zod.object({
   protocol: zod.string().nonempty(),
