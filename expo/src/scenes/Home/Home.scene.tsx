@@ -1,13 +1,12 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useEffect } from "react";
+import React from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { Header } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
-import { selectCommandRepo } from "../../services/repo/repo.state";
 import {
   DANGEROUS_setupResetSagaAction,
   setupSagaAction,
@@ -24,10 +23,6 @@ const Home = ({
   navigation: DrawerNavigationProp<RootStackParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const commandRepo = useSelector(selectCommandRepo);
-  useEffect(() => {
-    log.debug("useEffect() #SiaYlJ");
-  });
 
   return (
     <View>
