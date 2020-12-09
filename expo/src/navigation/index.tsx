@@ -1,3 +1,4 @@
+import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 import {
   DarkTheme,
   DefaultTheme,
@@ -28,8 +29,14 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
+  // NOTE: Typed this as `any` to stop TypeScript complainin
+  const navigationRef: any = React.useRef();
+
+  useReduxDevToolsExtension(navigationRef);
+
   return (
     <NavigationContainer
+      ref={navigationRef}
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
