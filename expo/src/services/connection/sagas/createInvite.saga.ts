@@ -86,10 +86,11 @@ const saga = createAsyncPromiseSaga<
     //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
     // );
 
-    const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
+    const { url } = yield* call(createRemoteUrlForSharedRepo, {
       repo,
       token,
     });
+    const myRemoteUrl = `encrypted::${url}`;
 
     // TODO Get the token for the new repo
     const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, { repo });

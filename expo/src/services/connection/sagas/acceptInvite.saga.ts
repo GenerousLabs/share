@@ -1,11 +1,14 @@
-import { KeysBase64 } from "git-encrypted";
+import { putResolve } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
+import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
+import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
 import { subscribeToLibraryEffect } from "../../library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../library/library.state";
+import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -14,19 +17,23 @@ import {
 } from "../../repo/repo.saga";
 import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
-import { saveConnectionToConnectionsYaml } from "../connection.service";
+import {
+  createInviteCode,
+  parseInviteCode,
+  saveConnectionToConnectionsYaml,
+} from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes"> & {
-    theirRemoteUrl: string;
-    theirKeysBase64: KeysBase64;
+    inviteCode: string;
   },
-  ConnectionInRedux
+  { confirmCode: string }
 >({
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
-    const { name, notes, theirRemoteUrl, theirKeysBase64 } = action.payload;
+    const { name, notes, inviteCode } = action.payload;
+    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode(inviteCode);
 
     const theirRepoId = yield* call(generateId);
 
@@ -80,7 +87,37 @@ const saga = createAsyncPromiseSaga<
 
     yield* put(addOneConnectionAction(connection));
 
-    return connection;
+    // TODO SagaTypes fix the type here once putResolve is typed
+    // const { token }: { token: string } = yield* putResolve(
+    //   createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
+    // ) as any;
+    // NOTE: `putResolve()` from `typed-redux-saga` DOES NOT return the value
+    // here, it results in `tokenResult` being undefined.
+    const tokenResult: any = yield putResolve(
+      createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
+    );
+    const { token } = tokenResult;
+    // This works from a typing perspective, but is probably not a very good
+    // idea. Somehow in this constellation TypeScript can figure out the type of
+    // the output value.
+    // const { token } = yield* call(() =>
+    //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
+    // );
+
+    const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
+      repo: meRepo,
+      token,
+    });
+
+    // TODO Get the token for the new repo
+    const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, { repo });
+    if (typeof myKeysBase64 === "undefined") {
+      throw new Error("Cannot get keys for invite repo #v9vvan");
+    }
+
+    const confirmCode = createInviteCode({ myRemoteUrl, myKeysBase64 });
+
+    return { confirmCode };
   },
 });
 

@@ -1,17 +1,21 @@
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import { Input, Text, Button } from "react-native-elements";
 import { useDispatch } from "react-redux";
-import { createInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { acceptInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { rootLogger } from "../../../../services/log/log.service";
 import { RootDispatch } from "../../../../store";
+
+const log = rootLogger.extend("Accept");
 
 type Inputs = {
   name: string;
   notes: string;
+  inviteCode: string;
 };
 
-const Invite = () => {
+const Accept = () => {
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm<Inputs>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +24,8 @@ const Invite = () => {
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
-      const { inviteCode } = await dispatch(createInviteSagaAction(data));
+      log.debug("Got accept params #ORqBDG", data);
+      const { confirmCode } = await dispatch(acceptInviteSagaAction(data));
       setInviteCode(inviteCode);
       setIsSubmitting(false);
     },
@@ -63,16 +68,36 @@ const Invite = () => {
             rules={{ required: false }}
             defaultValue=""
           />
+          <Controller
+            control={control}
+            render={({ onChange, onBlur, value }) => (
+              <Input
+                label="Code"
+                style={styles.inputMultiline}
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                value={value}
+                multiline={true}
+                numberOfLines={12}
+              />
+            )}
+            name="inviteCode"
+            rules={{ required: false }}
+            defaultValue=""
+          />
           <Button
             loading={isSubmitting}
-            title="Generate an invite code"
+            title="Accept Invitation"
             onPress={handleSubmit(onSubmit)}
           />
         </>
       ) : (
         <>
-          <Text h2>Invite a friend</Text>
-          <Text>Share this code with a friend</Text>
+          <Text h2>Confirm your invitation</Text>
+          <Text>
+            Send this confirmation code back to your friend to confirm the
+            invitation.
+          </Text>
           <Input value={inviteCode} multiline numberOfLines={12} />
         </>
       )}
@@ -80,7 +105,7 @@ const Invite = () => {
   );
 };
 
-export default Invite;
+export default Accept;
 
 const styles = StyleSheet.create({
   input: {

@@ -3,23 +3,28 @@ import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, ListItem, Overlay, Text } from "react-native-elements";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { selectAllConnections } from "../../services/connection/connection.state";
 import { rootLogger } from "../../services/log/log.service";
-import { RootDispatch } from "../../services/store/store.service";
 import { ConnectionInRedux, DrawerParamList } from "../../shared.types";
+import Accept from "./scenes/Accept/Accept.scene";
 import Invite from "./scenes/Invite/Invite.scene";
 
 const log = rootLogger.extend("Connections");
+
+enum InviteType {
+  none = "none",
+  invite = "invite",
+  accept = "accept",
+}
 
 const Connections = ({
   navigation,
 }: {
   navigation: DrawerNavigationProp<DrawerParamList, "Connections">;
 }) => {
-  const dispatch: RootDispatch = useDispatch();
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [inviteType, setInviteType] = useState(InviteType.none);
   const connections = useSelector(selectAllConnections);
 
   const renderItem = useCallback(
@@ -47,7 +52,7 @@ const Connections = ({
           style={styles.actionButton}
           containerStyle={styles.buttonContainer}
           onPress={() => {
-            setIsOverlayVisible(true);
+            setInviteType(InviteType.invite);
           }}
         />
         <Button
@@ -55,19 +60,19 @@ const Connections = ({
           style={styles.actionButton}
           containerStyle={styles.buttonContainer}
           onPress={() => {
-            setIsOverlayVisible(true);
+            setInviteType(InviteType.accept);
           }}
         />
       </View>
       <Overlay
         overlayStyle={styles.overlay}
-        isVisible={isOverlayVisible}
+        isVisible={inviteType !== InviteType.none}
         onBackdropPress={() => {
-          setIsOverlayVisible(false);
+          setInviteType(InviteType.none);
         }}
       >
         <ScrollView>
-          <Invite />
+          {inviteType === InviteType.invite ? <Invite /> : <Accept />}
         </ScrollView>
       </Overlay>
       <View>
