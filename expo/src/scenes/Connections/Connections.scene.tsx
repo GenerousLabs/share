@@ -1,13 +1,14 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Header, ListItem, Overlay, Text } from "react-native-elements";
-import { FlatList } from "react-native-gesture-handler";
+import { Button, ListItem, Overlay, Text } from "react-native-elements";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { selectAllConnections } from "../../services/connection/connection.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
-import { ConnectionInRedux, RootStackParamList } from "../../shared.types";
+import { ConnectionInRedux, DrawerParamList } from "../../shared.types";
 import Invite from "./scenes/Invite/Invite.scene";
 
 const log = rootLogger.extend("Connections");
@@ -15,7 +16,7 @@ const log = rootLogger.extend("Connections");
 const Connections = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Connections">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Connections">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -36,15 +37,7 @@ const Connections = ({
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         <Text h1>Connections</Text>
       </View>
@@ -73,7 +66,9 @@ const Connections = ({
           setIsOverlayVisible(false);
         }}
       >
-        <Invite />
+        <ScrollView>
+          <Invite />
+        </ScrollView>
       </Overlay>
       <View>
         <FlatList data={connections} renderItem={renderItem} />

@@ -1,33 +1,26 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
-import { Header, Text } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { selectMyLibraries } from "../../services/library/library.selectors";
-import { RootStackParamList } from "../../shared.types";
+import { DrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";
 
 const Libraries = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Home">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Home">;
 }) => {
   const libraries = useSelector(selectMyLibraries);
   const dispatch: RootDispatch = useDispatch();
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         <Text h1>Libraries</Text>
       </View>

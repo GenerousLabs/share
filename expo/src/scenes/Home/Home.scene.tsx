@@ -1,8 +1,9 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
-import { Header, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { useDispatch } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
@@ -12,7 +13,7 @@ import {
   setupSagaAction,
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { RootStackParamList } from "../../shared.types";
+import { DrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
 const log = rootLogger.extend("Home");
@@ -20,21 +21,13 @@ const log = rootLogger.extend("Home");
 const Home = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Home">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Generous Share", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         <Text h1>Home</Text>
       </View>

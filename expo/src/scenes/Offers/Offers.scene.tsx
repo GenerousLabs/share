@@ -1,33 +1,26 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Button, StyleSheet, View } from "react-native";
-import { Header, Text } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
-import { RootStackParamList } from "../../shared.types";
+import { DrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 import OfferForm from "./scenes/OfferForm/OfferForm.scene";
 
 const Offers = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Offers">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Offers">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector((state: RootState) => selectAllOffers(state));
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         <Text h1>Welcome to Offers</Text>
       </View>

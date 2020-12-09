@@ -1,20 +1,21 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
-import { Card, Header, Text } from "react-native-elements";
+import { Card, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
-import { OfferInRedux, RootStackParamList } from "../../shared.types";
+import { DrawerParamList, OfferInRedux } from "../../shared.types";
 
 const log = rootLogger.extend("Browse");
 
 const Browse = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Browse">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Browse">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector(selectAllImportedOffers);
@@ -31,15 +32,7 @@ const Browse = ({
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         <Text h1>Browse</Text>
       </View>

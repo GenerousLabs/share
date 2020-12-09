@@ -2,12 +2,12 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
 import * as React from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
-import { Text, Header } from "react-native-elements";
 import { useDispatch } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { loadOfferSagaAction } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { RootStackParamList } from "../../shared.types";
+import { DrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
 (globalThis as any).FileSystem = FileSystem;
@@ -15,21 +15,13 @@ import { RootDispatch } from "../../store";
 export default function TabOne({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Root">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Root">;
 }) {
   const dispatch: RootDispatch = useDispatch();
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <View>
         {/* <Button
           title="Create new repo"

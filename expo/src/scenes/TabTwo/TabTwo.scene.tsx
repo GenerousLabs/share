@@ -5,11 +5,12 @@ import http from "isomorphic-git/http/web/index";
 import git from "isomorphic-git/index";
 import * as React from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
-import { Header, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { useSelector } from "react-redux";
+import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
-import { RootStackParamList } from "../../shared.types";
+import { DrawerParamList } from "../../shared.types";
 
 const log = rootLogger.extend("TabTwo");
 
@@ -67,7 +68,7 @@ const clone = async () => {
 export default function TabTwo({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<RootStackParamList, "Root">;
+  navigation: DrawerNavigationProp<DrawerParamList, "Root">;
 }) {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);
@@ -75,15 +76,7 @@ export default function TabTwo({
 
   return (
     <View>
-      <Header
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => navigation.openDrawer(),
-        }}
-        centerComponent={{ text: "Browser", color: "#fff" }}
-        rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      <Header />
       <Text h1>Repo contents</Text>
       {files.map((file) => (
         <Text key={file}>{file}</Text>

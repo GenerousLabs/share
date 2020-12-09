@@ -2,7 +2,7 @@ import fs from "fs";
 import * as zod from "zod";
 import { RepoType } from "./shared.constants";
 
-export type RootStackParamList = {
+export type DrawerParamList = {
   Home: undefined;
   Browse: undefined;
   YourStuff: undefined;
@@ -10,7 +10,13 @@ export type RootStackParamList = {
   Libraries: undefined;
   Offers: undefined;
   Root: undefined;
+  Settings: undefined;
   NotFound: undefined;
+};
+
+export type SetupDrawerParamList = {
+  Setup: undefined;
+  Settings: undefined;
 };
 
 export type FS = {

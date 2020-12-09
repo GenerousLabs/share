@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { Input, Text } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import { createInviteSagaAction } from "../../../../services/connection/connection.saga";
@@ -13,7 +13,7 @@ type Inputs = {
 
 const Invite = () => {
   const dispatch: RootDispatch = useDispatch();
-  const { control, handleSubmit, errors, reset } = useForm<Inputs>();
+  const { control, handleSubmit, errors, reset, register } = useForm<Inputs>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
 
@@ -43,7 +43,6 @@ const Invite = () => {
               />
             )}
             name="name"
-            rules={{ required: true }}
             defaultValue=""
           />
           {errors.name && <Text>Name is a required field</Text>}
