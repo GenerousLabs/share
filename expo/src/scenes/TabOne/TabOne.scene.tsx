@@ -1,25 +1,34 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
 import * as React from "react";
-import { Alert, Button, StyleSheet } from "react-native";
+import { Alert, Button, StyleSheet, View } from "react-native";
+import { Text, Header } from "react-native-elements";
 import { useDispatch } from "react-redux";
-import { Text, View } from "../../components/Themed";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { loadOfferSagaAction } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
+import { RootStackParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
 (globalThis as any).FileSystem = FileSystem;
 
-export default function TabOne() {
+export default function TabOne({
+  navigation,
+}: {
+  navigation: DrawerNavigationProp<RootStackParamList, "Root">;
+}) {
   const dispatch: RootDispatch = useDispatch();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+    <View>
+      <Header
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => navigation.openDrawer(),
+        }}
+        centerComponent={{ text: "Browser", color: "#fff" }}
+        rightComponent={{ icon: "home", color: "#fff" }}
       />
       <View>
         {/* <Button

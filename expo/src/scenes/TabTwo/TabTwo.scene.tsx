@@ -1,13 +1,15 @@
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
 import expoFs from "expo-fs";
 import http from "isomorphic-git/http/web/index";
 import git from "isomorphic-git/index";
 import * as React from "react";
-import { Alert, Button, StyleSheet } from "react-native";
+import { Alert, Button, StyleSheet, View } from "react-native";
+import { Header, Text } from "react-native-elements";
 import { useSelector } from "react-redux";
-import { Text, View } from "../../components/Themed";
 import { selectAllOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
+import { RootStackParamList } from "../../shared.types";
 
 const log = rootLogger.extend("TabTwo");
 
@@ -62,14 +64,27 @@ const clone = async () => {
   Alert.alert("Clone finished #iOXriG");
 };
 
-export default function TabTwo() {
+export default function TabTwo({
+  navigation,
+}: {
+  navigation: DrawerNavigationProp<RootStackParamList, "Root">;
+}) {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);
   const offers = useSelector(selectAllOffers);
 
   return (
-    <View style={styles.container}>
-      <Text>Repo contents</Text>
+    <View>
+      <Header
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => navigation.openDrawer(),
+        }}
+        centerComponent={{ text: "Browser", color: "#fff" }}
+        rightComponent={{ icon: "home", color: "#fff" }}
+      />
+      <Text h1>Repo contents</Text>
       {files.map((file) => (
         <Text key={file}>{file}</Text>
       ))}
@@ -105,11 +120,6 @@ export default function TabTwo() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   button: {
     marginTop: 3,
     marginBottom: 3,

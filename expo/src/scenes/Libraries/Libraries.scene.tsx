@@ -1,8 +1,8 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
+import { Header, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { selectMyLibraries } from "../../services/library/library.selectors";
 import { RootStackParamList } from "../../shared.types";
@@ -12,24 +12,24 @@ import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";
 const Libraries = ({
   navigation,
 }: {
-  navigation: StackNavigationProp<RootStackParamList, "Home">;
+  navigation: DrawerNavigationProp<RootStackParamList, "Home">;
 }) => {
   const libraries = useSelector(selectMyLibraries);
   const dispatch: RootDispatch = useDispatch();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View>
+      <Header
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => navigation.openDrawer(),
+        }}
+        centerComponent={{ text: "Browser", color: "#fff" }}
+        rightComponent={{ icon: "home", color: "#fff" }}
+      />
       <View>
-        <Text style={styles.title}>Libraries</Text>
-      </View>
-      <View>
-        <Button
-          title="Go Home"
-          color="red"
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-        />
+        <Text h1>Libraries</Text>
       </View>
       <View>
         {libraries.length > 0 ? (
@@ -49,16 +49,13 @@ const Libraries = ({
         )}
       </View>
       <LibraryForm />
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default Libraries;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-  },
   navButtonWrapper: {
     display: "flex",
     flexDirection: "row",

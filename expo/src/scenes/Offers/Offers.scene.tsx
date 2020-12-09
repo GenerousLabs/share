@@ -1,9 +1,8 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { Button, StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { Header, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllOffers } from "../../services/library/library.state";
 import { RootStackParamList } from "../../shared.types";
@@ -13,23 +12,24 @@ import OfferForm from "./scenes/OfferForm/OfferForm.scene";
 const Offers = ({
   navigation,
 }: {
-  navigation: StackNavigationProp<RootStackParamList, "Offers">;
+  navigation: DrawerNavigationProp<RootStackParamList, "Offers">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector((state: RootState) => selectAllOffers(state));
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View>
+      <Header
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => navigation.openDrawer(),
+        }}
+        centerComponent={{ text: "Browser", color: "#fff" }}
+        rightComponent={{ icon: "home", color: "#fff" }}
+      />
       <View>
         <Text h1>Welcome to Offers</Text>
-      </View>
-      <View>
-        <Button
-          title="View Home"
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-        />
       </View>
       <OfferForm />
       <FlatList
@@ -43,7 +43,7 @@ const Offers = ({
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
