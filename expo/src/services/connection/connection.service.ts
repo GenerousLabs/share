@@ -1,5 +1,7 @@
+import * as zod from "zod";
+import { KeysBase64 } from "git-encrypted";
 import * as yaml from "js-yaml";
-import { gitFsHttp, RepoType } from "../../shared.constants";
+import { gitFsHttp, INVITE_PREFIX, RepoType } from "../../shared.constants";
 import {
   ConnectionInRedux,
   ConnectionOnDisk,
@@ -7,6 +9,66 @@ import {
 } from "../../shared.types";
 import { getFileContents, join } from "../fs/fs.service";
 import { getRepoPath } from "../repo/repo.service";
+
+export const base64ToString = (input: string) => {
+  return globalThis.atob(input);
+};
+
+export const stringToBase64 = (input: string) => {
+  return globalThis.btoa(input);
+};
+
+export const createInviteCode = ({
+  myKeysBase64,
+  myRemoteUrl,
+}: {
+  myRemoteUrl: string;
+  myKeysBase64: KeysBase64;
+}) => {
+  const dataString = JSON.stringify({
+    u: myRemoteUrl,
+    k: {
+      c: myKeysBase64.content,
+      f: myKeysBase64.filename,
+      s: myKeysBase64.salt,
+    },
+  });
+  const dataBase64 = stringToBase64(dataString);
+  return `${INVITE_PREFIX}${dataBase64}`;
+};
+
+const DecodeSchema = zod.object({
+  u: zod.string().url().nonempty(),
+  k: zod.object({
+    c: zod.string().nonempty(),
+    f: zod.string().nonempty(),
+    s: zod.string().nonempty(),
+  }),
+});
+
+export const parseInviteCode = (
+  input: string
+): {
+  theirRemoteUrl: string;
+  theirKeysBase64: KeysBase64;
+} => {
+  if (!input.startsWith(INVITE_PREFIX)) {
+    throw new Error("Invalid invite code. Must starte INVITE_. #Ic2bYT");
+  }
+  const base64 = input.substr(INVITE_PREFIX.length);
+  const jsonString = base64ToString(base64);
+  const data = JSON.parse(jsonString);
+  const validData = DecodeSchema.parse(data);
+
+  return {
+    theirRemoteUrl: validData.u,
+    theirKeysBase64: {
+      content: validData.k.c,
+      filename: validData.k.f,
+      salt: validData.k.s,
+    },
+  };
+};
 
 export const parseYaml = (input: string): ConnectionOnDisk[] => {
   const unvalidated = yaml.safeLoad(input) as {

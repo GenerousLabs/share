@@ -10,9 +10,13 @@ const connectionSlice = createSlice({
   initialState: connectionAdapter.getInitialState(),
   reducers: {
     addOneConnectionAction: connectionAdapter.addOne,
+    updateOneConnectionAction: connectionAdapter.updateOne,
   },
 });
 
-export const { addOneConnectionAction } = connectionSlice.actions;
+export const {
+  addOneConnectionAction,
+  updateOneConnectionAction,
+} = connectionSlice.actions;
 
 export default connectionSlice.reducer;

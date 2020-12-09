@@ -1,12 +1,12 @@
-import { call, put, putResolve, select } from "typed-redux-saga/macro";
+import { KeysBase64 } from "git-encrypted";
+import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
-import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
-import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
-import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
+import { subscribeToLibraryEffect } from "../../library/library.saga";
+import { subscribeToLibrarySagaAction } from "../../library/library.state";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -15,19 +15,30 @@ import {
 } from "../../repo/repo.saga";
 import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
-import {
-  createInviteCode,
-  saveConnectionToConnectionsYaml,
-} from "../connection.service";
+import { saveConnectionToConnectionsYaml } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
-  Pick<ConnectionInRedux, "name" | "notes">,
+  Pick<ConnectionInRedux, "name" | "notes"> & {
+    theirRemoteUrl: string;
+    theirKeysBase64: KeysBase64;
+  },
   ConnectionInRedux
 >({
-  prefix: "SHARE/connection/createInvite",
+  prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
-    const { name, notes } = action.payload;
+    const { name, notes, theirRemoteUrl, theirKeysBase64 } = action.payload;
+
+    const theirRepoId = yield* call(generateId);
+
+    const theirRepo = yield* call(
+      subscribeToLibraryEffect,
+      subscribeToLibrarySagaAction({
+        name,
+        remoteUrl: theirRemoteUrl,
+        keysBase64: theirKeysBase64,
+      })
+    );
 
     const uuid = generateUuid();
 
@@ -47,11 +58,12 @@ const saga = createAsyncPromiseSaga<
 
     const id = yield* call(generateId);
 
-    const connection = {
+    const connection: ConnectionInRedux = {
       id,
       name,
       notes,
       myRepoId: repo.id,
+      theirRepoId,
     };
 
     const meRepo = yield* select(
@@ -69,28 +81,10 @@ const saga = createAsyncPromiseSaga<
 
     yield* put(addOneConnectionAction(connection));
 
-    // TODO SagaTypes fix the type here once putResolve is typed
-    const { token }: { token: string } = yield* putResolve(
-      createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
-    ) as any;
-
-    const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
-      repo: meRepo,
-      token,
-    });
-
-    // TODO Get the token for the new repo
-    const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, { repo });
-    if (typeof myKeysBase64 === "undefined") {
-      throw new Error("Cannot get keys for invite repo #v9vvan");
-    }
-
-    const invite = createInviteCode({ myRemoteUrl, myKeysBase64 });
-
     return connection;
   },
 });
 
 export const { request, success, failure } = saga;
-const createInviteSaga = saga.saga;
-export default createInviteSaga;
+const acceptInviteSaga = saga.saga;
+export default acceptInviteSaga;
