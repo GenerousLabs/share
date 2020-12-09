@@ -73,6 +73,12 @@ const saga = createAsyncPromiseSaga<
     const { token }: { token: string } = yield* putResolve(
       createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
     ) as any;
+    // This works from a typing perspective, but is probably not a very good
+    // idea. Somehow in this constellation TypeScript can figure out the type of
+    // the output value.
+    // const { token } = yield* call(() =>
+    //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
+    // );
 
     const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
       repo: meRepo,
