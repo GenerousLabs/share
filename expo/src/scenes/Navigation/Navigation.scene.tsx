@@ -38,7 +38,17 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator
+        initialRouteName="Home"
+        // drawerContent={({ navigation }) => (
+        //   <View>
+        //     <Button
+        //       title="Drawer"
+        //       onPress={() => navigation.navigate("Libraries")}
+        //     />
+        //   </View>
+        // )}
+      >
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Libraries" component={Libraries} />
         <Drawer.Screen name="Offers" component={Offers} />
