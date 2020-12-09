@@ -8,6 +8,8 @@ import {
 import * as Linking from "expo-linking";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
+import Browse from "../Browse/Browse.scene";
+import Connections from "../Connections/Connections.scene";
 import Home from "../Home/Home.scene";
 import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
@@ -42,6 +44,8 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
         // )}
       >
         <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Browse" component={Browse} />
+        <Drawer.Screen name="Connections" component={Connections} />
         <Drawer.Screen name="Libraries" component={Libraries} />
         <Drawer.Screen name="Offers" component={Offers} />
         <Drawer.Screen name="Root" component={BottomTabNavigator} />
