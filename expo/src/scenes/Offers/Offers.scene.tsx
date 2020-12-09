@@ -1,10 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
+import { Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { MonoText } from "../../components/StyledText";
 import { selectAllOffers } from "../../services/library/library.state";
 import { RootStackParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
@@ -21,7 +21,7 @@ const Offers = ({
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <View>
-        <MonoText>Welcome to Offers</MonoText>
+        <Text h1>Welcome to Offers</Text>
       </View>
       <View>
         <Button

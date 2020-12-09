@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Header, ListItem } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Header, ListItem, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllConnections } from "../../services/connection/connection.state";
@@ -44,7 +44,7 @@ const Connections = ({
         rightComponent={{ icon: "home", color: "#fff" }}
       />
       <View>
-        <Text style={styles.title}>Connections</Text>
+        <Text h1>Connections</Text>
       </View>
       <View>
         <FlatList data={connections} renderItem={renderItem} />
@@ -56,9 +56,6 @@ const Connections = ({
 export default Connections;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-  },
   navButtonWrapper: {
     display: "flex",
     flexDirection: "row",

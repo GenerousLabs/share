@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
-import { Header } from "react-native-elements";
+import { Alert, Button, StyleSheet, View } from "react-native";
+import { Header, Text } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
@@ -36,7 +36,7 @@ const Home = ({
         rightComponent={{ icon: "home", color: "#fff" }}
       />
       <View>
-        <Text style={styles.title}>Home</Text>
+        <Text h1>Home</Text>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
@@ -176,9 +176,6 @@ const Home = ({
 export default Home;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-  },
   navButtonWrapper: {
     display: "flex",
     flexDirection: "row",

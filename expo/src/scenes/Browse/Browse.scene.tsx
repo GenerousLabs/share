@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { StyleSheet, Text, View } from "react-native";
-import { Header } from "react-native-elements";
 import React, { useCallback } from "react";
+import { StyleSheet, View } from "react-native";
+import { Card, Header, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllImportedOffers } from "../../services/library/library.state";
@@ -9,7 +9,7 @@ import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
 import { OfferInRedux, RootStackParamList } from "../../shared.types";
 
-const log = rootLogger.extend("Connection");
+const log = rootLogger.extend("Browse");
 
 const Browse = ({
   navigation,
@@ -41,7 +41,7 @@ const Browse = ({
         rightComponent={{ icon: "home", color: "#fff" }}
       />
       <View>
-        <Text style={styles.title}>Browse</Text>
+        <Text h1>Browse</Text>
       </View>
       <View>
         <FlatList data={offers} renderItem={renderItem} />
@@ -53,9 +53,6 @@ const Browse = ({
 export default Browse;
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-  },
   navButtonWrapper: {
     display: "flex",
     flexDirection: "row",
