@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStackParamList } from "../../navigation";
+import { RootStackParamList } from "../Navigation/Navigation.scene";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";

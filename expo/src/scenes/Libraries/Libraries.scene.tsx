@@ -4,7 +4,7 @@ import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStackParamList } from "../../navigation";
+import { RootStackParamList } from "../Navigation/Navigation.scene";
 import { selectMyLibraries } from "../../services/library/library.selectors";
 import { RootDispatch } from "../../store";
 import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";

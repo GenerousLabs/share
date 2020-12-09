@@ -8,7 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import useCachedResources from "./src/hooks/useCachedResources";
 import useColorScheme from "./src/hooks/useColorScheme";
-import Navigation from "./src/navigation";
+import Navigation from "./src/scenes/Navigation/Navigation.scene";
 import store from "./src/store";
 
 export default function App() {

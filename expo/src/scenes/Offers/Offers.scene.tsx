@@ -5,7 +5,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { MonoText } from "../../components/StyledText";
-import { RootStackParamList } from "../../navigation";
+import { RootStackParamList } from "../Navigation/Navigation.scene";
 import { selectAllOffers } from "../../services/library/library.state";
 import { RootDispatch, RootState } from "../../store";
 import OfferForm from "./scenes/OfferForm/OfferForm.scene";
