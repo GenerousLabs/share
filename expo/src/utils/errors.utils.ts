@@ -1,10 +1,10 @@
 import { ActionCreator, AnyAction, createAction } from "@reduxjs/toolkit";
 
-export type SerializableError = {
+interface SerializableError extends Error {
   code?: string;
   data?: any;
   message: string;
-};
+}
 
 export const getSerializableError = (error: Error): SerializableError => {
   const { message } = error;
@@ -14,7 +14,7 @@ export const getSerializableError = (error: Error): SerializableError => {
     typeof (error as any).data !== "undefined"
       ? (error as any).data
       : undefined;
-  return { message, code, data };
+  return { message, name: code, code, data };
 };
 
 export const makeErrorActionCreator = (
