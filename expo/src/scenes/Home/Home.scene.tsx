@@ -2,15 +2,16 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootStackParamList } from "../../navigation";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
+import { selectCommandRepo } from "../../services/repo/repo.state";
 import {
   DANGEROUS_setupResetSagaAction,
-  setupSagaAction,
+  setupSagaAction
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
@@ -23,6 +24,7 @@ const Home = ({
   navigation: StackNavigationProp<RootStackParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  const commandRepo = useSelector(selectCommandRepo);
   useEffect(() => {
     log.debug("useEffect() #SiaYlJ");
   });
@@ -130,7 +132,9 @@ const Home = ({
                   notes: "Inviting Alice",
                 })
               );
-              Alert.alert("Invite created", JSON.stringify(invite));
+              Alert.alert("Invite created", JSON.stringify(invite), [
+                { text: "Stop here" },
+              ]);
             }}
           />
         </View>
