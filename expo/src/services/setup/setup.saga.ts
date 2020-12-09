@@ -5,7 +5,6 @@ import { purgeStoredState } from "redux-persist";
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
-import { persistConfig } from "../../store";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
 import { rootLogger } from "../log/log.service";
@@ -15,6 +14,7 @@ import {
 } from "../repo/repo.saga";
 import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
 import { maybeStartupSagaAction } from "../startup/startup.state";
+import { persistConfig } from "../store/store.config";
 import {
   DANGEROUS_setupResetSagaAction,
   setSetupCompleteAction,

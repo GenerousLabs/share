@@ -5,8 +5,8 @@ import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
-import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
+import { log } from "./repo.sag.log";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
   addOneRepoAction,
@@ -26,8 +26,6 @@ export {
   sagaAction as saveNewRepoToReduxSagaAction,
   sagaEffect as saveNewRepoToReduxEffect,
 } from "./sagas/saveNewRepoToRedux.saga";
-
-export const log = rootLogger.extend("repo.saga");
 
 export function* loadRepoContentsEffect(
   action: ReturnType<typeof loadRepoContentsSagaAction>

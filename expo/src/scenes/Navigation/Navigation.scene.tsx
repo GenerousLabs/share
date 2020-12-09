@@ -14,14 +14,6 @@ import NotFoundScreen from "../NotFound/NotFound.scene";
 import Offers from "../Offers/Offers.scene";
 import BottomTabNavigator from "./scenes/BottomTabNavigator/BottomTabNavigator.scene";
 
-export type RootStackParamList = {
-  Home: undefined;
-  Libraries: undefined;
-  Offers: undefined;
-  Root: undefined;
-  NotFound: undefined;
-};
-
 const Drawer = createDrawerNavigator();
 
 // If you are not familiar with React Navigation, we recommend going through the

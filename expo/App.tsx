@@ -10,7 +10,7 @@ import { ThemeProvider } from "react-native-elements";
 import useCachedResources from "./src/hooks/useCachedResources";
 import useColorScheme from "./src/hooks/useColorScheme";
 import Navigation from "./src/scenes/Navigation/Navigation.scene";
-import store from "./src/store";
+import store from "./src/services/store/store.service";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

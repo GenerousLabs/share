@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { Volume } from "memfs";
 import mockStore from "redux-mock-store";
-import reducer from "../root.reducer";
+import reducer from "../services/store/root.reducer";
 import { RepoType } from "../shared.constants";
 import { FS } from "../shared.types";
 import { RootDispatch, RootState } from "../store";

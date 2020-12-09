@@ -2,6 +2,14 @@ import fs from "fs";
 import * as zod from "zod";
 import { RepoType } from "./shared.constants";
 
+export type RootStackParamList = {
+  Home: undefined;
+  Libraries: undefined;
+  Offers: undefined;
+  Root: undefined;
+  NotFound: undefined;
+};
+
 export type FS = {
   promises: {
     readFile: typeof fs.promises.readFile;

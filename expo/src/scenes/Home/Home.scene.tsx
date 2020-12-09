@@ -13,8 +13,8 @@ import {
   setupSagaAction,
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
+import { RootStackParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
-import { RootStackParamList } from "../Navigation/Navigation.scene";
 
 const log = rootLogger.extend("Home");
 
