@@ -87,7 +87,7 @@ const saga = createAsyncPromiseSaga<
     // );
 
     const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
-      repo: meRepo,
+      repo,
       token,
     });
 
