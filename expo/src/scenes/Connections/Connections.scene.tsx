@@ -1,13 +1,14 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Header, ListItem, Text } from "react-native-elements";
+import { Button, Header, ListItem, Overlay, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllConnections } from "../../services/connection/connection.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
 import { ConnectionInRedux, RootStackParamList } from "../../shared.types";
+import Invite from "./scenes/Invite/Invite.scene";
 
 const log = rootLogger.extend("Connections");
 
@@ -17,6 +18,7 @@ const Connections = ({
   navigation: DrawerNavigationProp<RootStackParamList, "Connections">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const connections = useSelector(selectAllConnections);
 
   const renderItem = useCallback(
@@ -46,6 +48,33 @@ const Connections = ({
       <View>
         <Text h1>Connections</Text>
       </View>
+      <View style={styles.buttonsContainer}>
+        <Button
+          title="Invite a friend"
+          style={styles.actionButton}
+          containerStyle={styles.buttonContainer}
+          onPress={() => {
+            setIsOverlayVisible(true);
+          }}
+        />
+        <Button
+          title="Accept an invite"
+          style={styles.actionButton}
+          containerStyle={styles.buttonContainer}
+          onPress={() => {
+            setIsOverlayVisible(true);
+          }}
+        />
+      </View>
+      <Overlay
+        overlayStyle={styles.overlay}
+        isVisible={isOverlayVisible}
+        onBackdropPress={() => {
+          setIsOverlayVisible(false);
+        }}
+      >
+        <Invite />
+      </Overlay>
       <View>
         <FlatList data={connections} renderItem={renderItem} />
       </View>
@@ -56,22 +85,18 @@ const Connections = ({
 export default Connections;
 
 const styles = StyleSheet.create({
-  navButtonWrapper: {
+  buttonsContainer: {
     display: "flex",
     flexDirection: "row",
-  },
-  navButton: {
-    flex: 1,
-    paddingHorizontal: 6,
+    alignContent: "space-between",
   },
   buttonContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    marginHorizontal: 10,
   },
-  buttonWrapper: {
-    marginVertical: 3,
-    width: "60%",
+  actionButton: {},
+  overlay: {
+    width: "80%",
+    height: "90%",
   },
 });
