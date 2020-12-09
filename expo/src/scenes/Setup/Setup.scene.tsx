@@ -26,12 +26,14 @@ const Setup = ({
   navigation: DrawerNavigationProp<SetupDrawerParamList>;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  const [hasSetupStarted, setHasSetupStarted] = useState(false);
   const { control, handleSubmit, errors, reset, formState } = useForm({
     resolver: zodResolver(Schema),
   });
 
   const onSubmit = useCallback(
     (data: Inputs) => {
+      setHasSetupStarted(true);
       dispatch(
         setupSagaAction({
           config: {
@@ -108,7 +110,7 @@ const Setup = ({
         {errors.token && <Text>Token is a required field</Text>}
         <Button
           title="Startup setup"
-          disabled={formState.isSubmitting}
+          loading={formState.isSubmitting || hasSetupStarted}
           onPress={() => {
             handleSubmit(onSubmit)();
           }}
