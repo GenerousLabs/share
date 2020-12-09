@@ -1,5 +1,6 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { ConnectionInRedux } from "../../shared.types";
+import { RootState } from "../store/store.service";
 
 export const REDUCER_KEY = "connection" as const;
 
@@ -20,3 +21,7 @@ export const {
 } = connectionSlice.actions;
 
 export default connectionSlice.reducer;
+
+export const {
+  selectAll: selectAllConnections,
+} = connectionAdapter.getSelectors((state: RootState) => state[REDUCER_KEY]);

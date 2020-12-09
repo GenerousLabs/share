@@ -1,13 +1,13 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Header } from "react-native-elements";
+import { Header, ListItem } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAllOffers } from "../../services/library/library.state";
+import { selectAllConnections } from "../../services/connection/connection.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
-import { RootStackParamList } from "../../shared.types";
+import { ConnectionInRedux, RootStackParamList } from "../../shared.types";
 
 const log = rootLogger.extend("Connections");
 
@@ -17,7 +17,20 @@ const Connections = ({
   navigation: DrawerNavigationProp<RootStackParamList, "Connections">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const offers = useSelector(selectAllOffers);
+  const connections = useSelector(selectAllConnections);
+
+  const renderItem = useCallback(
+    ({ item: connection }: { item: ConnectionInRedux }) => {
+      return (
+        <ListItem bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title>{connection.name}</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      );
+    },
+    []
+  );
 
   return (
     <View>
@@ -34,15 +47,7 @@ const Connections = ({
         <Text style={styles.title}>Connections</Text>
       </View>
       <View>
-        <FlatList
-          data={offers}
-          renderItem={(item) => (
-            <View>
-              <Text>{item.item.title}</Text>
-              <Text>{item.item.bodyMarkdown}</Text>
-            </View>
-          )}
-        />
+        <FlatList data={connections} renderItem={renderItem} />
       </View>
     </View>
   );
