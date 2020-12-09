@@ -8,6 +8,7 @@ import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
 import { subscribeToLibraryEffect } from "../../library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../library/library.state";
+import { rootLogger } from "../../log/log.service";
 import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
   commitAllEffect,
@@ -24,6 +25,8 @@ import {
 } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
 
+const log = rootLogger.extend("acceptInvite");
+
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes"> & {
     inviteCode: string;
@@ -34,6 +37,13 @@ const saga = createAsyncPromiseSaga<
   *effect(action) {
     const { name, notes, inviteCode } = action.payload;
     const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode(inviteCode);
+    log.debug("Invoked #iNrNNv", {
+      name,
+      notes,
+      inviteCode,
+      theirRemoteUrl,
+      theirKeysBase64,
+    });
 
     const theirRepoId = yield* call(generateId);
 
