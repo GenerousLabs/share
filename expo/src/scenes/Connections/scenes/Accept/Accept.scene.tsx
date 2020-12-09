@@ -26,7 +26,7 @@ const Accept = () => {
       setIsSubmitting(true);
       log.debug("Got accept params #ORqBDG", data);
       const { confirmCode } = await dispatch(acceptInviteSagaAction(data));
-      setInviteCode(inviteCode);
+      setInviteCode(confirmCode);
       setIsSubmitting(false);
     },
     [dispatch, setInviteCode]
