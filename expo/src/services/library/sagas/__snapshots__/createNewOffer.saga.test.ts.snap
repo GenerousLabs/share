@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createNewOfferEffect() Creates a new offer #nsn5S8 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [
+      "/repos/repo1/an-example-offer/index.md",
+      "---
+uuid: offer1-uuid
+proximity: 0
+shareToProximity: 1
+title: An example offer
+tags: []
+createdAt: 1607000000
+updatedAt: 1607000000
+---
+An offer example
+",
+      Object {
+        "encoding": "utf8",
+      },
+    ],
+    "context": null,
+    "fn": [Function],
+  },
+  "type": "CALL",
+}
+`;
+
+exports[`createNewOfferEffect() Creates a new offer #nsn5S8 2`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [
+      Object {
+        "payload": Object {
+          "message": "Creating a new offer",
+          "repoId": "repo1",
+        },
+        "type": "SHARE/repo/commitAll",
+      },
+    ],
+    "context": null,
+    "fn": [Function],
+  },
+  "type": "CALL",
+}
+`;
+
+exports[`createNewOfferEffect() Terminates with an error for a non existent repoId #dussrU 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "action": Object {
+      "meta": Object {
+        "isFatal": false,
+      },
+      "payload": Object {
+        "error": undefined,
+        "message": "Repo does not exist #xJeqQd",
+        "meta": Object {
+          "repoId": "repo1",
+        },
+      },
+      "type": "SHARE/library/createNewOffer/ERROR",
+    },
+    "channel": undefined,
+  },
+  "type": "PUT",
+}
+`;
