@@ -8,7 +8,7 @@ import {
   setNewCommitHashAction,
   updateOneRepoAction,
 } from "../repo.state";
-import { log } from "../repo.sag.log";
+import { log } from "../repo.saga.log";
 import { createAction } from "@reduxjs/toolkit";
 import { makeErrorActionCreator } from "../../../utils/errors.utils";
 

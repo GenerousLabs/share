@@ -6,7 +6,7 @@ import { getDirectoryContents } from "../fs/fs.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
 import { startupSagaAction } from "../startup/startup.state";
-import { log } from "./repo.sag.log";
+import { log } from "./repo.saga.log";
 import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
 import {
   addOneRepoAction,
