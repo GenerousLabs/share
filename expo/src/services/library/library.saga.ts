@@ -97,7 +97,7 @@ export function* loadOfferEffect(
 
     const offer = yield* call(readOfferFromDisk, { directoryPath });
 
-    yield put(upsertOneOfferAction({ ...offer, id: directoryPath, repoId }));
+    yield put(upsertOneOfferAction({ ...offer, id: offer.uuid, repoId }));
   } catch (error) {
     yield put(
       loadOfferError({
