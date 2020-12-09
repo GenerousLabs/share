@@ -1,4 +1,4 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
 import { Header } from "react-native-elements";
@@ -21,7 +21,7 @@ const log = rootLogger.extend("Home");
 const Home = ({
   navigation,
 }: {
-  navigation: StackNavigationProp<RootStackParamList, "Home">;
+  navigation: DrawerNavigationProp<RootStackParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const commandRepo = useSelector(selectCommandRepo);
@@ -32,32 +32,16 @@ const Home = ({
   return (
     <View>
       <Header
-        leftComponent={{ icon: "menu", color: "#fff" }}
+        leftComponent={{
+          icon: "menu",
+          color: "#fff",
+          onPress: () => navigation.openDrawer(),
+        }}
         centerComponent={{ text: "Generous Share", color: "#fff" }}
         rightComponent={{ icon: "home", color: "#fff" }}
       />
       <View>
         <Text style={styles.title}>Home</Text>
-      </View>
-      <View style={styles.navButtonWrapper}>
-        <View style={styles.navButton}>
-          <Button
-            title="View libraries"
-            color="green"
-            onPress={() => {
-              navigation.navigate("Libraries");
-            }}
-          />
-        </View>
-        <View style={styles.navButton}>
-          <Button
-            title="View offers"
-            color="red"
-            onPress={() => {
-              navigation.navigate("Offers");
-            }}
-          />
-        </View>
       </View>
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
@@ -210,7 +194,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    alignContent: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonWrapper: {
     marginVertical: 3,
