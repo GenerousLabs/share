@@ -7,6 +7,8 @@ import { call, put } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
+import { createNewLibraryEffect } from "../library/library.saga";
+import { createNewLibrarySagaAction } from "../library/library.state";
 import { rootLogger } from "../log/log.service";
 import {
   saveNewRepoToReduxEffect,
@@ -43,6 +45,12 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
     yield* call(
       saveNewRepoToReduxEffect,
       saveNewRepoToReduxSagaAction({ repo: commandsRepo })
+    );
+
+    // Create an empty library to start
+    yield* call(
+      createNewLibraryEffect,
+      createNewLibrarySagaAction({ title: "Everybody", bodyMarkdown: "" })
     );
 
     yield* put(setSetupCompleteAction());
