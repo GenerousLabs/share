@@ -1,4 +1,5 @@
-import { call, put, putResolve, select } from "typed-redux-saga/macro";
+import { putResolve } from "redux-saga/effects";
+import { call, put, select } from "typed-redux-saga/macro";
 import { v4 as generateUuid } from "uuid";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
@@ -70,9 +71,15 @@ const saga = createAsyncPromiseSaga<
     yield* put(addOneConnectionAction(connection));
 
     // TODO SagaTypes fix the type here once putResolve is typed
-    const { token }: { token: string } = yield* putResolve(
+    // const { token }: { token: string } = yield* putResolve(
+    //   createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
+    // ) as any;
+    // NOTE: `putResolve()` from `typed-redux-saga` DOES NOT return the value
+    // here, it results in `tokenResult` being undefined.
+    const tokenResult: any = yield putResolve(
       createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
-    ) as any;
+    );
+    const { token } = tokenResult;
     // This works from a typing perspective, but is probably not a very good
     // idea. Somehow in this constellation TypeScript can figure out the type of
     // the output value.
