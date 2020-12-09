@@ -28,16 +28,14 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleWare) => [
-    ...getDefaultMiddleWare({
+  middleware: (getDefaultMiddleWare) =>
+    getDefaultMiddleWare({
       thunk: false,
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActionPaths: ["meta.promise", "payload.error"],
       },
-    }),
-    promiseMiddleware,
-    sagaMiddleware,
-  ],
+    }).prepend(promiseMiddleware, sagaMiddleware),
 });
 
 export const persistor = persistStore(store);
