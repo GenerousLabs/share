@@ -33,7 +33,7 @@ const store = configureStore({
       thunk: false,
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredActionPaths: ["meta.promise", "payload.error"],
+        ignoredActionPaths: ["meta.promise"],
       },
     }).prepend(promiseMiddleware, sagaMiddleware),
 });
