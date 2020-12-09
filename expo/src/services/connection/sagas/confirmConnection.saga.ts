@@ -1,29 +1,43 @@
-import { KeysBase64 } from "git-encrypted";
-import { call, put } from "typed-redux-saga/macro";
+import { call, put, select } from "typed-redux-saga/macro";
 import { generateId } from "../../../utils/id.utils";
+import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { subscribeToLibraryEffect } from "../../library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../library/library.state";
-import { updateOneConnectionAction } from "../connection.state";
+import { ConnectionCodeType, parseInviteCode } from "../connection.service";
+import {
+  selectConnectionById,
+  updateOneConnectionAction,
+} from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
   {
     connectionId: string;
-    theirRemoteUrl: string;
-    theirKeysBase64: KeysBase64;
+    confirmCode: string;
   },
   void
 >({
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
-    const { connectionId, theirRemoteUrl, theirKeysBase64 } = action.payload;
+    const { connectionId, confirmCode } = action.payload;
+    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode({
+      code: confirmCode,
+      type: ConnectionCodeType.CONFIRM,
+    });
+    const connection = yield* select(
+      invariantSelector(
+        selectConnectionById,
+        "Failed to get connection #Ppjktq"
+      ),
+      connectionId
+    );
 
     const theirRepoId = yield* call(generateId);
 
     const theirRepo = yield* call(
       subscribeToLibraryEffect,
       subscribeToLibrarySagaAction({
-        name,
+        name: connection.name,
         remoteUrl: theirRemoteUrl,
         keysBase64: theirKeysBase64,
       })

@@ -24,4 +24,5 @@ export default connectionSlice.reducer;
 
 export const {
   selectAll: selectAllConnections,
+  selectById: selectConnectionById,
 } = connectionAdapter.getSelectors((state: RootState) => state[REDUCER_KEY]);

@@ -16,7 +16,9 @@ import {
 import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
+  ConnectionCodeType,
   createInviteCode,
+  getConnectionCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
@@ -47,27 +49,9 @@ const saga = createAsyncPromiseSaga<
 
     const id = yield* call(generateId);
 
-    const connection = {
-      id,
-      name,
-      notes,
-      myRepoId: repo.id,
-    };
-
     const meRepo = yield* select(
       invariantSelector(selectMeRepo, "Failed to find me repo #rMgyAc")
     );
-
-    yield* call(saveConnectionToConnectionsYaml, connection);
-    yield* call(
-      commitAllEffect,
-      commitAllSagaAction({
-        repoId: meRepo.id,
-        message: "Saving a new connection #3UujQ1",
-      })
-    );
-
-    yield* put(addOneConnectionAction(connection));
 
     // TODO SagaTypes fix the type here once putResolve is typed
     // const { token }: { token: string } = yield* putResolve(
@@ -86,21 +70,32 @@ const saga = createAsyncPromiseSaga<
     //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
     // );
 
-    const { url } = yield* call(createRemoteUrlForSharedRepo, {
-      repo,
+    const connection = {
+      id,
+      name,
+      notes,
+      myRepoId: repo.id,
       token,
+    };
+
+    yield* call(saveConnectionToConnectionsYaml, connection);
+    yield* call(
+      commitAllEffect,
+      commitAllSagaAction({
+        repoId: meRepo.id,
+        message: "Saving a new connection #3UujQ1",
+      })
+    );
+
+    yield* put(addOneConnectionAction(connection));
+
+    const code = yield* call(getConnectionCode, {
+      connection,
+      repo,
+      type: ConnectionCodeType.INVITE,
     });
-    const myRemoteUrl = `encrypted::${url}`;
 
-    // TODO Get the token for the new repo
-    const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, { repo });
-    if (typeof myKeysBase64 === "undefined") {
-      throw new Error("Cannot get keys for invite repo #v9vvan");
-    }
-
-    const inviteCode = createInviteCode({ myRemoteUrl, myKeysBase64 });
-
-    return { inviteCode };
+    return { inviteCode: code };
   },
 });
 

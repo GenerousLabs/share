@@ -170,25 +170,11 @@ export const ConnectionSchema = zod.object({
   name: zod.string().nonempty(),
   notes: zod.string().nonempty(),
   myRepoId: zod.string().nonempty(),
+  token: zod.string().nonempty(),
+  /** Their repo ID in our repo collection */
   theirRepoId: zod.string().optional(),
 });
 
 export type ConnectionOnDisk = zod.infer<typeof ConnectionSchema>;
 
-// NOTE: This is a duplicate of ConnectionOnDisk, we can probably switch to
-// using that type directly, just can't figure out how to add comments.
-export type ConnectionInRedux = {
-  /** The id that I refer to this connection by */
-  id: string;
-  /** The name that I assign to this connection */
-  name: string;
-  /** Any private notes that I keep in relation to this connection */
-  notes: string;
-  /** The ID of the "mine" repo, my half of the connection channel */
-  myRepoId: string;
-  /**
-   * The ID of their repo, their half of the connection channel. Undefined if it
-   * has not been set (which means I've sent an invitation and am awaiting a
-   * response.) */
-  theirRepoId?: string;
-};
+export type ConnectionInRedux = ConnectionOnDisk;

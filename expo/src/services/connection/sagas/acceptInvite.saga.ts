@@ -19,7 +19,9 @@ import {
 import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
+  ConnectionCodeType,
   createInviteCode,
+  getConnectionCode,
   parseInviteCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";
@@ -36,7 +38,10 @@ const saga = createAsyncPromiseSaga<
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
     const { name, notes, inviteCode } = action.payload;
-    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode(inviteCode);
+    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode({
+      code: inviteCode,
+      type: ConnectionCodeType.INVITE,
+    });
     log.debug("Invoked #iNrNNv", {
       name,
       notes,
@@ -72,6 +77,23 @@ const saga = createAsyncPromiseSaga<
       })
     );
 
+    // TODO SagaTypes fix the type here once putResolve is typed
+    // const { token }: { token: string } = yield* putResolve(
+    //   createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
+    // ) as any;
+    // NOTE: `putResolve()` from `typed-redux-saga` DOES NOT return the value
+    // here, it results in `tokenResult` being undefined.
+    const tokenResult: any = yield putResolve(
+      createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
+    );
+    const { token } = tokenResult;
+    // This works from a typing perspective, but is probably not a very good
+    // idea. Somehow in this constellation TypeScript can figure out the type of
+    // the output value.
+    // const { token } = yield* call(() =>
+    //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
+    // );
+
     const id = yield* call(generateId);
 
     const connection: ConnectionInRedux = {
@@ -79,6 +101,7 @@ const saga = createAsyncPromiseSaga<
       name,
       notes,
       myRepoId: repo.id,
+      token,
       theirRepoId,
     };
 
@@ -97,37 +120,12 @@ const saga = createAsyncPromiseSaga<
 
     yield* put(addOneConnectionAction(connection));
 
-    // TODO SagaTypes fix the type here once putResolve is typed
-    // const { token }: { token: string } = yield* putResolve(
-    //   createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
-    // ) as any;
-    // NOTE: `putResolve()` from `typed-redux-saga` DOES NOT return the value
-    // here, it results in `tokenResult` being undefined.
-    const tokenResult: any = yield putResolve(
-      createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
-    );
-    const { token } = tokenResult;
-    // This works from a typing perspective, but is probably not a very good
-    // idea. Somehow in this constellation TypeScript can figure out the type of
-    // the output value.
-    // const { token } = yield* call(() =>
-    //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
-    // );
-
-    const { url: myRemoteUrl } = yield* call(createRemoteUrlForSharedRepo, {
-      repo: meRepo,
-      token,
+    const code = yield* call(getConnectionCode, {
+      connection,
+      repo,
+      type: ConnectionCodeType.CONFIRM,
     });
-
-    // TODO Get the token for the new repo
-    const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, { repo });
-    if (typeof myKeysBase64 === "undefined") {
-      throw new Error("Cannot get keys for invite repo #v9vvan");
-    }
-
-    const confirmCode = createInviteCode({ myRemoteUrl, myKeysBase64 });
-
-    return { confirmCode };
+    return { confirmCode: code };
   },
 });
 
