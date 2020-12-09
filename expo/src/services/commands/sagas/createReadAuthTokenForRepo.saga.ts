@@ -1,4 +1,4 @@
-import { customAlphabet } from "nanoid";
+import { customAlphabet } from "nanoid/non-secure";
 import nolookalikes from "nanoid-dictionary/nolookalikes-safe";
 import { call, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../../utils/invariantSelector.util";

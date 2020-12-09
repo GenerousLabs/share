@@ -1,4 +1,4 @@
-import { customAlphabet } from "nanoid";
+import { customAlphabet } from "nanoid/non-secure";
 import nolookalikes from "nanoid-dictionary/nolookalikes-safe";
 
 const _generateId = customAlphabet(nolookalikes, 8);
