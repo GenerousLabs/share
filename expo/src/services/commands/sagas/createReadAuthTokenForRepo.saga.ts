@@ -39,6 +39,6 @@ const saga = createAsyncPromiseSaga<{ repoId: string }, { token: string }>({
   },
 });
 
-export const { request, success, failure } = saga;
+export const { request, success, failure, effect } = saga;
 const createReadAuthTokenforRepoSaga = saga.saga;
 export default createReadAuthTokenforRepoSaga;

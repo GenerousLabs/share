@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createReadAuthTokenForRepo.saga Creates a new invitation and returns a token #QkEGyv 1`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [
+      "repo1",
+    ],
+    "selector": [Function],
+  },
+  "type": "SELECT",
+}
+`;
+
+exports[`createReadAuthTokenForRepo.saga Creates a new invitation and returns a token #QkEGyv 2`] = `
+Object {
+  "@@redux-saga/IO": true,
+  "combinator": false,
+  "payload": Object {
+    "args": Array [],
+    "selector": [Function],
+  },
+  "type": "SELECT",
+}
+`;
