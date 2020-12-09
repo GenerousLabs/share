@@ -51,6 +51,7 @@ export const createAsyncPromiseSaga = <P, R>({
         log.error("Error resolving promsie action #Kfygxz");
       }
     } catch (error) {
+      log.debug("saga error #QXYogF", error);
       yield put(failure({ error: getSerializableError(error) }));
     }
   }
@@ -64,5 +65,6 @@ export const createAsyncPromiseSaga = <P, R>({
     success,
     failure,
     saga,
+    effect,
   };
 };
