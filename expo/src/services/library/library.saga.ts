@@ -47,7 +47,7 @@ export function* subscribeToLibraryEffect(
   log.debug("subscribeToLibraryEffect() #ezVpNx", name, remoteUrl);
 
   // TODO - Load the repo into redux after it has downloaded
-  throw new Error("Needs to be implemented here. #M3ulny");
+  log.error("Needs to be implemented here. #M3ulny");
 }
 
 export function* createNewLibraryEffect(
