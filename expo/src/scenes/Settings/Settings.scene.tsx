@@ -1,13 +1,15 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { Button, Overlay, Text } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { DrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
+import Log from "./scenes/Log/Log.scene";
 
 const Settings = ({
   navigation,
@@ -15,6 +17,11 @@ const Settings = ({
   navigation: DrawerNavigationProp<DrawerParamList, "Settings">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+
+  const closeOverlay = useCallback(() => {
+    setIsOverlayVisible(false);
+  }, []);
 
   return (
     <View>
@@ -47,6 +54,22 @@ const Settings = ({
             );
           }}
         />
+        <Button
+          title="Open log view"
+          onPress={() => setIsOverlayVisible(true)}
+        />
+        <Overlay
+          overlayStyle={styles.overlay}
+          isVisible={isOverlayVisible}
+          fullScreen
+          onBackdropPress={() => {
+            setIsOverlayVisible(false);
+          }}
+        >
+          <ScrollView>
+            <Log closeOverlay={closeOverlay} />
+          </ScrollView>
+        </Overlay>
       </View>
     </View>
   );
@@ -63,5 +86,9 @@ const styles = StyleSheet.create({
   },
   dangerButtonTitle: {
     color: "black",
+  },
+  overlay: {
+    // width: "80%",
+    // height: "90%",
   },
 });
