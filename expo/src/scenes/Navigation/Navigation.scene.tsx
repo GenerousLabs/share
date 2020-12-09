@@ -1,10 +1,10 @@
 import { useReduxDevToolsExtension } from "@react-navigation/devtools";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
 } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import * as Linking from "expo-linking";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
@@ -22,25 +22,7 @@ export type RootStackParamList = {
   NotFound: undefined;
 };
 
-// A root stack navigator is often used for displaying modals on top of all other content
-// Read more here: https://reactnavigation.org/docs/modal
-const Stack = createStackNavigator<RootStackParamList>();
-
-function RootNavigator() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Libraries" component={Libraries} />
-      <Stack.Screen name="Offers" component={Offers} />
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen
-        name="NotFound"
-        component={NotFoundScreen}
-        options={{ title: "Oops!" }}
-      />
-    </Stack.Navigator>
-  );
-}
+const Drawer = createDrawerNavigator();
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -56,7 +38,17 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Libraries" component={Libraries} />
+        <Drawer.Screen name="Offers" component={Offers} />
+        <Drawer.Screen name="Root" component={BottomTabNavigator} />
+        <Drawer.Screen
+          name="NotFound"
+          component={NotFoundScreen}
+          options={{ title: "Oops!" }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
