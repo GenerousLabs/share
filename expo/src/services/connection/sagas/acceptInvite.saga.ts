@@ -1,8 +1,7 @@
 import { KeysBase64 } from "git-encrypted";
 import { call, put, select } from "typed-redux-saga/macro";
-import { v4 as generateUuid } from "uuid";
 import { ConnectionInRedux } from "../../../shared.types";
-import { generateId } from "../../../utils/id.utils";
+import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { subscribeToLibraryEffect } from "../../library/library.saga";

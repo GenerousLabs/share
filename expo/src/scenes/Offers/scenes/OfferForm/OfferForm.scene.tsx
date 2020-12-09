@@ -3,11 +3,11 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { v4 as generateUuid } from "uuid";
 import { createReadAuthTokenForRepoSagaAction } from "../../../../services/commands/commands.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/library.saga";
 import { selectMyLibraries } from "../../../../services/library/library.selectors";
 import { RootDispatch } from "../../../../store";
+import { generateUuid } from "../../../../utils/id.utils";
 
 type Inputs = {
   repoId: string;

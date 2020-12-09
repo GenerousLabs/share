@@ -1,13 +1,13 @@
 import { KeysBase64 } from "git-encrypted";
 import matter from "gray-matter";
 import { simpleEncryptedClone } from "isomorphic-git-remote-encrypted";
-import { v4 as generateUuid } from "uuid";
 import { gitFsHttp, REPOS_PATH, RepoType } from "../../shared.constants";
 import {
   RepoInRedux,
   RepoOnDisk,
   RepoOnDiskFrontMatter,
 } from "../../shared.types";
+import { generateUuid } from "../../utils/id.utils";
 import { assertNever } from "../../utils/never.utils";
 import { join } from "../fs/fs.service";
 import { _createNewRepo } from "./_createNewRepo";

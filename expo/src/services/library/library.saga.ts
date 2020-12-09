@@ -1,9 +1,8 @@
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put } from "typed-redux-saga/macro";
-import { v4 as generateUuid } from "uuid";
 import { RepoType } from "../../shared.constants";
-import { generateId } from "../../utils/id.utils";
+import { generateId, generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
 import {
   commitAllEffect,
