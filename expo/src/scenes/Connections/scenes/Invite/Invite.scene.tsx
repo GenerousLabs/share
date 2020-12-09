@@ -35,7 +35,7 @@ const Invite = () => {
           <Controller
             control={control}
             render={({ onChange, onBlur, value }) => (
-              <TextInput
+              <Input
                 style={styles.input}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
@@ -51,7 +51,7 @@ const Invite = () => {
           <Controller
             control={control}
             render={({ onChange, onBlur, value }) => (
-              <TextInput
+              <Input
                 style={styles.inputMultiline}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { Input } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import { createNewLibrarySagaAction } from "../../../../services/library/library.state";
 import { RootDispatch } from "../../../../store";
@@ -25,7 +26,7 @@ const LibraryForm = () => {
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
@@ -41,7 +42,7 @@ const LibraryForm = () => {
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.inputMultiline}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}

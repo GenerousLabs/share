@@ -1,7 +1,8 @@
 import { Picker } from "@react-native-community/picker";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { Input } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { createReadAuthTokenForRepoSagaAction } from "../../../../services/commands/commands.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/library.saga";
@@ -70,7 +71,7 @@ const OfferForm = () => {
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
@@ -86,7 +87,7 @@ const OfferForm = () => {
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
-          <TextInput
+          <Input
             style={styles.inputMultiline}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
