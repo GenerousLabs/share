@@ -73,7 +73,7 @@ const Invite = () => {
         <>
           <Text h2>Invite a friend</Text>
           <Text>Share this code with a friend</Text>
-          <Input value={inviteCode} />
+          <Input value={inviteCode} multiline numberOfLines={12} />
         </>
       )}
     </View>
