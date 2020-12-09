@@ -1,9 +1,8 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Header } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStackParamList } from "../Navigation/Navigation.scene";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
@@ -15,6 +14,7 @@ import {
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDispatch } from "../../store";
+import { RootStackParamList } from "../Navigation/Navigation.scene";
 
 const log = rootLogger.extend("Home");
 
@@ -30,7 +30,12 @@ const Home = ({
   });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <View>
+      <Header
+        leftComponent={{ icon: "menu", color: "#fff" }}
+        centerComponent={{ text: "Generous Share", color: "#fff" }}
+        rightComponent={{ icon: "home", color: "#fff" }}
+      />
       <View>
         <Text style={styles.title}>Home</Text>
       </View>
@@ -185,7 +190,7 @@ const Home = ({
           />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
