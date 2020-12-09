@@ -22,10 +22,11 @@ const offerSlice = createSlice({
   initialState: offerAdapter.getInitialState(),
   reducers: {
     upsertOneOfferAction: offerAdapter.upsertOne,
+    addOneOfferAction: offerAdapter.addOne,
   },
 });
 
-export const { upsertOneOfferAction } = offerSlice.actions;
+export const { upsertOneOfferAction, addOneOfferAction } = offerSlice.actions;
 
 type FilterState = {
   tags: string[];
@@ -55,6 +56,10 @@ export default libraryReducer;
 
 export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
   (state: RootState) => state.library.offers
+);
+export const selectAllImportedOffers = createSelector(
+  [selectAllOffers],
+  (offers) => offers.filter((offer) => !offer.mine)
 );
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],
