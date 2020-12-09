@@ -1,10 +1,11 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Alert, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
+import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { DrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
@@ -21,7 +22,17 @@ const Settings = ({
       <Text h1>Settings</Text>
       <View>
         <Button
+          title="Export repos as zip"
+          buttonStyle={styles.exportButton}
+          onPress={async () => {
+            await createAndShareZipFile({ path: "/repos" });
+            Alert.alert("Zip export finished #znvf34");
+          }}
+        />
+        <Button
           title="DANGEROUS reset the whole application"
+          buttonStyle={styles.dangerButton}
+          titleStyle={styles.dangerButtonTitle}
           onPress={() => {
             Alert.alert(
               "DANGEROUS",
@@ -42,3 +53,15 @@ const Settings = ({
 };
 
 export default Settings;
+
+const styles = StyleSheet.create({
+  exportButton: {
+    backgroundColor: "#116530",
+  },
+  dangerButton: {
+    backgroundColor: "red",
+  },
+  dangerButtonTitle: {
+    color: "black",
+  },
+});
