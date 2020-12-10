@@ -185,3 +185,11 @@ export const ConnectionSchema = zod.object({
 export type ConnectionOnDisk = zod.infer<typeof ConnectionSchema>;
 
 export type ConnectionInRedux = ConnectionOnDisk;
+
+export const RepoShareSchema = zod.object({
+  id: zod.string().nonempty(),
+  repoId: zod.string().nonempty(),
+  connectionId: zod.string().nonempty(),
+  token: zod.string().nonempty(),
+});
+export type RepoShareInRedux = zod.infer<typeof RepoShareSchema>;

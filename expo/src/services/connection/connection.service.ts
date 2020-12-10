@@ -16,6 +16,7 @@ import { getKeysIfEncryptedRepo } from "../../utils/key.utils";
 export enum ConnectionCodeType {
   INVITE = "INVITE",
   CONFIRM = "CONFIRM",
+  SHARING = "SHARING",
 }
 
 export const base64ToString = (input: string) => {

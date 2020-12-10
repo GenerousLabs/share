@@ -12,8 +12,14 @@ const preloadedState: RootState = {
     version: 1,
   },
   connection: {
-    ids: [],
-    entities: {},
+    connections: {
+      ids: [],
+      entities: {},
+    },
+    repoShares: {
+      ids: [],
+      entities: {},
+    },
   },
   library: {
     filters: { tags: [] },

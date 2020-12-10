@@ -27,6 +27,8 @@ export const createRemoteUrl = ({
 /**
  * In theory, this function could call an API to request a new repo, be given a
  * new token to authenticate, and so on. For now, we use one token everywhere.
+ *
+ * Return a SIMPLE url, not an `encrypted::` prefixed URL.
  */
 export const createNewRemoteForRepo = async ({
   repo: { type, uuid },
@@ -49,6 +51,9 @@ export const createNewRemoteForRepo = async ({
   return createRemoteUrl({ protocol, token, host, username, repoName });
 };
 
+/**
+ * Return a SIMPLE url, not an `encrypted::` prefixed URL.
+ */
 export const createRemoteUrlForSharedRepo = async ({
   repo: { type, uuid },
   token,

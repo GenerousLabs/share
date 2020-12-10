@@ -1,9 +1,10 @@
 import {
+  combineReducers,
   createEntityAdapter,
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
-import { ConnectionInRedux } from "../../shared.types";
+import { ConnectionInRedux, RepoShareInRedux } from "../../shared.types";
 import { selectAllRepos } from "../repo/repo.state";
 import { RootState } from "../store/store.service";
 
@@ -25,12 +26,31 @@ export const {
   updateOneConnectionAction,
 } = connectionSlice.actions;
 
-export default connectionSlice.reducer;
+const repoShareAdapter = createEntityAdapter<RepoShareInRedux>();
+
+const repoShareSlice = createSlice({
+  name: "SHARE/connection/repoShare",
+  initialState: repoShareAdapter.getInitialState(),
+  reducers: {
+    addOneRepoShare: repoShareAdapter.addOne,
+  },
+});
+
+export const { addOneRepoShare } = repoShareSlice.actions;
+
+const connectionReducer = combineReducers({
+  connections: connectionSlice.reducer,
+  repoShares: repoShareSlice.reducer,
+});
+
+export default connectionReducer;
 
 export const {
   selectAll: selectAllConnections,
   selectById: selectConnectionById,
-} = connectionAdapter.getSelectors((state: RootState) => state[REDUCER_KEY]);
+} = connectionAdapter.getSelectors(
+  (state: RootState) => state[REDUCER_KEY].connections
+);
 export const makeSelectConnectionById = (id: string) => (state: RootState) =>
   selectConnectionById(state, id);
 export const makeSelectConnectionAndRepoById = (connectionId: string) =>
@@ -42,3 +62,7 @@ export const makeSelectConnectionAndRepoById = (connectionId: string) =>
       return { connection, repo };
     }
   );
+
+export const { selectAll: selectAllRepoShares } = repoShareAdapter.getSelectors(
+  (state: RootState) => state[REDUCER_KEY].repoShares
+);
