@@ -50,8 +50,7 @@ const Setup = ({
       <Header />
       <ScrollView>
         <Text h1>Setup</Text>
-        <Text>welcome to the Generous Share app.</Text>
-        <Text>Protocol:</Text>
+        <Text>Welcome to the Generous Share app.</Text>
         <Controller
           control={control}
           render={({ onChange, onBlur, value }) => (
