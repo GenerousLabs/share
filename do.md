@@ -1,3 +1,17 @@
+# Sprint 1
+
+- [x] From a list -> another page
+  - Is it a navigator? A stack? A side stack?
+  - Better not to use singe components
+  - Or, top leve screen scenes need to just load children
+  - Stack navigator, it has right / bottom on ios / android
+  - Top level menu
+- [ ] Browse & Your Stuff UI
+- [ ] Some way to share a library
+- [ ] Report back to action promises lib
+
+# Next
+
 - [x] Add logging infrastructure
   - Maybe winston? - nope, doesn't play well with react native
   - Prep to be able to show logs to the user in the UI
@@ -22,8 +36,9 @@
 - [x] Define the format for a `me` repo
   - Add a type field to the repos list
 - [x] Add tags to offers
-- [ ] Create connection flow
-  - [ ] Generate an invite
+- [x] How do we package the code url + keys?
+- [x] Create connection flow
+  - [x] Generate an invite
     - Create a connection repo
     - Grant access
   - [ ] Accept an invite
@@ -35,10 +50,14 @@
     - Import the repo
     - Read the ping message
     - Post a pong message
+  - Put a connections.yaml file in the me repo
+    - Array of objects, one per connection
 - [ ] Kill the console.error() on key creation
 
 ## Low priority
 
+- [ ] Pass name from connection / subscription through to redux
+  - Currently it's silently dropped in `_createNewRepo()`
 - [ ] Refactor creating repos into a saga
   - Right now it's a function that returns a RepoInRedux
   - It should be a saga that pushes to redux on its own
