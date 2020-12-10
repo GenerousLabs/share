@@ -1,7 +1,8 @@
 import matter from "gray-matter";
 import { gitFsHttp } from "../../shared.constants";
-import { OfferInRedux, OfferOnDisk } from "../../shared.types";
+import { OfferInRedux, OfferOnDisk, RepoInRedux } from "../../shared.types";
 import { join } from "../fs/fs.service";
+import { log } from "./library.log";
 
 /**
  * Given an offer, convert it to a markdown & frontmatter string
@@ -36,4 +37,15 @@ export const readOfferFromDisk = async ({
     OfferInRedux,
     "id" | "repoId"
   >;
+};
+
+export const getLibrarySharingCode = async ({
+  repo,
+}: {
+  repo: Pick<RepoInRedux, "uuid" | "type">;
+}) => {
+  // const {url:myRemoteUrl} = createRemoteUrlForSharedRepo({repo, token})
+  // const code = createConnectionCode({myKeysBase64, myRemoteUrl, type: ConnectionCodeType.SHARING})
+  log.error("getLibrarySharingCode() needs implementation #kutQik");
+  return "SHARING_testtoken";
 };
