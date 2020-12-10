@@ -47,77 +47,79 @@ const Accept = ({
     <View>
       <Header title="Accept invite" goBack={navigation.goBack} />
       <ScrollView>
-        {inviteCode === "" ? (
-          <>
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                <Input
-                  label="Name"
-                  style={styles.input}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                />
-              )}
-              name="name"
-              defaultValue=""
-            />
-            {errors.name && <Text>Name is a required field</Text>}
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                <Input
-                  label="Notes"
-                  style={styles.inputMultiline}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                  multiline={true}
-                  numberOfLines={5}
-                />
-              )}
-              name="notes"
-              rules={{ required: false }}
-              defaultValue=""
-            />
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                <Input
-                  label="Code"
-                  style={styles.inputMultiline}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                  multiline={true}
-                  numberOfLines={12}
-                />
-              )}
-              name="inviteCode"
-              rules={{ required: false }}
-              defaultValue=""
-            />
-            <Button
-              loading={isSubmitting}
-              title="Accept Invitation"
-              onPress={handleSubmit(onSubmit)}
-            />
-          </>
-        ) : (
-          <>
-            <Text h2>Confirm your invitation</Text>
-            <Text>
-              Send this confirmation code back to your friend to confirm the
-              invitation.
-            </Text>
-            <Input value={inviteCode} multiline numberOfLines={12} />
-          </>
-        )}
-        <Button
-          title="< Back to Connections"
-          onPress={() => navigation.goBack()}
-        />
+        <View style={styles.ScrollViewInner}>
+          {inviteCode === "" ? (
+            <>
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
+                    label="Name"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="name"
+                defaultValue=""
+              />
+              {errors.name && <Text>Name is a required field</Text>}
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
+                    label="Notes"
+                    style={styles.inputMultiline}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    multiline={true}
+                    numberOfLines={5}
+                  />
+                )}
+                name="notes"
+                rules={{ required: false }}
+                defaultValue=""
+              />
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
+                    label="Code"
+                    style={styles.inputMultiline}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    multiline={true}
+                    numberOfLines={12}
+                  />
+                )}
+                name="inviteCode"
+                rules={{ required: false }}
+                defaultValue=""
+              />
+              <Button
+                loading={isSubmitting}
+                title="Accept Invitation"
+                onPress={handleSubmit(onSubmit)}
+              />
+            </>
+          ) : (
+            <>
+              <Text h2>Confirm your invitation</Text>
+              <Text>
+                Send this confirmation code back to your friend to confirm the
+                invitation.
+              </Text>
+              <Input value={inviteCode} multiline numberOfLines={12} />
+            </>
+          )}
+          <Button
+            title="< Back to Connections"
+            onPress={() => navigation.goBack()}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -126,6 +128,10 @@ const Accept = ({
 export default Accept;
 
 const styles = StyleSheet.create({
+  ScrollViewInner: {
+    // Extend the view until we fix the ScrollViewHeight issue
+    paddingBottom: 200,
+  },
   input: {
     borderColor: "black",
     borderWidth: 2,
