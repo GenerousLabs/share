@@ -1,5 +1,5 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Input, ListItem, Overlay, Text } from "react-native-elements";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
@@ -12,9 +12,9 @@ import {
 } from "../../services/connection/connection.service";
 import { selectAllConnections } from "../../services/connection/connection.state";
 import { rootLogger } from "../../services/log/log.service";
-import { selectAllRepos, selectRepoById } from "../../services/repo/repo.state";
+import { selectAllRepos } from "../../services/repo/repo.state";
 import { ConnectionInRedux, DrawerParamList } from "../../shared.types";
-import { RootDispatch, RootState } from "../../store";
+import { RootDispatch } from "../../store";
 import Accept from "./scenes/Accept/Accept.scene";
 import Invite from "./scenes/Invite/Invite.scene";
 
