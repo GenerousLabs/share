@@ -17,7 +17,7 @@ import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
   ConnectionCodeType,
-  createInviteCode,
+  createConnectionCode,
   getConnectionCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";

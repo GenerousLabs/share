@@ -26,7 +26,7 @@ export const stringToBase64 = (input: string) => {
   return globalThis.btoa(input);
 };
 
-export const createInviteCode = ({
+export const createConnectionCode = ({
   myKeysBase64,
   myRemoteUrl,
   type,
@@ -162,7 +162,7 @@ export const getConnectionCode = async ({
     throw new Error("Cannot get keys for invite repo #v9vvan");
   }
 
-  const code = createInviteCode({ type, myRemoteUrl, myKeysBase64 });
+  const code = createConnectionCode({ type, myRemoteUrl, myKeysBase64 });
 
   return code;
 };
