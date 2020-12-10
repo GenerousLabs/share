@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
-import { Alert, Button, StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { Alert, StyleSheet, View } from "react-native";
+import { Button } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
@@ -28,13 +28,10 @@ const Home = ({
   return (
     <View>
       <Header />
-      <View>
-        <Text h1>Home</Text>
-      </View>
       <View style={styles.buttonContainer}>
         <View style={styles.buttonWrapper}>
           <Button
-            title="Run setup"
+            title="NordVPN"
             onPress={async () => {
               dispatch(
                 setupSagaAction({
@@ -73,7 +70,7 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             title="Log error"
-            color="darkred"
+            style={{ backgroundColor: "darkred" }}
             onPress={() => {
               log.error("An error #SENEUH", new Error("Awry #PYShEI"));
             }}
@@ -118,7 +115,7 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             title="Export repos as zip"
-            color="#116530"
+            style={{ backgroundColor: "#116530" }}
             onPress={async () => {
               await createAndShareZipFile({ path: "/repos" });
               Alert.alert("Zip export finished #znvf34");
@@ -127,7 +124,7 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            color="lightblue"
+            style={{ backgroundColor: "lightblue" }}
             title="Show logs"
             onPress={async () => {
               try {
@@ -144,7 +141,7 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            color="grey"
+            style={{ backgroundColor: "grey" }}
             title="DANGEROUS reset the whole application"
             onPress={() => {
               Alert.alert(

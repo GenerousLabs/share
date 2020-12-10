@@ -3,10 +3,12 @@ import { FullTheme } from "react-native-elements";
 
 const white = "#fff";
 const black = "#212121";
+const bggrey = "#f1f1f1";
 
 export const colours = {
   white,
   black,
+  bggrey,
 };
 
 export const montserrat = "montserrat" as const;

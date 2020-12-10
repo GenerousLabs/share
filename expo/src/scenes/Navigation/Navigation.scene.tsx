@@ -9,9 +9,11 @@ import * as Linking from "expo-linking";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import { useSelector } from "react-redux";
+import { colours } from "../../root.theme";
 import { RootState } from "../../services/store/store.service";
 import Browse from "../Browse/Browse.scene";
 import Connections from "../Connections/Connections.scene";
+import DrawerScene from "../Drawer/Drawer.scene";
 import Home from "../Home/Home.scene";
 import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
@@ -21,7 +23,7 @@ import Setup from "../Setup/Setup.scene";
 import YourStuff from "../YourStuff/YourStuff.scene";
 import BottomTabNavigator from "./scenes/BottomTabNavigator/BottomTabNavigator.scene";
 
-const Drawer = createDrawerNavigator();
+const DrawerNavigator = createDrawerNavigator();
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -41,36 +43,29 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {isSetupComplete ? (
-        <Drawer.Navigator
+        <DrawerNavigator.Navigator
           initialRouteName="Home"
-          // drawerContent={({ navigation }) => (
-          //   <View>
-          //     <Button
-          //       title="Drawer"
-          //       onPress={() => navigation.navigate("Libraries")}
-          //     />
-          //   </View>
-          // )}
+          drawerContent={DrawerScene}
         >
-          <Drawer.Screen name="Home" component={Home} />
-          <Drawer.Screen name="Browse" component={Browse} />
-          <Drawer.Screen name="Your Stuff" component={YourStuff} />
-          <Drawer.Screen name="Connections" component={Connections} />
-          <Drawer.Screen name="Libraries" component={Libraries} />
-          <Drawer.Screen name="Offers" component={Offers} />
-          <Drawer.Screen name="Root" component={BottomTabNavigator} />
-          <Drawer.Screen name="Settings" component={Settings} />
-          <Drawer.Screen
+          <DrawerNavigator.Screen name="Home" component={Home} />
+          <DrawerNavigator.Screen name="Browse" component={Browse} />
+          <DrawerNavigator.Screen name="Your Stuff" component={YourStuff} />
+          <DrawerNavigator.Screen name="Connections" component={Connections} />
+          <DrawerNavigator.Screen name="Libraries" component={Libraries} />
+          <DrawerNavigator.Screen name="Offers" component={Offers} />
+          <DrawerNavigator.Screen name="Root" component={BottomTabNavigator} />
+          <DrawerNavigator.Screen name="Settings" component={Settings} />
+          <DrawerNavigator.Screen
             name="NotFound"
             component={NotFoundScreen}
             options={{ title: "Oops!" }}
           />
-        </Drawer.Navigator>
+        </DrawerNavigator.Navigator>
       ) : (
-        <Drawer.Navigator initialRouteName="Setup">
-          <Drawer.Screen name="Setup" component={Setup} />
-          <Drawer.Screen name="Settings" component={Settings} />
-        </Drawer.Navigator>
+        <DrawerNavigator.Navigator initialRouteName="Setup">
+          <DrawerNavigator.Screen name="Setup" component={Setup} />
+          <DrawerNavigator.Screen name="Settings" component={Settings} />
+        </DrawerNavigator.Navigator>
       )}
     </NavigationContainer>
   );
