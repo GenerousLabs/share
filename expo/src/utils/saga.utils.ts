@@ -1,6 +1,7 @@
 import {
   createPromiseAction,
   PromiseAction,
+  rejectPromiseAction,
   resolvePromiseAction,
 } from "redux-saga-promise-actions";
 import {
@@ -53,6 +54,7 @@ export const createAsyncPromiseSaga = <P, R>({
     } catch (error) {
       log.debug("saga error #QXYogF", error);
       yield put(failure({ error: getSerializableError(error) }));
+      yield call(rejectPromiseAction, action, { error });
     }
   }
 
