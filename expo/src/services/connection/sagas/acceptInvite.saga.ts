@@ -22,7 +22,7 @@ import {
   ConnectionCodeType,
   createConnectionCode,
   getConnectionCode,
-  parseInviteCode,
+  parseSharingCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
@@ -38,7 +38,7 @@ const saga = createAsyncPromiseSaga<
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
     const { name, notes, inviteCode } = action.payload;
-    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode({
+    const { theirRemoteUrl, theirKeysBase64 } = parseSharingCode({
       code: inviteCode,
       type: ConnectionCodeType.INVITE,
     });

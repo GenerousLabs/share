@@ -57,7 +57,7 @@ const DecodeSchema = zod.object({
   }),
 });
 
-export const parseInviteCode = ({
+export const parseSharingCode = ({
   code,
   type,
 }: {

@@ -4,7 +4,7 @@ import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { subscribeToLibraryEffect } from "../../library/library.saga";
 import { subscribeToLibrarySagaAction } from "../../library/library.state";
-import { ConnectionCodeType, parseInviteCode } from "../connection.service";
+import { ConnectionCodeType, parseSharingCode } from "../connection.service";
 import {
   selectConnectionById,
   updateOneConnectionAction,
@@ -20,7 +20,7 @@ const saga = createAsyncPromiseSaga<
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
     const { connectionId, confirmCode } = action.payload;
-    const { theirRemoteUrl, theirKeysBase64 } = parseInviteCode({
+    const { theirRemoteUrl, theirKeysBase64 } = parseSharingCode({
       code: confirmCode,
       type: ConnectionCodeType.CONFIRM,
     });
