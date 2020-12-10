@@ -1,6 +1,6 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
@@ -60,7 +60,12 @@ const DrawerScene = ({
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.innerContainer}>
-          <View style={styles.logo} />
+          <View style={styles.logoWrapper}>
+            <Image
+              style={styles.logo}
+              source={require("../../../assets/images/drawerLogo.png")}
+            />
+          </View>
           <View style={styles.menu}>
             {menuItems.map((item) => (
               <MenuItem key={item.route} navigation={navigation} {...item} />
@@ -90,9 +95,16 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   innerContainer: {},
-  logo: {
+  logoWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: colours.black,
     height: 200,
+  },
+  logo: {
+    width: 56,
+    height: 62,
   },
   menu: {
     padding: 24,
