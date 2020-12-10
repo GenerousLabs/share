@@ -14,12 +14,14 @@ const Header = () => {
     <RNEHeader
       leftComponent={{
         icon: "menu",
-        color: "#fff",
         onPress: () => {
           navigation.openDrawer();
         },
       }}
-      centerComponent={{ text: "Generous Share", color: "#fff" }}
+      placement="left"
+      centerComponent={{
+        text: "Generous Share",
+      }}
       rightComponent={{
         icon: "settings",
         onPress: () => {

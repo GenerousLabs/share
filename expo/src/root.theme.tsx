@@ -23,12 +23,21 @@ const bold = {
 
 export const theme: Partial<FullTheme> = {
   Header: {
+    leftComponent: {
+      style: {
+        color: black,
+      },
+    },
     backgroundColor: colours.white,
     centerComponent: {
       style: {
         color: black,
-        fontFamily: montserratBold,
-        fontWeight: "normal",
+        ...bold,
+      },
+    },
+    rightComponent: {
+      style: {
+        color: black,
       },
     },
   },
