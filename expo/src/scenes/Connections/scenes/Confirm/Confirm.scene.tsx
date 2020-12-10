@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Share, View } from "react-native";
+import { Share, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
@@ -31,30 +31,38 @@ const Confirm = ({
     <View>
       <Header title="Waiting" goBack={goBack} />
       <ScrollView>
-        <Text>Coming soon...</Text>
-        {typeof connection === "undefined" ||
-        typeof repo === "undefined" ? null : (
-          <Button
-            title="Send the invite code again"
-            loading={isWorking}
-            onPress={async () => {
-              setIsworking(true);
-              const code = await getConnectionCode({
-                connection,
-                repo,
-                type: ConnectionCodeType.CONFIRM,
-              });
-              const result = await Share.share({ message: code });
-              if (result.action === Share.dismissedAction) {
-                log.debug("Sharing cancelled #g4hRzl");
-              }
-              setIsworking(false);
-            }}
-          />
-        )}
+        <View style={styles.ScrollViewInner}>
+          <Text>Coming soon...</Text>
+          {typeof connection === "undefined" ||
+          typeof repo === "undefined" ? null : (
+            <Button
+              title="Send the invite code again"
+              loading={isWorking}
+              onPress={async () => {
+                setIsworking(true);
+                const code = await getConnectionCode({
+                  connection,
+                  repo,
+                  type: ConnectionCodeType.CONFIRM,
+                });
+                const result = await Share.share({ message: code });
+                if (result.action === Share.dismissedAction) {
+                  log.debug("Sharing cancelled #g4hRzl");
+                }
+                setIsworking(false);
+              }}
+            />
+          )}
+        </View>
       </ScrollView>
     </View>
   );
 };
 
 export default Confirm;
+
+const styles = StyleSheet.create({
+  ScrollViewInner: {
+    paddingBottom: 200,
+  },
+});
