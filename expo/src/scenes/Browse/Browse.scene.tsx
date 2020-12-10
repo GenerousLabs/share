@@ -32,10 +32,7 @@ const Browse = ({
 
   return (
     <View>
-      <Header />
-      <View>
-        <Text h1>Browse</Text>
-      </View>
+      <Header title="Browse" />
       <View>
         <FlatList data={offers} renderItem={renderItem} />
       </View>

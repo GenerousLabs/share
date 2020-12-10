@@ -40,8 +40,8 @@ const Invite = ({
 
   return (
     <View>
+      <Header title="Invite" />
       <ScrollView>
-        <Header title="Invite" />
         {inviteCode === "" ? (
           <>
             <Controller

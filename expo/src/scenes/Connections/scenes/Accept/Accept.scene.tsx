@@ -45,8 +45,8 @@ const Accept = ({
 
   return (
     <View>
+      <Header title="Accept invite" />
       <ScrollView>
-        <Header title="Accept invite" />
         {inviteCode === "" ? (
           <>
             <Controller
