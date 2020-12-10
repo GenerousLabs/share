@@ -48,7 +48,7 @@ export const createAsyncPromiseSaga = <P, R>({
       try {
         yield call(resolvePromiseAction, action, response);
       } catch (error) {
-        // QUESTION Is there a better way to handle erros here?
+        // QUESTION Is there a better way to handle errors here?
         log.error("Error resolving promsie action #Kfygxz");
       }
     } catch (error) {
