@@ -19,6 +19,12 @@ export type SetupDrawerParamList = {
   Settings: undefined;
 };
 
+export type ConnectionsStackParameterList = {
+  ConnectionsHome: undefined;
+  ConnectionsInvite: undefined;
+  ConnectionsAccept: undefined;
+};
+
 export type FS = {
   promises: {
     readFile: typeof fs.promises.readFile;

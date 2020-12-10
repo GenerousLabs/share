@@ -49,7 +49,7 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
         >
           <DrawerNavigator.Screen name="Home" component={Home} />
           <DrawerNavigator.Screen name="Browse" component={Browse} />
-          <DrawerNavigator.Screen name="Your Stuff" component={YourStuff} />
+          <DrawerNavigator.Screen name="YourStuff" component={YourStuff} />
           <DrawerNavigator.Screen name="Connections" component={Connections} />
           <DrawerNavigator.Screen name="Libraries" component={Libraries} />
           <DrawerNavigator.Screen name="Offers" component={Offers} />

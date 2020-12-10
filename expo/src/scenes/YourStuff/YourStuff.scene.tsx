@@ -32,10 +32,7 @@ const YourStuff = ({
 
   return (
     <View>
-      <Header />
-      <View>
-        <Text h1>Your Stuff</Text>
-      </View>
+      <Header title="Your Stuff" />
       <View>
         <FlatList data={offers} renderItem={renderItem} />
       </View>
