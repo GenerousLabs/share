@@ -31,9 +31,9 @@ const YourStuff = ({
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Your Stuff" />
-      <View>
+      <View style={styles.listWrapper}>
         <FlatList data={offers} renderItem={renderItem} />
       </View>
     </View>
@@ -43,22 +43,12 @@ const YourStuff = ({
 export default YourStuff;
 
 const styles = StyleSheet.create({
-  navButtonWrapper: {
+  container: {
     display: "flex",
-    flexDirection: "row",
   },
-  navButton: {
-    flex: 1,
-    paddingHorizontal: 6,
-  },
-  buttonContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonWrapper: {
-    marginVertical: 3,
-    width: "60%",
+  listWrapper: {
+    // TODO: Figure out how to size this FlatList to the full height of the
+    // available screen space
+    height: 400,
   },
 });

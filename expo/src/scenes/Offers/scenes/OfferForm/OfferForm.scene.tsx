@@ -1,8 +1,8 @@
 import { Picker } from "@react-native-community/picker";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { Input } from "react-native-elements";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Input } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { createReadAuthTokenForRepoSagaAction } from "../../../../services/commands/commands.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/library.saga";
@@ -18,13 +18,15 @@ type Inputs = {
 
 const OfferForm = () => {
   const dispatch: RootDispatch = useDispatch();
-  const { control, handleSubmit, errors, reset } = useForm<Inputs>();
+  const { control, handleSubmit, errors, reset, formState } = useForm<Inputs>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const libraries = useSelector(selectMyLibraries);
 
   // TODO Provide a meaningful way to choose a repo here
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = async (data: Inputs) => {
+    setIsSubmitting(true);
     const uuid = generateUuid();
-    dispatch(
+    await dispatch(
       createNewOfferSagaAction({
         repoId: data.repoId,
         offer: {
@@ -37,6 +39,8 @@ const OfferForm = () => {
         },
       })
     );
+    setIsSubmitting(false);
+    reset();
   };
 
   if (libraries.length === 0) {
@@ -67,11 +71,11 @@ const OfferForm = () => {
         rules={{ required: true }}
         defaultValue={libraries[0].id}
       />
-      <Text>Offer title:</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
           <Input
+            label="Offer title"
             style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
@@ -83,11 +87,11 @@ const OfferForm = () => {
         defaultValue=""
       />
       {errors.title && <Text>Title is a required field</Text>}
-      <Text>Enter a description</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
           <Input
+            label="Enter a description"
             style={styles.inputMultiline}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
@@ -101,10 +105,14 @@ const OfferForm = () => {
         defaultValue=""
       />
       {errors.bodyMarkdown && <Text>You need to enter some body text</Text>}
-      <Button title="Add offer to library" onPress={handleSubmit(onSubmit)} />
+      <Button
+        title="Add offer to library"
+        loading={formState.isSubmitting || isSubmitting}
+        onPress={handleSubmit(onSubmit)}
+      />
       <View style={styles.authButtonWrapper}>
         <Button
-          color="darkred"
+          style={{ backgroundColor: "darkred" }}
           title="Create a new auth token for this repo"
           onPress={() => {
             dispatch(

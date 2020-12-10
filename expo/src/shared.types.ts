@@ -23,6 +23,7 @@ export type ConnectionsStackParameterList = {
   ConnectionsHome: undefined;
   ConnectionsInvite: undefined;
   ConnectionsAccept: undefined;
+  ConnectionsSingle: { connectionId: string };
 };
 
 export type FS = {

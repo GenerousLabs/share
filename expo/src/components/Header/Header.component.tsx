@@ -4,20 +4,28 @@ import React from "react";
 import { Header as RNEHeader } from "react-native-elements";
 import { DrawerParamList } from "../../shared.types";
 
-const Header = ({ title }: { title?: string }) => {
+const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
   const navigation: DrawerNavigationProp<
     DrawerParamList,
     "Settings"
   > = useNavigation();
 
+  const leftComponent =
+    typeof goBack === "function"
+      ? {
+          icon: "navigate-before",
+          onPress: goBack,
+        }
+      : {
+          icon: "menu",
+          onPress: () => {
+            navigation.openDrawer();
+          },
+        };
+
   return (
     <RNEHeader
-      leftComponent={{
-        icon: "menu",
-        onPress: () => {
-          navigation.openDrawer();
-        },
-      }}
+      leftComponent={leftComponent}
       placement="left"
       centerComponent={{
         text: title || "Generous Share",

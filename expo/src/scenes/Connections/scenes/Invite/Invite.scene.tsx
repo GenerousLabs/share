@@ -40,7 +40,7 @@ const Invite = ({
 
   return (
     <View>
-      <Header title="Invite" />
+      <Header title="Invite" goBack={navigation.goBack} />
       <ScrollView>
         {inviteCode === "" ? (
           <>

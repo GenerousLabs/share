@@ -4,6 +4,7 @@ import React from "react";
 import { DrawerParamList } from "../../shared.types";
 import Accept from "./scenes/Accept/Accept.scene";
 import ConnectionsList from "./scenes/ConnectionList/ConnectionList.scene";
+import ConnectionsSingle from "./scenes/ConnectionSingle/ConnectionsSingle.scene";
 import Invite from "./scenes/Invite/Invite.scene";
 
 const ConnectionsStackNavigator = createStackNavigator();
@@ -26,6 +27,10 @@ const Connections = ({
       <ConnectionsStackNavigator.Screen
         name="ConnectionsAccept"
         component={Accept}
+      />
+      <ConnectionsStackNavigator.Screen
+        name="ConnectionsSingle"
+        component={ConnectionsSingle}
       />
     </ConnectionsStackNavigator.Navigator>
   );

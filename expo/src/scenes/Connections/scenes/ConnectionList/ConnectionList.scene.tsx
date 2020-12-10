@@ -18,16 +18,8 @@ import {
 } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { log as parentLogger } from "../../Connections.log";
-import Accept from "../Accept/Accept.scene";
-import Invite from "../Invite/Invite.scene";
 
 const log = parentLogger.extend("ConnectionsList");
-
-enum InviteType {
-  none = "none",
-  invite = "invite",
-  accept = "accept",
-}
 
 const ConnectionsList = ({
   navigation,
@@ -39,38 +31,6 @@ const ConnectionsList = ({
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const connections = useSelector(selectAllConnections);
-  const repos = useSelector(selectAllRepos);
-  const [inviteType, setInviteType] = useState(InviteType.none);
-  const [connectionId, setConnectionId] = useState("");
-  const [confirmCode, setConfirmCode] = useState("");
-  const [code, setCode] = useState("");
-  const connection = connections.find((c) => c.id === connectionId);
-  const myRepo =
-    typeof connection !== "undefined"
-      ? repos.find((r) => r.id === connection.myRepoId)
-      : undefined;
-
-  // TODO Get the code from disk via a better method
-  // NOTE: This is a pretty ugly way of getting data from disk, hopefully
-  // there's a cleaner approach.
-  useEffect(() => {
-    if (typeof connection === "undefined" || typeof myRepo === "undefined") {
-      return;
-    }
-    const type =
-      typeof connection.theirRepoId === "undefined"
-        ? ConnectionCodeType.INVITE
-        : ConnectionCodeType.CONFIRM;
-    getConnectionCode({ connection, repo: myRepo, type }).then((code) => {
-      setCode(code);
-    });
-  }, [connection, myRepo]);
-
-  const closeOverlay = useCallback(() => {
-    setConnectionId("");
-  }, []);
-
-  const isOverlayVisible = connectionId !== "";
 
   const renderItem = useCallback(
     ({ item: connection }: { item: ConnectionInRedux }) => {
@@ -79,10 +39,9 @@ const ConnectionsList = ({
         <ListItem
           bottomDivider
           onPress={() => {
-            if (confirmed) {
-              return;
-            }
-            setConnectionId(connection.id);
+            navigation.navigate("ConnectionsSingle", {
+              connectionId: connection.id,
+            });
           }}
         >
           <ListItem.Content>
@@ -95,7 +54,7 @@ const ConnectionsList = ({
         </ListItem>
       );
     },
-    []
+    [navigation]
   );
 
   return (
@@ -119,59 +78,9 @@ const ConnectionsList = ({
           }}
         />
       </View>
-      <Overlay
-        overlayStyle={styles.overlay}
-        isVisible={inviteType !== InviteType.none}
-        onBackdropPress={() => {
-          setInviteType(InviteType.none);
-        }}
-      >
-        <ScrollView>
-          {inviteType === InviteType.invite ? <Invite /> : <Accept />}
-        </ScrollView>
-      </Overlay>
       <View>
         <FlatList data={connections} renderItem={renderItem} />
       </View>
-      <Overlay
-        overlayStyle={styles.overlay}
-        isVisible={isOverlayVisible}
-        fullScreen
-        onBackdropPress={closeOverlay}
-      >
-        <ScrollView>
-          <Text h2>{connection?.name}</Text>
-          <Text>{connection?.notes}</Text>
-          {code !== "" ? (
-            <Input value={code} multiline numberOfLines={12} />
-          ) : (
-            <Text>Loading code</Text>
-          )}
-          <Text h2>Confirmation Code</Text>
-          <Text>
-            Once you receive the CONRIRM_ code back from your friend, paste it
-            here
-          </Text>
-          <Input
-            multiline
-            numberOfLines={12}
-            onChangeText={(value) => setConfirmCode(value)}
-          />
-          <Button
-            title="Confirm"
-            onPress={() => {
-              if (confirmCode !== "") {
-                dispatch(
-                  confirmConnectionSagaAction({
-                    connectionId,
-                    confirmCode,
-                  })
-                );
-              }
-            }}
-          />
-        </ScrollView>
-      </Overlay>
     </View>
   );
 };

@@ -47,6 +47,8 @@ export const {
 export default repoSlice.reducer;
 
 export const selectRepoById = repoSelectors.selectById;
+export const makeSelectByRepoId = (id: string) => (state: RootState) =>
+  selectRepoById(state, id);
 export const selectAllRepos = repoSelectors.selectAll;
 export const selectMeRepo = createSelector(selectAllRepos, (repos) => {
   return repos.find((repo) => repo.type === RepoType.me);
