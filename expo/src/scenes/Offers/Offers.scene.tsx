@@ -2,7 +2,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
@@ -21,21 +21,12 @@ const Offers = ({
   return (
     <View>
       <Header />
-      <View>
-        <Text h1>Welcome to Offers</Text>
-      </View>
-      <OfferForm />
-      <FlatList
-        data={offers}
-        renderItem={(item) => (
-          <View>
-            <Text>{item.item.title}</Text>
-            <Text>{item.item.bodyMarkdown}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
+      <ScrollView>
+        <View>
+          <Text h1>Welcome to Offers</Text>
+        </View>
+        <OfferForm />
+      </ScrollView>
     </View>
   );
 };
