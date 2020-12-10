@@ -12,8 +12,8 @@ process.env = {
 import "./patch-FileReader";
 import "node-libs-react-native/globals";
 import "react-native-get-random-values";
-// import { Buffer } from "buffer";
 
+// import { Buffer } from "buffer";
 // (globalThis as any).Buffer = Buffer;
 
 // This should lead to performance enhancements in navigation screens
