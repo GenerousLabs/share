@@ -53,4 +53,11 @@ export const theme: Partial<FullTheme> = {
   Button: {
     titleStyle: bold,
   },
+  CardTitle: {
+    style: normal,
+    h1Style: bold,
+    h2Style: bold,
+    h3Style: bold,
+    h4Style: bold,
+  },
 };
