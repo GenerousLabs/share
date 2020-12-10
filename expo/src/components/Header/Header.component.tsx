@@ -4,7 +4,7 @@ import React from "react";
 import { Header as RNEHeader } from "react-native-elements";
 import { DrawerParamList } from "../../shared.types";
 
-const Header = () => {
+const Header = ({ title }: { title?: string }) => {
   const navigation: DrawerNavigationProp<
     DrawerParamList,
     "Settings"
@@ -20,7 +20,7 @@ const Header = () => {
       }}
       placement="left"
       centerComponent={{
-        text: "Generous Share",
+        text: title || "Generous Share",
       }}
       rightComponent={{
         icon: "settings",
