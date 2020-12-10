@@ -70,7 +70,7 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             title="Log error"
-            style={{ backgroundColor: "darkred" }}
+            buttonStyle={{ backgroundColor: "darkred" }}
             onPress={() => {
               log.error("An error #SENEUH", new Error("Awry #PYShEI"));
             }}
@@ -115,7 +115,7 @@ const Home = ({
         <View style={styles.buttonWrapper}>
           <Button
             title="Export repos as zip"
-            style={{ backgroundColor: "#116530" }}
+            buttonStyle={{ backgroundColor: "#116530" }}
             onPress={async () => {
               await createAndShareZipFile({ path: "/repos" });
               Alert.alert("Zip export finished #znvf34");
@@ -124,7 +124,7 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            style={{ backgroundColor: "lightblue" }}
+            buttonStyle={{ backgroundColor: "lightblue" }}
             title="Show logs"
             onPress={async () => {
               try {
@@ -141,7 +141,7 @@ const Home = ({
         </View>
         <View style={styles.buttonWrapper}>
           <Button
-            style={{ backgroundColor: "grey" }}
+            buttonStyle={{ backgroundColor: "grey" }}
             title="DANGEROUS reset the whole application"
             onPress={() => {
               Alert.alert(
