@@ -54,6 +54,8 @@ const Settings = ({
             );
           }}
         />
+        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+        <Button title="Offers" onPress={() => navigation.navigate("Offers")} />
         <Button
           title="Open log view"
           onPress={() => setIsOverlayVisible(true)}
