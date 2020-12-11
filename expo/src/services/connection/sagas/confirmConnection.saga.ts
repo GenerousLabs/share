@@ -17,7 +17,7 @@ const saga = createAsyncPromiseSaga<
   },
   void
 >({
-  prefix: "SHARE/connection/acceptInvite",
+  prefix: "SHARE/connection/confirmConnection",
   *effect(action) {
     const { connectionId, confirmCode } = action.payload;
     const { theirRemoteUrl, theirKeysBase64 } = parseSharingCode({
