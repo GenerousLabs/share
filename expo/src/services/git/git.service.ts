@@ -129,3 +129,13 @@ export const gitPull = async ({ path }: { path: string }) => {
     remote: "origin",
   });
 };
+
+export const gitGetCurrentCommit = async ({ path }: { path: string }) => {
+  const status = await git.log({ ...gitFsHttp, dir: path, depth: 1 });
+
+  if (status.length === 0) {
+    throw new Error("No log found. #llfAFA");
+  }
+
+  return status[0];
+};
