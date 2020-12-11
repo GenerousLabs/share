@@ -43,7 +43,7 @@ const OfferForm = ({
             uuid,
             proximity: 0,
             shareToProximity: data.shareToProximity2 ? 2 : 1,
-            tags: [],
+            tags: ["digital"],
             bodyMarkdown: data.bodyMarkdown,
             title: data.title,
           },

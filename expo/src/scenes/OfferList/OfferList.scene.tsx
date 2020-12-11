@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { colours } from "../../root.theme";
 import { rootLogger } from "../../services/log/log.service";
 import { OfferInRedux } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
@@ -16,6 +17,7 @@ const OfferList = ({ offers }: { offers: OfferInRedux[] }) => {
     <FlatList
       data={offers}
       renderItem={renderItem}
+      ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListFooterComponent={View}
       ListFooterComponentStyle={styles.ScollViewInner}
     />
@@ -28,5 +30,10 @@ const styles = StyleSheet.create({
   // TODO Remove this after fixing ScrollViewHeight issue
   ScollViewInner: {
     paddingBottom: 200,
+  },
+  separator: {
+    borderTopWidth: 1,
+    borderTopColor: colours.grey5,
+    marginVertical: 24,
   },
 });

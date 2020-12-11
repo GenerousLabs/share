@@ -4,11 +4,13 @@ import { FullTheme } from "react-native-elements";
 const white = "#fff";
 const black = "#212121";
 const bggrey = "#f1f1f1";
+const grey5 = "#c4c4c4";
 
 export const colours = {
   white,
   black,
   bggrey,
+  grey5,
 };
 
 export const montserrat = "montserrat" as const;
@@ -51,7 +53,16 @@ export const theme: Partial<FullTheme> = {
     h4Style: bold,
   },
   Button: {
-    titleStyle: bold,
+    type: "outline",
+    buttonStyle: {
+      borderColor: colours.black,
+      borderWidth: 2,
+    },
+    titleStyle: {
+      ...bold,
+      color: colours.black,
+      fontSize: 14,
+    },
   },
   CardTitle: {
     style: normal,

@@ -30,8 +30,12 @@ const Browse = ({
   return (
     <View>
       <Header title="Browse" />
-      <WIPMessage />
-      <OfferList offers={sortedOffers} />
+      <View style={styles.container}>
+        <WIPMessage />
+        <View>
+          <OfferList offers={sortedOffers} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -42,5 +46,8 @@ const styles = StyleSheet.create({
   // TODO Remove this after fixing ScrollViewHeight issue
   ScollViewInner: {
     paddingBottom: 200,
+  },
+  container: {
+    paddingHorizontal: 16,
   },
 });
