@@ -9,15 +9,15 @@ import { Button, Card, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { reverse, sortBy } from "remeda";
-import Header from "../../../../components/Header/Header.component";
-import { selectAllMyOffers } from "../../../../services/library/library.state";
-import { rootLogger } from "../../../../services/log/log.service";
-import { RootDispatch } from "../../../../services/store/store.service";
+import Header from "../../components/Header/Header.component";
+import { selectAllMyOffers } from "../../services/library/library.state";
+import { rootLogger } from "../../services/log/log.service";
+import { RootDispatch } from "../../services/store/store.service";
 import {
   RootDrawerParamList,
   OfferInRedux,
   YourStuffStackParameterList,
-} from "../../../../shared.types";
+} from "../../shared.types";
 
 const log = rootLogger.extend("OfferList");
 

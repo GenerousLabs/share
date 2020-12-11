@@ -4,7 +4,7 @@ import React from "react";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDrawerParamList } from "../../shared.types";
 import OfferForm from "./scenes/OfferForm/OfferForm.scene";
-import OfferList from "./scenes/OfferList/OfferList.scene";
+import OfferList from "../OfferList/OfferList.scene";
 
 export const log = rootLogger.extend("YourStuff");
 
