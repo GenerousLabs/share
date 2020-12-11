@@ -22,10 +22,12 @@ const Offers = ({
     <View>
       <Header />
       <ScrollView>
-        <View>
-          <Text h1>Welcome to Offers</Text>
+        <View style={styles.ScrollViewInner}>
+          <View>
+            <Text h1>Welcome to Offers</Text>
+          </View>
+          <OfferForm />
         </View>
-        <OfferForm />
       </ScrollView>
     </View>
   );
@@ -34,6 +36,9 @@ const Offers = ({
 export default Offers;
 
 const styles = StyleSheet.create({
+  ScrollViewInner: {
+    paddingBottom: 200,
+  },
   separator: {
     marginVertical: 10,
     height: 1,

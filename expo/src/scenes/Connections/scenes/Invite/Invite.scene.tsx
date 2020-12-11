@@ -42,53 +42,55 @@ const Invite = ({
     <View>
       <Header title="Invite" goBack={navigation.goBack} />
       <ScrollView>
-        {inviteCode === "" ? (
-          <>
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                <Input
-                  label="Name"
-                  style={styles.input}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                />
-              )}
-              name="name"
-              defaultValue=""
-            />
-            {errors.name && <Text>Name is a required field</Text>}
-            <Controller
-              control={control}
-              render={({ onChange, onBlur, value }) => (
-                <Input
-                  label="Notes"
-                  style={styles.inputMultiline}
-                  onBlur={onBlur}
-                  onChangeText={(value) => onChange(value)}
-                  value={value}
-                  multiline={true}
-                  numberOfLines={5}
-                />
-              )}
-              name="notes"
-              rules={{ required: false }}
-              defaultValue=""
-            />
-            <Button
-              loading={isSubmitting}
-              title="Generate an invite code"
-              onPress={handleSubmit(onSubmit)}
-            />
-          </>
-        ) : (
-          <>
-            <Text h2>Invite a friend</Text>
-            <Text>Share this code with a friend</Text>
-            <Input value={inviteCode} multiline numberOfLines={12} />
-          </>
-        )}
+        <View style={styles.ScrollViewInner}>
+          {inviteCode === "" ? (
+            <>
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
+                    label="Name"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="name"
+                defaultValue=""
+              />
+              {errors.name && <Text>Name is a required field</Text>}
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
+                    label="Notes"
+                    style={styles.inputMultiline}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    multiline={true}
+                    numberOfLines={5}
+                  />
+                )}
+                name="notes"
+                rules={{ required: false }}
+                defaultValue=""
+              />
+              <Button
+                loading={isSubmitting}
+                title="Generate an invite code"
+                onPress={handleSubmit(onSubmit)}
+              />
+            </>
+          ) : (
+            <>
+              <Text h2>Invite a friend</Text>
+              <Text>Share this code with a friend</Text>
+              <Input value={inviteCode} multiline numberOfLines={12} />
+            </>
+          )}
+        </View>
       </ScrollView>
     </View>
   );
@@ -97,6 +99,9 @@ const Invite = ({
 export default Invite;
 
 const styles = StyleSheet.create({
+  ScrollViewInner: {
+    paddingBottom: 200,
+  },
   input: {
     borderColor: "black",
     borderWidth: 2,

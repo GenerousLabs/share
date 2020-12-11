@@ -2,7 +2,7 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { createSelector } from "@reduxjs/toolkit";
 import React, { useEffect, useMemo, useState } from "react";
-import { Alert, Share, View } from "react-native";
+import { Alert, Share, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -114,80 +114,88 @@ const ConnectionsSingle = ({
     <View>
       <Header title={connection.name} goBack={navigation.goBack} />
       <ScrollView>
-        <Text>Coming in a second or six</Text>
-        <Button
-          title="Share your confirmation code"
-          onPress={async () => {
-            if (typeof myRepo === "undefined") {
-              return Alert.alert(
-                "Error #1E9uID",
-                "There was an unexpected error."
+        <View style={styles.ScrollViewInner}>
+          <Text>Coming in a second or six</Text>
+          <Button
+            title="Share your confirmation code"
+            onPress={async () => {
+              if (typeof myRepo === "undefined") {
+                return Alert.alert(
+                  "Error #1E9uID",
+                  "There was an unexpected error."
+                );
+              }
+              const code = await getConnectionCode({
+                connection,
+                repo: myRepo,
+                type: ConnectionCodeType.CONFIRM,
+              });
+              Share.share({ message: code });
+            }}
+          />
+          <Button
+            title="Share your stuff code"
+            onPress={async () => {
+              const token = await getOrCreateToken();
+              const { url } = await createRemoteUrlForSharedRepo({
+                repo: library,
+                token,
+              });
+              const myRemoteUrl = `encrypted::${url}`;
+              const myKeysBase64 = await getKeysIfEncryptedRepo({
+                repo: library,
+              });
+              invariant(myKeysBase64, "Failed to get keys for library #ycywPR");
+              const code = await createConnectionCode({
+                myKeysBase64,
+                myRemoteUrl,
+                type: ConnectionCodeType.SHARING,
+              });
+              Share.share({ message: code });
+            }}
+          />
+          <Text h2>Import a library</Text>
+          <Text>
+            This is a temporary feature. We'll remove this shortly once messages
+            come online.
+          </Text>
+          <Input onChangeText={setLibraryCode} multiline numberOfLines={12} />
+          <Button
+            title="Import this library"
+            loading={isCodeSubmitting}
+            onPress={async () => {
+              if (libraryCode === "") {
+                Alert.alert(
+                  "Error #noA3eQ",
+                  `Please enter a code above. If this error repeats, let us know, we'll try to fix it.`
+                );
+              }
+              setIsCodeSubmitting(true);
+              const params = parseSharingCode({
+                code: libraryCode,
+                type: ConnectionCodeType.SHARING,
+              });
+              dispatch(
+                subscribeToLibrarySagaAction({
+                  name: connection.name,
+                  remoteUrl: params.theirRemoteUrl,
+                  keysBase64: params.theirKeysBase64,
+                })
               );
-            }
-            const code = await getConnectionCode({
-              connection,
-              repo: myRepo,
-              type: ConnectionCodeType.CONFIRM,
-            });
-            Share.share({ message: code });
-          }}
-        />
-        <Button
-          title="Share your stuff code"
-          onPress={async () => {
-            const token = await getOrCreateToken();
-            const { url } = await createRemoteUrlForSharedRepo({
-              repo: library,
-              token,
-            });
-            const myRemoteUrl = `encrypted::${url}`;
-            const myKeysBase64 = await getKeysIfEncryptedRepo({
-              repo: library,
-            });
-            invariant(myKeysBase64, "Failed to get keys for library #ycywPR");
-            const code = await createConnectionCode({
-              myKeysBase64,
-              myRemoteUrl,
-              type: ConnectionCodeType.SHARING,
-            });
-            Share.share({ message: code });
-          }}
-        />
-        <Text h2>Import a library</Text>
-        <Text>
-          This is a temporary feature. We'll remove this shortly once messages
-          come online.
-        </Text>
-        <Input onChangeText={setLibraryCode} multiline numberOfLines={12} />
-        <Button
-          title="Import this library"
-          loading={isCodeSubmitting}
-          onPress={async () => {
-            if (libraryCode === "") {
-              Alert.alert(
-                "Error #noA3eQ",
-                `Please enter a code above. If this error repeats, let us know, we'll try to fix it.`
-              );
-            }
-            setIsCodeSubmitting(true);
-            const params = parseSharingCode({
-              code: libraryCode,
-              type: ConnectionCodeType.SHARING,
-            });
-            dispatch(
-              subscribeToLibrarySagaAction({
-                name: connection.name,
-                remoteUrl: params.theirRemoteUrl,
-                keysBase64: params.theirKeysBase64,
-              })
-            );
-            setLibraryCode("");
-            setIsCodeSubmitting(false);
-          }}
-        />
+              setLibraryCode("");
+              setIsCodeSubmitting(false);
+            }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
 };
 
 export default ConnectionsSingle;
+
+const styles = StyleSheet.create({
+  ScrollViewInner: {
+    paddingBottom: 200,
+  },
+});

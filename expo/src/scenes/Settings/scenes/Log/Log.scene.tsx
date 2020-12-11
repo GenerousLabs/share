@@ -30,11 +30,7 @@ const Log = ({ closeOverlay }: { closeOverlay: () => void }) => {
       </View>
       {/* {logs !== "" ? <Input multiline numberOfLines={30} value={logs} /> : null} */}
       <View style={styles.logs}>
-        {logs !== "" ? (
-          <ScrollView>
-            <Text>{logs}</Text>
-          </ScrollView>
-        ) : null}
+        {logs !== "" ? <Text>{logs}</Text> : null}
       </View>
     </View>
   );
