@@ -4,7 +4,7 @@ import React from "react";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDrawerParamList } from "../../shared.types";
 import OfferForm from "./scenes/OfferForm/OfferForm.scene";
-import OfferList from "../OfferList/OfferList.scene";
+import YourStuffList from "./scenes/YourStuffList/YourStuffList.scene";
 
 export const log = rootLogger.extend("YourStuff");
 
@@ -17,7 +17,10 @@ const YourStuff = ({
 }) => {
   return (
     <YourStuffStackNavigator.Navigator headerMode="none">
-      <YourStuffStackNavigator.Screen name="OfferList" component={OfferList} />
+      <YourStuffStackNavigator.Screen
+        name="YourStuffList"
+        component={YourStuffList}
+      />
       <YourStuffStackNavigator.Screen name="OfferForm" component={OfferForm} />
     </YourStuffStackNavigator.Navigator>
   );

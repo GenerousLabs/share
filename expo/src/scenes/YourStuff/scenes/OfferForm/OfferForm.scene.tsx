@@ -22,7 +22,7 @@ type Inputs = {
 const OfferForm = ({
   navigation,
 }: {
-  navigation: StackNavigationProp<YourStuffStackParameterList, "OfferList">;
+  navigation: StackNavigationProp<YourStuffStackParameterList, "YourStuffList">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors, reset, formState } = useForm<Inputs>();

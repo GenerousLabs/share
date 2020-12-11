@@ -6,10 +6,12 @@ import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { reverse, sortBy } from "remeda";
 import Header from "../../components/Header/Header.component";
+import WIPMessage from "../../components/WIPMessage/WIPMessage.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
 import { RootDrawerParamList, OfferInRedux } from "../../shared.types";
+import OfferList from "../OfferList/OfferList.scene";
 
 const log = rootLogger.extend("Browse");
 
@@ -25,27 +27,11 @@ const Browse = ({
     [offers]
   );
 
-  const renderItem = useCallback(({ item: offer }: { item: OfferInRedux }) => {
-    return (
-      <Card>
-        <Card.Title>{offer.title}</Card.Title>
-        <Card.Divider />
-        <Text>{offer.bodyMarkdown}</Text>
-      </Card>
-    );
-  }, []);
-
   return (
     <View>
       <Header title="Browse" />
-      <View>
-        <FlatList
-          data={sortedOffers}
-          renderItem={renderItem}
-          ListFooterComponent={View}
-          ListFooterComponentStyle={styles.ScollViewInner}
-        />
-      </View>
+      <WIPMessage />
+      <OfferList offers={sortedOffers} />
     </View>
   );
 };

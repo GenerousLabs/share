@@ -27,7 +27,7 @@ export type ConnectionsStackParameterList = {
 };
 
 export type YourStuffStackParameterList = {
-  OfferList: undefined;
+  YourStuffList: undefined;
   OfferForm: undefined;
 };
 
