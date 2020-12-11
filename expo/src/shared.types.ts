@@ -57,24 +57,6 @@ export type GitParams = {
   };
 };
 
-export type LibraryInRedux = {
-  id: string;
-  name: string;
-  url: string;
-  basename: string;
-};
-
-export type RepoOnDiskFrontMatter = {
-  uuid: string;
-  type: RepoType;
-  title: string;
-};
-
-/** Each repo contains an index.md file which specifies the following fields. */
-export type RepoOnDisk = RepoOnDiskFrontMatter & {
-  bodyMarkdown: string;
-};
-
 export const RepoYamlKeysSchema = zod.object({
   keysContentBase64: zod.string().nonempty(),
   keysFilenamesBase64: zod.string().nonempty(),
@@ -111,10 +93,18 @@ export const RepoYamlSchema = zod.union([
 //   return true;
 // });
 export type RepoYaml = zod.infer<typeof RepoYamlSchema>;
-export type RepoYamlWithoutKeys = Omit<
-  RepoYaml,
-  "keysContentBase64" | "keysFilenamesBase64" | "keysSaltBase64"
->;
+export type RepoYamlWithoutKeys = zod.infer<typeof RepoYamlBaseSchema>;
+
+export type RepoOnDiskFrontMatter = {
+  uuid: string;
+  type: RepoType;
+  title: string;
+};
+
+/** Each repo contains an index.md file which specifies the following fields. */
+export type RepoOnDisk = RepoOnDiskFrontMatter & {
+  bodyMarkdown: string;
+};
 
 export type RepoGitMetadata = {
   /** Our latest commit. */
