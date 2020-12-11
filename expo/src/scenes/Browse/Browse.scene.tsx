@@ -1,9 +1,10 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import { reverse, sortBy } from "remeda";
 import Header from "../../components/Header/Header.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
@@ -19,6 +20,10 @@ const Browse = ({
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector(selectAllImportedOffers);
+  const sortedOffers = useMemo(
+    () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
+    [offers]
+  );
 
   const renderItem = useCallback(({ item: offer }: { item: OfferInRedux }) => {
     return (
@@ -35,7 +40,7 @@ const Browse = ({
       <Header title="Browse" />
       <View>
         <FlatList
-          data={offers}
+          data={sortedOffers}
           renderItem={renderItem}
           ListFooterComponent={View}
           ListFooterComponentStyle={styles.ScollViewInner}

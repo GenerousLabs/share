@@ -3,11 +3,12 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import { reverse, sortBy } from "remeda";
 import Header from "../../../../components/Header/Header.component";
 import { selectAllMyOffers } from "../../../../services/library/library.state";
 import { rootLogger } from "../../../../services/log/log.service";
@@ -27,6 +28,10 @@ const OfferList = ({
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector(selectAllMyOffers);
+  const sortedOffers = useMemo(
+    () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
+    [offers]
+  );
 
   const renderItem = useCallback(({ item: offer }: { item: OfferInRedux }) => {
     return (
@@ -45,14 +50,12 @@ const OfferList = ({
         title="Add an offer"
         onPress={() => navigation.navigate("OfferForm")}
       />
-      <View style={styles.listWrapper}>
-        <FlatList
-          data={offers}
-          renderItem={renderItem}
-          ListFooterComponent={View}
-          ListFooterComponentStyle={styles.ScollViewInner}
-        />
-      </View>
+      <FlatList
+        data={sortedOffers}
+        renderItem={renderItem}
+        ListFooterComponent={View}
+        ListFooterComponentStyle={styles.ScollViewInner}
+      />
     </View>
   );
 };
@@ -66,10 +69,5 @@ const styles = StyleSheet.create({
   },
   container: {
     display: "flex",
-  },
-  listWrapper: {
-    // TODO: Figure out how to size this FlatList to the full height of the
-    // available screen space
-    height: 400,
   },
 });
