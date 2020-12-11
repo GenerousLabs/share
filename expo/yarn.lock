@@ -5490,10 +5490,10 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-isomorphic-git-remote-encrypted@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.3.1.tgz#3d5aea20562aa8042ae9bd205b3097ef8951965c"
-  integrity sha512-5oSFcjrk8mVSOa0ZjIci9CKCqJy10zg5eJ9QlchsUb8O3vzqlBJUrKs4svdPzaATZsS2YRot3vzgEJQFMJqhUg==
+isomorphic-git-remote-encrypted@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.3.2.tgz#6303ec466f60d8333534edce0236a195223fa3fa"
+  integrity sha512-2lQoCi2PTDNbthLsZoNYG++7pkmuE0ETH9DPsGAw5Z/9GqEMEoILn5Q4nmOJs0KA+tNLnLDY3Puds8ZoDWva8w==
   dependencies:
     debug "^4.3.1"
     git-encrypted "^0.3.1"
