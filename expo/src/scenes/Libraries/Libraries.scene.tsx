@@ -5,7 +5,7 @@ import { Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
-import { selectMyLibraryRepos } from "../../services/library/library.selectors";
+import { selectAllMyLibraryRepos } from "../../services/library/library.selectors";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";
@@ -15,7 +15,7 @@ const Libraries = ({
 }: {
   navigation: DrawerNavigationProp<RootDrawerParamList, "Home">;
 }) => {
-  const libraries = useSelector(selectMyLibraryRepos);
+  const libraries = useSelector(selectAllMyLibraryRepos);
   const dispatch: RootDispatch = useDispatch();
 
   return (

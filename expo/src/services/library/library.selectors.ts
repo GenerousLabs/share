@@ -20,6 +20,16 @@ export const selectMyLibraryRepo = createSelector(selectAllRepos, (repos) => {
   return libraries[0];
 });
 
-export const selectMyLibraryRepos = createSelector(selectAllRepos, (repos) =>
+export const selectAllMyLibraryRepos = createSelector(selectAllRepos, (repos) =>
   repos.filter((repo) => repo.type === RepoType.library && !repo.isReadOnly)
+);
+
+export const selectAllSubscribedLibraries = createSelector(
+  selectAllRepos,
+  (repos) =>
+    repos.filter(
+      (repo) =>
+        repo.type === RepoType.library &&
+        typeof repo.connectionId !== "undefined"
+    )
 );
