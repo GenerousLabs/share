@@ -10,6 +10,7 @@ import {
 import { generateUuid } from "../../utils/id.utils";
 import { assertNever } from "../../utils/never.utils";
 import { join } from "../fs/fs.service";
+import { gitGetCurrentCommit, gitPull } from "../git/git.service";
 import { _createNewRepo } from "./_createNewRepo";
 
 export const getRepoBasename = ({ id }: Pick<RepoInRedux, "id">) => {
@@ -151,4 +152,10 @@ export const cloneNewLibraryRepo = async ({
     url: remoteUrl,
     keysBase64,
   });
+};
+
+export const updateSubscribedRepo = async ({ path }: { path: string }) => {
+  await gitPull({ path });
+  const headCommit = await gitGetCurrentCommit({ path });
+  return headCommit;
 };
