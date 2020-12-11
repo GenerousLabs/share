@@ -6,14 +6,14 @@ import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { selectMyLibraries } from "../../services/library/library.selectors";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";
 
 const Libraries = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Home">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Home">;
 }) => {
   const libraries = useSelector(selectMyLibraries);
   const dispatch: RootDispatch = useDispatch();

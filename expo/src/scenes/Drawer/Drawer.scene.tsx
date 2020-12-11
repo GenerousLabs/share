@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 
 const menuItems = [
   {
@@ -32,10 +32,10 @@ const MenuItem = ({
   title,
   navigation,
 }: {
-  route: keyof DrawerParamList;
+  route: keyof RootDrawerParamList;
   title: string;
   subtitle: string;
-  navigation: DrawerNavigationProp<DrawerParamList>;
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
 }) => (
   <TouchableHighlight
     style={styles.menuItem}

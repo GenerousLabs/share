@@ -6,14 +6,14 @@ import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 import OfferForm from "./scenes/OfferForm/OfferForm.scene";
 
 const Offers = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Offers">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Offers">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector((state: RootState) => selectAllOffers(state));

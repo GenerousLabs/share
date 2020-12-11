@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 
 const log = rootLogger.extend("TabTwo");
 
@@ -68,7 +68,7 @@ const clone = async () => {
 export default function TabTwo({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Root">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Root">;
 }) {
   const [files, setFiles] = React.useState<string[]>([]);
   const getFiles = React.useCallback(getFilesFactory(setFiles), [setFiles]);

@@ -7,7 +7,7 @@ import Header from "../../components/Header/Header.component";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { loadOfferSagaAction } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
 (globalThis as any).FileSystem = FileSystem;
@@ -15,7 +15,7 @@ import { RootDispatch } from "../../store";
 export default function TabOne({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Root">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Root">;
 }) {
   const dispatch: RootDispatch = useDispatch();
 

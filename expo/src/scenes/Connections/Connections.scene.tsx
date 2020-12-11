@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import Accept from "./scenes/Accept/Accept.scene";
 import ConnectionsList from "./scenes/ConnectionList/ConnectionList.scene";
 import ConnectionsSingle from "./scenes/ConnectionSingle/ConnectionsSingle.scene";
@@ -12,7 +12,7 @@ const ConnectionsStackNavigator = createStackNavigator();
 const Connections = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Connections">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Connections">;
 }) => {
   return (
     <ConnectionsStackNavigator.Navigator headerMode="none">

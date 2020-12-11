@@ -13,7 +13,7 @@ import {
   setupSagaAction,
 } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 
 const log = rootLogger.extend("Home");
@@ -21,7 +21,7 @@ const log = rootLogger.extend("Home");
 const Home = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Home">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Home">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
 

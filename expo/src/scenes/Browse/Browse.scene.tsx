@@ -8,14 +8,14 @@ import Header from "../../components/Header/Header.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
-import { DrawerParamList, OfferInRedux } from "../../shared.types";
+import { RootDrawerParamList, OfferInRedux } from "../../shared.types";
 
 const log = rootLogger.extend("Browse");
 
 const Browse = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Browse">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Browse">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const offers = useSelector(selectAllImportedOffers);

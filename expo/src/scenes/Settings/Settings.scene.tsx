@@ -7,14 +7,14 @@ import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import Log from "./scenes/Log/Log.scene";
 
 const Settings = ({
   navigation,
 }: {
-  navigation: DrawerNavigationProp<DrawerParamList, "Settings">;
+  navigation: DrawerNavigationProp<RootDrawerParamList, "Settings">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);

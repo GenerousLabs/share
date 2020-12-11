@@ -2,11 +2,11 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Header as RNEHeader } from "react-native-elements";
-import { DrawerParamList } from "../../shared.types";
+import { RootDrawerParamList } from "../../shared.types";
 
 const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
   const navigation: DrawerNavigationProp<
-    DrawerParamList,
+    RootDrawerParamList,
     "Settings"
   > = useNavigation();
 
