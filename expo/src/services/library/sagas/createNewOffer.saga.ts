@@ -13,6 +13,7 @@ import { selectRepoById } from "../../repo/repo.state";
 import { offerToString } from "../library.service";
 import { addOneOfferAction } from "../library.state";
 
+// TODO Convert this to a redux saga promise action
 export const createNewOfferSagaAction = createAction(
   "SHARE/library/createNewOffer",
   ({
