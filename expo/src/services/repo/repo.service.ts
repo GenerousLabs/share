@@ -131,10 +131,9 @@ export const getRepoParamsFromFilesystem = async ({
   const validatedData = data as RepoOnDiskFrontMatter;
 
   return {
-    id: validatedData.uuid,
     bodyMarkdown: matterOutput.content,
     ...validatedData,
-  } as RepoOnDisk & Pick<RepoInRedux, "id">;
+  } as RepoOnDisk;
 };
 
 export const cloneNewLibraryRepo = async ({
