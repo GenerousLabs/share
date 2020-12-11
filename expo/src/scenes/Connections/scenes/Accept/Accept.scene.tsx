@@ -115,10 +115,6 @@ const Accept = ({
               <Input value={inviteCode} multiline numberOfLines={12} />
             </>
           )}
-          <Button
-            title="< Back to Connections"
-            onPress={() => navigation.goBack()}
-          />
         </View>
       </ScrollView>
     </View>
