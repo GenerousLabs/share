@@ -1,7 +1,6 @@
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put } from "typed-redux-saga/macro";
-import { RepoInRedux, RepoYamlWithoutKeys } from "../../shared.types";
 import { generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
 import {
@@ -21,11 +20,6 @@ import {
 } from "./library.state";
 import createNewOfferSaga from "./sagas/createNewOffer.saga";
 import subscribeToLibrarySaga from "./sagas/subscribeToLibrary.saga";
-
-export {
-  createNewOfferEffect,
-  createNewOfferSagaAction,
-} from "./sagas/createNewOffer.saga";
 
 const log = rootLogger.extend("library.saga");
 

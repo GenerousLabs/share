@@ -5,7 +5,6 @@ import { Button } from "react-native-elements";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
-import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { getLogs, rootLogger } from "../../services/log/log.service";
 import {
   DANGEROUS_setupResetSagaAction,
@@ -53,26 +52,6 @@ const Home = ({
             buttonStyle={{ backgroundColor: "darkred" }}
             onPress={() => {
               log.error("An error #SENEUH", new Error("Awry #PYShEI"));
-            }}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
-            title="Create new asset"
-            onPress={() => {
-              dispatch(
-                createNewOfferSagaAction({
-                  offer: {
-                    bodyMarkdown: "A new offer",
-                    proximity: 0,
-                    shareToProximity: 1,
-                    title: "An offer",
-                    uuid: "uuid-example",
-                    tags: [],
-                  },
-                  repoId: "re2",
-                })
-              );
             }}
           />
         </View>

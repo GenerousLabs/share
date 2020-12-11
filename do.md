@@ -14,7 +14,7 @@
 - [x] Repull subscribed to libraries somehow
 - [x] Fix encrypted pull
   - It creates the objects but doesn't update the branch or check out the changes
-- [ ] Convert createNewOfferSagaAction to a promise action
+- [x] Convert createNewOfferSagaAction to a promise action
   - OfferForm doesn't finish submitting
 - [x] Add friends / friends-of-friends to OfferForm
 - [ ] Add tags to OfferForm

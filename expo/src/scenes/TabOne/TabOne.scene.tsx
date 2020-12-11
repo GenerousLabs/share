@@ -4,7 +4,6 @@ import * as React from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
-import { createNewOfferSagaAction } from "../../services/library/library.saga";
 import { loadOfferSagaAction } from "../../services/library/library.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { RootDrawerParamList } from "../../shared.types";
@@ -38,24 +37,6 @@ export default function TabOne({
             );
           }}
         /> */}
-        <Button
-          title="Create new asset"
-          onPress={() => {
-            dispatch(
-              createNewOfferSagaAction({
-                repoId: "re2",
-                offer: {
-                  bodyMarkdown: "A new offer",
-                  proximity: 0,
-                  shareToProximity: 1,
-                  title: "An offer",
-                  uuid: "uuid-example",
-                  tags: [],
-                },
-              })
-            );
-          }}
-        />
         <Button
           title="Load offer"
           onPress={() => {
