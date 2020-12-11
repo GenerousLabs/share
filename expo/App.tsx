@@ -9,7 +9,6 @@ import { ThemeProvider } from "react-native-elements";
 import { theme } from "./src/root.theme";
 
 import useCachedResources from "./src/hooks/useCachedResources";
-import useColorScheme from "./src/hooks/useColorScheme";
 import Navigation from "./src/scenes/Navigation/Navigation.scene";
 import store from "./src/services/store/store.service";
 
