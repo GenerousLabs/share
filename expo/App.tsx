@@ -15,7 +15,6 @@ import store from "./src/services/store/store.service";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;
@@ -24,7 +23,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <SafeAreaProvider>
-            <Navigation colorScheme={colorScheme} />
+            <Navigation />
             <StatusBar />
           </SafeAreaProvider>
         </Provider>

@@ -27,7 +27,7 @@ const DrawerNavigator = createDrawerNavigator();
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
-const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
+const Navigation = () => {
   // NOTE: Typed this as `any` to stop TypeScript complainin
   const navigationRef: any = React.useRef();
   const isSetupComplete = useSelector(
@@ -40,7 +40,18 @@ const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
     <NavigationContainer
       ref={navigationRef}
       linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      theme={{
+        dark: false,
+        colors: {
+          background: colours.white,
+          border: colours.white,
+          card: colours.white,
+          text: colours.black,
+          notification: colours.black,
+          primary: colours.black,
+        },
+      }}
+      // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {isSetupComplete ? (
         <DrawerNavigator.Navigator

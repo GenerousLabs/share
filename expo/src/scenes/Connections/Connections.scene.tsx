@@ -1,6 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { colours } from "../../root.theme";
 import { RootDrawerParamList } from "../../shared.types";
 import Accept from "./scenes/Accept/Accept.scene";
 import ConnectionsList from "./scenes/ConnectionList/ConnectionList.scene";
