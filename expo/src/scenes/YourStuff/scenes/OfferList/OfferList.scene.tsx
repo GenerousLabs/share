@@ -46,7 +46,12 @@ const OfferList = ({
         onPress={() => navigation.navigate("OfferForm")}
       />
       <View style={styles.listWrapper}>
-        <FlatList data={offers} renderItem={renderItem} />
+        <FlatList
+          data={offers}
+          renderItem={renderItem}
+          ListFooterComponent={View}
+          ListFooterComponentStyle={styles.ScollViewInner}
+        />
       </View>
     </View>
   );
@@ -55,6 +60,10 @@ const OfferList = ({
 export default OfferList;
 
 const styles = StyleSheet.create({
+  // TODO Remove this after fixing ScrollViewHeight issue
+  ScollViewInner: {
+    paddingBottom: 200,
+  },
   container: {
     display: "flex",
   },
