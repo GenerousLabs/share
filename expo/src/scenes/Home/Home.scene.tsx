@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../services/connection/connection.saga";
 import { createNewOfferSagaAction } from "../../services/library/library.saga";
-import { subscribeToLibrarySagaAction } from "../../services/library/library.state";
 import { getLogs, rootLogger } from "../../services/log/log.service";
 import {
   DANGEROUS_setupResetSagaAction,
@@ -43,25 +42,6 @@ const Home = ({
                       username: "x4",
                     },
                   },
-                })
-              );
-            }}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
-            title="Import repo"
-            onPress={async () => {
-              dispatch(
-                subscribeToLibrarySagaAction({
-                  name: "First share",
-                  keysBase64: {
-                    content: "qSzejjkFB4r+MBwdsdhzSYehKroJfaeSsNPRWX+gNBY=",
-                    filename: "pURKAQ2QvWu1P1jU5G7o09esDUElFJeYJyVQGRomjew=",
-                    salt: "b5jwqunGcTra8Ud+gnxdWWfNClKAQ/XNGf6SMNZxoWg=",
-                  },
-                  remoteUrl:
-                    "encrypted::http://192.168.178.59:8000/sh/shared.git",
                 })
               );
             }}

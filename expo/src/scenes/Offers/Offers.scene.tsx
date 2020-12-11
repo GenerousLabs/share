@@ -8,7 +8,7 @@ import Header from "../../components/Header/Header.component";
 import { selectAllOffers } from "../../services/library/library.state";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
-import OfferForm from "./scenes/OfferForm/OfferForm.scene";
+import OfferForm from "../YourStuff/scenes/OfferForm/OfferForm.scene";
 
 const Offers = ({
   navigation,
@@ -26,7 +26,6 @@ const Offers = ({
           <View>
             <Text h1>Welcome to Offers</Text>
           </View>
-          <OfferForm />
         </View>
       </ScrollView>
     </View>

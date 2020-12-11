@@ -26,6 +26,11 @@ export type ConnectionsStackParameterList = {
   ConnectionsSingle: { connectionId: string };
 };
 
+export type YourStuffStackParameterList = {
+  OfferList: undefined;
+  OfferForm: undefined;
+};
+
 export type FS = {
   promises: {
     readFile: typeof fs.promises.readFile;
@@ -68,6 +73,8 @@ export const RepoYamlBaseSchema = zod.object({
   type: zod.nativeEnum(RepoType),
   remoteUrl: zod.string().nonempty(),
   isReadOnly: zod.boolean(),
+  // If a repo does not have a connectionId then it is mine
+  connectionId: zod.string().nonempty().optional(),
 });
 export const RepoYamlBaseWithKeysSchema = RepoYamlBaseSchema.merge(
   RepoYamlKeysSchema

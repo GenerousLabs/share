@@ -56,13 +56,6 @@ export const selectMeRepo = createSelector(selectAllRepos, (repos) => {
 export const selectCommandRepo = createSelector(selectAllRepos, (repos) => {
   return repos.find((repo) => repo.type === RepoType.commands);
 });
-export const selectLibraryRepo = createSelector(selectAllRepos, (repos) => {
-  const libraries = repos.filter((repo) => repo.type === RepoType.library);
-  if (libraries.length !== 1) {
-    throw new Error("Failed to get precisely 1 library repo. #U6f5ES");
-  }
-  return libraries[0];
-});
 
 export const loadRepoContentsSagaAction = createAction<{ repoId: string }>(
   "SHARE/repo/loadRepoContents"
@@ -72,11 +65,3 @@ export const loadRepoContentsErrorAction = createAction<{
   repoId: string;
   message: string;
 }>("SHARE/repo/loadRepoContents/ERROR");
-
-const LOAD_FROM_FS = "SHARE/repo/loadRepoFromFilesystem" as const;
-export const loadRepoFromFilesystemSagaAction = createAction<{ path: string }>(
-  LOAD_FROM_FS
-);
-export const loadRepoFromFilesystemErrorAction = makeErrorActionCreator(
-  LOAD_FROM_FS
-);

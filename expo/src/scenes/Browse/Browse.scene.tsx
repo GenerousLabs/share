@@ -34,7 +34,12 @@ const Browse = ({
     <View>
       <Header title="Browse" />
       <View>
-        <FlatList data={offers} renderItem={renderItem} />
+        <FlatList
+          data={offers}
+          renderItem={renderItem}
+          ListFooterComponent={View}
+          ListFooterComponentStyle={styles.ScollViewInner}
+        />
       </View>
     </View>
   );
@@ -43,22 +48,8 @@ const Browse = ({
 export default Browse;
 
 const styles = StyleSheet.create({
-  navButtonWrapper: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  navButton: {
-    flex: 1,
-    paddingHorizontal: 6,
-  },
-  buttonContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonWrapper: {
-    marginVertical: 3,
-    width: "60%",
+  // TODO Remove this after fixing ScrollViewHeight issue
+  ScollViewInner: {
+    paddingBottom: 200,
   },
 });

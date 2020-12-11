@@ -1,21 +1,14 @@
 import { all, takeEvery } from "redux-saga/effects";
-import { call, put, select } from "typed-redux-saga/macro";
-import { RepoType } from "../../shared.constants";
+import { call, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
 import { startupSagaAction } from "../startup/startup.state";
-import { log } from "./repo.saga.log";
-import { getRepoParamsFromFilesystem, getRepoPath } from "./repo.service";
-import {
-  addOneRepoAction,
-  loadRepoContentsSagaAction,
-  loadRepoFromFilesystemErrorAction,
-  loadRepoFromFilesystemSagaAction,
-  selectRepoById,
-} from "./repo.state";
+import { getRepoPath } from "./repo.service";
+import { loadRepoContentsSagaAction, selectRepoById } from "./repo.state";
 import commitAllSaga from "./sagas/commitAll.saga";
+import loadRepoFromFilesystemSaga from "./sagas/loadRepoFromFilesystem.saga";
 import saveNewRepoToReduxSaga from "./sagas/saveNewRepoToRedux.saga";
 
 export {
@@ -50,64 +43,22 @@ export function* loadRepoContentsEffect(
   }
 }
 
-export function* loadRepoFromFilesystemEffect(
-  action: ReturnType<typeof loadRepoFromFilesystemSagaAction>
-) {
-  try {
-    // TODO Fix this
-    log.error("loadRepoFromFilesystemEffect() needs implementation. #2ybMIL");
-    return;
-    const repo = yield* call(getRepoParamsFromFilesystem, {
-      path: action.payload.path,
-    });
-
-    yield* put(addOneRepoAction(repo as any));
-
-    // We `yield* call()` here so that this generator only completes AFTER the
-    // nested call to `loadRepoContents` has itself completed.
-    yield* call(
-      loadRepoContentsEffect,
-      loadRepoContentsSagaAction({ repoId: repo.id })
-    );
-  } catch (error) {
-    log.error("loadRepoFromFilesystemEffect() error #BL7v49", error);
-    yield* put(
-      loadRepoFromFilesystemErrorAction({
-        message: "loadRepoFromFilesystem() error #HlT6yC",
-        error,
-      })
-    );
-  }
-}
-
 export function* repoStartupEffect() {
-  try {
-    const mePath = getRepoPath({ id: "", type: RepoType.me });
-    yield* call(
-      loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: mePath })
-    );
-    const commandsPath = getRepoPath({ id: "", type: RepoType.commands });
-    yield* call(
-      loadRepoFromFilesystemEffect,
-      loadRepoFromFilesystemSagaAction({ path: commandsPath })
-    );
-  } catch (error) {
-    yield* put(
-      loadRepoFromFilesystemErrorAction({
-        message: "repo.sagas startupSaga() error #roZbhL",
-        error,
-      })
-    );
-  }
+  // TODO Implement some kind of startup behaviour
+  /**
+   * In theory we could load the repos form disk. Do some kind of check up.
+   * Unclear if it's worth it, we persist redux state. It would make sense to
+   * be able to rebuild redux state from disk, coming later.
+   */
+  return;
 }
 
 export default function* repoSaga() {
   yield all([
     saveNewRepoToReduxSaga(),
+    loadRepoFromFilesystemSaga(),
     commitAllSaga(),
     takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
-    takeEvery(loadRepoFromFilesystemSagaAction, loadRepoFromFilesystemEffect),
     takeEvery(startupSagaAction, repoStartupEffect),
   ]);
 }

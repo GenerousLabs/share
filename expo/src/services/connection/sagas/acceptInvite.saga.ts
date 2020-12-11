@@ -6,8 +6,7 @@ import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
-import { subscribeToLibraryEffect } from "../../library/library.saga";
-import { subscribeToLibrarySagaAction } from "../../library/library.state";
+import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
 import { rootLogger } from "../../log/log.service";
 import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
@@ -28,6 +27,14 @@ import {
 import { addOneConnectionAction } from "../connection.state";
 
 const log = rootLogger.extend("acceptInvite");
+
+/**
+ * TODO Think about how to handle errors in this saga
+ *
+ * We import repos, then create repos in redux, then create connections, etc.
+ * If this fails at some point in the chain, some data can end up left in redux
+ * while the IDs that it refers to are missing.
+ */
 
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes"> & {
@@ -50,12 +57,13 @@ const saga = createAsyncPromiseSaga<
       theirKeysBase64,
     });
 
+    const id = yield* call(generateId);
     const theirRepoId = yield* call(generateId);
 
-    const theirRepo = yield* call(
-      subscribeToLibraryEffect,
+    yield putResolve(
       subscribeToLibrarySagaAction({
         name,
+        connectionId: id,
         remoteUrl: theirRemoteUrl,
         keysBase64: theirKeysBase64,
       })
@@ -93,8 +101,6 @@ const saga = createAsyncPromiseSaga<
     // const { token } = yield* call(() =>
     //   store.dispatch(createReadAuthTokenForRepoSagaAction({ repoId: repo.id }))
     // );
-
-    const id = yield* call(generateId);
 
     const connection: ConnectionInRedux = {
       id,

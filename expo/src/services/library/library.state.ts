@@ -82,20 +82,6 @@ export const selectFilteredOffers = createSelector(
   }
 );
 
-const SUBSCRIBE_LIBRARY = "SHARE/library/subscribeToLibrary";
-/**
- * Given the name, url (including access credentials) and decryption keys,
- * subscribe to a repo that has been shared with you.
- */
-export const subscribeToLibrarySagaAction = createAction<{
-  remoteUrl: string;
-  name: string;
-  keysBase64: KeysBase64;
-}>(SUBSCRIBE_LIBRARY);
-export const subscribeToLibraryError = makeErrorActionCreator(
-  SUBSCRIBE_LIBRARY
-);
-
 const CREATE_LIBRARY = "SHARE/library/createNewLibrary";
 export const createNewLibrarySagaAction = createAction<{
   title: string;

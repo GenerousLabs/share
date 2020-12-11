@@ -1,8 +1,8 @@
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put } from "typed-redux-saga/macro";
-import { RepoType } from "../../shared.constants";
-import { generateId, generateUuid } from "../../utils/id.utils";
+import { RepoInRedux, RepoYamlWithoutKeys } from "../../shared.types";
+import { generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
 import {
   commitAllEffect,
@@ -10,21 +10,17 @@ import {
   saveNewRepoToReduxEffect,
   saveNewRepoToReduxSagaAction,
 } from "../repo/repo.saga";
-import {
-  cloneNewLibraryRepo,
-  createLibraryRepo,
-  getRepoPath,
-} from "../repo/repo.service";
+import { createLibraryRepo } from "../repo/repo.service";
 import { readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryErrorAction,
   createNewLibrarySagaAction,
   loadOfferError,
   loadOfferSagaAction,
-  subscribeToLibrarySagaAction,
   upsertOneOfferAction,
 } from "./library.state";
 import createNewOfferSaga from "./sagas/createNewOffer.saga";
+import subscribeToLibrarySaga from "./sagas/subscribeToLibrary.saga";
 
 export {
   createNewOfferEffect,
@@ -32,23 +28,6 @@ export {
 } from "./sagas/createNewOffer.saga";
 
 const log = rootLogger.extend("library.saga");
-
-export function* subscribeToLibraryEffect(
-  action: ReturnType<typeof subscribeToLibrarySagaAction>
-) {
-  const { name, keysBase64, remoteUrl } = action.payload;
-
-  const id = yield* call(generateId);
-
-  const path = yield* call(getRepoPath, { type: RepoType.library, id });
-
-  yield* call(cloneNewLibraryRepo, { path, remoteUrl, keysBase64 });
-
-  log.debug("subscribeToLibraryEffect() #ezVpNx", name, remoteUrl);
-
-  // TODO - Load the repo into redux after it has downloaded
-  log.error("Needs to be implemented here. #M3ulny");
-}
 
 export function* createNewLibraryEffect(
   action: ReturnType<typeof createNewLibrarySagaAction>
@@ -110,8 +89,10 @@ export function* loadOfferEffect(
 export default function* librarySaga() {
   yield all([
     createNewOfferSaga(),
-    takeEvery(subscribeToLibrarySagaAction, subscribeToLibraryEffect),
+    subscribeToLibrarySaga(),
+    // TODO: Refactor this to the create saga helper
     takeEvery(createNewLibrarySagaAction, createNewLibraryEffect),
+    // TODO: Refactor this to the create saga helper
     takeEvery(loadOfferSagaAction, loadOfferEffect),
   ]);
 }

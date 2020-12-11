@@ -1,9 +1,9 @@
 import { call, put, select } from "typed-redux-saga/macro";
+import { putResolve } from "redux-saga/effects";
 import { generateId } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
-import { subscribeToLibraryEffect } from "../../library/library.saga";
-import { subscribeToLibrarySagaAction } from "../../library/library.state";
+import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
 import { ConnectionCodeType, parseSharingCode } from "../connection.service";
 import {
   selectConnectionById,
@@ -34,10 +34,10 @@ const saga = createAsyncPromiseSaga<
 
     const theirRepoId = yield* call(generateId);
 
-    const theirRepo = yield* call(
-      subscribeToLibraryEffect,
+    yield putResolve(
       subscribeToLibrarySagaAction({
         name: connection.name,
+        connectionId,
         remoteUrl: theirRemoteUrl,
         keysBase64: theirKeysBase64,
       })

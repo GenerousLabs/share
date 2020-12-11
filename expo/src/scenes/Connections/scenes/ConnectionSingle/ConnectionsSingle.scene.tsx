@@ -19,12 +19,11 @@ import {
   selectAllRepoShares,
   selectConnectionById,
 } from "../../../../services/connection/connection.state";
-import { subscribeToLibrarySagaAction } from "../../../../services/library/library.state";
+import { selectMyLibraryRepo } from "../../../../services/library/library.selectors";
+import { subscribeToLibrarySagaAction } from "../../../../services/library/sagas/subscribeToLibrary.saga";
 import { createRemoteUrlForSharedRepo } from "../../../../services/remote/remote.service";
-import {
-  selectAllRepos,
-  selectLibraryRepo,
-} from "../../../../services/repo/repo.state";
+import { selectAllRepos } from "../../../../services/repo/repo.state";
+import { RepoType } from "../../../../shared.constants";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch, RootState } from "../../../../store";
 import { getKeysIfEncryptedRepo } from "../../../../utils/key.utils";
@@ -35,19 +34,24 @@ const makeSelector = (connectionId: string) =>
     selectAllRepoShares,
     selectAllRepos,
     (state: RootState) => selectConnectionById(state, connectionId),
-    // We select the library as a single selector to ensure that there's no race
-    // conditions, either the whole package is avialable, or not.
-    selectLibraryRepo,
-    (allShares, repos, connection, library) => {
+    // We select my library as part of this to ensure that it's always available
+    // when the connection loads. It's created during app setup, so if it
+    // doesn't exist by now, something has gone very wrong.
+    selectMyLibraryRepo,
+    (allShares, repos, connection, myLibrary) => {
       const repoShare = allShares.find(
         (s) => s.connectionId === connection?.id
       );
       const myRepo = repos.find((r) => r.id === connection?.myRepoId);
+      const theirLibrary = repos.find(
+        (r) => r.type === RepoType.library && r.connectionId === connectionId
+      );
       return {
         connection,
         repoShare,
         myRepo,
-        library,
+        theirLibrary,
+        myLibrary,
       };
     }
   );
@@ -65,7 +69,13 @@ const ConnectionsSingle = ({
   const dispatch: RootDispatch = useDispatch();
   const { connectionId } = route.params;
   const selector = useMemo(() => makeSelector(connectionId), [connectionId]);
-  const { connection, repoShare, myRepo, library } = useSelector(selector);
+  const {
+    connection,
+    repoShare,
+    myRepo,
+    theirLibrary,
+    myLibrary,
+  } = useSelector(selector);
 
   const [libraryCode, setLibraryCode] = useState("");
   const [isCodeSubmitting, setIsCodeSubmitting] = useState(false);
@@ -77,7 +87,7 @@ const ConnectionsSingle = ({
       }
 
       const { token } = await dispatch(
-        createReadAuthTokenForRepoSagaAction({ repoId: library.id })
+        createReadAuthTokenForRepoSagaAction({ repoId: myLibrary.id })
       );
       return token;
     },
@@ -104,9 +114,10 @@ const ConnectionsSingle = ({
     );
   }
 
-  const confirmed = typeof connection.theirRepoId === "string";
+  const isConfirmed = typeof connection.theirRepoId === "string";
+  const hasImportedLibrary = typeof theirLibrary !== "undefined";
 
-  if (!confirmed) {
+  if (!isConfirmed) {
     return <Confirm connectionId={connectionId} goBack={navigation.goBack} />;
   }
 
@@ -115,6 +126,7 @@ const ConnectionsSingle = ({
       <Header title={connection.name} goBack={navigation.goBack} />
       <ScrollView>
         <View style={styles.ScrollViewInner}>
+          <Text>Messaging is coming soon...</Text>
           <Text>Coming in a second or six</Text>
           <Button
             title="Share your confirmation code"
@@ -138,12 +150,12 @@ const ConnectionsSingle = ({
             onPress={async () => {
               const token = await getOrCreateToken();
               const { url } = await createRemoteUrlForSharedRepo({
-                repo: library,
+                repo: myLibrary,
                 token,
               });
               const myRemoteUrl = `encrypted::${url}`;
               const myKeysBase64 = await getKeysIfEncryptedRepo({
-                repo: library,
+                repo: myLibrary,
               });
               invariant(myKeysBase64, "Failed to get keys for library #ycywPR");
               const code = await createConnectionCode({
@@ -154,38 +166,51 @@ const ConnectionsSingle = ({
               Share.share({ message: code });
             }}
           />
-          <Text h2>Import a library</Text>
-          <Text>
-            This is a temporary feature. We'll remove this shortly once messages
-            come online.
-          </Text>
-          <Input onChangeText={setLibraryCode} multiline numberOfLines={12} />
-          <Button
-            title="Import this library"
-            loading={isCodeSubmitting}
-            onPress={async () => {
-              if (libraryCode === "") {
-                Alert.alert(
-                  "Error #noA3eQ",
-                  `Please enter a code above. If this error repeats, let us know, we'll try to fix it.`
-                );
-              }
-              setIsCodeSubmitting(true);
-              const params = parseSharingCode({
-                code: libraryCode,
-                type: ConnectionCodeType.SHARING,
-              });
-              dispatch(
-                subscribeToLibrarySagaAction({
-                  name: connection.name,
-                  remoteUrl: params.theirRemoteUrl,
-                  keysBase64: params.theirKeysBase64,
-                })
-              );
-              setLibraryCode("");
-              setIsCodeSubmitting(false);
-            }}
-          />
+          {hasImportedLibrary ? null : (
+            <>
+              <Text h2>Import a library</Text>
+              <Text>
+                This is a temporary feature. We'll remove this shortly once
+                messages come online.
+              </Text>
+              <Input
+                onChangeText={setLibraryCode}
+                multiline
+                numberOfLines={12}
+              />
+              <Button
+                title="Import this library"
+                loading={isCodeSubmitting}
+                onPress={async () => {
+                  if (libraryCode === "") {
+                    Alert.alert(
+                      "Error #noA3eQ",
+                      `Please enter a code above. If this error repeats, let us know, we'll try to fix it.`
+                    );
+                  }
+                  setIsCodeSubmitting(true);
+                  const params = parseSharingCode({
+                    code: libraryCode,
+                    type: ConnectionCodeType.SHARING,
+                  });
+                  await dispatch(
+                    subscribeToLibrarySagaAction({
+                      name: connection.name,
+                      connectionId,
+                      remoteUrl: params.theirRemoteUrl,
+                      keysBase64: params.theirKeysBase64,
+                    })
+                  );
+                  Alert.alert(
+                    "Library succesfully imported",
+                    `Your friend's library was successfully imported. Checkout browse to see what they're sharing with you.`
+                  );
+                  setLibraryCode("");
+                  setIsCodeSubmitting(false);
+                }}
+              />
+            </>
+          )}
         </View>
       </ScrollView>
     </View>
