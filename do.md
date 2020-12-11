@@ -7,13 +7,21 @@
   - Stack navigator, it has right / bottom on ios / android
   - Top level menu
 - [x] Browse & Your Stuff UI
-- [ ] Some way to share a library
-- [ ] Load offers from the imported library
+- [x] Some way to share a library
+- [x] Load offers from the imported library
   - And probably our own
 - [x] Report back to action promises lib
+- [x] Repull subscribed to libraries somehow
+- [x] Fix encrypted pull
+  - It creates the objects but doesn't update the branch or check out the changes
+- [ ] Convert createNewOfferSagaAction to a promise action
+  - OfferForm doesn't finish submitting
+- [x] Add friends / friends-of-friends to OfferForm
+- [ ] Add tags to OfferForm
 
 # Next
 
+- [ ] Remvoe parentLogger stuff, extend from rootLogger every time
 - [ ] Validate action shape in sagas
   - I introduced a bug where two actions had the same name
   - Various functions were invoked with the wrong params because the code
