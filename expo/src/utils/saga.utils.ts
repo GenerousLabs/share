@@ -5,12 +5,11 @@ import {
   resolvePromiseAction,
 } from "redux-saga-promise-actions";
 import {
+  call,
+  put,
   takeEvery,
   takeLatest,
   takeLeading,
-  putResolve,
-  put,
-  call,
 } from "redux-saga/effects";
 import { SagaGenerator } from "typed-redux-saga/macro";
 // NOTE: This is not specified as a dependency, it's a dependency of
