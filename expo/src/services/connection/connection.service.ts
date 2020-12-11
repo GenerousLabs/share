@@ -71,7 +71,6 @@ export const parseSharingCode = ({
     throw new Error(`Invalid code. Must begin ${type}. #Ic2bYT`);
   }
   const base64 = code.substr(type.length + 1);
-  console.log("connection.service parseInviteCode #iL1GII", base64);
   const jsonString = base64ToString(base64);
   const data = JSON.parse(jsonString);
   const validData = DecodeSchema.parse(data);
