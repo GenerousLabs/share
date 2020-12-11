@@ -14,7 +14,7 @@ export const REDUCER_KEY = "repo" as const;
 
 const repoAdapter = createEntityAdapter<RepoInRedux>();
 const repoSelectors = repoAdapter.getSelectors(
-  (state: RootState) => state.repo
+  (state: RootState) => state[REDUCER_KEY]
 );
 
 const repoSlice = createSlice({
