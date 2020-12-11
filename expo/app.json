@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo",
-    "slug": "expo",
+    "name": "Generous Share",
+    "slug": "generous-share",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
