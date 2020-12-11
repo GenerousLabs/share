@@ -21,6 +21,7 @@
 
 # Next
 
+- [ ] Why do I need to double press some buttons?
 - [ ] Remvoe parentLogger stuff, extend from rootLogger every time
 - [ ] Validate action shape in sagas
   - I introduced a bug where two actions had the same name
