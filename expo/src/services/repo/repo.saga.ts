@@ -55,32 +55,41 @@ export function* loadRepoContentsEffect(
 }
 
 export function* repoStartupEffect() {
-  log.debug("repoStartupEffect() invoked #IeHAGy");
-  // TODO Implement some kind of startup behaviour
-  /**
-   * In theory we could load the repos form disk. Do some kind of check up.
-   * Unclear if it's worth it, we persist redux state. It would make sense to
-   * be able to rebuild redux state from disk, coming later.
-   */
+  try {
+    log.debug("repoStartupEffect() invoked #IeHAGy");
+    // TODO Implement some kind of startup behaviour
+    /**
+     * In theory we could load the repos form disk. Do some kind of check up.
+     * Unclear if it's worth it, we persist redux state. It would make sense to
+     * be able to rebuild redux state from disk, coming later.
+     */
 
-  // Refetch to see if anything has changed in our subscribed repos
-  const subscribedLibraries = yield* select(selectAllSubscribedLibraries);
+    // Refetch to see if anything has changed in our subscribed repos
+    const subscribedLibraries = yield* select(selectAllSubscribedLibraries);
 
-  for (const library of subscribedLibraries) {
-    const path = getRepoPath(library);
-    const headCommit = yield* call(updateSubscribedRepo, { path });
-    const headCommitObjectId = headCommit.oid;
-    if (library.headCommitObjectId !== headCommitObjectId) {
-      yield* put(
-        updateOneRepoAction({ id: library.id, changes: { headCommitObjectId } })
-      );
+    for (const library of subscribedLibraries) {
+      const path = getRepoPath(library);
+      const headCommit = yield* call(updateSubscribedRepo, { path });
+      const headCommitObjectId = headCommit.oid;
+      if (library.headCommitObjectId !== headCommitObjectId) {
+        yield* put(
+          updateOneRepoAction({
+            id: library.id,
+            changes: { headCommitObjectId },
+          })
+        );
 
-      // TODO Change this after fixing the putResolve type issue
-      yield putResolve(loadRepoFromFilesystemSagaAction({ repoYaml: library }));
+        // TODO Change this after fixing the putResolve type issue
+        yield putResolve(
+          loadRepoFromFilesystemSagaAction({ repoYaml: library })
+        );
+      }
     }
-  }
 
-  return;
+    return;
+  } catch (error) {
+    console.error("Error in startup saga #NKhh0X", error);
+  }
 }
 
 export default function* repoSaga() {
