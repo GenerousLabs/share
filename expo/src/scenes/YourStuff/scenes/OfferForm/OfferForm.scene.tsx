@@ -1,8 +1,8 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, StyleSheet, Text, View } from "react-native";
-import { Button, Input } from "react-native-elements";
+import { Alert, StyleSheet, View } from "react-native";
+import { Button, ButtonGroup, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
@@ -16,6 +16,7 @@ type Inputs = {
   // repoId: string;
   title: string;
   bodyMarkdown: string;
+  shareToProximity2: boolean;
 };
 
 const OfferForm = ({
@@ -41,7 +42,7 @@ const OfferForm = ({
           offer: {
             uuid,
             proximity: 0,
-            shareToProximity: 1,
+            shareToProximity: data.shareToProximity2 ? 2 : 1,
             tags: [],
             bodyMarkdown: data.bodyMarkdown,
             title: data.title,
@@ -97,6 +98,7 @@ const OfferForm = ({
             defaultValue=""
           />
           {errors.title && <Text>Title is a required field</Text>}
+
           <Controller
             control={control}
             render={({ onChange, onBlur, value }) => (
@@ -114,6 +116,25 @@ const OfferForm = ({
             defaultValue=""
           />
           {errors.bodyMarkdown && <Text>You need to enter some body text</Text>}
+
+          <Text h4>Friends of friends</Text>
+          <Text>
+            Soon we're launching the option to share with friends of friends.
+            For now, you can save this information and later your friends will
+            be able to share some of your offers to their own network.
+          </Text>
+          <Controller
+            control={control}
+            render={({ onChange, value }) => (
+              <ButtonGroup
+                onPress={(index) => onChange(index === 0 ? false : true)}
+                buttons={["Friends", "Friends-of-friends"]}
+                selectedIndex={value ? 1 : 0}
+              />
+            )}
+            name="shareToProximity2"
+            defaultValue={false}
+          />
           <Button
             title="Add offer to library"
             loading={formState.isSubmitting || isSubmitting}
