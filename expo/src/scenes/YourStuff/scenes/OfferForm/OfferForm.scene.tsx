@@ -2,7 +2,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, ButtonGroup, Input, Text } from "react-native-elements";
+import {
+  Button,
+  ButtonGroup,
+  CheckBox,
+  Input,
+  Text,
+} from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
@@ -11,13 +17,17 @@ import { createNewOfferSagaAction } from "../../../../services/library/sagas/cre
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { generateUuid } from "../../../../utils/id.utils";
+import * as zod from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { resolve } from "bluebird";
+import { colours, montserrat } from "../../../../root.theme";
 
-type Inputs = {
-  // repoId: string;
-  title: string;
-  bodyMarkdown: string;
-  shareToProximity2: boolean;
-};
+const InputSchema = zod.object({
+  title: zod.string().nonempty(),
+  bodyMarkdown: zod.string(),
+  shareToProximity2: zod.boolean(),
+});
+type Inputs = zod.infer<typeof InputSchema>;
 
 const OfferForm = ({
   navigation,
@@ -25,7 +35,9 @@ const OfferForm = ({
   navigation: StackNavigationProp<YourStuffStackParameterList, "YourStuffList">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const { control, handleSubmit, errors, reset, formState } = useForm<Inputs>();
+  const { control, handleSubmit, errors, reset, formState } = useForm<Inputs>({
+    resolver: zodResolver(InputSchema),
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const libraries = useSelector(selectMyLibraries);
   const library = useSelector(selectMyLibraryRepo);
@@ -83,60 +95,91 @@ const OfferForm = ({
             rules={{ required: true }}
             defaultValue={libraries[0].id}
           /> */}
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Offer title"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-            name="title"
-            rules={{ required: true }}
-            defaultValue=""
-          />
-          {errors.title && <Text>Title is a required field</Text>}
+          <Text h3>Offer details</Text>
 
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Enter a description"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-                multiline={true}
-                numberOfLines={5}
-              />
-            )}
-            name="bodyMarkdown"
-            rules={{ required: true }}
-            defaultValue=""
-          />
-          {errors.bodyMarkdown && <Text>You need to enter some body text</Text>}
+          <View style={styles.inputContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  // label="Offer title"
+                  placeholder="Title of offer"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  errorStyle={
+                    errors.title ? styles.errorText : styles.errorAsHelper
+                  }
+                  errorMessage={
+                    errors.title
+                      ? "There is an error in the title"
+                      : "The name of the offer you are sharing"
+                  }
+                />
+              )}
+              name="title"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+          </View>
 
-          <Text h4>Friends of friends</Text>
-          <Text>
+          <View style={styles.inputContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  // label="Enter a description"
+                  placeholder="Description of offer"
+                  textAlignVertical="top"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  multiline={true}
+                  numberOfLines={5}
+                  errorStyle={
+                    errors.title ? styles.errorText : styles.errorAsHelper
+                  }
+                  errorMessage={
+                    errors.title
+                      ? "There is an error in description"
+                      : "Description to help others know what this item is"
+                  }
+                />
+              )}
+              name="bodyMarkdown"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.bodyMarkdown && (
+              <Text style={styles.errorText}>
+                You need to enter some body text
+              </Text>
+            )}
+          </View>
+
+          <Text h3>Share settings</Text>
+          <Text style={styles.shareIntro}>
             Soon we're launching the option to share with friends of friends.
             For now, you can save this information and later your friends will
             be able to share some of your offers to their own network.
           </Text>
           <Controller
             control={control}
-            render={({ onChange, value }) => (
-              <ButtonGroup
-                onPress={(index) => onChange(index === 0 ? false : true)}
-                buttons={["Friends", "Friends-of-friends"]}
-                selectedIndex={value ? 1 : 0}
-              />
-            )}
+            render={({ onChange, value }) => {
+              return (
+                <CheckBox
+                  title="Share with friends of friends"
+                  checked={value}
+                  onPress={() => onChange(!value)}
+                />
+              );
+            }}
             name="shareToProximity2"
             defaultValue={false}
           />
           <Button
-            title="Add offer to library"
+            title="Save offer to Your Stuff"
+            icon={{ name: "arrow-downward" }}
             loading={formState.isSubmitting || isSubmitting}
             onPress={handleSubmit(onSubmit)}
           />
@@ -151,5 +194,28 @@ export default OfferForm;
 const styles = StyleSheet.create({
   ScrollViewInner: {
     paddingBottom: 200,
+    paddingHorizontal: 16,
+  },
+  inputContainer: {
+    marginVertical: 10,
+  },
+  errorAsHelper: {
+    // marginTop: -20,
+    // marginBottom: 20,
+    color: colours.black,
+    fontFamily: montserrat,
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+  errorText: {
+    paddingLeft: 0,
+    marginLeft: 0,
+    // marginTop: -20,
+    // marginBottom: 20,
+    color: "red",
+    fontFamily: montserrat,
+  },
+  shareIntro: {
+    // fontSize: 16,
   },
 });

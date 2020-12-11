@@ -1,13 +1,8 @@
 import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import {
-  DarkTheme,
-  DefaultTheme,
-  NavigationContainer,
-} from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 import * as React from "react";
-import { ColorSchemeName } from "react-native";
 import { useSelector } from "react-redux";
 import { colours } from "../../root.theme";
 import { RootState } from "../../services/store/store.service";

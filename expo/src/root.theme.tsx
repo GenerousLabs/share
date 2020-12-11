@@ -26,6 +26,32 @@ const bold = {
 };
 
 export const theme: Partial<FullTheme> = {
+  CheckBox: {
+    containerStyle: {
+      borderColor: colours.white,
+      backgroundColor: colours.white,
+      // NOTE: These need to be explicity otherwise they get overwritten
+      paddingLeft: 0,
+      paddingRight: 0,
+      marginLeft: 0,
+      marginRight: 0,
+    },
+    textStyle: {
+      ...normal,
+      fontSize: 14,
+    },
+    fontFamily: montserrat,
+  },
+  Input: {
+    labelStyle: normal,
+    containerStyle: {
+      paddingLeft: 0,
+      paddingRight: 0,
+      marginLeft: 0,
+      marginRight: 0,
+    },
+    style: normal,
+  },
   Header: {
     leftComponent: {
       style: {
@@ -46,10 +72,10 @@ export const theme: Partial<FullTheme> = {
     },
   },
   Text: {
-    style: normal,
+    style: { ...normal, fontSize: 14 },
     h1Style: bold,
     h2Style: bold,
-    h3Style: bold,
+    h3Style: { ...bold, fontSize: 16 },
     h4Style: bold,
   },
   Button: {
