@@ -10,11 +10,15 @@ import {
   ConnectionCodeType,
   getConnectionCode,
 } from "../../../../services/connection/connection.service";
-import { selectAllConnections } from "../../../../services/connection/connection.state";
+import {
+  selectAllConnections,
+  selectAllConnectionsWithLibraries,
+} from "../../../../services/connection/connection.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
 import {
   ConnectionInRedux,
   ConnectionsStackParameterList,
+  RepoInRedux,
 } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { log as parentLogger } from "../../Connections.log";
@@ -30,11 +34,23 @@ const ConnectionsList = ({
   >;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const connections = useSelector(selectAllConnections);
+  const connectionsWithLibraries = useSelector(
+    selectAllConnectionsWithLibraries
+  );
 
   const renderItem = useCallback(
-    ({ item: connection }: { item: ConnectionInRedux }) => {
+    ({
+      item: { connection, library },
+    }: {
+      item: { connection: ConnectionInRedux; library?: RepoInRedux };
+    }) => {
       const confirmed = typeof connection.theirRepoId === "string";
+      const connected = typeof library !== "undefined";
+      const status = connected
+        ? "Connected"
+        : confirmed
+        ? "Confirmed"
+        : "Pending";
       return (
         <ListItem
           bottomDivider
@@ -46,9 +62,7 @@ const ConnectionsList = ({
         >
           <ListItem.Content>
             <ListItem.Title>{connection.name}</ListItem.Title>
-            <ListItem.Subtitle>
-              {confirmed ? "Connected" : "Pending"}
-            </ListItem.Subtitle>
+            <ListItem.Subtitle>{status}</ListItem.Subtitle>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
@@ -79,7 +93,13 @@ const ConnectionsList = ({
         />
       </View>
       <View>
-        <FlatList data={connections} renderItem={renderItem} />
+        <FlatList
+          data={connectionsWithLibraries}
+          keyExtractor={(item) => item.connection.id}
+          renderItem={renderItem}
+          ListFooterComponent={View}
+          ListFooterComponentStyle={styles.ScollViewInner}
+        />
       </View>
     </View>
   );
@@ -88,6 +108,10 @@ const ConnectionsList = ({
 export default ConnectionsList;
 
 const styles = StyleSheet.create({
+  // TODO Remove this after fixing ScrollViewHeight issue
+  ScollViewInner: {
+    paddingBottom: 200,
+  },
   buttonsContainer: {
     display: "flex",
     flexDirection: "row",

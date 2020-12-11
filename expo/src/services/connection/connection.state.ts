@@ -5,6 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { ConnectionInRedux, RepoShareInRedux } from "../../shared.types";
+import { selectAllSubscribedLibraries } from "../library/library.selectors";
 import { selectAllRepos } from "../repo/repo.state";
 import { RootState } from "../store/store.service";
 
@@ -62,6 +63,18 @@ export const makeSelectConnectionAndRepoById = (connectionId: string) =>
       return { connection, repo };
     }
   );
+export const selectAllConnectionsWithLibraries = createSelector(
+  selectAllConnections,
+  selectAllSubscribedLibraries,
+  (connections, libraries) => {
+    return connections.map((connection) => {
+      const library = libraries.find(
+        (library) => library.connectionId === connection.id
+      );
+      return { connection, library };
+    });
+  }
+);
 
 export const { selectAll: selectAllRepoShares } = repoShareAdapter.getSelectors(
   (state: RootState) => state[REDUCER_KEY].repoShares
