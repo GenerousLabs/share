@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useCallback } from "react";
+import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
 import { RootDrawerParamList } from "../../shared.types";
@@ -23,6 +23,11 @@ const menuItems = [
     title: "Connections",
     subtitle:
       "Build your community. Add new people and invite new friends to share with.",
+  },
+  {
+    route: "Settings",
+    title: "Settings",
+    subtitle: "Something here about settings",
   },
 ] as const;
 
