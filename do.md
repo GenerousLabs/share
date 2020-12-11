@@ -6,12 +6,20 @@
   - Or, top leve screen scenes need to just load children
   - Stack navigator, it has right / bottom on ios / android
   - Top level menu
-- [ ] Browse & Your Stuff UI
+- [x] Browse & Your Stuff UI
 - [ ] Some way to share a library
-- [ ] Report back to action promises lib
+- [ ] Load offers from the imported library
+  - And probably our own
+- [x] Report back to action promises lib
 
 # Next
 
+- [ ] Validate action shape in sagas
+  - I introduced a bug where two actions had the same name
+  - Various functions were invoked with the wrong params because the code
+    assumes, TypeScript believes, that this will never happen
+  - Could use zod to validate the actions as a safe guard
+  - Hmm, testing, or in production? Either way, later...
 - [x] Add logging infrastructure
   - Maybe winston? - nope, doesn't play well with react native
   - Prep to be able to show logs to the user in the UI
