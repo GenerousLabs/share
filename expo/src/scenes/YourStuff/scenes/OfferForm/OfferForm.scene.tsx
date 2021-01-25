@@ -1,26 +1,19 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
-import {
-  Button,
-  ButtonGroup,
-  CheckBox,
-  Input,
-  Text,
-} from "react-native-elements";
+import { Button, CheckBox, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
+import * as zod from "zod";
 import Header from "../../../../components/Header/Header.component";
+import { colours, montserrat } from "../../../../root.theme";
 import { selectMyLibraryRepo } from "../../../../services/library/library.selectors";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { generateUuid } from "../../../../utils/id.utils";
-import * as zod from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { resolve } from "bluebird";
-import { colours, montserrat } from "../../../../root.theme";
 
 const InputSchema = zod.object({
   title: zod.string().nonempty(),
