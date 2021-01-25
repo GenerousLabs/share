@@ -1,3 +1,12 @@
+# Sprint 2
+
+Get this in the hands of users. Preferrably on both platforms, but Android
+only would be possible.
+
+- [ ] Get iOS running
+- [ ] Add "Input a code" flow
+  - Redirects to `Confirm.scene` or `Accept.scene`
+
 # Sprint 1
 
 - [x] From a list -> another page
@@ -18,6 +27,7 @@
   - OfferForm doesn't finish submitting
 - [x] Add friends / friends-of-friends to OfferForm
 - [ ] Add tags to OfferForm
+  - Comma separated? That might do for now, can improve it
 
 # Next
 
