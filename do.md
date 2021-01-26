@@ -3,7 +3,7 @@
 Get this in the hands of users. Preferrably on both platforms, but Android
 only would be possible.
 
-- [ ] Get iOS running
+- [x] Get iOS running
 - [ ] Add "Input a code" flow
   - Redirects to `Confirm.scene` or `Accept.scene`
 
