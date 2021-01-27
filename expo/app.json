@@ -2,6 +2,9 @@
   "expo": {
     "name": "Generous Share",
     "slug": "generous-share",
+    "owner": "generouslabs",
+    "privacy": "public",
+    "githubUrl": "https://github.com/GenerousLabs/share",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
