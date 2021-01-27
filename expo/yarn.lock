@@ -1121,6 +1121,24 @@
     semver "^7.1.3"
     slugify "^1.3.4"
 
+"@expo/config@3.3.26", "@expo/config@^3.3.18":
+  version "3.3.26"
+  resolved "https://registry.yarnpkg.com/@expo/config/-/config-3.3.26.tgz#5d15091b9cb22a897fabbb3db2757e75819d9e2e"
+  integrity sha512-krtvZ7P7BMbSbqPP5OFERrzxDGGA2qcFGmL/QpPX11P9wSSRXVqRar1OMwjuKaeQ36wdS21AiMmmvLNeFcbjww==
+  dependencies:
+    "@babel/core" "7.9.0"
+    "@expo/babel-preset-cli" "0.2.18"
+    "@expo/config-plugins" "1.0.17"
+    "@expo/config-types" "^40.0.0-beta.2"
+    "@expo/json-file" "8.2.26"
+    fs-extra "9.0.0"
+    getenv "0.7.0"
+    glob "7.1.6"
+    require-from-string "^2.0.2"
+    resolve-from "^5.0.0"
+    semver "7.3.2"
+    slugify "^1.3.4"
+
 "@expo/config@^3.2.3":
   version "3.3.15"
   resolved "https://registry.yarnpkg.com/@expo/config/-/config-3.3.15.tgz#8241eb575f3f9071dc0277b260906ab32eb9ca95"
@@ -1143,24 +1161,6 @@
     slugify "^1.3.4"
     xcode "^2.1.0"
     xml2js "^0.4.23"
-
-"@expo/config@^3.3.18":
-  version "3.3.26"
-  resolved "https://registry.yarnpkg.com/@expo/config/-/config-3.3.26.tgz#5d15091b9cb22a897fabbb3db2757e75819d9e2e"
-  integrity sha512-krtvZ7P7BMbSbqPP5OFERrzxDGGA2qcFGmL/QpPX11P9wSSRXVqRar1OMwjuKaeQ36wdS21AiMmmvLNeFcbjww==
-  dependencies:
-    "@babel/core" "7.9.0"
-    "@expo/babel-preset-cli" "0.2.18"
-    "@expo/config-plugins" "1.0.17"
-    "@expo/config-types" "^40.0.0-beta.2"
-    "@expo/json-file" "8.2.26"
-    fs-extra "9.0.0"
-    getenv "0.7.0"
-    glob "7.1.6"
-    require-from-string "^2.0.2"
-    resolve-from "^5.0.0"
-    semver "7.3.2"
-    slugify "^1.3.4"
 
 "@expo/configure-splash-screen@0.2.1":
   version "0.2.1"
@@ -1285,6 +1285,14 @@
   integrity sha512-ZkZXu2dVjZ88tiH51gqM3DUAmey18tM9MlDh91r1iLF6hHT6UeZD0lBDN7IJTQv/SJuAPQHoylXmAx6cuIGU9A==
   dependencies:
     "@expo/config" "3.3.18"
+    metro-react-native-babel-transformer "^0.58.0"
+
+"@expo/metro-config@^0.1.52":
+  version "0.1.52"
+  resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.1.52.tgz#53701723e174dc38dc2c7719bf7f44ff511fbfe0"
+  integrity sha512-ODxn3/h/6A1qvvKOlmSOUuM2l0hWn02W5idBnCpN8feY3DLGdPh+IFDmpnkT5yFBJ0Fx7qlrgphN4O7+9SF9Bg==
+  dependencies:
+    "@expo/config" "3.3.26"
     metro-react-native-babel-transformer "^0.58.0"
 
 "@expo/plist@0.0.10":
