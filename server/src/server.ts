@@ -42,7 +42,7 @@ const repos = new Server(REPOS_ROOT, {
               token,
             });
 
-            return reject();
+            return reject("Denied #NUyFdV");
           } else if (type === "fetch") {
             const isValidWriteToken = await getIsValidWriteToken({
               repoPath,
@@ -66,7 +66,7 @@ const repos = new Server(REPOS_ROOT, {
               "Invalid read / write token for fetch request #m9zh76",
               { repoPath, token }
             );
-            return reject();
+            return reject("Denied #g1ABKt");
           } else {
             return reject("Unknown error. #sqzN0U");
           }
