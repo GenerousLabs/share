@@ -19,8 +19,8 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - ./data:/user/src/data
-      - ./templates:/user/src/templates
+      - ./data:/usr/src/data
+      - ./templates:/usr/src/templates
     ports:
       # This exposes port 4000 inside the container to 4800 on the host
       - "4800:8000"
