@@ -111,7 +111,7 @@ repos.on("tag", (tag) => {
 */
 
 repos.listen(PORT, { enableCors: true, type: "http" }, async () => {
-  logger.debug("Generous share server started #OKzflB", {
+  logger.info("Generous share server started #OKzflB", {
     cwd: process.cwd(),
     CWD,
     PORT,
