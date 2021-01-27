@@ -1,0 +1,27 @@
+version: "2"
+
+networks:
+  example:
+    external: false
+
+services:
+  server:
+    # Set the docker hub username and repository name here
+    image: chmac/generouslabs-share-server:latest
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - NODE_ENV=production
+      # Add any custom environment variables here
+    restart: always
+    networks:
+      - example
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      # This would add a folder called `data` on the host as `/usr/src/data/`
+      # inside the container. Customise this to suit your needs.
+      - ./data:/user/src/data
+    ports:
+      # This exposes port 4000 inside the container to 4800 on the host
+      - "4800:4000"
