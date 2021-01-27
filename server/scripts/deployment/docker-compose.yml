@@ -23,4 +23,4 @@ services:
       - ./templates:/user/src/templates
     ports:
       # This exposes port 4000 inside the container to 4800 on the host
-      - "4800:4000"
+      - "4800:8000"
