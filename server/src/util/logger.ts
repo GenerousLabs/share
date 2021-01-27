@@ -50,7 +50,7 @@ const prodTransports = [
   new winston.transports.File({
     filename: "data/error.log",
     level: "error",
-    format: buildFileFormatter(),
+    format: buildFileFormatter({ level: "error" }),
   }),
   new winston.transports.File({
     filename: "data/warn.log",
