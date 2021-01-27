@@ -18,11 +18,15 @@ export const _getReadTokensPath = ({
 }: {
   org: string;
   repo: string;
-}) => {
+}): string => {
   return join(REPOS_ROOT, org, COMMANDS_REPO_NAME, repo, READ_TOKENS_FILE_NAME);
 };
 
-export const _parseTokensYaml = ({ input }: { input: string }) => {
+export const _parseTokensYaml = ({
+  input,
+}: {
+  input: string;
+}): { [username: string]: string } => {
   const userTokenMap = yaml.safeLoad(input) as {
     [userId: string]: string;
   };
@@ -96,7 +100,7 @@ export const getIsValidReadToken = async ({
 }: {
   repoPath: string;
   token: string;
-}) => {
+}): Promise<boolean> => {
   const { org, repo } = splitRepo(repoPath);
 
   const tokens = await _getReadTokensForRepo({ org, repo });
@@ -120,7 +124,7 @@ export const getIsValidWriteToken = async ({
 }: {
   repoPath: string;
   token: string;
-}) => {
+}): Promise<boolean> => {
   const { org } = splitRepo(repoPath);
   const userToken = await _getUserToken({ user: org });
 
