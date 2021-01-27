@@ -25,7 +25,7 @@
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
     "watch-node": "nodemon dist/",
     "watch-test": "yarn test -- --watchAll",
-    "watch-ts": "tsc -w"
+    "watch-ts": "ncc build --watch src/server.ts -o dist"
   },
   "dependencies": {
     "@chmac/node-git-server": "^0.6.3",
