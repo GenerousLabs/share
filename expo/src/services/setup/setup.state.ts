@@ -9,9 +9,14 @@ type State = {
   isSetupComplete: boolean;
   /** Did setup fail? */
   didSetupFailed?: boolean;
+  setupError?: Error;
 };
 
 const initialState: State = { isSetupComplete: false };
+
+const SETUP = "SHARE/setup/setup";
+export const setupSagaAction = createAction<{ config: Config }>(SETUP);
+export const setupErrorAction = makeErrorActionCreator(SETUP);
 
 const setupSlice = createSlice({
   name: "SHARE/setup",
@@ -22,8 +27,9 @@ const setupSlice = createSlice({
     },
   },
   extraReducers: {
-    setupErrorAction: (state) => {
+    [setupErrorAction.toString()]: (state, action) => {
       state.didSetupFailed = true;
+      state.setupError = action.payload.error;
     },
   },
 });
@@ -31,10 +37,6 @@ const setupSlice = createSlice({
 export const { setSetupCompleteAction } = setupSlice.actions;
 
 export default setupSlice.reducer;
-
-const SETUP = "SHARE/setup/setup";
-export const setupSagaAction = createAction<{ config: Config }>(SETUP);
-export const setupErrorAction = makeErrorActionCreator(SETUP);
 
 /**
  * This action triggers a complete reset of the application. It is *extremely*
