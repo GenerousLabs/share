@@ -10,6 +10,7 @@ import {
   REPOS_ROOT,
   USER_TOKEN_PATH,
 } from "../../constants";
+import logger from "../../util/logger";
 import { splitRepo } from "../../util/repoNames";
 
 export const _getReadTokensPath = ({
@@ -39,6 +40,7 @@ export const _parseTokensYaml = ({
         typeof token !== "string" ||
         token.length < MINIMUM_TOKEN_LENGTH
       ) {
+        logger.warn("Excluding invalid token #y7kmqs", { username, token });
         return false;
       }
       return true;
