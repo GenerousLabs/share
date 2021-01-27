@@ -1,5 +1,5 @@
 import Server from "@chmac/node-git-server";
-import { REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
+import { CWD, REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
 import {
   getIsValidReadToken,
   getIsValidWriteToken,
@@ -110,5 +110,11 @@ repos.on("tag", (tag) => {
 */
 
 repos.listen(PORT, { enableCors: true, type: "http" }, () => {
-  logger.debug(`Listening on :${PORT} #OKzflB`);
+  logger.debug("Generous share server started #OKzflB", {
+    cwd: process.cwd(),
+    CWD,
+    PORT,
+    REPOS_ROOT,
+    REPO_TEMPLATE_PATH,
+  });
 });
