@@ -19,9 +19,8 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      # This would add a folder called `data` on the host as `/usr/src/data/`
-      # inside the container. Customise this to suit your needs.
       - ./data:/user/src/data
+      - ./templates:/user/src/templates
     ports:
       # This exposes port 4000 inside the container to 4800 on the host
       - "4800:4000"
