@@ -6,6 +6,8 @@ only would be possible.
 - [x] Get iOS running
 - [ ] Add "Input a code" flow
   - Redirects to `Confirm.scene` or `Accept.scene`
+- [ ] Catch startup errors and show them to the user
+  - Currently it fails silently, which is ugly
 
 # Sprint 1
 
