@@ -1,5 +1,5 @@
 import Server from "@chmac/node-git-server";
-import path from "path";
+import { REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
 import {
   getIsValidReadToken,
   getIsValidWriteToken,
@@ -8,8 +8,8 @@ import logger from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
 
-const repos = new Server(path.join(__dirname, "../data/repos"), {
-  repoTemplatePath: path.join(__dirname, "..", "templates", "empty-repo"),
+const repos = new Server(REPOS_ROOT, {
+  repoTemplatePath: REPO_TEMPLATE_PATH,
   checkout: true,
   autoCreate: true,
   authenticate: ({ type, repo: repoPath, headers, user }) => {

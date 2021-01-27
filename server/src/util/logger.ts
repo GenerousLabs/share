@@ -1,4 +1,3 @@
-import { join } from "path";
 import winston from "winston";
 
 const devTransports = [
@@ -10,7 +9,7 @@ const devTransports = [
     ),
   }),
   new winston.transports.File({
-    filename: "../data/debug.log",
+    filename: "data/debug.log",
     level: "debug",
   }),
 ];
@@ -25,7 +24,7 @@ const prodTransports = [
     ),
   }),
   new winston.transports.File({
-    filename: join(__dirname, "../data/error.log"),
+    filename: "data/error.log",
     level: "error",
   }),
 ];

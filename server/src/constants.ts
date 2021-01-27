@@ -1,8 +1,10 @@
 import { join } from "path";
 
 // NOTE: We need a `../` here because this gets run in the `dist/` folder
-export const REPOS_ROOT = join(__dirname, "../data/repos");
+export const REPOS_ROOT = join(process.cwd(), "data/repos");
 export const COMMANDS_REPO_NAME = "commands.git" as const;
+
+export const REPO_TEMPLATE_PATH = join(process.cwd(), "templates/empty-repo");
 
 export const USER_TOKEN_PATH = join(
   REPOS_ROOT,
