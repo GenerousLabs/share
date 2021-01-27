@@ -5,13 +5,13 @@ import {
   resolvePromiseAction,
 } from "redux-saga-promise-actions";
 import {
-  call,
+  // call,
   put,
   takeEvery,
   takeLatest,
   takeLeading,
 } from "redux-saga/effects";
-import { SagaGenerator } from "typed-redux-saga/macro";
+import { call, SagaGenerator } from "typed-redux-saga/macro";
 // NOTE: This is not specified as a dependency, it's a dependency of
 // `redux-saga-promise-actions` and only imported for types.
 import { TypeConstant } from "typesafe-actions";
@@ -43,9 +43,12 @@ export const createAsyncPromiseSaga = <P, R>({
 
   function* sagaWrapper(action: ReturnType<typeof request>) {
     try {
-      const response: R = yield call(effect, action) as any;
+      const response = yield* call(effect, action);
+
       try {
-        yield call(resolvePromiseAction, action, response);
+        // TODO Fix typing here
+        // resolvePromiseAction(action, response)
+        (resolvePromiseAction as any)(action, response);
       } catch (error) {
         // QUESTION Is there a better way to handle errors here?
         log.error("Error resolving promise action #Kfygxz");
@@ -53,7 +56,7 @@ export const createAsyncPromiseSaga = <P, R>({
     } catch (error) {
       log.debug("saga error #QXYogF", error);
       yield put(failure({ error: getSerializableError(error) }));
-      yield call(rejectPromiseAction, action, { error });
+      yield rejectPromiseAction(action, { error });
     }
   }
 
