@@ -16,7 +16,7 @@ const devTransports = [
 
 const prodTransports = [
   new winston.transports.Console({
-    level: "error",
+    level: "warn",
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.colorize(),
@@ -26,6 +26,10 @@ const prodTransports = [
   new winston.transports.File({
     filename: "data/error.log",
     level: "error",
+  }),
+  new winston.transports.File({
+    filename: "data/warn.log",
+    level: "warn",
   }),
 ];
 
