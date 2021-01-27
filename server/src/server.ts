@@ -1,4 +1,5 @@
 import Server from "@chmac/node-git-server";
+import fs from "fs";
 import { CWD, REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
 import {
   getIsValidReadToken,
@@ -109,7 +110,7 @@ repos.on("tag", (tag) => {
 });
 */
 
-repos.listen(PORT, { enableCors: true, type: "http" }, () => {
+repos.listen(PORT, { enableCors: true, type: "http" }, async () => {
   logger.debug("Generous share server started #OKzflB", {
     cwd: process.cwd(),
     CWD,
@@ -117,4 +118,21 @@ repos.listen(PORT, { enableCors: true, type: "http" }, () => {
     REPOS_ROOT,
     REPO_TEMPLATE_PATH,
   });
+
+  try {
+    const reposRootStat = await fs.promises.stat(REPOS_ROOT);
+
+    if (!reposRootStat.isDirectory()) {
+      throw new Error("REPOS_ROOT is not a directory #4xeqcH");
+    }
+
+    const repoTemplatePath = await fs.promises.stat(REPO_TEMPLATE_PATH);
+
+    if (!repoTemplatePath.isDirectory()) {
+      throw new Error("REPO_TEMPLATE_PATH is not a directory #mVK3A4");
+    }
+  } catch (error) {
+    logger.error("Error during post startup checks. #gYP4Re", error);
+    process.exit();
+  }
 });
