@@ -62,7 +62,7 @@ declare module "@chmac/node-git-server" {
             ) => void;
             headers: { [x: string]: string };
           },
-          next: (error?: Error) => void
+          next: (error?: Error | string) => void
         ) => Promise<void> | void;
         /**
          * If `opts.checkout` is true, create and expected checked-out repos instead of bare repos
