@@ -4,9 +4,9 @@ Get this in the hands of users. Preferrably on both platforms, but Android
 only would be possible.
 
 - [x] Get iOS running
-- [ ] Add "Input a code" flow
-  - Redirects to `Confirm.scene` or `Accept.scene`
-- [ ] Catch startup errors and show them to the user
+- [ ] Implement a postoffice
+  - Where do we store boxIds on the client?
+- [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
 
 # Sprint 1
