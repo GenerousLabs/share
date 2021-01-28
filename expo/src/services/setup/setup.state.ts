@@ -24,6 +24,8 @@ const setupSlice = createSlice({
   reducers: {
     setSetupCompleteAction: (state) => {
       state.isSetupComplete = true;
+      state.didSetupFail = false;
+      state.setupError = undefined;
     },
   },
   extraReducers: {
