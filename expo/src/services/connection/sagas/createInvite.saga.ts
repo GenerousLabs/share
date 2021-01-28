@@ -3,10 +3,8 @@ import { call, put, select } from "typed-redux-saga/macro";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
-import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
-import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -17,7 +15,6 @@ import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
   ConnectionCodeType,
-  createConnectionCode,
   getConnectionCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";
