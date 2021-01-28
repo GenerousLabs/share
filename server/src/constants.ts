@@ -3,8 +3,11 @@ import { join } from "path";
 // NOTE: We need to run `process.cwd()` here, when running it inside `join()` we
 // get the `dist/` folder. No idea why. Insanity.
 export const CWD = process.cwd();
+export const DATA_PATH = join(CWD, "data");
 
-export const REPOS_ROOT = join(CWD, "data", "repos");
+export const POSTOFFICE_PATH = join(DATA_PATH, "postoffice");
+
+export const REPOS_ROOT = join(DATA_PATH, "repos");
 export const COMMANDS_REPO_NAME = "commands.git" as const;
 
 export const REPO_TEMPLATE_PATH = join(CWD, "templates/empty-repo");

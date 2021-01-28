@@ -1,8 +1,13 @@
 import Server from "@chmac/node-git-server";
 import cors from "cors";
 import express from "express";
-import fs from "fs";
-import { CWD, REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
+import { stat } from "fs/promises";
+import {
+  CWD,
+  POSTOFFICE_PATH,
+  REPOS_ROOT,
+  REPO_TEMPLATE_PATH,
+} from "./constants";
 import {
   getIsValidReadToken,
   getIsValidWriteToken,
@@ -137,17 +142,23 @@ app.listen(PORT, async () => {
     CWD,
     PORT,
     REPOS_ROOT,
+    POSTOFFICE_PATH,
     REPO_TEMPLATE_PATH,
   });
 
   try {
-    const reposRootStat = await fs.promises.stat(REPOS_ROOT);
+    const reposRootStat = await stat(REPOS_ROOT);
 
     if (!reposRootStat.isDirectory()) {
       throw new Error("REPOS_ROOT is not a directory #4xeqcH");
     }
 
-    const repoTemplatePath = await fs.promises.stat(REPO_TEMPLATE_PATH);
+    const postofficeStat = await stat(POSTOFFICE_PATH);
+    if (!postofficeStat.isDirectory()) {
+      throw new Error("POSTOFFICE_PATH is not a directory #w23eFK");
+    }
+
+    const repoTemplatePath = await stat(REPO_TEMPLATE_PATH);
 
     if (!repoTemplatePath.isDirectory()) {
       throw new Error("REPO_TEMPLATE_PATH is not a directory #mVK3A4");
