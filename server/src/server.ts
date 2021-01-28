@@ -9,7 +9,10 @@ import {
   REPOS_ROOT,
   REPO_TEMPLATE_PATH,
 } from "./constants";
-import { saveNewMessage } from "./services/postoffice/postoffice.service";
+import {
+  saveMessageReply,
+  saveNewMessage,
+} from "./services/postoffice/postoffice.service";
 import {
   getIsValidReadToken,
   getIsValidWriteToken,
@@ -110,11 +113,25 @@ app.get("/postoffice/:boxId", async (req, res) => {
   res.send({ pickup: true });
 });
 
+// Submit a reply to an existing message
 app.post("/postoffice/:boxId", jsonParser, async (req, res) => {
-  logger.debug("Reply to box submitted #ncCoCO", {
-    boxId: req.params.boxId,
-  });
-  res.send({ replied: true });
+  try {
+    if (typeof req.body.message !== "string" || req.body.message.length === 0) {
+      logger.warn("Invalid /postoffice POST #fHRCJu", { body: req.body });
+      res.writeHead(400);
+      res.send();
+      return;
+    }
+    await saveMessageReply({
+      id: req.params.boxId,
+      message: req.body.message,
+      timestamp: Date.now(),
+    });
+    res.send({ replied: true });
+  } catch (error) {
+    res.writeHead(500);
+    res.send();
+  }
 });
 
 // Submit a message to the postoffice

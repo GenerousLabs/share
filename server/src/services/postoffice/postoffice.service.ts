@@ -12,15 +12,14 @@ export const _assertIdIsUnique = ({}: { id: string }): void => {
 };
 
 export const _writeMessage = async ({
-  id,
+  path,
   message,
   timestamp,
 }: {
-  id: string;
+  path: string;
   message: string;
   timestamp: number;
 }): Promise<void> => {
-  const path = join(POSTOFFICE_PATH, id);
   const data = { message, timestamp };
   const dataAsJson = JSON.stringify(data);
   await writeFile(path, dataAsJson, { encoding: "utf8" });
@@ -36,7 +35,30 @@ export const saveNewMessage = async ({
   const id = _generateId();
   _assertIdIsUnique({ id });
 
-  await _writeMessage({ id, message, timestamp });
+  const path = join(POSTOFFICE_PATH, id);
+
+  await _writeMessage({ path, message, timestamp });
 
   return id;
+};
+
+export const _assertBoxIdExists = ({}: { id: string }): Promise<void> => {
+  // TODO Implement a real check here
+  return;
+};
+
+export const saveMessageReply = async ({
+  id,
+  message,
+  timestamp,
+}: {
+  id: string;
+  message: string;
+  timestamp: number;
+}): Promise<void> => {
+  _assertBoxIdExists({ id });
+
+  const path = join(POSTOFFICE_PATH, `${id}.reply`);
+
+  await _writeMessage({ path, message, timestamp });
 };
