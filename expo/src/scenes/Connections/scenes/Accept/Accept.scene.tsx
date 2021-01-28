@@ -54,6 +54,21 @@ const Accept = ({
                 control={control}
                 render={({ onChange, onBlur, value }) => (
                   <Input
+                    label="Code"
+                    style={styles.input}
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                  />
+                )}
+                name="inviteCode"
+                rules={{ required: false }}
+                defaultValue=""
+              />
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <Input
                     label="Name"
                     style={styles.input}
                     onBlur={onBlur}
@@ -79,23 +94,6 @@ const Accept = ({
                   />
                 )}
                 name="notes"
-                rules={{ required: false }}
-                defaultValue=""
-              />
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Code"
-                    style={styles.inputMultiline}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    multiline={true}
-                    numberOfLines={12}
-                  />
-                )}
-                name="inviteCode"
                 rules={{ required: false }}
                 defaultValue=""
               />
