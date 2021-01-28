@@ -55,36 +55,45 @@ const Confirm = ({
     // `isCodeSubmitting` if this resolves successfully.
   }, [confirmCode, setIsCodeSubmitting, dispatch]);
 
+  if (typeof connection === "undefined" || typeof repo === "undefined") {
+    return null;
+  }
+
   return (
     <View>
       <Header title="Waiting for a reply" goBack={goBack} />
       <ScrollView>
         <View style={styles.ScrollViewInner}>
-          <Text>Coming soon...</Text>
-          {typeof connection === "undefined" ||
-          typeof repo === "undefined" ? null : (
-            <Button
-              title="Send the invite code again"
-              loading={isWorking}
-              onPress={async () => {
-                setIsworking(true);
+          <Text>
+            Waiting for{" "}
+            <Text style={{ fontWeight: "bold" }}>{connection?.name}</Text> to
+            reply.
+          </Text>
 
-                const code = connection.postofficeCode;
-                if (typeof code === "undefined") {
-                  return Alert.alert(
-                    "Error #hXKmIk",
-                    "There was an unexpected error."
-                  );
-                }
+          <Text>Your invitation code was:</Text>
+          <Input value={connection?.postofficeCode} />
 
-                const result = await Share.share({ message: code });
-                if (result.action === Share.dismissedAction) {
-                  log.debug("Sharing cancelled #g4hRzl");
-                }
-                setIsworking(false);
-              }}
-            />
-          )}
+          <Button
+            title="Share the invite code again"
+            loading={isWorking}
+            onPress={async () => {
+              setIsworking(true);
+
+              const code = connection.postofficeCode;
+              if (typeof code === "undefined") {
+                return Alert.alert(
+                  "Error #hXKmIk",
+                  "There was an unexpected error."
+                );
+              }
+
+              const result = await Share.share({ message: code });
+              if (result.action === Share.dismissedAction) {
+                log.debug("Sharing cancelled #g4hRzl");
+              }
+              setIsworking(false);
+            }}
+          />
         </View>
       </ScrollView>
     </View>

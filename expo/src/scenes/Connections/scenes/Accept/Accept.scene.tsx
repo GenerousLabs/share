@@ -30,17 +30,17 @@ const Accept = ({
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm<Inputs>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [inviteCode, setInviteCode] = useState("");
+  const [isFinished, setIsFinished] = useState(false);
 
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
       log.debug("Got accept params #ORqBDG", data);
-      const { confirmCode } = await dispatch(acceptInviteSagaAction(data));
-      setInviteCode(confirmCode);
+      await dispatch(acceptInviteSagaAction(data));
+      setIsFinished(true);
       setIsSubmitting(false);
     },
-    [dispatch, setInviteCode]
+    [dispatch, setIsFinished]
   );
 
   return (
@@ -48,7 +48,12 @@ const Accept = ({
       <Header title="Accept invite" goBack={navigation.goBack} />
       <ScrollView>
         <View style={styles.ScrollViewInner}>
-          {inviteCode === "" ? (
+          {isFinished ? (
+            <>
+              <Text h2>Connected</Text>
+              <Text>You are connected</Text>
+            </>
+          ) : (
             <>
               <Controller
                 control={control}
@@ -102,15 +107,6 @@ const Accept = ({
                 title="Accept Invitation"
                 onPress={handleSubmit(onSubmit)}
               />
-            </>
-          ) : (
-            <>
-              <Text h2>Confirm your invitation</Text>
-              <Text>
-                Send this confirmation code back to your friend to confirm the
-                invitation.
-              </Text>
-              <Input value={inviteCode} multiline numberOfLines={12} />
             </>
           )}
         </View>

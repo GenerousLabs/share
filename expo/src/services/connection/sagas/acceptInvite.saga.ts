@@ -3,12 +3,14 @@ import { call, put, select } from "typed-redux-saga/macro";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
-import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
 import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
 import { rootLogger } from "../../log/log.service";
-import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
+import {
+  getCodeFromPostoffice,
+  sendReplyToPostoffice,
+} from "../../postoffice/postoffice.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -19,7 +21,6 @@ import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
   ConnectionCodeType,
-  createConnectionCode,
   getConnectionCode,
   parseSharingCode,
   saveConnectionToConnectionsYaml,
@@ -40,13 +41,19 @@ const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes"> & {
     inviteCode: string;
   },
-  { confirmCode: string }
+  void
 >({
   prefix: "SHARE/connection/acceptInvite",
   *effect(action) {
     const { name, notes, inviteCode } = action.payload;
+
+    // TODO Resolve `inviteCode` via the postoffice service
+    const resolvedInviteCode = yield* call(getCodeFromPostoffice, {
+      postofficeCode: inviteCode,
+    });
+
     const { theirRemoteUrl, theirKeysBase64 } = parseSharingCode({
-      code: inviteCode,
+      code: resolvedInviteCode,
       type: ConnectionCodeType.INVITE,
     });
     log.debug("Invoked #iNrNNv", {
@@ -131,7 +138,13 @@ const saga = createAsyncPromiseSaga<
       repo,
       type: ConnectionCodeType.CONFIRM,
     });
-    return { confirmCode: code };
+
+    yield* call(sendReplyToPostoffice, {
+      code,
+      replyToPostofficeCode: inviteCode,
+    });
+
+    return;
   },
 });
 
