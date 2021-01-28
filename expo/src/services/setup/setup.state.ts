@@ -8,7 +8,7 @@ type State = {
   /** Has the application finished its first time setup? */
   isSetupComplete: boolean;
   /** Did setup fail? */
-  didSetupFailed?: boolean;
+  didSetupFail?: boolean;
   setupError?: Error;
 };
 
@@ -28,7 +28,7 @@ const setupSlice = createSlice({
   },
   extraReducers: {
     [setupErrorAction.name]: (state, action) => {
-      state.didSetupFailed = true;
+      state.didSetupFail = true;
       state.setupError = action.payload.error;
     },
   },

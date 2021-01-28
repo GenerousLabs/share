@@ -25,9 +25,11 @@ const DrawerNavigator = createDrawerNavigator();
 const Navigation = () => {
   // NOTE: Typed this as `any` to stop TypeScript complainin
   const navigationRef: any = React.useRef();
-  const isSetupComplete = useSelector(
-    (state: RootState) => state.setup.isSetupComplete
-  );
+  const setup = useSelector((state: RootState) => state.setup);
+
+  const { isSetupComplete, didSetupFail } = setup;
+
+  const showSetupScreens = didSetupFail || !isSetupComplete;
 
   useReduxDevToolsExtension(navigationRef);
 
@@ -48,7 +50,12 @@ const Navigation = () => {
       }}
       // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      {isSetupComplete ? (
+      {showSetupScreens ? (
+        <DrawerNavigator.Navigator initialRouteName="Setup">
+          <DrawerNavigator.Screen name="Setup" component={Setup} />
+          <DrawerNavigator.Screen name="Settings" component={Settings} />
+        </DrawerNavigator.Navigator>
+      ) : (
         <DrawerNavigator.Navigator
           initialRouteName="Home"
           drawerContent={DrawerScene}
@@ -66,11 +73,6 @@ const Navigation = () => {
             component={NotFoundScreen}
             options={{ title: "Oops!" }}
           />
-        </DrawerNavigator.Navigator>
-      ) : (
-        <DrawerNavigator.Navigator initialRouteName="Setup">
-          <DrawerNavigator.Screen name="Setup" component={Setup} />
-          <DrawerNavigator.Screen name="Settings" component={Settings} />
         </DrawerNavigator.Navigator>
       )}
     </NavigationContainer>
