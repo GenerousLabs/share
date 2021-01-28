@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STATUS=$(git status --porcelain | wc -l)
+STATUS=$(git status --porcelain | grep -c '^')
 
 if [[ STATUS != "0" ]]
 then
