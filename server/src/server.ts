@@ -87,10 +87,42 @@ const app = express();
 // Add CORS headers to all incoming requests
 app.use(cors());
 
-// app.use("/ping", (req, res) => {
-//   logger.debug("/ping called #z0Rr3g");
-//   res.send({ ack: true });
-// });
+app.get("/postoffice/:boxId/reply", async (req, res) => {
+  logger.debug("Reply pickup #YgV1nQ", {
+    boxId: req.params.boxId,
+  });
+  res.send({ replyPickup: true });
+});
+
+app.get("/postoffice/:boxId", async (req, res) => {
+  logger.debug("Post office pickup requested #pWlMVU", {
+    boxId: req.params.boxId,
+  });
+  res.send({ pickup: true });
+});
+
+app.post("/postoffice/:boxId", async (req, res) => {
+  logger.debug("Reply to box submitted #ncCoCO", {
+    boxId: req.params.boxId,
+  });
+  res.send({ replied: true });
+});
+
+app.post("/postoffice", async (req, res) => {
+  logger.debug("New postoffice POST #5OaHTP");
+  res.send({ sent: true });
+});
+
+// Catch all `/postoffice` requests not caught above and send a 404 to avoid
+// hitting the git handler for anything postoffice related.
+app.use("/postoffice", (req, res) => {
+  logger.warn("Invalid postoffice request #Wt4LoT", {
+    postofficePath: req.path,
+    method: req.method,
+  });
+  res.writeHead(404);
+  res.send();
+});
 
 // Last step, if none of the other express routes caught this request, then send
 // it to our git middleware
