@@ -5,12 +5,12 @@ import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../components/Header/Header.component";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { SetupDrawerParamList } from "../../shared.types";
-import { RootDispatch } from "../../store";
+import { RootDispatch, RootState } from "../../store";
 
 const Schema = zod.object({
   protocol: zod.string().nonempty(),
@@ -26,6 +26,7 @@ const Setup = ({
   navigation: DrawerNavigationProp<SetupDrawerParamList>;
 }) => {
   const dispatch: RootDispatch = useDispatch();
+  const setup = useSelector((state: RootState) => state.setup);
   const [hasSetupStarted, setHasSetupStarted] = useState(false);
   const { control, handleSubmit, errors, reset, formState } = useForm({
     resolver: zodResolver(Schema),
@@ -44,6 +45,26 @@ const Setup = ({
     },
     [dispatch, setupSagaAction]
   );
+
+  if (setup.didSetupFail) {
+    return (
+      <View>
+        <Header />
+        <ScrollView>
+          <Text h1>Error</Text>
+          <Text>There was an error during setup.</Text>
+          <Text>
+            Unfortunately we're not sure what to suggest at this point. This app
+            is still in early testing. Please reach out to us and send a
+            screenshot of this error, we'll do our best to help.
+          </Text>
+          <Text>
+            {setup.setupError ? JSON.stringify(setup.setupError) : ""}
+          </Text>
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
