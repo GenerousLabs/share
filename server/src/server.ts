@@ -82,36 +82,6 @@ const repos = new Server(REPOS_ROOT, {
   },
 });
 
-/*
-repos.on("fetch", async (fetch) => {
-  const { repo: repoPath } = fetch;
-  checkReadPermissions({ repoPath, token });
-  logger.debug("fetch #tgbL2b", fetch);
-  fetch.reject();
-});
-
-repos.on("head", (head) => {
-  head.reject();
-});
-
-repos.on("info", (info) => {
-  logger.debug("info #lBbbLL");
-  info.reject();
-});
-
-repos.on("push", (push) => {
-  const { repo, commit, branch } = push;
-  logger.debug("push #tgbL2b", { a: { repo, commit, branch } });
-  push.accept();
-});
-
-repos.on("tag", (tag) => {
-  const { repo, commit, version } = tag;
-  logger.debug("tag #KRCdQs", { a: { repo, commit, version } });
-  tag.accept();
-});
-*/
-
 const app = express();
 
 // Add CORS headers to all incoming requests
@@ -155,3 +125,33 @@ app.listen(PORT, async () => {
     process.exit();
   }
 });
+
+/*
+repos.on("fetch", async (fetch) => {
+  const { repo: repoPath } = fetch;
+  checkReadPermissions({ repoPath, token });
+  logger.debug("fetch #tgbL2b", fetch);
+  fetch.reject();
+});
+
+repos.on("head", (head) => {
+  head.reject();
+});
+
+repos.on("info", (info) => {
+  logger.debug("info #lBbbLL");
+  info.reject();
+});
+
+repos.on("push", (push) => {
+  const { repo, commit, branch } = push;
+  logger.debug("push #tgbL2b", { a: { repo, commit, branch } });
+  push.accept();
+});
+
+repos.on("tag", (tag) => {
+  const { repo, commit, version } = tag;
+  logger.debug("tag #KRCdQs", { a: { repo, commit, version } });
+  tag.accept();
+});
+*/
