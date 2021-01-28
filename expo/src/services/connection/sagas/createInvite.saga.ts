@@ -5,6 +5,7 @@ import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
+import { sendCodeToPostoffice } from "../../postoffice/postoffice.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -18,11 +19,11 @@ import {
   getConnectionCode,
   saveConnectionToConnectionsYaml,
 } from "../connection.service";
-import { addOneConnectionAction } from "../connection.state";
+import { addOneConnectionAction, setPostofficeCode } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes">,
-  { inviteCode: string }
+  { inviteCode: string; postofficeCode: string }
 >({
   prefix: "SHARE/connection/createInvite",
   *effect(action) {
@@ -92,7 +93,11 @@ const saga = createAsyncPromiseSaga<
       type: ConnectionCodeType.INVITE,
     });
 
-    return { inviteCode: code };
+    const postofficeCode = yield* call(sendCodeToPostoffice, { code });
+
+    yield* put(setPostofficeCode({ id: connection.id, code: postofficeCode }));
+
+    return { inviteCode: code, postofficeCode };
   },
 });
 
