@@ -1,4 +1,5 @@
 import Server from "@chmac/node-git-server";
+import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import { stat } from "fs/promises";
@@ -8,6 +9,7 @@ import {
   REPOS_ROOT,
   REPO_TEMPLATE_PATH,
 } from "./constants";
+import { saveNewMessage } from "./services/postoffice/postoffice.service";
 import {
   getIsValidReadToken,
   getIsValidWriteToken,
@@ -15,6 +17,8 @@ import {
 import logger from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
+
+const jsonParser = bodyParser.json();
 
 const repos = new Server(REPOS_ROOT, {
   repoTemplatePath: REPO_TEMPLATE_PATH,
@@ -106,16 +110,30 @@ app.get("/postoffice/:boxId", async (req, res) => {
   res.send({ pickup: true });
 });
 
-app.post("/postoffice/:boxId", async (req, res) => {
+app.post("/postoffice/:boxId", jsonParser, async (req, res) => {
   logger.debug("Reply to box submitted #ncCoCO", {
     boxId: req.params.boxId,
   });
   res.send({ replied: true });
 });
 
-app.post("/postoffice", async (req, res) => {
-  logger.debug("New postoffice POST #5OaHTP");
-  res.send({ sent: true });
+// Submit a message to the postoffice
+app.post("/postoffice", jsonParser, async (req, res) => {
+  try {
+    if (typeof req.body.message !== "string" || req.body.message.length === 0) {
+      logger.warn("Invalid /postoffice POST #fHRCJu", { body: req.body });
+      res.writeHead(400);
+      res.send();
+      return;
+    }
+    const timestamp = Date.now();
+    const id = await saveNewMessage({ message: req.body.message, timestamp });
+    res.send({ id });
+  } catch (error) {
+    logger.error("Caught error in /postoffice POST #cpyuvA", { error });
+    res.writeHead(500);
+    res.send();
+  }
 });
 
 // Catch all `/postoffice` requests not caught above and send a 404 to avoid
