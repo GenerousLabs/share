@@ -4,6 +4,7 @@ STATUS=$(git status --porcelain | grep -c '^')
 
 if [[ STATUS != "0" ]]
 then
+  echo $STATUS
   echo "Cowardly refusing to build with a dirty git"
   exit 1
 fi
