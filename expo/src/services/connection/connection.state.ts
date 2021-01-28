@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSelector,
   createSlice,
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import { ConnectionInRedux, RepoShareInRedux } from "../../shared.types";
 import { selectAllSubscribedLibraries } from "../library/library.selectors";
@@ -19,12 +20,24 @@ const connectionSlice = createSlice({
   reducers: {
     addOneConnectionAction: connectionAdapter.addOne,
     updateOneConnectionAction: connectionAdapter.updateOne,
+    setPostofficeCode: (
+      state,
+      action: PayloadAction<{ id: string; code: string }>
+    ) => {
+      connectionAdapter.updateOne(state, {
+        id: action.payload.id,
+        changes: {
+          postofficeCode: action.payload.code,
+        },
+      });
+    },
   },
 });
 
 export const {
   addOneConnectionAction,
   updateOneConnectionAction,
+  setPostofficeCode,
 } = connectionSlice.actions;
 
 const repoShareAdapter = createEntityAdapter<RepoShareInRedux>();

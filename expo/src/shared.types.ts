@@ -181,7 +181,9 @@ export const ConnectionSchema = zod.object({
 
 export type ConnectionOnDisk = zod.infer<typeof ConnectionSchema>;
 
-export type ConnectionInRedux = ConnectionOnDisk;
+export type ConnectionInRedux = ConnectionOnDisk & {
+  postofficeCode?: string;
+};
 
 export const RepoShareSchema = zod.object({
   id: zod.string().nonempty(),
