@@ -10,6 +10,8 @@ import {
   REPO_TEMPLATE_PATH,
 } from "./constants";
 import {
+  getMessage,
+  getReply,
   saveMessageReply,
   saveNewMessage,
 } from "./services/postoffice/postoffice.service";
@@ -100,17 +102,23 @@ const app = express();
 app.use(cors());
 
 app.get("/postoffice/:boxId/reply", async (req, res) => {
-  logger.debug("Reply pickup #YgV1nQ", {
-    boxId: req.params.boxId,
-  });
-  res.send({ replyPickup: true });
+  try {
+    const message = await getReply({ id: req.params.boxId });
+    res.send({ message });
+  } catch (error) {
+    logger.error("Caught error in /postoffice/:boxId/reply GET #zCTGN3", {
+      error,
+    });
+  }
 });
 
 app.get("/postoffice/:boxId", async (req, res) => {
-  logger.debug("Post office pickup requested #pWlMVU", {
-    boxId: req.params.boxId,
-  });
-  res.send({ pickup: true });
+  try {
+    const message = await getMessage({ id: req.params.boxId });
+    res.send({ message });
+  } catch (error) {
+    logger.error("Caught error in /postoffice/:boxId GET #8tV4rq", { error });
+  }
 });
 
 // Submit a reply to an existing message
@@ -129,6 +137,7 @@ app.post("/postoffice/:boxId", jsonParser, async (req, res) => {
     });
     res.send({ replied: true });
   } catch (error) {
+    logger.error("Caught error in /postoffice/:boxId POST #1oBt7X", { error });
     res.writeHead(500);
     res.send();
   }

@@ -20,6 +20,10 @@ export const USER_TOKEN_PATH = join(
 
 export const ENOENT = "ENOENT" as const;
 
+// The ID is comprised of 3 words joined with a dash, not sure what the minimum
+// length of each word is though.
+export const MINIMUM_POSTOFFICE_ID_LENGTH = 12;
+
 // NOTE: These 3 are copied to `expo/src/shared.constants.ts` file and must be
 // manually kept in sync in both.
 export const READ_TOKENS_FILE_NAME = "read_tokens.txt" as const;
