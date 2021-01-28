@@ -109,6 +109,8 @@ app.get("/postoffice/:boxId/reply", async (req, res) => {
     logger.error("Caught error in /postoffice/:boxId/reply GET #zCTGN3", {
       error,
     });
+    res.writeHead(500);
+    res.send();
   }
 });
 
