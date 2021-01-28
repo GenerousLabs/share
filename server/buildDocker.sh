@@ -1,5 +1,13 @@
 #!/bin/bash
 
+STATUS=$(git status --porcelain | wc -l)
+
+if [[ STATUS != "0" ]]
+then
+  echo "Cowardly refusing to build with a dirty git"
+  exit 1
+fi
+
 source .env
 
 OS=$(uname -s)
