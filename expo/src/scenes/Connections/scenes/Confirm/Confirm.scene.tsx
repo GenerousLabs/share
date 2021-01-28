@@ -68,11 +68,15 @@ const Confirm = ({
               loading={isWorking}
               onPress={async () => {
                 setIsworking(true);
-                const code = await getConnectionCode({
-                  connection,
-                  repo,
-                  type: ConnectionCodeType.CONFIRM,
-                });
+
+                const code = connection.postofficeCode;
+                if (typeof code === "undefined") {
+                  return Alert.alert(
+                    "Error #hXKmIk",
+                    "There was an unexpected error."
+                  );
+                }
+
                 const result = await Share.share({ message: code });
                 if (result.action === Share.dismissedAction) {
                   log.debug("Sharing cancelled #g4hRzl");
@@ -81,22 +85,6 @@ const Confirm = ({
               }}
             />
           )}
-          <Text h2>Confirm Code</Text>
-          <Text>
-            Once {connection?.name || "your friend"} sends you a confirmation
-            code, enter it here.
-          </Text>
-          <Input
-            label="Confirmation code"
-            onChangeText={setConfirmCode}
-            multiline
-            numberOfLines={12}
-          />
-          <Button
-            title="Confirm Connection"
-            loading={isCodeSubmitting}
-            onPress={submitConfirmationCode}
-          />
         </View>
       </ScrollView>
     </View>

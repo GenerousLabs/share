@@ -137,11 +137,13 @@ const ConnectionsSingle = ({
                   "There was an unexpected error."
                 );
               }
-              const code = await getConnectionCode({
-                connection,
-                repo: myRepo,
-                type: ConnectionCodeType.CONFIRM,
-              });
+              const code = connection.postofficeCode;
+              if (typeof code === "undefined") {
+                return Alert.alert(
+                  "Error #pE7hYD",
+                  "There was an unexpected error."
+                );
+              }
               Share.share({ message: code });
             }}
           />

@@ -27,15 +27,19 @@ const Invite = ({
   const { control, handleSubmit, errors } = useForm<Inputs>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
+  const [connectionName, setConnectionName] = useState("");
 
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
-      const { inviteCode } = await dispatch(createInviteSagaAction(data));
-      setInviteCode(inviteCode);
+      const { inviteCode, postofficeCode } = await dispatch(
+        createInviteSagaAction(data)
+      );
+      setConnectionName(data.name);
+      setInviteCode(postofficeCode);
       setIsSubmitting(false);
     },
-    [dispatch, setInviteCode]
+    [dispatch, setInviteCode, setConnectionName]
   );
 
   return (
@@ -86,8 +90,11 @@ const Invite = ({
           ) : (
             <>
               <Text h2>Invite a friend</Text>
-              <Text>Share this code with a friend</Text>
-              <Input value={inviteCode} multiline numberOfLines={12} />
+              <Text>
+                Share this code with{" "}
+                <Text style={{ fontWeight: "bold" }}>{connectionName}</Text>
+              </Text>
+              <Input value={inviteCode} />
             </>
           )}
         </View>
