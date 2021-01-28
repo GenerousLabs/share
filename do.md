@@ -7,6 +7,7 @@ only would be possible.
 - [ ] Implement a postoffice
   - Where do we store boxIds on the client?
   - [ ] Watch for replies
+  - [ ] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
 
