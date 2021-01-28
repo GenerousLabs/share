@@ -27,7 +27,7 @@ const setupSlice = createSlice({
     },
   },
   extraReducers: {
-    [setupErrorAction.name]: (state, action) => {
+    [setupErrorAction.toString()]: (state, action) => {
       state.didSetupFail = true;
       state.setupError = action.payload.error;
     },
