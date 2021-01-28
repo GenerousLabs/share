@@ -68,8 +68,18 @@ export const createRemoteUrlForSharedRepo = async ({
   return createRemoteUrl({ protocol, token, host, username, repoName });
 };
 
-export const getPostofficeUrl = async () => {
+export const getPostofficeUrl = async (
+  {
+    id,
+    reply,
+  }: {
+    id?: string;
+    reply?: boolean;
+  } = { reply: false }
+) => {
   const config = await getConfigFromFilesystem();
-  const url = `${config.remote.protocol}://${config.remote.host}/postoffice`;
+  const idSection = typeof id === "string" && id.length > 0 ? `/${id}` : "";
+  const replySection = reply ? "/reply" : "";
+  const url = `${config.remote.protocol}://${config.remote.host}/postoffice${idSection}${replySection}`;
   return url;
 };
