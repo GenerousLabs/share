@@ -1,4 +1,6 @@
 import Server from "@chmac/node-git-server";
+import cors from "cors";
+import express from "express";
 import fs from "fs";
 import { CWD, REPOS_ROOT, REPO_TEMPLATE_PATH } from "./constants";
 import {
@@ -110,7 +112,24 @@ repos.on("tag", (tag) => {
 });
 */
 
-repos.listen(PORT, { enableCors: true, type: "http" }, async () => {
+const app = express();
+
+// Add CORS headers to all incoming requests
+app.use(cors());
+
+// app.use("/ping", (req, res) => {
+//   logger.debug("/ping called #z0Rr3g");
+//   res.send({ ack: true });
+// });
+
+// Last step, if none of the other express routes caught this request, then send
+// it to our git middleware
+app.use((req, res) => {
+  // TODO Fix typing here, `.handle()` needs to be added to node-git-server
+  (repos as any).handle(req, res);
+});
+
+app.listen(PORT, async () => {
   logger.info("Generous share server started #OKzflB", {
     cwd: process.cwd(),
     CWD,
