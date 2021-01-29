@@ -12,7 +12,6 @@ import { createReadAuthTokenForRepoSagaAction } from "../../../../services/comma
 import {
   ConnectionCodeType,
   createConnectionCode,
-  getConnectionCode,
   parseSharingCode,
 } from "../../../../services/connection/connection.service";
 import {
@@ -127,26 +126,6 @@ const ConnectionsSingle = ({
       <ScrollView>
         <View style={styles.ScrollViewInner}>
           <Text>Messaging is coming soon...</Text>
-          <Text>Coming in a second or six</Text>
-          <Button
-            title="Share your confirmation code"
-            onPress={async () => {
-              if (typeof myRepo === "undefined") {
-                return Alert.alert(
-                  "Error #1E9uID",
-                  "There was an unexpected error."
-                );
-              }
-              const code = connection.postofficeCode;
-              if (typeof code === "undefined") {
-                return Alert.alert(
-                  "Error #pE7hYD",
-                  "There was an unexpected error."
-                );
-              }
-              Share.share({ message: code });
-            }}
-          />
           <Button
             title="Share your stuff code"
             onPress={async () => {
