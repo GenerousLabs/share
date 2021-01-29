@@ -1,17 +1,36 @@
-/**
- * TODO
- *
- * - [ ] Add the option to disable / enable log levels
- *   - Where do we store the value?
- */
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjsBase, { Dayjs } from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
 import * as FileSystem from "expo-file-system";
 import { LOGS_PATH } from "../../shared.constants";
 import { appendLineTofile, getFileContents, join } from "../fs/fs.service";
 
+const DISABLED_NAMESPACES: string[] = [];
+
+const DISABLED_STORAGE_KEY = "__disabledLogNamespaces";
+
 const LINE_PART_SEPARATOR = " " as const;
 const NAMESPACE_DELIMITER = ":" as const;
+
+// NOTE: This is a little wacky. It's async but we start sync. That means the
+// settings are loaded AFTER the first sagas are invoked, etc. It's also ugly,
+// pushing and popping from arrays and so on. But, it'll have to do for now...
+AsyncStorage.getItem(DISABLED_STORAGE_KEY, (error, result) => {
+  if (error) {
+    try {
+      console.error("Error loading disabled log namespaces #s47AH7", error);
+    } catch (error) {}
+  } else {
+    try {
+      if (typeof result === "string" && result.length > 0) {
+        const namespaces = result.split(",");
+        DISABLED_NAMESPACES.push(...namespaces);
+      }
+    } catch (error) {
+      console.error("Error setting disabled log namespaces #a6zeoO", error);
+    }
+  }
+});
 
 const logLevels = ["debug", "info", "warn", "error"] as const;
 export type LogLevel = typeof logLevels[number];
@@ -75,11 +94,26 @@ export const _getFileName = (dayjs: Dayjs) => {
   return `${dayjs.format("YYYY-MM-DD")}.log`;
 };
 
+export const _isNamespaceDisabled = (namespace: string) => {
+  // NOTE: `namespace` here is joined by the separator
+  const namespaces = namespace.split(NAMESPACE_DELIMITER);
+  for (const disabledNamespace of DISABLED_NAMESPACES) {
+    if (namespaces.indexOf(disabledNamespace) !== -1) {
+      return true;
+    }
+  }
+  return false;
+};
+
 export const _logFunctionFactory = (namespace: string): LogFunction => (
   level,
   message,
   meta
 ) => {
+  if (_isNamespaceDisabled(namespace)) {
+    return;
+  }
+
   const dayjs = dayjsUtc.utc();
   const date = _getDateString(dayjs);
   const filename = _getFileName(dayjs);
@@ -149,3 +183,24 @@ export const deleteLogs = async ({
   throw new Error("Yet to be implemented. #rCOtsm");
   const filenames = await FileSystem.readDirectoryAsync(logDirPath);
 };
+
+export const disable = (namespace: string) => {
+  if (DISABLED_NAMESPACES.indexOf(namespace) !== -1) {
+    return;
+  }
+  DISABLED_NAMESPACES.push(namespace);
+  AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
+};
+
+export const enable = (namespace: string) => {
+  const foundIndex = DISABLED_NAMESPACES.findIndex(
+    (entry) => entry === namespace
+  );
+  DISABLED_NAMESPACES.splice(foundIndex, 1);
+  AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
+};
+
+if (__DEV__) {
+  (globalThis as any).enableLogNamespace = enable;
+  (globalThis as any).disableLogNamespace = disable;
+}
