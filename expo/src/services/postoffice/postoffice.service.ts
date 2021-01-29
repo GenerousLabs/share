@@ -121,7 +121,7 @@ export const getCodeFromPostoffice = async ({
   return code;
 };
 
-export const sendCodeToPostoffice = async ({ code }: { code: string }) => {
+export const sendMessageToPostoffice = async ({ code }: { code: string }) => {
   const { message, password } = await encryptMessage({ code });
   const url = await getPostofficeUrl();
   const response = await fetch(url, {

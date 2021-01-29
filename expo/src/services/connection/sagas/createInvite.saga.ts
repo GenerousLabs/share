@@ -5,7 +5,7 @@ import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
-import { sendCodeToPostoffice } from "../../postoffice/postoffice.service";
+import { sendMessageToPostoffice } from "../../postoffice/postoffice.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -93,7 +93,7 @@ const saga = createAsyncPromiseSaga<
       type: ConnectionCodeType.INVITE,
     });
 
-    const postofficeCode = yield* call(sendCodeToPostoffice, { code });
+    const postofficeCode = yield* call(sendMessageToPostoffice, { code });
 
     yield* put(setPostofficeCode({ id: connection.id, code: postofficeCode }));
 
