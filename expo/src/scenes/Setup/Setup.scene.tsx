@@ -119,6 +119,8 @@ const Setup = ({
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
                 value={value}
+                autoCapitalize="none"
+                autoCompleteType="username"
               />
             )}
             name="username"
@@ -133,6 +135,8 @@ const Setup = ({
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
                 value={value}
+                autoCapitalize="none"
+                autoCompleteType="password"
               />
             )}
             name="token"

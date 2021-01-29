@@ -64,6 +64,8 @@ const Accept = ({
                     onBlur={onBlur}
                     onChangeText={(value) => onChange(value)}
                     value={value}
+                    autoCapitalize="none"
+                    autoCompleteType="password"
                   />
                 )}
                 name="inviteCode"
