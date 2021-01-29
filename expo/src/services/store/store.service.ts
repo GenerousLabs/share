@@ -11,14 +11,32 @@ import {
 } from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 import { promiseMiddleware } from "redux-saga-promise-actions";
+import { rootLogger } from "../log/log.service";
+import { maybeStartupSagaAction } from "../startup/startup.state";
 import reducer from "./root.reducer";
 import rootSaga from "./root.saga";
-import { maybeStartupSagaAction } from "../startup/startup.state";
 import { persistConfig } from "./store.config";
+
+const log = rootLogger.extend("store");
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-const sagaMiddleware = createSagaMiddleware();
+const sagaMonitorLogFactory = (name: string) => (p: any) =>
+  log.debug(`SagaMonitor.${name} #Ub3D0G`, p);
+
+const sagaOptions = __DEV__
+  ? {
+      sagaMonitor: {
+        actionDispatched: sagaMonitorLogFactory("actionDispatched"),
+        effectTriggered: sagaMonitorLogFactory("effectTriggered"),
+        effectResolved: sagaMonitorLogFactory("effectResolved"),
+        effectCancelled: sagaMonitorLogFactory("effectCancelled"),
+        effectRejected: sagaMonitorLogFactory("effectRejected"),
+      },
+    }
+  : undefined;
+
+const sagaMiddleware = createSagaMiddleware(sagaOptions);
 
 const store = configureStore({
   reducer: persistedReducer,
