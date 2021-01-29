@@ -68,8 +68,10 @@ export const encryptMessage = async ({
 
 export const getCodeFromPostoffice = async ({
   postofficeCode,
+  getReply,
 }: {
   postofficeCode: string;
+  getReply?: boolean;
 }) => {
   const parts = postofficeCode.split("#");
   // TODO Better validation here
@@ -78,7 +80,10 @@ export const getCodeFromPostoffice = async ({
   }
   const [id, password] = parts;
 
-  const url = await getPostofficeUrl({ id });
+  const url = await getPostofficeUrl({
+    id,
+    reply: typeof getReply === "boolean" ? getReply : false,
+  });
   const result = await fetch(url);
   const body: { message: string } = await result.json();
   if (typeof body.message !== "string") {
