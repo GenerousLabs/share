@@ -25,7 +25,7 @@ RUN yarn build
 # Start over with a clean build
 # NOTE: We can't use the `-slim` container here as we need `git` which is not
 # included in the slim containers.
-FROM builder
+FROM node:14-buster
 
 WORKDIR /usr/src/
 
