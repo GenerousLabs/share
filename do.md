@@ -10,6 +10,9 @@ only would be possible.
   - [ ] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
+- [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
+  - They will bubble errors, which potentially breaks the sagas
+  - I'm mostly using them to await, but I might not want them to throw
 
 # Sprint 1
 
