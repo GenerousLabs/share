@@ -1,12 +1,13 @@
 import { dispatch } from "redux-saga-promise-actions";
 import { all, takeEvery } from "redux-saga/effects";
-import { call, select } from "typed-redux-saga/macro";
+import { select } from "typed-redux-saga/macro";
 import { RootState } from "../../store";
-import { confirmConnectionSagaAction } from "../connection/connection.saga";
 import { selectAllConnections } from "../connection/connection.state";
 import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
-import { getCodeFromPostoffice } from "./postoffice.service";
+import fetchRepliesSaga, {
+  fetchRepliesSagaAction,
+} from "./sagas/fetchReplies.saga";
 
 const log = rootLogger.extend("postoffice.saga");
 
@@ -19,24 +20,20 @@ export function* postofficeStartupSaga() {
   });
 
   for (const connection of pendingConnections) {
-    if (
-      typeof connection.postofficeCode !== "string" ||
-      connection.postofficeCode.length === 0
-    ) {
-      log.error("Unexpected error. #FoRdR7", { connection });
-      break;
+    try {
+      // NOTE: This will bubble errors if it throws. We want to dispach it and
+      // swallow any errors so as not to break the loop (or the whole saga /
+      // parent sagas).
+      yield dispatch(fetchRepliesSagaAction({ connection }));
+    } catch (error) {
+      log.error("Error dispatching fetchRepliesSagaAction #G8fKZH", error);
     }
-    const confirmCode = yield call(getCodeFromPostoffice, {
-      postofficeCode: connection.postofficeCode,
-      getReply: true,
-    });
-
-    yield dispatch(
-      confirmConnectionSagaAction({ connectionId: connection.id, confirmCode })
-    );
   }
 }
 
 export default function* postofficeSaga() {
-  yield all([takeEvery(startupSagaAction, postofficeStartupSaga)]);
+  yield all([
+    fetchRepliesSaga(),
+    takeEvery(startupSagaAction, postofficeStartupSaga),
+  ]);
 }

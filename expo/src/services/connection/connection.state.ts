@@ -22,7 +22,7 @@ const connectionSlice = createSlice({
     updateOneConnectionAction: connectionAdapter.updateOne,
     setPostofficeCode: (
       state,
-      action: PayloadAction<{ id: string; code: string }>
+      action: PayloadAction<{ id: string; code?: string }>
     ) => {
       connectionAdapter.updateOne(state, {
         id: action.payload.id,
