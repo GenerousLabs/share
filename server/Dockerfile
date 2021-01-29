@@ -23,10 +23,9 @@ RUN yarn build
 # ------------------------------------------------------------------------------
 
 # Start over with a clean build
-# NOTE: We start from the 14-buster-slim build here because we want the
-# slimmest possible build for our final production container, but the slim
-# container isn't sufficient to build all the node-gyp stuff.
-FROM node:14-buster-slim
+# NOTE: We can't use the `-slim` container here as we need `git` which is not
+# included in the slim containers.
+FROM builder
 
 WORKDIR /usr/src/
 
