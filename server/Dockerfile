@@ -23,9 +23,13 @@ RUN yarn build
 # ------------------------------------------------------------------------------
 
 # Start over with a clean build
-# NOTE: We can't use the `-slim` container here as we need `git` which is not
-# included in the slim containers.
-FROM node:14-buster
+# We start again from the `-slim` container here, which we can't use for
+# building, as it doesn't have all the required build dependencies.
+FROM node:14-buster-slim
+
+# Add git to our slim container, it's not included by default
+RUN apt-get -y update
+RUN apt-get -y install git
 
 WORKDIR /usr/src/
 
