@@ -1,4 +1,4 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // NOTE: We put this into a separate file as we need to require it from multiple
 // places, and this avoids having a circular depenency.

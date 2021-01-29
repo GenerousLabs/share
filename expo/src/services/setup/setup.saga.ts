@@ -1,6 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
 import { ensureDirectoryExists } from "git-encrypted";
-import { AsyncStorage } from "react-native";
 import { purgeStoredState } from "redux-persist";
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put } from "typed-redux-saga/macro";
