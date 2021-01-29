@@ -179,7 +179,11 @@ app.use("/postoffice", (req, res) => {
 // it to our git middleware
 app.use((req, res) => {
   // TODO Fix typing here, `.handle()` needs to be added to node-git-server
-  (repos as any).handle(req, res);
+  try {
+    (repos as any).handle(req, res);
+  } catch (error) {
+    logger.error("Git Server.handle() threw #zTawz8", { error });
+  }
 });
 
 app.listen(PORT, async () => {
