@@ -6,7 +6,7 @@ only would be possible.
 - [x] Get iOS running
 - [ ] Implement a postoffice
   - Where do we store boxIds on the client?
-  - [ ] Watch for replies
+  - [x] Watch for replies
   - [ ] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
