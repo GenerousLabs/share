@@ -63,10 +63,10 @@ export const encryptMessage = async ({
 
   const outputAsString = base64Encode(saltPlusNoncePlusEncryptedMessage);
 
-  return { message: outputAsString, password: actualPassword };
+  return { encryptedMessage: outputAsString, password: actualPassword };
 };
 
-export const getCodeFromPostoffice = async ({
+export const getMessageFromPostoffice = async ({
   postofficeCode,
   getReply,
 }: {
@@ -121,12 +121,19 @@ export const getCodeFromPostoffice = async ({
   return code;
 };
 
-export const sendMessageToPostoffice = async ({ code }: { code: string }) => {
-  const { message, password } = await encryptMessage({ code });
+export const sendMessageToPostoffice = async ({
+  message,
+}: {
+  message: string;
+}) => {
+  const { encryptedMessage, password } = await encryptMessage({
+    code: message,
+  });
   const url = await getPostofficeUrl();
   const response = await fetch(url, {
     method: "POST",
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message: encryptedMessage }),
+
     headers: {
       "Content-Type": "application/json",
     },
@@ -136,10 +143,10 @@ export const sendMessageToPostoffice = async ({ code }: { code: string }) => {
 };
 
 export const sendReplyToPostoffice = async ({
-  code,
+  message,
   replyToPostofficeCode,
 }: {
-  code: string;
+  message: string;
   replyToPostofficeCode: string;
 }) => {
   const parts = replyToPostofficeCode.split("#");
@@ -149,12 +156,15 @@ export const sendReplyToPostoffice = async ({
   }
   const [id, password] = parts;
 
-  const { message } = await encryptMessage({ code, password });
+  const { encryptedMessage } = await encryptMessage({
+    code: message,
+    password,
+  });
 
   const url = await getPostofficeUrl({ id });
-  const response = await fetch(url, {
+  await fetch(url, {
     method: "POST",
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message: encryptedMessage }),
     headers: {
       "Content-Type": "application/json",
     },

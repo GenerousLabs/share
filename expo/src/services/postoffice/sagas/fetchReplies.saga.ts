@@ -1,12 +1,17 @@
 import { dispatch } from "redux-saga-promise-actions";
-import { all, takeEvery } from "redux-saga/effects";
-import { call, select } from "typed-redux-saga/macro";
+import { call, putResolve } from "typed-redux-saga/macro";
+import { POSTOFFICE_MESSAGE_SEPARATOR } from "../../../shared.constants";
 import { ConnectionInRedux } from "../../../shared.types";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { confirmConnectionSagaAction } from "../../connection/connection.saga";
+import {
+  ConnectionCodeType,
+  parseSharingCode,
+} from "../../connection/connection.service";
 import { setPostofficeCode } from "../../connection/connection.state";
+import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
 import { rootLogger } from "../../log/log.service";
-import { getCodeFromPostoffice } from "../postoffice.service";
+import { getMessageFromPostoffice } from "../postoffice.service";
 
 const log = rootLogger.extend("postoffice.fetchReplies");
 
@@ -23,17 +28,43 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
       throw new Error("Tried to get reply for invalid connection #IvAb1i");
     }
 
-    const confirmCode = yield* call(getCodeFromPostoffice, {
+    const message = yield* call(getMessageFromPostoffice, {
       postofficeCode: connection.postofficeCode,
       getReply: true,
     });
+
+    const [confirmCode, sharingCode] = message.split(
+      POSTOFFICE_MESSAGE_SEPARATOR
+    );
+
+    // Remove the postofficeCode so we don't try to load this again.
+    yield dispatch(setPostofficeCode({ id: connection.id, code: undefined }));
+
+    debugger;
 
     yield dispatch(
       confirmConnectionSagaAction({ connectionId: connection.id, confirmCode })
     );
 
-    // Remove the postofficeCode
-    yield dispatch(setPostofficeCode({ id: connection.id, code: undefined }));
+    debugger;
+
+    const params = yield* call(parseSharingCode, {
+      code: sharingCode,
+      type: ConnectionCodeType.SHARING,
+    });
+
+    debugger;
+
+    yield dispatch(
+      subscribeToLibrarySagaAction({
+        name: connection.name,
+        connectionId: connection.id,
+        remoteUrl: params.theirRemoteUrl,
+        keysBase64: params.theirKeysBase64,
+      })
+    );
+
+    debugger;
   },
 });
 

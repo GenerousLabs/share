@@ -1,16 +1,21 @@
-import { putResolve } from "redux-saga/effects";
-import { call, put, select } from "typed-redux-saga/macro";
+import { dispatch } from "redux-saga-promise-actions";
+import invariant from "tiny-invariant";
+import { call, put, putResolve, select } from "typed-redux-saga/macro";
+import { POSTOFFICE_MESSAGE_SEPARATOR } from "../../../shared.constants";
 import { ConnectionInRedux } from "../../../shared.types";
 import { generateId, generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
+import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
+import { selectMyLibraryRepo } from "../../library/library.selectors";
 import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
 import { rootLogger } from "../../log/log.service";
 import {
-  getCodeFromPostoffice,
+  getMessageFromPostoffice,
   sendReplyToPostoffice,
 } from "../../postoffice/postoffice.service";
+import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
   commitAllEffect,
   commitAllSagaAction,
@@ -21,6 +26,7 @@ import { createConnectionRepo } from "../../repo/repo.service";
 import { selectMeRepo } from "../../repo/repo.state";
 import {
   ConnectionCodeType,
+  createConnectionCode,
   getConnectionCode,
   parseSharingCode,
   saveConnectionToConnectionsYaml,
@@ -48,9 +54,12 @@ const saga = createAsyncPromiseSaga<
     const { name, notes, inviteCode } = action.payload;
 
     // TODO Resolve `inviteCode` via the postoffice service
-    const resolvedInviteCode = yield* call(getCodeFromPostoffice, {
+    const message = yield* call(getMessageFromPostoffice, {
       postofficeCode: inviteCode,
     });
+    const [resolvedInviteCode, sharingCode] = message.split(
+      POSTOFFICE_MESSAGE_SEPARATOR
+    );
 
     const { theirRemoteUrl, theirKeysBase64 } = parseSharingCode({
       code: resolvedInviteCode,
@@ -67,7 +76,7 @@ const saga = createAsyncPromiseSaga<
     const id = yield* call(generateId);
     const theirRepoId = yield* call(generateId);
 
-    yield putResolve(
+    yield* putResolve(
       subscribeToLibrarySagaAction({
         name,
         connectionId: id,
@@ -98,7 +107,7 @@ const saga = createAsyncPromiseSaga<
     // ) as any;
     // NOTE: `putResolve()` from `typed-redux-saga` DOES NOT return the value
     // here, it results in `tokenResult` being undefined.
-    const tokenResult: any = yield putResolve(
+    const tokenResult: any = yield* putResolve(
       createReadAuthTokenForRepoSagaAction({ repoId: repo.id })
     );
     const { token } = tokenResult;
@@ -133,18 +142,64 @@ const saga = createAsyncPromiseSaga<
 
     yield* put(addOneConnectionAction(connection));
 
-    const code = yield* call(getConnectionCode, {
+    const params = yield* call(parseSharingCode, {
+      code: sharingCode,
+      type: ConnectionCodeType.SHARING,
+    });
+
+    yield dispatch(
+      subscribeToLibrarySagaAction({
+        name: connection.name,
+        connectionId: connection.id,
+        remoteUrl: params.theirRemoteUrl,
+        keysBase64: params.theirKeysBase64,
+      })
+    );
+
+    const myInviteCode = yield* call(getConnectionCode, {
       connection,
       repo,
       type: ConnectionCodeType.CONFIRM,
     });
 
-    yield* call(sendReplyToPostoffice, {
-      code,
-      replyToPostofficeCode: inviteCode,
+    const myLibrary = yield* select(selectMyLibraryRepo);
+
+    // TODO SagaTypes fix the type here once putResolve is typed
+    // const {token: myLibraryAuthToken} = yield* putResolve(
+    //   createReadAuthTokenForRepoSagaAction({ repoId: myLibrary.id })
+    // );
+    const authTokenResult: any = yield* putResolve(
+      createReadAuthTokenForRepoSagaAction({ repoId: myLibrary.id })
+    );
+    const { token: myLibraryAuthToken } = authTokenResult as { token: string };
+
+    const { url } = yield* call(createRemoteUrlForSharedRepo, {
+      repo: myLibrary,
+      token: myLibraryAuthToken,
     });
 
-    return;
+    const myRemoteUrl = `encrypted::${url}`;
+    const myKeysBase64 = yield* call(getKeysIfEncryptedRepo, {
+      repo: myLibrary,
+    });
+
+    invariant(myKeysBase64, "Failed to get keys for library #jNieIf");
+
+    const mySharingCode = yield* call(createConnectionCode, {
+      myKeysBase64,
+      myRemoteUrl,
+      type: ConnectionCodeType.SHARING,
+    });
+
+    const replyMessage = [myInviteCode, mySharingCode].join(
+      POSTOFFICE_MESSAGE_SEPARATOR
+    );
+    debugger;
+
+    yield* call(sendReplyToPostoffice, {
+      message: replyMessage,
+      replyToPostofficeCode: inviteCode,
+    });
   },
 });
 
