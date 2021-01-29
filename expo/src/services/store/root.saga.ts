@@ -2,6 +2,7 @@ import { all } from "redux-saga/effects";
 import commandsSaga from "../commands/commands.saga";
 import connectionSaga from "../connection/connection.saga";
 import librarySaga from "../library/library.saga";
+import postofficeSaga from "../postoffice/postoffice.saga";
 import repoSaga from "../repo/repo.saga";
 import reposYamlSaga from "../reposYaml/reposYaml.saga";
 import setupSaga from "../setup/setup.saga";
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     commandsSaga(),
     connectionSaga(),
     librarySaga(),
+    postofficeSaga(),
     repoSaga(),
     reposYamlSaga(),
     setupSaga(),
