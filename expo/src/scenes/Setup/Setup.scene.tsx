@@ -12,6 +12,16 @@ import { setupSagaAction } from "../../services/setup/setup.state";
 import { SetupDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 
+const defaultValues = __DEV__
+  ? {
+      protocol: "http",
+      host: "192.168.178.59:8000",
+    }
+  : {
+      protocol: "https",
+      host: "share.generous.software",
+    };
+
 const Schema = zod.object({
   protocol: zod.string().nonempty(),
   host: zod.string().nonempty(),
@@ -84,7 +94,7 @@ const Setup = ({
               />
             )}
             name="protocol"
-            defaultValue="http"
+            defaultValue={defaultValues.protocol}
           />
           {errors.protocol && <Text>Protocol is a required field</Text>}
           <Controller
@@ -98,7 +108,7 @@ const Setup = ({
               />
             )}
             name="host"
-            defaultValue="192.168.178.59:8000"
+            defaultValue={defaultValues.host}
           />
           {errors.host && <Text>Host is a required field</Text>}
           <Controller
