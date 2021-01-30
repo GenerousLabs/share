@@ -57,7 +57,7 @@ const Navigation = () => {
         </DrawerNavigator.Navigator>
       ) : (
         <DrawerNavigator.Navigator
-          initialRouteName="Home"
+          initialRouteName="Browse"
           drawerContent={DrawerScene}
         >
           <DrawerNavigator.Screen name="Home" component={Home} />
