@@ -1,32 +1,56 @@
 import "react-native-gesture-handler";
 import "./src/utils/monkeyPatches";
 
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import { Ionicons } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "react-native-elements";
-import { theme } from "./src/root.theme";
+import { PersistGate } from "redux-persist/integration/react";
 
-import useCachedResources from "./src/hooks/useCachedResources";
+import { theme, montserrat, montserratBold } from "./src/root.theme";
 import Navigation from "./src/scenes/Navigation/Navigation.scene";
-import store from "./src/services/store/store.service";
+import store, { persistor } from "./src/services/store/store.service";
+import { initLogger } from "./src/services/log/log.service";
+
+const appLoad = async () => {
+  const fontsPromise = Font.loadAsync({
+    ...Ionicons.font,
+    [montserrat]: require("./assets/fonts/Montserrat-Regular.ttf"),
+    [montserratBold]: require("./assets/fonts/Montserrat-Bold.ttf"),
+  });
+
+  const loggerPromise = initLogger();
+
+  await Promise.all([fontsPromise, loggerPromise]);
+};
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
+  if (isLoading) {
     return (
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
+      <AppLoading
+        startAsync={appLoad}
+        onFinish={() => setIsLoading(false)}
+        onError={console.error}
+      />
+    );
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
           <SafeAreaProvider>
             <Navigation />
             <StatusBar />
           </SafeAreaProvider>
-        </Provider>
-      </ThemeProvider>
-    );
-  }
+        </PersistGate>
+      </Provider>
+    </ThemeProvider>
+  );
 }

@@ -12,25 +12,21 @@ const DISABLED_STORAGE_KEY = "__disabledLogNamespaces";
 const LINE_PART_SEPARATOR = " " as const;
 const NAMESPACE_DELIMITER = ":" as const;
 
-// NOTE: This is a little wacky. It's async but we start sync. That means the
-// settings are loaded AFTER the first sagas are invoked, etc. It's also ugly,
-// pushing and popping from arrays and so on. But, it'll have to do for now...
-AsyncStorage.getItem(DISABLED_STORAGE_KEY, (error, result) => {
-  if (error) {
-    try {
-      console.error("Error loading disabled log namespaces #s47AH7", error);
-    } catch (error) {}
-  } else {
-    try {
-      if (typeof result === "string" && result.length > 0) {
-        const namespaces = result.split(",");
-        DISABLED_NAMESPACES.push(...namespaces);
-      }
-    } catch (error) {
-      console.error("Error setting disabled log namespaces #a6zeoO", error);
+export const initLogger = async () => {
+  // NOTE: This is a little wacky. It's async but we start sync. That means the
+  // settings are loaded AFTER the first sagas are invoked, etc. It's also ugly,
+  // pushing and popping from arrays and so on. But, it'll have to do for now...
+  try {
+    const result = await AsyncStorage.getItem(DISABLED_STORAGE_KEY);
+    if (typeof result === "string" && result.length > 0) {
+      const namespaces = result.split(",");
+      DISABLED_NAMESPACES.push(...namespaces);
+      setDebug();
     }
+  } catch (error) {
+    console.error("Error setting disabled log namespaces #a6zeoO", error);
   }
-});
+};
 
 const logLevels = ["debug", "info", "warn", "error"] as const;
 export type LogLevel = typeof logLevels[number];
@@ -184,11 +180,21 @@ export const deleteLogs = async ({
   const filenames = await FileSystem.readDirectoryAsync(logDirPath);
 };
 
+export const setDebug = () => {
+  if (DISABLED_NAMESPACES.length === 0) {
+    return;
+  }
+  // DEBUG works by enabling, so prefix each of our disabled namespaces with a -
+  const namespaces = DISABLED_NAMESPACES.map((n) => `-${n}`).join(",");
+  process.env.DEBUG = `*,${namespaces}`;
+};
+
 export const disable = (namespace: string) => {
   if (DISABLED_NAMESPACES.indexOf(namespace) !== -1) {
     return;
   }
   DISABLED_NAMESPACES.push(namespace);
+  setDebug();
   AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
 };
 
@@ -197,6 +203,7 @@ export const enable = (namespace: string) => {
     (entry) => entry === namespace
   );
   DISABLED_NAMESPACES.splice(foundIndex, 1);
+  setDebug();
   AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
 };
 
