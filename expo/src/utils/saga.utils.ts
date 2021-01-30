@@ -4,13 +4,7 @@ import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from "redux-saga-promise-actions";
-import {
-  // call,
-  put,
-  takeEvery,
-  takeLatest,
-  takeLeading,
-} from "redux-saga/effects";
+import { put, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
 import { call, SagaGenerator } from "typed-redux-saga/macro";
 // NOTE: This is not specified as a dependency, it's a dependency of
 // `redux-saga-promise-actions` and only imported for types.
@@ -46,9 +40,7 @@ export const createAsyncPromiseSaga = <P, R>({
       const response = yield* call(effect, action);
 
       try {
-        // TODO Fix typing here
-        // resolvePromiseAction(action, response)
-        (resolvePromiseAction as any)(action, response);
+        resolvePromiseAction(action, response);
       } catch (error) {
         // QUESTION Is there a better way to handle errors here?
         log.error("Error resolving promise action #Kfygxz");
