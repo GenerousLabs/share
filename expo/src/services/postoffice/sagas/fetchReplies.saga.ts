@@ -40,20 +40,14 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
     // Remove the postofficeCode so we don't try to load this again.
     yield dispatch(setPostofficeCode({ id: connection.id, code: undefined }));
 
-    debugger;
-
     yield dispatch(
       confirmConnectionSagaAction({ connectionId: connection.id, confirmCode })
     );
-
-    debugger;
 
     const params = yield* call(parseSharingCode, {
       code: sharingCode,
       type: ConnectionCodeType.SHARING,
     });
-
-    debugger;
 
     yield dispatch(
       subscribeToLibrarySagaAction({
@@ -63,8 +57,6 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
         keysBase64: params.theirKeysBase64,
       })
     );
-
-    debugger;
   },
 });
 

@@ -194,7 +194,6 @@ const saga = createAsyncPromiseSaga<
     const replyMessage = [myInviteCode, mySharingCode].join(
       POSTOFFICE_MESSAGE_SEPARATOR
     );
-    debugger;
 
     yield* call(sendReplyToPostoffice, {
       message: replyMessage,
