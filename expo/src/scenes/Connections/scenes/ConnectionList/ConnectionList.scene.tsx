@@ -15,6 +15,7 @@ import {
   selectAllConnectionsWithLibraries,
 } from "../../../../services/connection/connection.state";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
+import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "../../../../shared.constants";
 import {
   ConnectionInRedux,
   ConnectionsStackParameterList,
@@ -110,7 +111,7 @@ export default ConnectionsList;
 const styles = StyleSheet.create({
   // TODO Remove this after fixing ScrollViewHeight issue
   ScollViewInner: {
-    paddingBottom: 200,
+    paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
   },
   buttonsContainer: {
     display: "flex",

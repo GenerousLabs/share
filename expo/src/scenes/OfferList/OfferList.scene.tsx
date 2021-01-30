@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { colours } from "../../root.theme";
 import { rootLogger } from "../../services/log/log.service";
+import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "../../shared.constants";
 import { OfferInRedux } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
@@ -29,7 +30,7 @@ export default OfferList;
 const styles = StyleSheet.create({
   // TODO Remove this after fixing ScrollViewHeight issue
   ScollViewInner: {
-    paddingBottom: 200,
+    paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
   },
   separator: {
     borderTopWidth: 1,

@@ -10,6 +10,7 @@ import WIPMessage from "../../components/WIPMessage/WIPMessage.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
+import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "../../shared.constants";
 import { RootDrawerParamList, OfferInRedux } from "../../shared.types";
 import OfferList from "../OfferList/OfferList.scene";
 
@@ -45,7 +46,7 @@ export default Browse;
 const styles = StyleSheet.create({
   // TODO Remove this after fixing ScrollViewHeight issue
   ScollViewInner: {
-    paddingBottom: 200,
+    paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
   },
   container: {
     paddingHorizontal: 16,

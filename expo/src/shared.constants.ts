@@ -31,3 +31,5 @@ export const MINIMUM_TOKEN_LENGTH = 20 as const;
 export const INVITE_PREFIX = "INVITE_" as const;
 
 export const POSTOFFICE_MESSAGE_SEPARATOR = ":" as const;
+
+export const SCROLLVIEW_INNER_BOTTOM_PADDING = 300;
