@@ -13,6 +13,7 @@ only would be possible.
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
   - They will bubble errors, which potentially breaks the sagas
   - I'm mostly using them to await, but I might not want them to throw
+- [ ] Inviestigate the `lirary/loadOffer/ERROR` actions
 
 # Sprint 1
 
