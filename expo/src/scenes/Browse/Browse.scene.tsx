@@ -29,11 +29,11 @@ const Browse = ({
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Browse" />
-      <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <WIPMessage />
-        <View>
+        <View style={styles.FlatListWrapper}>
           <OfferList offers={sortedOffers} />
         </View>
       </View>
@@ -49,6 +49,15 @@ const styles = StyleSheet.create({
     paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
   },
   container: {
+    display: "flex",
+    flex: 1,
+  },
+  contentContainer: {
     paddingHorizontal: 16,
+    display: "flex",
+    flex: 1,
+  },
+  FlatListWrapper: {
+    flexGrow: 1,
   },
 });

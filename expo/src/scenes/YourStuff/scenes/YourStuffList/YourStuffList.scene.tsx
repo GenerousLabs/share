@@ -23,9 +23,9 @@ const YourStuffList = ({
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Your stuff" />
-      <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <WIPMessage />
         <Button
           icon={{ name: "add", color: colours.black }}
@@ -36,7 +36,7 @@ const YourStuffList = ({
             navigation.navigate("OfferForm");
           }}
         />
-        <View>
+        <View style={styles.FlatListWrapper}>
           <OfferList offers={sortedOffers} />
         </View>
       </View>
@@ -52,7 +52,15 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   container: {
+    display: "flex",
+    flex: 1,
+  },
+  contentContainer: {
     paddingHorizontal: 16,
     display: "flex",
+    flex: 1,
+  },
+  FlatListWrapper: {
+    flexGrow: 1,
   },
 });
