@@ -16,12 +16,17 @@ const Home = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Home">;
 }) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
         <WIPMessage />
         <Text h2>Welcome</Text>
-        <Text>You'll </Text>
+        <Text>Check the menu top left.</Text>
+        <Text>
+          We're still in the early testing phase, so all data will be deleted
+          before we launch this version. Thanks for helping to test it. Let us
+          know if you find any issues.
+        </Text>
       </View>
     </View>
   );
