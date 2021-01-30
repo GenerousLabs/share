@@ -36,7 +36,7 @@ const YourStuffList = ({
             navigation.navigate("OfferForm");
           }}
         />
-        <View style={{ height: 200 }}>
+        <View>
           <OfferList offers={sortedOffers} />
         </View>
       </View>
