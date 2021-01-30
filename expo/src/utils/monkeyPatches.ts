@@ -5,8 +5,8 @@
  */
 // TODO Remove this for production somehow
 process.env = {
-  NODE_ENV: "development",
-  DEBUG: "*",
+  NODE_ENV: __DEV__ ? "development" : "production",
+  DEBUG: __DEV__ ? "*" : "",
 };
 
 import "./patch-FileReader";
