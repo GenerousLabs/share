@@ -20,7 +20,7 @@ const OfferList = ({ offers }: { offers: OfferInRedux[] }) => {
       renderItem={renderItem}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListFooterComponent={View}
-      ListFooterComponentStyle={styles.ScollViewInner}
+      ListFooterComponentStyle={styles.ScrollViewInner}
     />
   );
 };

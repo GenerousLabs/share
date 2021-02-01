@@ -1,7 +1,7 @@
 import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "./shared.constants";
 
 export const sharedStyles = {
-  ScollViewInner: {
+  ScrollViewInner: {
     paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
   },
   container: {

@@ -90,7 +90,7 @@ const ConnectionsList = ({
           keyExtractor={(item) => item.connection.id}
           renderItem={renderItem}
           ListFooterComponent={View}
-          ListFooterComponentStyle={styles.ScollViewInner}
+          ListFooterComponentStyle={styles.ScrollViewInner}
         />
       </View>
     </View>
