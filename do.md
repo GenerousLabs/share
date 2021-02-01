@@ -4,10 +4,10 @@ Get this in the hands of users. Preferrably on both platforms, but Android
 only would be possible.
 
 - [x] Get iOS running
-- [ ] Implement a postoffice
+- [x] Implement a postoffice
   - Where do we store boxIds on the client?
   - [x] Watch for replies
-  - [ ] Add libraries to shares
+  - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
