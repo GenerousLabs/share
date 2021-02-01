@@ -5,11 +5,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { confirmConnectionSagaAction } from "../../../../services/connection/connection.saga";
-import {
-  ConnectionCodeType,
-  getConnectionCode,
-} from "../../../../services/connection/connection.service";
 import { makeSelectConnectionAndRepoById } from "../../../../services/connection/connection.state";
+import { sharedStyles } from "../../../../shared.styles";
 import { log as parentLogger } from "../../Connections.log";
 
 const log = parentLogger.extend("Confirm");
@@ -103,7 +100,5 @@ const Confirm = ({
 export default Confirm;
 
 const styles = StyleSheet.create({
-  ScrollViewInner: {
-    paddingBottom: 200,
-  },
+  ...sharedStyles,
 });

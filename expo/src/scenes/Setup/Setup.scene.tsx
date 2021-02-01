@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../components/Header/Header.component";
 import { setupSagaAction } from "../../services/setup/setup.state";
+import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 
@@ -79,79 +80,81 @@ const Setup = ({
   return (
     <View style={styles.container}>
       <Header />
-      <ScrollView>
-        <View style={styles.ScrollViewInner}>
-          <Text h1>Setup</Text>
-          <Text>Welcome to the Generous Share app.</Text>
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Protocol"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-            name="protocol"
-            defaultValue={defaultValues.protocol}
-          />
-          {errors.protocol && <Text>Protocol is a required field</Text>}
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Host"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-              />
-            )}
-            name="host"
-            defaultValue={defaultValues.host}
-          />
-          {errors.host && <Text>Host is a required field</Text>}
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Username"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-                autoCapitalize="none"
-                autoCompleteType="username"
-              />
-            )}
-            name="username"
-            defaultValue=""
-          />
-          {errors.username && <Text>Username is a required field</Text>}
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <Input
-                label="Token"
-                onBlur={onBlur}
-                onChangeText={(value) => onChange(value)}
-                value={value}
-                autoCapitalize="none"
-                autoCompleteType="password"
-              />
-            )}
-            name="token"
-            defaultValue=""
-          />
-          {errors.token && <Text>Token is a required field</Text>}
-          <Button
-            title="Startup setup"
-            loading={formState.isSubmitting || hasSetupStarted}
-            onPress={() => {
-              handleSubmit(onSubmit)();
-            }}
-          />
-        </View>
-      </ScrollView>
+      <View style={styles.contentContainer}>
+        <ScrollView>
+          <View style={styles.ScrollViewInner}>
+            <Text h1>Setup</Text>
+            <Text>Welcome to the Generous Share app.</Text>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  label="Protocol"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
+              name="protocol"
+              defaultValue={defaultValues.protocol}
+            />
+            {errors.protocol && <Text>Protocol is a required field</Text>}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  label="Host"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                />
+              )}
+              name="host"
+              defaultValue={defaultValues.host}
+            />
+            {errors.host && <Text>Host is a required field</Text>}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  label="Username"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCompleteType="username"
+                />
+              )}
+              name="username"
+              defaultValue=""
+            />
+            {errors.username && <Text>Username is a required field</Text>}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  label="Token"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCompleteType="password"
+                />
+              )}
+              name="token"
+              defaultValue=""
+            />
+            {errors.token && <Text>Token is a required field</Text>}
+            <Button
+              title="Startup setup"
+              loading={formState.isSubmitting || hasSetupStarted}
+              onPress={() => {
+                handleSubmit(onSubmit)();
+              }}
+            />
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -159,10 +162,5 @@ const Setup = ({
 export default Setup;
 
 const styles = StyleSheet.create({
-  ScrollViewInner: {
-    paddingBottom: 200,
-  },
-  container: {
-    flex: 1,
-  },
+  ...sharedStyles,
 });

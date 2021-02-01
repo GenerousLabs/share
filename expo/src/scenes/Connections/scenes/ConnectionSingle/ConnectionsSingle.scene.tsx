@@ -23,6 +23,7 @@ import { subscribeToLibrarySagaAction } from "../../../../services/library/sagas
 import { createRemoteUrlForSharedRepo } from "../../../../services/remote/remote.service";
 import { selectAllRepos } from "../../../../services/repo/repo.state";
 import { RepoType } from "../../../../shared.constants";
+import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch, RootState } from "../../../../store";
 import { getKeysIfEncryptedRepo } from "../../../../utils/key.utils";
@@ -201,7 +202,5 @@ const ConnectionsSingle = ({
 export default ConnectionsSingle;
 
 const styles = StyleSheet.create({
-  ScrollViewInner: {
-    paddingBottom: 200,
-  },
+  ...sharedStyles,
 });
