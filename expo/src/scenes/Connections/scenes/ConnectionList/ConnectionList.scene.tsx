@@ -1,21 +1,12 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Input, ListItem, Overlay, Text } from "react-native-elements";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { Button, ListItem } from "react-native-elements";
+import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { confirmConnectionSagaAction } from "../../../../services/connection/connection.saga";
-import {
-  ConnectionCodeType,
-  getConnectionCode,
-} from "../../../../services/connection/connection.service";
-import {
-  selectAllConnections,
-  selectAllConnectionsWithLibraries,
-} from "../../../../services/connection/connection.state";
-import { selectAllRepos } from "../../../../services/repo/repo.state";
-import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "../../../../shared.constants";
+import { selectAllConnectionsWithLibraries } from "../../../../services/connection/connection.state";
+import { sharedStyles } from "../../../../shared.styles";
 import {
   ConnectionInRedux,
   ConnectionsStackParameterList,
@@ -109,10 +100,7 @@ const ConnectionsList = ({
 export default ConnectionsList;
 
 const styles = StyleSheet.create({
-  // TODO Remove this after fixing ScrollViewHeight issue
-  ScollViewInner: {
-    paddingBottom: SCROLLVIEW_INNER_BOTTOM_PADDING,
-  },
+  ...sharedStyles,
   buttonsContainer: {
     display: "flex",
     flexDirection: "row",
