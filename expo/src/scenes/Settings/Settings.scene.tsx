@@ -76,7 +76,9 @@ const Settings = ({
             buttonStyle={styles.buttonBase}
             onPress={() => setIsOverlayVisible(true)}
           />
-          <Text h2>Repos</Text>
+          <Text h2 style={styles.reposHeader}>
+            Repos
+          </Text>
           {allRepos.map((repo) => (
             <View key={repo.id}>
               <Text>{repo.name}</Text>
@@ -123,4 +125,5 @@ const styles = StyleSheet.create({
     // width: "80%",
     // height: "90%",
   },
+  reposHeader: { marginTop: 40, marginBottom: 20 },
 });
