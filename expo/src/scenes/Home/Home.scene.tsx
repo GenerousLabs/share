@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import Header from "../../components/Header/Header.component";
-import WIPMessage from "../../components/WIPMessage/WIPMessage.component";
+import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
@@ -19,7 +19,7 @@ const Home = ({
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
-        <WIPMessage />
+        <WarningBox />
         <Text h2>Welcome</Text>
         <Text>Check the menu top left.</Text>
         <Text>

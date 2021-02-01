@@ -5,8 +5,10 @@ import { Button, Overlay, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../components/Header/Header.component";
+import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
+import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import Log from "./scenes/Log/Log.scene";
@@ -24,13 +26,25 @@ const Settings = ({
   }, []);
 
   return (
-    <View>
-      <Header />
-      <Text h1>Settings</Text>
-      <View>
+    <View style={styles.container}>
+      <Header title="Settings" />
+      <View style={styles.contentContainer}>
+        <Text h2>Here be dragons</Text>
+        <WarningBox
+          message="This app is a work in progress. This screen gives you access to the nuts and bolts. It's possible to break things here.  Please take a full backup before you mess with this."
+          type="error"
+        />
+        <Button
+          title="Export logs as zip"
+          buttonStyle={[styles.buttonBase, styles.exportButton]}
+          onPress={async () => {
+            await createAndShareZipFile({ path: "/logs" });
+            Alert.alert("Zip export finished #yVPYe9");
+          }}
+        />
         <Button
           title="Export repos as zip"
-          buttonStyle={styles.exportButton}
+          buttonStyle={[styles.buttonBase, styles.exportButton]}
           onPress={async () => {
             await createAndShareZipFile({ path: "/repos" });
             Alert.alert("Zip export finished #znvf34");
@@ -38,7 +52,7 @@ const Settings = ({
         />
         <Button
           title="DANGEROUS reset the whole application"
-          buttonStyle={styles.dangerButton}
+          buttonStyle={[styles.buttonBase, styles.dangerButton]}
           titleStyle={styles.dangerButtonTitle}
           onPress={() => {
             Alert.alert(
@@ -54,10 +68,9 @@ const Settings = ({
             );
           }}
         />
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
-        <Button title="Offers" onPress={() => navigation.navigate("Offers")} />
         <Button
           title="Open log view"
+          buttonStyle={styles.buttonBase}
           onPress={() => setIsOverlayVisible(true)}
         />
         <Overlay
@@ -80,8 +93,13 @@ const Settings = ({
 export default Settings;
 
 const styles = StyleSheet.create({
+  ...sharedStyles,
+  buttonBase: {
+    marginVertical: 4,
+    marginHorizontal: 24,
+  },
   exportButton: {
-    backgroundColor: "#116530",
+    backgroundColor: "#0ec351",
   },
   dangerButton: {
     backgroundColor: "red",

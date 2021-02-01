@@ -5,8 +5,8 @@ import { Button } from "react-native-elements";
 import { useSelector } from "react-redux";
 import { reverse, sortBy } from "remeda";
 import Header from "../../../../components/Header/Header.component";
-import WIPMessage from "../../../../components/WIPMessage/WIPMessage.component";
-import { colours, montserratBold } from "../../../../root.theme";
+import WarningBox from "../../../../components/WarningBox/WarningBox.component";
+import { colours } from "../../../../root.theme";
 import { selectAllMyOffers } from "../../../../services/library/library.state";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import OfferList from "../../../OfferList/OfferList.scene";
@@ -26,7 +26,7 @@ const YourStuffList = ({
     <View style={styles.container}>
       <Header title="Your stuff" />
       <View style={styles.contentContainer}>
-        <WIPMessage />
+        <WarningBox />
         <Button
           icon={{ name: "add", color: colours.black }}
           type="outline"

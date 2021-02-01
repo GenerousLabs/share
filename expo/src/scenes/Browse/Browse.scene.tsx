@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { reverse, sortBy } from "remeda";
 import Header from "../../components/Header/Header.component";
-import WIPMessage from "../../components/WIPMessage/WIPMessage.component";
+import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { selectAllImportedOffers } from "../../services/library/library.state";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
@@ -30,7 +30,7 @@ const Browse = ({
     <View style={styles.container}>
       <Header title="Browse" />
       <View style={styles.contentContainer}>
-        <WIPMessage />
+        <WarningBox />
         <View style={styles.FlatListWrapper}>
           <OfferList offers={sortedOffers} />
         </View>
