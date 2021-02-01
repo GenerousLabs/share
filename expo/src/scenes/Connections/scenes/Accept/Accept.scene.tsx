@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { acceptInviteSagaAction } from "../../../../services/connection/connection.saga";
 import { rootLogger } from "../../../../services/log/log.service";
+import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 
@@ -44,75 +45,77 @@ const Accept = ({
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Accept invite" goBack={navigation.goBack} />
-      <ScrollView>
-        <View style={styles.ScrollViewInner}>
-          {isFinished ? (
-            <>
-              <Text h2>Connected</Text>
-              <Text>You are connected</Text>
-            </>
-          ) : (
-            <>
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Code"
-                    style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    autoCapitalize="none"
-                    autoCompleteType="password"
-                  />
-                )}
-                name="inviteCode"
-                rules={{ required: false }}
-                defaultValue=""
-              />
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Name"
-                    style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                  />
-                )}
-                name="name"
-                defaultValue=""
-              />
-              {errors.name && <Text>Name is a required field</Text>}
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Notes"
-                    style={styles.inputMultiline}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    multiline={true}
-                    numberOfLines={5}
-                  />
-                )}
-                name="notes"
-                rules={{ required: false }}
-                defaultValue=""
-              />
-              <Button
-                loading={isSubmitting}
-                title="Accept Invitation"
-                onPress={handleSubmit(onSubmit)}
-              />
-            </>
-          )}
-        </View>
-      </ScrollView>
+      <View style={styles.contentContainer}>
+        <ScrollView>
+          <View style={styles.ScrollViewInner}>
+            {isFinished ? (
+              <>
+                <Text h2>Connected</Text>
+                <Text>You are connected</Text>
+              </>
+            ) : (
+              <>
+                <Controller
+                  control={control}
+                  render={({ onChange, onBlur, value }) => (
+                    <Input
+                      label="Code"
+                      style={styles.input}
+                      onBlur={onBlur}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                      autoCapitalize="none"
+                      autoCompleteType="password"
+                    />
+                  )}
+                  name="inviteCode"
+                  rules={{ required: false }}
+                  defaultValue=""
+                />
+                <Controller
+                  control={control}
+                  render={({ onChange, onBlur, value }) => (
+                    <Input
+                      label="Name"
+                      style={styles.input}
+                      onBlur={onBlur}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                    />
+                  )}
+                  name="name"
+                  defaultValue=""
+                />
+                {errors.name && <Text>Name is a required field</Text>}
+                <Controller
+                  control={control}
+                  render={({ onChange, onBlur, value }) => (
+                    <Input
+                      label="Notes"
+                      style={styles.inputMultiline}
+                      onBlur={onBlur}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                      multiline={true}
+                      numberOfLines={5}
+                    />
+                  )}
+                  name="notes"
+                  rules={{ required: false }}
+                  defaultValue=""
+                />
+                <Button
+                  loading={isSubmitting}
+                  title="Accept Invitation"
+                  onPress={handleSubmit(onSubmit)}
+                />
+              </>
+            )}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -120,10 +123,7 @@ const Accept = ({
 export default Accept;
 
 const styles = StyleSheet.create({
-  ScrollViewInner: {
-    // Extend the view until we fix the ScrollViewHeight issue
-    paddingBottom: 200,
-  },
+  ...sharedStyles,
   input: {
     borderColor: "black",
     borderWidth: 2,

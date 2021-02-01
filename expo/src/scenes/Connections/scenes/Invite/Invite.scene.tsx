@@ -7,6 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 
@@ -43,62 +44,64 @@ const Invite = ({
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Invite" goBack={navigation.goBack} />
-      <ScrollView>
-        <View style={styles.ScrollViewInner}>
-          {inviteCode === "" ? (
-            <>
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Name"
-                    style={styles.input}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                  />
-                )}
-                name="name"
-                defaultValue=""
-              />
-              {errors.name && <Text>Name is a required field</Text>}
-              <Controller
-                control={control}
-                render={({ onChange, onBlur, value }) => (
-                  <Input
-                    label="Notes"
-                    style={styles.inputMultiline}
-                    onBlur={onBlur}
-                    onChangeText={(value) => onChange(value)}
-                    value={value}
-                    multiline={true}
-                    numberOfLines={5}
-                  />
-                )}
-                name="notes"
-                rules={{ required: false }}
-                defaultValue=""
-              />
-              <Button
-                loading={isSubmitting}
-                title="Generate an invite code"
-                onPress={handleSubmit(onSubmit)}
-              />
-            </>
-          ) : (
-            <>
-              <Text h2>Invite a friend</Text>
-              <Text>
-                Share this code with{" "}
-                <Text style={{ fontWeight: "bold" }}>{connectionName}</Text>
-              </Text>
-              <Input value={inviteCode} />
-            </>
-          )}
-        </View>
-      </ScrollView>
+      <View style={styles.contentContainer}>
+        <ScrollView>
+          <View style={styles.ScrollViewInner}>
+            {inviteCode === "" ? (
+              <>
+                <Controller
+                  control={control}
+                  render={({ onChange, onBlur, value }) => (
+                    <Input
+                      label="Name"
+                      style={styles.input}
+                      onBlur={onBlur}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                    />
+                  )}
+                  name="name"
+                  defaultValue=""
+                />
+                {errors.name && <Text>Name is a required field</Text>}
+                <Controller
+                  control={control}
+                  render={({ onChange, onBlur, value }) => (
+                    <Input
+                      label="Notes"
+                      style={styles.inputMultiline}
+                      onBlur={onBlur}
+                      onChangeText={(value) => onChange(value)}
+                      value={value}
+                      multiline={true}
+                      numberOfLines={5}
+                    />
+                  )}
+                  name="notes"
+                  rules={{ required: false }}
+                  defaultValue=""
+                />
+                <Button
+                  loading={isSubmitting}
+                  title="Generate an invite code"
+                  onPress={handleSubmit(onSubmit)}
+                />
+              </>
+            ) : (
+              <>
+                <Text h2>Invite a friend</Text>
+                <Text>
+                  Share this code with{" "}
+                  <Text style={{ fontWeight: "bold" }}>{connectionName}</Text>
+                </Text>
+                <Input value={inviteCode} />
+              </>
+            )}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -106,9 +109,7 @@ const Invite = ({
 export default Invite;
 
 const styles = StyleSheet.create({
-  ScrollViewInner: {
-    paddingBottom: 200,
-  },
+  ...sharedStyles,
   input: {
     borderColor: "black",
     borderWidth: 2,
