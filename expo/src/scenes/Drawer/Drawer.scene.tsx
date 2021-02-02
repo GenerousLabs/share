@@ -9,25 +9,24 @@ import { RootDrawerParamList } from "../../shared.types";
 const menuItems = [
   {
     route: "Browse",
-    title: "Browse offers",
-    subtitle: "Browse all offers shared with you from your connections.",
+    title: "Browse list",
+    subtitle: "Browse all that is shared with you from your community.",
   },
   {
     route: "YourStuff",
     title: "Your stuff",
     subtitle:
-      "Manage the offers you wish to share with your trusted community.",
+      "Manage your personal collections and define what you share with your community.",
   },
   {
     route: "Connections",
-    title: "Connections",
-    subtitle:
-      "Build your community. Add new people and invite new friends to share with.",
+    title: "Your Community",
+    subtitle: "Build your trusted community. Invite new friends to share with.",
   },
   {
     route: "Settings",
-    title: "Settings",
-    subtitle: "Something here about settings",
+    title: "Your Settings",
+    subtitle: "Your control panel. Beep boop.",
   },
 ] as const;
 
