@@ -10,10 +10,20 @@ only would be possible.
   - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
+- [ ] Make a plan on deletion, correcting errors, etc
+  - What about a "tech view" screen?
+- [ ] Post offers and requests
+  - Waiting for design confirmation on how / where this happens
+  - Define format on disk
+- [ ] Round of UI polishing
+
+## Sprint 2 Nice to Have
+
+- [ ] Simplify / cleanup setup screen
+- [ ] Inviestigate the `lirary/loadOffer/ERROR` actions
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
   - They will bubble errors, which potentially breaks the sagas
   - I'm mostly using them to await, but I might not want them to throw
-- [ ] Inviestigate the `lirary/loadOffer/ERROR` actions
 
 # Sprint 1
 
