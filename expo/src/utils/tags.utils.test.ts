@@ -33,6 +33,10 @@ describe("tag.utils", () => {
   });
 
   describe("hashifyTags()", () => {
+    it("Returns empty string for tags = undefined #xIorm6", () => {
+      expect(hashifyTags()).toEqual("");
+    });
+
     it("Returns empty string for no tags #JpTmsA", () => {
       expect(hashifyTags([])).toEqual("");
     });

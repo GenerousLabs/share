@@ -13,8 +13,8 @@ export const parseTags = (input: string): string[] => {
   return tags;
 };
 
-export const hashifyTags = (tags: string[]): string => {
-  if (tags.length === 0) {
+export const hashifyTags = (tags?: string[]): string => {
+  if (typeof tags === "undefined" || tags.length === 0) {
     return "";
   }
   return `#${tags.join(", #")}`;
