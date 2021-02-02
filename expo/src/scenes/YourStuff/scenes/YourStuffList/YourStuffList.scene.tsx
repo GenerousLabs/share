@@ -31,7 +31,7 @@ const YourStuffList = ({
           icon={{ name: "add", color: colours.black }}
           type="outline"
           containerStyle={styles.addButtonContainer}
-          title="Add an offer"
+          title="Add something to share"
           onPress={() => {
             navigation.navigate("OfferForm");
           }}
