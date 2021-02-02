@@ -3,21 +3,26 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, CheckBox, Input, Text } from "react-native-elements";
+import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../../../components/Header/Header.component";
+import RadioButtons from "../../../../components/RadioButtons/RadioButtons.component";
 import { colours, montserrat } from "../../../../root.theme";
 import { selectMyLibraryRepo } from "../../../../services/library/library.selectors";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { generateUuid } from "../../../../utils/id.utils";
+import { hashifyTags, parseTags } from "../../../../utils/tags.utils";
 
 const InputSchema = zod.object({
+  isOffer: zod.boolean(),
   title: zod.string().nonempty(),
   bodyMarkdown: zod.string(),
+  tags: zod.array(zod.string()),
   shareToProximity2: zod.boolean(),
 });
 type Inputs = zod.infer<typeof InputSchema>;
@@ -48,9 +53,10 @@ const OfferForm = ({
             uuid,
             proximity: 0,
             shareToProximity: data.shareToProximity2 ? 2 : 1,
-            tags: ["digital"],
+            tags: data.tags,
             bodyMarkdown: data.bodyMarkdown,
             title: data.title,
+            isSeeking: !data.isOffer,
           },
         })
       );
@@ -63,7 +69,7 @@ const OfferForm = ({
 
   return (
     <View>
-      <Header title="Add an offer" goBack={navigation.goBack} />
+      <Header title="Add something to share" goBack={navigation.goBack} />
       <ScrollView>
         <View style={styles.ScrollViewInner}>
           {/* <Text>Repo:</Text>
@@ -88,7 +94,33 @@ const OfferForm = ({
             rules={{ required: true }}
             defaultValue={libraries[0].id}
           /> */}
-          <Text h3>Offer details</Text>
+          <Text h3>What do you want to do?</Text>
+
+          <View>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <>
+                  <RadioButtons
+                    options={[
+                      { title: "I have something to share", value: "1" },
+                      { title: "I am looking for something", value: "0" },
+                    ]}
+                    value={value ? "1" : "0"}
+                    onChange={(newValue) => onChange(newValue === "1")}
+                  />
+                  <Text h3>
+                    {value
+                      ? "What do you want to share?"
+                      : "What are you looking for?"}
+                  </Text>
+                </>
+              )}
+              name="isOffer"
+              rules={{ required: true }}
+              defaultValue={true}
+            />
+          </View>
 
           <View style={styles.inputContainer}>
             <Controller
@@ -96,7 +128,7 @@ const OfferForm = ({
               render={({ onChange, onBlur, value }) => (
                 <Input
                   // label="Offer title"
-                  placeholder="Title of offer"
+                  placeholder="Title"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
@@ -106,7 +138,7 @@ const OfferForm = ({
                   errorMessage={
                     errors.title
                       ? "There is an error in the title"
-                      : "The name of the offer you are sharing"
+                      : "eg. Pasta machine"
                   }
                 />
               )}
@@ -122,20 +154,20 @@ const OfferForm = ({
               render={({ onChange, onBlur, value }) => (
                 <Input
                   // label="Enter a description"
-                  placeholder="Description of offer"
+                  placeholder="Description (optional)"
                   textAlignVertical="top"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
                   multiline={true}
-                  numberOfLines={5}
+                  numberOfLines={3}
                   errorStyle={
                     errors.title ? styles.errorText : styles.errorAsHelper
                   }
                   errorMessage={
                     errors.title
                       ? "There is an error in description"
-                      : "Description to help others know what this item is"
+                      : "You can write a brief description so others know what it is."
                   }
                 />
               )}
@@ -150,20 +182,48 @@ const OfferForm = ({
             )}
           </View>
 
+          <View style={styles.inputContainer}>
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => {
+                const hashed = hashifyTags(value);
+                return (
+                  <Input
+                    placeholder="Tags (optional)"
+                    autoCapitalize="none"
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(parseTags(value))}
+                    value={value}
+                    errorStyle={
+                      errors.title ? styles.errorText : styles.errorAsHelper
+                    }
+                    errorMessage={
+                      errors.tags
+                        ? "There is an error in the tags"
+                        : value.length > 0
+                        ? hashed
+                        : "You can assign hashtags to assist with searching."
+                    }
+                  />
+                );
+              }}
+              name="tags"
+              defaultValue={[]}
+            />
+          </View>
+
           <Text h3>Share settings</Text>
-          <Text style={styles.shareIntro}>
-            Soon we're launching the option to share with friends of friends.
-            For now, you can save this information and later your friends will
-            be able to share some of your offers to their own network.
-          </Text>
           <Controller
             control={control}
             render={({ onChange, value }) => {
               return (
-                <CheckBox
-                  title="Share with friends of friends"
-                  checked={value}
-                  onPress={() => onChange(!value)}
+                <RadioButtons
+                  options={[
+                    { title: "Only friends", value: "0" },
+                    { title: "Friends of friends", value: "1" },
+                  ]}
+                  value={value ? "1" : "0"}
+                  onChange={(newValue) => onChange(newValue === "1")}
                 />
               );
             }}
@@ -171,8 +231,10 @@ const OfferForm = ({
             defaultValue={false}
           />
           <Button
-            title="Save offer to Your Stuff"
-            icon={{ name: "arrow-downward" }}
+            title="Save and share"
+            icon={
+              <Icon name="share-square-o" size={16} style={styles.buttonIcon} />
+            }
             loading={formState.isSubmitting || isSubmitting}
             onPress={handleSubmit(onSubmit)}
           />
@@ -192,6 +254,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 10,
   },
+  buttonIcon: {
+    marginRight: 10,
+  },
   errorAsHelper: {
     // marginTop: -20,
     // marginBottom: 20,
@@ -207,8 +272,5 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
     color: "red",
     fontFamily: montserrat,
-  },
-  shareIntro: {
-    // fontSize: 16,
   },
 });

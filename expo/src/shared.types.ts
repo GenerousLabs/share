@@ -140,6 +140,8 @@ export type OfferOnDiskFrontmatter = {
   title: string;
   /** A set of tags, each a single string (no leading #, etc) */
   tags: string[];
+  /** When exists and `true`, this is a request, not an ofer */
+  isSeeking?: boolean;
   /** How close to me is this offer? 0 = mine, 1 = a friend of mine, etc. */
   proximity: number;
   /** How far is this to be shared? 1 = my friends, 2 = their friends, etc */
