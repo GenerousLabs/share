@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React, { useCallback, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, Divider, Overlay, Text } from "react-native-elements";
+import { Button, Input, Overlay, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
@@ -11,7 +11,7 @@ import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
-import { RootDispatch, RootState } from "../../store";
+import { RootDispatch } from "../../store";
 import Log from "./scenes/Log/Log.scene";
 
 const Settings = ({
@@ -22,6 +22,9 @@ const Settings = ({
   const dispatch: RootDispatch = useDispatch();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const allRepos = useSelector(selectAllRepos);
+  const allReposText = allRepos
+    .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
+    .join("\n");
 
   const closeOverlay = useCallback(() => {
     setIsOverlayVisible(false);
@@ -79,13 +82,7 @@ const Settings = ({
           <Text h2 style={styles.reposHeader}>
             Repos
           </Text>
-          {allRepos.map((repo) => (
-            <View key={repo.id}>
-              <Text>{repo.name}</Text>
-              <Text>{repo.remoteUrl}</Text>
-              <Divider />
-            </View>
-          ))}
+          <Input value={allReposText} multiline />
           <Overlay
             overlayStyle={styles.overlay}
             isVisible={isOverlayVisible}
