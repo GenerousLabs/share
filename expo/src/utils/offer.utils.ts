@@ -2,7 +2,7 @@ import { OfferPlusRepoAndConnection } from "../selectors/selectAllOffersPlusRepo
 import { isOfferMine } from "../services/library/library.service";
 import { OfferMine } from "../shared.types";
 
-export const getSharingText = (
+export const getOfferSharingText = (
   offer: OfferMine | OfferPlusRepoAndConnection
 ) => {
   if (isOfferMine(offer)) {
