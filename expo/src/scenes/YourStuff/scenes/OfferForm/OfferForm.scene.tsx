@@ -50,13 +50,12 @@ const OfferForm = ({
       await dispatch(
         createNewOfferSagaAction({
           repoId: library.id,
-          // repoId: data.repoId,
           offer: {
             uuid,
             proximity: 0,
             shareToProximity: data.shareToProximity2 ? 2 : 1,
             tags,
-            bodyMarkdown: data.bodyMarkdown,
+            bodyMarkdown: data.bodyMarkdown || "",
             title: data.title,
             isSeeking: !data.isOffer,
           },
@@ -158,7 +157,6 @@ const OfferForm = ({
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <Input
-                  // label="Enter a description"
                   placeholder="Description (optional)"
                   textAlignVertical="top"
                   onBlur={onBlur}
@@ -167,9 +165,10 @@ const OfferForm = ({
                   multiline={true}
                   inputStyle={styles.input}
                   errorStyle={
-                    errors.title ? styles.errorText : styles.errorAsHelper
+                    errors.bodyMarkdown
+                      ? styles.errorText
+                      : styles.errorAsHelper
                   }
-                  inputStyle={styles.input}
                   errorMessage={
                     errors.title
                       ? "There is an error in description"
@@ -202,7 +201,7 @@ const OfferForm = ({
                     value={value}
                     inputStyle={styles.input}
                     errorStyle={
-                      errors.title ? styles.errorText : styles.errorAsHelper
+                      errors.tags ? styles.errorText : styles.errorAsHelper
                     }
                     errorMessage={
                       errors.tags
