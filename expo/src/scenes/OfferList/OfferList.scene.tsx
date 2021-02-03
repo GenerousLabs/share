@@ -2,18 +2,18 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { colours } from "../../root.theme";
+import { OfferPlusRepoAndConnection } from "../../selectors/selectAllOffersPlusRepoAndConnection.selector";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
-import { OfferInRedux } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
 const log = rootLogger.extend("OfferList");
 
-const renderItem = ({ item: offer }: { item: OfferInRedux }) => (
+const renderItem = ({ item: offer }: { item: OfferPlusRepoAndConnection }) => (
   <OfferSingle offer={offer} />
 );
 
-const OfferList = ({ offers }: { offers: OfferInRedux[] }) => {
+const OfferList = ({ offers }: { offers: OfferPlusRepoAndConnection[] }) => {
   return (
     <FlatList
       data={offers}

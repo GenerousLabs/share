@@ -5,7 +5,7 @@ import { Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
-import { selectAllMyLibraryRepos } from "../../services/library/library.selectors";
+import { selectAllMyLibraryRepos } from "../../services/repo/repo.state";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import LibraryForm from "./scenes/LibraryForm/LibraryForm.scene";

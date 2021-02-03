@@ -5,7 +5,7 @@ import { Button, ListItem } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { selectAllConnectionsWithLibraries } from "../../../../services/connection/connection.state";
+import { selectAllConnectionsWithLibraries } from "../../../../selectors/selectAllConnectionsWithLibraries.selector";
 import { sharedStyles } from "../../../../shared.styles";
 import {
   ConnectionInRedux,

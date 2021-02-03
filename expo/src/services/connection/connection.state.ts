@@ -6,7 +6,6 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { ConnectionInRedux, RepoShareInRedux } from "../../shared.types";
-import { selectAllSubscribedLibraries } from "../library/library.selectors";
 import { selectAllRepos } from "../repo/repo.state";
 import { RootState } from "../store/store.service";
 
@@ -69,25 +68,15 @@ export const makeSelectConnectionById = (id: string) => (state: RootState) =>
   selectConnectionById(state, id);
 export const makeSelectConnectionAndRepoById = (connectionId: string) =>
   createSelector(
-    (state: RootState) => selectConnectionById(state, connectionId),
-    selectAllRepos,
+    [
+      (state: RootState) => selectConnectionById(state, connectionId),
+      selectAllRepos,
+    ],
     (connection, repos) => {
       const repo = repos.find((r) => r.id === connection?.myRepoId);
       return { connection, repo };
     }
   );
-export const selectAllConnectionsWithLibraries = createSelector(
-  selectAllConnections,
-  selectAllSubscribedLibraries,
-  (connections, libraries) => {
-    return connections.map((connection) => {
-      const library = libraries.find(
-        (library) => library.connectionId === connection.id
-      );
-      return { connection, library };
-    });
-  }
-);
 
 export const { selectAll: selectAllRepoShares } = repoShareAdapter.getSelectors(
   (state: RootState) => state[REDUCER_KEY].repoShares

@@ -7,7 +7,6 @@ import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { getKeysIfEncryptedRepo } from "../../../utils/key.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
-import { selectMyLibraryRepo } from "../../library/library.selectors";
 import { sendMessageToPostoffice } from "../../postoffice/postoffice.service";
 import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
 import {
@@ -17,7 +16,7 @@ import {
   saveNewRepoToReduxSagaAction,
 } from "../../repo/repo.saga";
 import { createConnectionRepo } from "../../repo/repo.service";
-import { selectMeRepo } from "../../repo/repo.state";
+import { selectMeRepo, selectMyLibraryRepo } from "../../repo/repo.state";
 import {
   ConnectionCodeType,
   createConnectionCode,

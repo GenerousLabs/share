@@ -18,10 +18,12 @@ import {
   selectAllRepoShares,
   selectConnectionById,
 } from "../../../../services/connection/connection.state";
-import { selectMyLibraryRepo } from "../../../../services/library/library.selectors";
 import { subscribeToLibrarySagaAction } from "../../../../services/library/sagas/subscribeToLibrary.saga";
 import { createRemoteUrlForSharedRepo } from "../../../../services/remote/remote.service";
-import { selectAllRepos } from "../../../../services/repo/repo.state";
+import {
+  selectAllRepos,
+  selectMyLibraryRepo,
+} from "../../../../services/repo/repo.state";
 import { RepoType } from "../../../../shared.constants";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
@@ -31,13 +33,15 @@ import Confirm from "../Confirm/Confirm.scene";
 
 const makeSelector = (connectionId: string) =>
   createSelector(
-    selectAllRepoShares,
-    selectAllRepos,
-    (state: RootState) => selectConnectionById(state, connectionId),
-    // We select my library as part of this to ensure that it's always available
-    // when the connection loads. It's created during app setup, so if it
-    // doesn't exist by now, something has gone very wrong.
-    selectMyLibraryRepo,
+    [
+      selectAllRepoShares,
+      selectAllRepos,
+      (state: RootState) => selectConnectionById(state, connectionId),
+      // We select my library as part of this to ensure that it's always available
+      // when the connection loads. It's created during app setup, so if it
+      // doesn't exist by now, something has gone very wrong.
+      selectMyLibraryRepo,
+    ],
     (allShares, repos, connection, myLibrary) => {
       const repoShare = allShares.find(
         (s) => s.connectionId === connection?.id

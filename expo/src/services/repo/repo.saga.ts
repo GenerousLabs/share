@@ -2,15 +2,14 @@ import { all, putResolve, takeEvery } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
-import { gitPull } from "../git/git.service";
 import { loadOfferEffect } from "../library/library.saga";
-import { selectAllSubscribedLibraries } from "../library/library.selectors";
 import { loadOfferSagaAction } from "../library/library.state";
 import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoPath, updateSubscribedRepo } from "./repo.service";
 import {
   loadRepoContentsSagaAction,
+  selectAllSubscribedLibraries,
   selectRepoById,
   updateOneRepoAction,
 } from "./repo.state";

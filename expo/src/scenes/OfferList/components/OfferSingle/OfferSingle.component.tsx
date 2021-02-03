@@ -2,13 +2,13 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { montserratBold } from "../../../../root.theme";
-import { OfferInRedux } from "../../../../shared.types";
+import { OfferPlusRepoAndConnection } from "../../../../selectors/selectAllOffersPlusRepoAndConnection.selector";
 
-const OfferSingle = ({ offer }: { offer: OfferInRedux }) => {
+const OfferSingle = ({ offer }: { offer: OfferPlusRepoAndConnection }) => {
   return (
     <View>
-      <Text style={styles.title}>{offer.title}</Text>
       <Text style={styles.sharedBy}>This is shared by {offer.repoId}</Text>
+      <Text style={styles.title}>{offer.title}</Text>
       <Text style={styles.bodyMarkdown}>{offer.bodyMarkdown}</Text>
       {offer.tags.length > 0 ? (
         <Text style={styles.tags}>#{offer.tags.join(" #")}</Text>

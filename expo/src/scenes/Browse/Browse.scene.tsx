@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reverse, sortBy } from "remeda";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
-import { selectAllImportedOffers } from "../../services/library/library.state";
+import { selectAllOffersPlusRepoAndConnection } from "../../selectors/selectAllOffersPlusRepoAndConnection.selector";
 import { rootLogger } from "../../services/log/log.service";
 import { RootDispatch } from "../../services/store/store.service";
 import { sharedStyles } from "../../shared.styles";
@@ -20,7 +20,7 @@ const Browse = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Browse">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const offers = useSelector(selectAllImportedOffers);
+  const offers = useSelector(selectAllOffersPlusRepoAndConnection);
   const sortedOffers = useMemo(
     () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
     [offers]

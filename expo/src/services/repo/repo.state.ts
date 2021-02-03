@@ -8,7 +8,6 @@ import {
 import { RepoType } from "../../shared.constants";
 import { RepoInRedux } from "../../shared.types";
 import { RootState } from "../../store";
-import { makeErrorActionCreator } from "../../utils/errors.utils";
 
 export const REDUCER_KEY = "repo" as const;
 
@@ -50,12 +49,36 @@ export const selectRepoById = repoSelectors.selectById;
 export const makeSelectByRepoId = (id: string) => (state: RootState) =>
   selectRepoById(state, id);
 export const selectAllRepos = repoSelectors.selectAll;
-export const selectMeRepo = createSelector(selectAllRepos, (repos) => {
+export const selectMeRepo = createSelector([selectAllRepos], (repos) => {
   return repos.find((repo) => repo.type === RepoType.me);
 });
-export const selectCommandRepo = createSelector(selectAllRepos, (repos) => {
+export const selectCommandRepo = createSelector([selectAllRepos], (repos) => {
   return repos.find((repo) => repo.type === RepoType.commands);
 });
+export const selectMyLibraryRepo = createSelector([selectAllRepos], (repos) => {
+  const libraries = repos.filter(
+    (repo) =>
+      repo.type === RepoType.library && typeof repo.connectionId === "undefined"
+  );
+  if (libraries.length !== 1) {
+    throw new Error("Failed to get precisely 1 library repo. #U6f5ES");
+  }
+  return libraries[0];
+});
+export const selectAllMyLibraryRepos = createSelector(
+  [selectAllRepos],
+  (repos) =>
+    repos.filter((repo) => repo.type === RepoType.library && !repo.isReadOnly)
+);
+export const selectAllSubscribedLibraries = createSelector(
+  [selectAllRepos],
+  (repos) =>
+    repos.filter(
+      (repo) =>
+        repo.type === RepoType.library &&
+        typeof repo.connectionId !== "undefined"
+    )
+);
 
 export const loadRepoContentsSagaAction = createAction<{ repoId: string }>(
   "SHARE/repo/loadRepoContents"
