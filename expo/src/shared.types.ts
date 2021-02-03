@@ -131,6 +131,16 @@ export type RepoGitMetadata = {
 export type RepoInRedux = RepoOnDisk & RepoYamlWithoutKeys & RepoGitMetadata;
 
 /**
+ * An offer which is mine.
+ *
+ * This means it does not have a connection (friend), because its connected to
+ * me.
+ */
+export type OfferMine = OfferInRedux & {
+  mine: true;
+};
+
+/**
  * These properties are stored in the markdown file.
  */
 export type OfferOnDiskFrontmatter = {

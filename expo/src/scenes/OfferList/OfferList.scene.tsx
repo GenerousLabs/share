@@ -5,15 +5,22 @@ import { colours } from "../../root.theme";
 import { OfferPlusRepoAndConnection } from "../../selectors/selectAllOffersPlusRepoAndConnection.selector";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
+import { OfferMine } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
 const log = rootLogger.extend("OfferList");
 
-const renderItem = ({ item: offer }: { item: OfferPlusRepoAndConnection }) => (
-  <OfferSingle offer={offer} />
-);
+const renderItem = ({
+  item: offer,
+}: {
+  item: OfferPlusRepoAndConnection | OfferMine;
+}) => <OfferSingle offer={offer} />;
 
-const OfferList = ({ offers }: { offers: OfferPlusRepoAndConnection[] }) => {
+const OfferList = ({
+  offers,
+}: {
+  offers: (OfferPlusRepoAndConnection | OfferMine)[];
+}) => {
   return (
     <FlatList
       data={offers}

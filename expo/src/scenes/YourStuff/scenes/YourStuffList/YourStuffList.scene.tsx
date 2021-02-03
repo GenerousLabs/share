@@ -7,7 +7,7 @@ import { reverse, sortBy } from "remeda";
 import Header from "../../../../components/Header/Header.component";
 import WarningBox from "../../../../components/WarningBox/WarningBox.component";
 import { colours } from "../../../../root.theme";
-import { selectAllOffersPlusRepoAndConnection } from "../../../../selectors/selectAllOffersPlusRepoAndConnection.selector";
+import { selectAllMyOffers } from "../../../../services/library/library.state";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import OfferList from "../../../OfferList/OfferList.scene";
 
@@ -16,7 +16,7 @@ const YourStuffList = ({
 }: {
   navigation: StackNavigationProp<YourStuffStackParameterList, "YourStuffList">;
 }) => {
-  const offers = useSelector(selectAllOffersPlusRepoAndConnection);
+  const offers = useSelector(selectAllMyOffers);
   const sortedOffers = useMemo(
     () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
     [offers]

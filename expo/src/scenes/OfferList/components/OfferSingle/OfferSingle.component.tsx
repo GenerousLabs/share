@@ -3,11 +3,19 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { montserratBold } from "../../../../root.theme";
 import { OfferPlusRepoAndConnection } from "../../../../selectors/selectAllOffersPlusRepoAndConnection.selector";
+import { isOfferMine } from "../../../../services/library/library.service";
+import { OfferMine } from "../../../../shared.types";
 
-const OfferSingle = ({ offer }: { offer: OfferPlusRepoAndConnection }) => {
+const OfferSingle = ({
+  offer,
+}: {
+  offer: OfferPlusRepoAndConnection | OfferMine;
+}) => {
+  const name = isOfferMine(offer) ? "me" : offer.connection.name;
+
   return (
     <View>
-      <Text style={styles.sharedBy}>This is shared by {offer.repoId}</Text>
+      <Text style={styles.sharedBy}>This is shared by {name}</Text>
       <Text style={styles.title}>{offer.title}</Text>
       <Text style={styles.bodyMarkdown}>{offer.bodyMarkdown}</Text>
       {offer.tags.length > 0 ? (

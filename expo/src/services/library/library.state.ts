@@ -7,9 +7,10 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { intersection, uniq } from "remeda";
-import { OfferInRedux } from "../../shared.types";
+import { OfferInRedux, OfferMine } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
+import { isOfferMine } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -60,7 +61,7 @@ export const selectAllImportedOffers = createSelector(
   (offers) => offers.filter((offer) => !offer.mine)
 );
 export const selectAllMyOffers = createSelector([selectAllOffers], (offers) =>
-  offers.filter((offer) => offer.mine)
+  offers.filter(isOfferMine)
 );
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],

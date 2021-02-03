@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import invariant from "tiny-invariant";
 import { selectConnectionById } from "../services/connection/connection.state";
-import { selectAllOffers } from "../services/library/library.state";
+import { selectAllImportedOffers } from "../services/library/library.state";
 import { selectRepoById } from "../services/repo/repo.state";
 import { RootState } from "../store";
 
@@ -14,7 +14,7 @@ const reposAndConnections = (state: RootState) => {
 };
 
 export const selectAllOffersPlusRepoAndConnection = createSelector(
-  [selectAllOffers, reposAndConnections],
+  [selectAllImportedOffers, reposAndConnections],
   (offers, state) => {
     return offers.map((offer) => {
       const repo = selectRepoById(state as RootState, offer.repoId);

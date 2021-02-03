@@ -1,8 +1,17 @@
 import matter from "gray-matter";
 import { gitFsHttp } from "../../shared.constants";
-import { OfferInRedux, OfferOnDisk, RepoInRedux } from "../../shared.types";
+import {
+  OfferInRedux,
+  OfferMine,
+  OfferOnDisk,
+  RepoInRedux,
+} from "../../shared.types";
 import { join } from "../fs/fs.service";
 import { log } from "./library.log";
+
+export const isOfferMine = (offer: OfferInRedux): offer is OfferMine => {
+  return offer.mine;
+};
 
 /**
  * Given an offer, convert it to a markdown & frontmatter string
