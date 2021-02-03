@@ -30,6 +30,10 @@ describe("tag.utils", () => {
         "baz_baz",
       ]);
     });
+
+    it("Returns an empty array for undefined #w0MmY2", () => {
+      expect(parseTags()).toEqual([]);
+    });
   });
 
   describe("hashifyTags()", () => {

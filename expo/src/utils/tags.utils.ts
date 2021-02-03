@@ -4,7 +4,11 @@ const DISALLOWED_REGEX = new RegExp("[^\\w-]", "g");
 
 const trimLeadingAndTrailingDashesAndUnderscores = trimChars("-_");
 
-export const parseTags = (input: string): string[] => {
+export const parseTags = (input?: string): string[] => {
+  if (typeof input === "undefined" || input.length === 0) {
+    return [];
+  }
+
   const tags = input
     .split(" ")
     .map((tag) => tag.replace(DISALLOWED_REGEX, ""))
