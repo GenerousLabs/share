@@ -21,7 +21,6 @@ export const initLogger = async () => {
     if (typeof result === "string" && result.length > 0) {
       const namespaces = result.split(",");
       DISABLED_NAMESPACES.push(...namespaces);
-      setDebug();
     }
   } catch (error) {
     console.error("Error setting disabled log namespaces #a6zeoO", error);
@@ -180,21 +179,11 @@ export const deleteLogs = async ({
   const filenames = await FileSystem.readDirectoryAsync(logDirPath);
 };
 
-export const setDebug = () => {
-  if (DISABLED_NAMESPACES.length === 0) {
-    return;
-  }
-  // DEBUG works by enabling, so prefix each of our disabled namespaces with a -
-  const namespaces = DISABLED_NAMESPACES.map((n) => `-${n}`).join(",");
-  process.env.DEBUG = `*,${namespaces}`;
-};
-
 export const disable = (namespace: string) => {
   if (DISABLED_NAMESPACES.indexOf(namespace) !== -1) {
     return;
   }
   DISABLED_NAMESPACES.push(namespace);
-  setDebug();
   AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
 };
 
@@ -203,7 +192,6 @@ export const enable = (namespace: string) => {
     (entry) => entry === namespace
   );
   DISABLED_NAMESPACES.splice(foundIndex, 1);
-  setDebug();
   AsyncStorage.setItem(DISABLED_STORAGE_KEY, DISABLED_NAMESPACES.join(","));
 };
 

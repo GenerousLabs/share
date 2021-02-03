@@ -6,7 +6,7 @@
 // TODO Remove this for production somehow
 process.env = {
   NODE_ENV: __DEV__ ? "development" : "production",
-  DEBUG: __DEV__ ? "*" : "",
+  DEBUG: __DEV__ ? "*,-expo-fs" : "",
 };
 
 import "./patch-FileReader";
