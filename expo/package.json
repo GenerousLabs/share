@@ -12,8 +12,11 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "setupFiles": [
+      "./jest.setup.js"
+    ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(react-native|my-project|react-native-button)/)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
     ]
   },
   "dependencies": {
@@ -92,6 +95,7 @@
     "@expo/metro-config": "^0.1.52",
     "@types/bluebird": "^3.5.33",
     "@types/debug": "^4.1.5",
+    "@types/jest": "^26.0.20",
     "@types/js-yaml": "^3.12.5",
     "@types/lodash": "^4.14.165",
     "@types/nanoid-dictionary": "^4.1.0",
@@ -99,11 +103,13 @@
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@types/react-redux": "^7.1.11",
+    "@types/react-test-renderer": "^17.0.0",
     "@types/redux-mock-store": "^1.0.2",
     "@types/uuid": "^8.3.0",
     "babel-plugin-macros": "^2.8.0",
     "jest-expo": "^40.0.0",
     "memfs": "^3.2.0",
+    "react-test-renderer": "^17.0.1",
     "redux-mock-store": "^1.5.4",
     "redux-saga-test-plan": "^4.0.1",
     "typescript": "^4.1.3"
