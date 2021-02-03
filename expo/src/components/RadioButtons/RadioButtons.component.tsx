@@ -35,7 +35,7 @@ const RadioButtons = ({
 export default RadioButtons;
 
 const styles = StyleSheet.create({
-  wrapper: { marginVertical: 4 },
+  wrapper: { marginVertical: 0 },
   checkboxContainer: {
     paddingVertical: 0,
     marginVertical: 3,
