@@ -6,12 +6,10 @@ import {
   createSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { KeysBase64 } from "git-encrypted";
 import { intersection, uniq } from "remeda";
-import { OfferInRedux, OfferOnDisk } from "../../shared.types";
+import { OfferInRedux } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
-import { getTimestampSeconds } from "../../utils/time.utils";
 
 export const REDUCER_KEY = "library" as const;
 
