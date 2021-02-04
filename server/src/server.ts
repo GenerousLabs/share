@@ -5,6 +5,7 @@ import express from "express";
 import { stat } from "fs/promises";
 import {
   CWD,
+  ENOENT,
   POSTOFFICE_PATH,
   REPOS_ROOT,
   REPO_TEMPLATE_PATH,
@@ -106,6 +107,12 @@ app.get("/postoffice/:boxId/reply", async (req, res) => {
     const message = await getReply({ id: req.params.boxId });
     res.send({ message });
   } catch (error) {
+    if (error.code === ENOENT) {
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+
     logger.error("Caught error in /postoffice/:boxId/reply GET #zCTGN3", {
       error,
     });
@@ -119,6 +126,15 @@ app.get("/postoffice/:boxId", async (req, res) => {
     const message = await getMessage({ id: req.params.boxId });
     res.send({ message });
   } catch (error) {
+    if (error.code === ENOENT) {
+      logger.info("Not found postoffice request #4txNq1", {
+        boxId: req.params.boxId,
+      });
+      res.writeHead(404);
+      res.end();
+      return;
+    }
+
     logger.error("Caught error in /postoffice/:boxId GET #8tV4rq", { error });
   }
 });
