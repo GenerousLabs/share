@@ -55,7 +55,7 @@
     "git-encrypted": "^0.4.1",
     "gray-matter": "^4.0.2",
     "isomorphic-git": "^1.8.0",
-    "isomorphic-git-remote-encrypted": "^0.4.1",
+    "isomorphic-git-remote-encrypted": "^0.4.2",
     "js-yaml": "^3.14.0",
     "jszip": "^3.5.0",
     "lodash": "^4.17.20",
