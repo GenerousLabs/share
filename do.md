@@ -10,6 +10,7 @@ only would be possible.
   - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
+- [ ] Update git-encrypted in expo
 - [ ] Remove the Settings view
   - Put it behind triple tapping the logo or something
 - [ ] Make a plan on deletion, correcting errors, etc
