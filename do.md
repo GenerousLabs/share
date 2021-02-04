@@ -10,12 +10,14 @@ only would be possible.
   - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
+- [ ] Remove the Settings view
+  - Put it behind triple tapping the logo or something
 - [ ] Make a plan on deletion, correcting errors, etc
   - What about a "tech view" screen?
-- [ ] Post offers and requests
+- [x] Post offers and requests
   - Waiting for design confirmation on how / where this happens
   - Define format on disk
-- [ ] Round of UI polishing
+- [x] Round of UI polishing
 
 ## Sprint 2 Nice to Have
 
