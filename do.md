@@ -26,6 +26,10 @@ only would be possible.
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
   - They will bubble errors, which potentially breaks the sagas
   - I'm mostly using them to await, but I might not want them to throw
+- [ ] Gracefully handle postoffice failures
+  - See TODO21 in the codebase
+  - If the server returns a 404, we currenty log it as an error
+  - Maybe we need to return an enum to handle expected failures
 
 # Sprint 1
 
