@@ -1,4 +1,4 @@
-import { encryptedInit } from "git-encrypted";
+import { createPassword, encryptedInit } from "git-encrypted";
 import matter from "gray-matter";
 import { gitApi } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp } from "../../shared.constants";
@@ -81,8 +81,9 @@ export const _createNewRepo = async ({
   // because that's the remote URL as seen from the perspective of the "source"
   // repository.
   const encryptedRemoteUrl = encryptThisRepo ? meRepoRemote.url : undefined;
+  const keyDerivationPassword = encryptThisRepo ? createPassword() : undefined;
   const remoteUrl = encryptThisRepo
-    ? `encrypted::${encryptedRemoteUrl}`
+    ? `encrypted::${keyDerivationPassword}::${encryptedRemoteUrl}`
     : meRepoRemote.url;
 
   // NOTE: This style of if syntax is required for TypeScript to accept that
@@ -91,6 +92,7 @@ export const _createNewRepo = async ({
     await encryptedInit({
       ...gitFsHttp,
       encryptedRemoteUrl,
+      keyDerivationPassword,
       gitApi,
       gitdir,
     });
