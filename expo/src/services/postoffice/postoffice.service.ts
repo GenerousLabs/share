@@ -85,6 +85,12 @@ export const getMessageFromPostoffice = async ({
     reply: typeof getReply === "boolean" ? getReply : false,
   });
   const result = await fetch(url);
+
+  if (result.status === 404) {
+    // TODO21 Handle 404 on replies gracefully, we don't know if they exist or not
+    throw new Error("Message does not exist. #GISvL4");
+  }
+
   const body: { message: string } = await result.json();
   if (typeof body.message !== "string") {
     throw new Error("Failed to fetch postoffice message. #KOjU1O");
