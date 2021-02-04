@@ -1,5 +1,7 @@
 import { join } from "path";
 
+export const __DEV__ = process.env.NODE_ENV === "production";
+
 // NOTE: We need to run `process.cwd()` here, when running it inside `join()` we
 // get the `dist/` folder. No idea why. Insanity.
 export const CWD = process.cwd();
@@ -27,5 +29,5 @@ export const MINIMUM_POSTOFFICE_ID_LENGTH = 12;
 // NOTE: These 3 are copied to `expo/src/shared.constants.ts` file and must be
 // manually kept in sync in both.
 export const READ_TOKENS_FILE_NAME = "read_tokens.txt" as const;
-export const MINIMUM_USERNAME_LENGTH = 3 as const;
-export const MINIMUM_TOKEN_LENGTH = 20 as const;
+export const MINIMUM_USERNAME_LENGTH = __DEV__ ? 1 : 3;
+export const MINIMUM_TOKEN_LENGTH = __DEV__ ? 1 : 20;
