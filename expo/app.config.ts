@@ -1,6 +1,6 @@
 import { ExpoConfig, ConfigContext } from "@expo/config";
 
-const __DEV__ = process.env.NODE_ENV !== ("production" as const);
+const __DEV__ = process.env.NODE_ENV !== "production";
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
