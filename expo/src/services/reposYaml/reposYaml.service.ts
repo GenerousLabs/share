@@ -1,12 +1,9 @@
-import { getKeysFromDisk, keysToBase64 } from "git-encrypted";
-import { getIsEncryptedRemoteUrl } from "isomorphic-git-remote-encrypted";
 import * as yaml from "js-yaml";
 import { pick } from "remeda";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { RepoInRedux, RepoYaml, RepoYamlSchema } from "../../shared.types";
 import { getKeysIfEncryptedRepo } from "../../utils/key.utils";
 import { doesFileExist, join } from "../fs/fs.service";
-import { getRepoPath } from "../repo/repo.service";
 
 /**
  * NAMING
