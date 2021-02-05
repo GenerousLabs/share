@@ -18,7 +18,7 @@ import commitAllSaga from "./sagas/commitAll.saga";
 import loadRepoFromFilesystemSaga, {
   loadRepoFromFilesystemSagaAction,
 } from "./sagas/loadRepoFromFilesystem.saga";
-import saveNewRepoToReduxSaga from "./sagas/saveNewRepoToRedux.saga";
+import { saveNewRepoToReduxAndReposYamlSaga } from "./sagas/saveNewRepoToReduxAndReposYaml.saga";
 
 const log = rootLogger.extend("repo.saga");
 
@@ -26,10 +26,6 @@ export {
   sagaAction as commitAllSagaAction,
   sagaEffect as commitAllEffect,
 } from "./sagas/commitAll.saga";
-export {
-  sagaAction as saveNewRepoToReduxSagaAction,
-  sagaEffect as saveNewRepoToReduxEffect,
-} from "./sagas/saveNewRepoToRedux.saga";
 
 export function* loadRepoContentsEffect(
   action: ReturnType<typeof loadRepoContentsSagaAction>
@@ -100,9 +96,9 @@ export function* repoStartupEffect() {
 
 export default function* repoSaga() {
   yield all([
-    saveNewRepoToReduxSaga(),
-    loadRepoFromFilesystemSaga(),
     commitAllSaga(),
+    loadRepoFromFilesystemSaga(),
+    saveNewRepoToReduxAndReposYamlSaga(),
     takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
     takeEvery(startupSagaAction, repoStartupEffect),
   ]);

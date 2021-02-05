@@ -37,7 +37,16 @@ const Accept = ({
     async (data: Inputs) => {
       setIsSubmitting(true);
       log.debug("Got accept params #ORqBDG", data);
-      await dispatch(acceptInviteSagaAction(data));
+
+      const { inviteCode, ...rest } = data;
+
+      await dispatch(
+        acceptInviteSagaAction({
+          ...data,
+          postofficeCode: inviteCode,
+        })
+      );
+
       setIsFinished(true);
       setIsSubmitting(false);
     },

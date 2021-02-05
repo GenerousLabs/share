@@ -1,15 +1,7 @@
-import { dispatch } from "redux-saga-promise-actions";
 import { call, putResolve } from "typed-redux-saga/macro";
-import { POSTOFFICE_MESSAGE_SEPARATOR } from "../../../shared.constants";
-import { ConnectionInRedux } from "../../../shared.types";
+import { ConnectionInRedux, InvitationSchema } from "../../../shared.types";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
-import { confirmConnectionSagaAction } from "../../connection/sagas/confirmConnection.saga";
-import {
-  ConnectionCodeType,
-  parseSharingCode,
-} from "../../connection/connection.service";
-import { setPostofficeCode } from "../../connection/connection.state";
-import { subscribeToLibrarySagaAction } from "../../library/sagas/subscribeToLibrary.saga";
+import { confirmInviteSagaAction } from "../../connection/sagas/confirmInvite.saga";
 import { rootLogger } from "../../log/log.service";
 import { getMessageFromPostoffice } from "../postoffice.service";
 
@@ -33,27 +25,16 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
       getReply: true,
     });
 
-    const [confirmCode, sharingCode] = message.split(
-      POSTOFFICE_MESSAGE_SEPARATOR
-    );
+    const {
+      connectionRepoRemoteUrl: theirConnectionRepoRemoteUrl,
+      libraryRemoteUrl: theirLibraryRemoteUrl,
+    } = InvitationSchema.parse(JSON.parse(message));
 
-    // Remove the postofficeCode so we don't try to load this again.
-    yield dispatch(setPostofficeCode({ id: connection.id, code: undefined }));
-
-    yield dispatch(
-      confirmConnectionSagaAction({ connectionId: connection.id, confirmCode })
-    );
-
-    const params = yield* call(parseSharingCode, {
-      code: sharingCode,
-      type: ConnectionCodeType.SHARING,
-    });
-
-    yield dispatch(
-      subscribeToLibrarySagaAction({
-        name: connection.name,
-        connectionId: connection.id,
-        remoteUrl: params.theirRemoteUrl,
+    yield* putResolve(
+      confirmInviteSagaAction({
+        connection,
+        connectionRepoRemoteUrl: theirConnectionRepoRemoteUrl,
+        libraryRemoteUrl: theirLibraryRemoteUrl,
       })
     );
   },

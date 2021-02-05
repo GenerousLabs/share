@@ -1,18 +1,24 @@
-import { customAlphabet } from "nanoid/non-secure";
 import nolookalikes from "nanoid-dictionary/nolookalikes-safe";
-import { call, select } from "typed-redux-saga/macro";
+import { customAlphabet } from "nanoid/non-secure";
+import { call, select, put } from "typed-redux-saga/macro";
+import { RepoShareInRedux } from "../../../shared.types";
+import { generateId } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
+import { addOneRepoShare } from "../../connection/connection.state";
 import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { selectCommandRepo, selectRepoById } from "../../repo/repo.state";
 import { addReadAuthTokenForRepo } from "../commands.service";
 
 export const _generateToken = customAlphabet(nolookalikes, 22);
 
-const saga = createAsyncPromiseSaga<{ repoId: string }, { token: string }>({
+const saga = createAsyncPromiseSaga<
+  { repoId: string; connectionId: string },
+  RepoShareInRedux
+>({
   prefix: "SHARE/commands/createReadAuthTokenforRepo",
   *effect(action) {
-    const { repoId } = action.payload;
+    const { repoId, connectionId } = action.payload;
 
     const token = _generateToken();
 
@@ -35,10 +41,23 @@ const saga = createAsyncPromiseSaga<{ repoId: string }, { token: string }>({
       })
     );
 
-    return { token };
+    const id = yield* call(generateId);
+
+    const repoShare: RepoShareInRedux = {
+      id,
+      repoId,
+      connectionId,
+      token,
+    };
+
+    yield* put(addOneRepoShare(repoShare));
+
+    return repoShare;
   },
 });
 
-export const { request, success, failure, effect } = saga;
-const createReadAuthTokenforRepoSaga = saga.saga;
-export default createReadAuthTokenforRepoSaga;
+export const {
+  request: createReadAuthTokenForRepoSagaAction,
+  saga: createReadAuthTokenForRepoSaga,
+  effect,
+} = saga;

@@ -3,7 +3,7 @@ import { call, put } from "typed-redux-saga/macro";
 import { RepoShareInRedux } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
-import { createReadAuthTokenForRepoSagaAction } from "../../commands/commands.saga";
+import { createReadAuthTokenForRepoSagaAction } from "../../commands/sagas/createReadAuthTokenForRepo.saga";
 import { addOneRepoShare } from "../../connection/connection.state";
 
 const saga = createAsyncPromiseSaga<
@@ -23,6 +23,7 @@ const saga = createAsyncPromiseSaga<
     const tokenResult = yield putResolve(
       createReadAuthTokenForRepoSagaAction({
         repoId,
+        connectionId,
       })
     );
     const { token }: { token: string } = tokenResult as any;
@@ -37,6 +38,8 @@ const saga = createAsyncPromiseSaga<
     };
 
     yield* put(addOneRepoShare(repoShare));
+
+    // TODO1 Construct a sharing URL here like `enrypted::passp::url`
 
     // - Add it to the connection
     return { repoShare };
