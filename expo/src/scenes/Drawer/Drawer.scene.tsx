@@ -1,8 +1,12 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
-import { ScrollView, TouchableHighlight } from "react-native-gesture-handler";
+import {
+  ScrollView,
+  TouchableHighlight,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
 import { RootDrawerParamList } from "../../shared.types";
 
@@ -60,15 +64,42 @@ const DrawerScene = ({
   // navigation: DrawerNavigationProp<DrawerParamList>;
   navigation: any;
 }) => {
+  const [logoTapped, setLogoTapped] = useState({ tapCount: 0, tapTime: 0 });
+
+  const maybeShowSettings = () => {
+    const TAP_IN_TIME_THRESHOLD = 800;
+    const MIN_TAP_IN_TIME_COUNT = 3;
+    const currentTime = Date.now();
+    const tappedInTime =
+      logoTapped.tapCount === 0 ||
+      currentTime - logoTapped.tapTime < TAP_IN_TIME_THRESHOLD;
+
+    if (tappedInTime) {
+      if (logoTapped.tapCount + 1 < MIN_TAP_IN_TIME_COUNT) {
+        setLogoTapped({
+          tapCount: logoTapped.tapCount + 1,
+          tapTime: currentTime,
+        });
+      } else {
+        navigation.navigate("Settings");
+        setLogoTapped({ tapCount: 0, tapTime: 0 });
+      }
+    } else {
+      setLogoTapped({ tapCount: 0, tapTime: 0 });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.innerContainer}>
           <View style={styles.logoWrapper}>
-            <Image
-              style={styles.logo}
-              source={require("../../../assets/images/drawerLogo.png")}
-            />
+            <TouchableWithoutFeedback onPress={maybeShowSettings}>
+              <Image
+                style={styles.logo}
+                source={require("../../../assets/images/drawerLogo.png")}
+              />
+            </TouchableWithoutFeedback>
           </View>
           <View style={styles.menu}>
             {menuItems.map((item) => (
