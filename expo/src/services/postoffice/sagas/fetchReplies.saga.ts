@@ -3,7 +3,7 @@ import { call, putResolve } from "typed-redux-saga/macro";
 import { POSTOFFICE_MESSAGE_SEPARATOR } from "../../../shared.constants";
 import { ConnectionInRedux } from "../../../shared.types";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
-import { confirmConnectionSagaAction } from "../../connection/connection.saga";
+import { confirmConnectionSagaAction } from "../../connection/sagas/confirmConnection.saga";
 import {
   ConnectionCodeType,
   parseSharingCode,
@@ -54,7 +54,6 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
         name: connection.name,
         connectionId: connection.id,
         remoteUrl: params.theirRemoteUrl,
-        keysBase64: params.theirKeysBase64,
       })
     );
   },

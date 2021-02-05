@@ -6,7 +6,7 @@ import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { createInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { createInviteSagaAction } from "../../../../services/connection/sagas/createInvite.saga";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
@@ -33,9 +33,7 @@ const Invite = ({
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
-      const { inviteCode, postofficeCode } = await dispatch(
-        createInviteSagaAction(data)
-      );
+      const { postofficeCode } = await dispatch(createInviteSagaAction(data));
       setConnectionName(data.name);
       setInviteCode(postofficeCode);
       setIsSubmitting(false);

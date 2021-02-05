@@ -6,7 +6,7 @@ import { Input, Text, Button } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { acceptInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { acceptInviteSagaAction } from "../../../../services/connection/sagas/acceptInvite.saga";
 import { rootLogger } from "../../../../services/log/log.service";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
