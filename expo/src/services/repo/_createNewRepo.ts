@@ -1,8 +1,9 @@
-import { createPassword, encryptedInit } from "git-encrypted";
+import { encryptedInit } from "git-encrypted";
 import matter from "gray-matter";
 import { gitApi } from "isomorphic-git-remote-encrypted";
 import { gitFsHttp } from "../../shared.constants";
 import { RepoInRedux, RepoOnDisk } from "../../shared.types";
+import { createPassword } from "../../utils/password.utils";
 import { getTimestampSeconds } from "../../utils/time.utils";
 import { doesDirectoryExist, join } from "../fs/fs.service";
 import {
