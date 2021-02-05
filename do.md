@@ -20,6 +20,10 @@ only would be possible.
   - Define format on disk
 - [x] Round of UI polishing
 - [ ] Move postoffice URL to config
+- [ ] Check deep linking in exp://
+- [ ] Change settings top right to help / home link
+  - Also add note to homepage that it is top right
+- [ ] Add text to invite link
 
 ## Sprint 2 Nice to Have
 
@@ -32,6 +36,7 @@ only would be possible.
   - See TODO21 in the codebase
   - If the server returns a 404, we currenty log it as an error
   - Maybe we need to return an enum to handle expected failures
+- [ ] Handle failure of postoffice server
 
 # Sprint 1
 
