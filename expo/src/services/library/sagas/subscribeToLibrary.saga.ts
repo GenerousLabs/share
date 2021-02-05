@@ -47,7 +47,6 @@ const saga = createAsyncPromiseSaga<
 
     yield* call(cloneNewLibraryRepo, { path, remoteUrl, keysBase64 });
 
-    // TODO Fix typing here putResolve return type
     const repoOnDisk = yield* call(getRepoParamsFromFilesystem, { path });
 
     const repo = { ...repoOnDisk, ...repoYaml };
