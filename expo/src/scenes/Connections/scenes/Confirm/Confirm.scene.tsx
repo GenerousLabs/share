@@ -57,10 +57,10 @@ const Confirm = ({
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Waiting for a reply" goBack={goBack} />
       <ScrollView>
-        <View style={styles.ScrollViewInner}>
+        <View style={styles.contentContainer}>
           <Text>
             Waiting for{" "}
             <Text style={{ fontWeight: "bold" }}>{connection?.name}</Text> to
