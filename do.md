@@ -19,6 +19,7 @@ only would be possible.
   - Waiting for design confirmation on how / where this happens
   - Define format on disk
 - [x] Round of UI polishing
+- [ ] Move postoffice URL to config
 
 ## Sprint 2 Nice to Have
 
