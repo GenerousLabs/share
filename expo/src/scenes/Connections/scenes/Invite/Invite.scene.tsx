@@ -55,8 +55,8 @@ const Invite = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Name"
-                      style={styles.input}
+                      placeholder="Name (only seen by you)"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
@@ -70,13 +70,12 @@ const Invite = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Notes"
-                      style={styles.inputMultiline}
+                      placeholder="Notes (optional)"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       multiline={true}
-                      numberOfLines={5}
                     />
                   )}
                   name="notes"
@@ -111,16 +110,7 @@ export default Invite;
 const styles = StyleSheet.create({
   ...sharedStyles,
   input: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
-  },
-  inputMultiline: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
+    fontSize: 14,
   },
   authButtonWrapper: {
     marginTop: 40,
