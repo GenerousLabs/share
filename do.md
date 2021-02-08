@@ -28,6 +28,11 @@ only would be possible.
   - Also add note to homepage that it is top right
 - [ ] Add text to invite link
 - [x] Explore markdown in ReactNative
+- [ ] Create a basic web page
+- [ ] Web links
+  - [x] Create the web page
+  - [ ] Capture the links
+- [x] Switch postoffice codes to \_ separator
 
 ## Sprint 2 Nice to Have
 
