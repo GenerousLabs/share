@@ -31,11 +31,11 @@ const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
         text: title || "Generous Share",
       }}
       rightComponent={{
-        icon: "settings",
+        icon: "home",
         onPress: () => {
           // Typing here doesn't seem to know that Settings is in both possible
           // types, so cast to any.
-          (navigation as any).navigate("Settings");
+          (navigation as any).navigate("Home");
         },
       }}
     />
