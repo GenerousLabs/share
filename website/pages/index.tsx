@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import Head from "next/head";
+import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const Home = () => {
@@ -7,9 +7,9 @@ const Home = () => {
   const [token, setToken] = useState("");
   const [username, setUsername] = useState("");
   const [invite, setInvite] = useState("");
-  const [isExistingUser, setIsExistingUser] = useState(false);
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(undefined);
 
-  useEffect(() => {
+  const readHash = useCallback(() => {
     const hash = window.location.hash;
     if (hash.startsWith("#/token/")) {
       const [, , token, username] = hash.split("/");
@@ -21,11 +21,20 @@ const Home = () => {
       setUsername(username);
     }
     setIsBooting(false);
+  }, [setIsBooting, setToken, setUsername, setInvite]);
+
+  useEffect(() => {
+    readHash();
+    window.onpopstate = () => readHash();
   }, []);
 
   if (isBooting) {
     return null;
   }
+
+  const isToken = token !== "";
+  const isInvite = !isToken && invite !== "";
+  console.log("Running #oxD7Q8", isToken, isInvite);
 
   return (
     <div className={styles.Wrapper}>
@@ -36,7 +45,7 @@ const Home = () => {
 
       <main className={styles.App}>
         <h1>Generous Share</h1>
-        {invite === "" ? null : (
+        {!isInvite ? null : (
           <>
             <p>Hey {username}, welcome to the revolution.</p>
             <p>
@@ -47,48 +56,64 @@ const Home = () => {
             </p>
             <p>
               <button
-                onSubmit={() => {
+                className={styles.button}
+                onClick={() => {
                   setIsExistingUser(true);
                 }}
               >
                 Yes
               </button>{" "}
               <button
-                onSubmit={() => {
+                className={styles.button}
+                onClick={() => {
                   setIsExistingUser(false);
                 }}
               >
                 No
               </button>
             </p>
-            <p>
-              Yes? - AWESOME,{" "}
-              <a href="exp://expo.host/generouslabs/share?invitecode=">
-                click here to connect with Johannes
-              </a>
-            </p>
-            <p>No? - No worries, we'll be happy to help you get setup.</p>
-            <p>
-              The process is a little convoluted. Unfortunately this kind of
-              revolutionary software requires a little work.
-            </p>
-            <p>
-              To get started, join the{" "}
-              <a href="https://t.me/" target="_blank" rel="noopener noreferrer">
-                Generous telegram group
-              </a>
-              . Post a message and say "I want an account with username xxx".
-              Choose whatever username you like, we'll let you know if it's not
-              available.
-            </p>
-            <p>
-              Somebody will create an account for you and send you an
-              installation link. It's a manual process, so unfortunately you
-              might need to wait a day or two.
-            </p>
+            {typeof isExistingUser === "undefined" ? null : isExistingUser ? (
+              <>
+                <p>AWESOME! - Welcome back</p>
+                <p>
+                  <a
+                    className={styles.buttonLink}
+                    href={`exp://exp.dev/generouslabs/share?invitecode=${invite}`}
+                  >
+                    Click here to accept the invitation
+                  </a>
+                </p>
+              </>
+            ) : (
+              <>
+                <p>No? - No worries, we'll be happy to help you get setup.</p>
+                <p>
+                  The process is a little convoluted. Unfortunately this kind of
+                  revolutionary software requires a little work.
+                </p>
+                <p>
+                  To get started, join the{" "}
+                  <a
+                    href="https://t.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Generous telegram group
+                  </a>
+                  . Post a message and say "I want an account with username
+                  xxx". Choose whatever username you like, we'll let you know if
+                  it's not available.
+                </p>
+                <p>
+                  Somebody will create an account for you and send you an
+                  installation link. It's a manual process, so unfortunately you
+                  might need to wait a day or two.
+                </p>
+              </>
+            )}
           </>
         )}
-        {token === "" ? null : (
+        {!isToken ? null : (
           <>
             <p>Hey {username}, welcome to the revolution.</p>
             <p>
@@ -129,7 +154,7 @@ const Home = () => {
             </p>
             <p>
               <a
-                href="exp://exp.dev/generouslabs/share?username=foo&token=bar&invitecode=baz"
+                href={`exp://exp.dev/generouslabs/share?username=${username}&token=${token}&invitecode=${invite}`}
                 className={styles.buttonLink}
               >
                 Launch {username}'s Generous Share app (inside Expo Go)

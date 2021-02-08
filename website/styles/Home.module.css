@@ -17,3 +17,14 @@
   margin: 12px;
   line-height: 3rem;
 }
+
+.button {
+  border: 1px solid black;
+  background-color: white;
+  min-width: 60px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin: 12px;
+}
