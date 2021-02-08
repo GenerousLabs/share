@@ -45,13 +45,15 @@ const ConnectionsSingle = ({
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title={connection.name} goBack={navigation.goBack} />
-      <ScrollView>
-        <View style={styles.ScrollViewInner}>
-          <Text>Messaging is coming soon...</Text>
-        </View>
-      </ScrollView>
+      <View style={styles.contentContainer}>
+        <ScrollView>
+          <View style={styles.ScrollViewInner}>
+            <Text>Messaging is coming soon...</Text>
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };
