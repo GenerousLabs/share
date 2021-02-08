@@ -2,13 +2,30 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
+import MarkdownRenderer from "react-native-markdown-display";
 import Header from "../../components/Header/Header.component";
+import Markdown from "../../components/Markdown/Markdown.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 
 const log = rootLogger.extend("Home");
+
+const md = `# A heading one
+
+- A list
+- another item
+
+## Check the menu
+
+> And a little blockquote
+
+* Check the menu
+* For **more**
+* And _Check_
+
+Check the menu`;
 
 const Home = ({
   navigation,
@@ -20,13 +37,7 @@ const Home = ({
       <Header />
       <View style={styles.contentContainer}>
         <WarningBox />
-        <Text h2>Welcome</Text>
-        <Text>Check the menu top left.</Text>
-        <Text>
-          We're still in the early testing phase, so all data will be deleted
-          before we launch this version. Thanks for helping to test it. Let us
-          know if you find any issues.
-        </Text>
+        <Markdown content={md} />
       </View>
     </View>
   );
