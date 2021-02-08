@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjsBase, { Dayjs } from "dayjs";
 import utcPlugin from "dayjs/plugin/utc";
 import * as FileSystem from "expo-file-system";
-import { LOGS_PATH } from "../../shared.constants";
+import { ensureDirectoryExists } from "git-encrypted";
+import { gitFsHttp, LOGS_PATH } from "../../shared.constants";
 import { appendLineTofile, getFileContents, join } from "../fs/fs.service";
 
 const DISABLED_NAMESPACES: string[] = [];
@@ -13,18 +14,25 @@ const LINE_PART_SEPARATOR = " " as const;
 const NAMESPACE_DELIMITER = ":" as const;
 
 export const initLogger = async () => {
-  // NOTE: This is a little wacky. It's async but we start sync. That means the
-  // settings are loaded AFTER the first sagas are invoked, etc. It's also ugly,
-  // pushing and popping from arrays and so on. But, it'll have to do for now...
-  try {
-    const result = await AsyncStorage.getItem(DISABLED_STORAGE_KEY);
-    if (typeof result === "string" && result.length > 0) {
-      const namespaces = result.split(",");
-      DISABLED_NAMESPACES.push(...namespaces);
-    }
-  } catch (error) {
-    console.error("Error setting disabled log namespaces #a6zeoO", error);
-  }
+  await Promise.all([
+    async () => {
+      await ensureDirectoryExists({ fs: gitFsHttp.fs, path: LOGS_PATH });
+    },
+    async () => {
+      // NOTE: This is a little wacky. It's async but we start sync. That means the
+      // settings are loaded AFTER the first sagas are invoked, etc. It's also ugly,
+      // pushing and popping from arrays and so on. But, it'll have to do for now...
+      try {
+        const result = await AsyncStorage.getItem(DISABLED_STORAGE_KEY);
+        if (typeof result === "string" && result.length > 0) {
+          const namespaces = result.split(",");
+          DISABLED_NAMESPACES.push(...namespaces);
+        }
+      } catch (error) {
+        console.error("Error setting disabled log namespaces #a6zeoO", error);
+      }
+    },
+  ]);
 };
 
 const logLevels = ["debug", "info", "warn", "error"] as const;
@@ -136,6 +144,16 @@ export const _logFunctionFactory = (namespace: string): LogFunction => (
   } catch (error) {
     // Silently ignore console fail errors
   }
+
+  // TODO TODOLOGS - Fix race condition here
+  /**
+   * During app boot, there can be many calls to this in sequence, each one
+   * checks if the logs directory exists, and then each one finds it does not,
+   * then each one tries to create it, all in parallel, creating a wonderful
+   * race condition. This is partially addressed by ensuring the logs directory
+   * exists before the app loads, but not really because logging starts
+   * immediately.
+   */
 
   // NOTE: We don't await here, we want `_log()` to return instantly
   const filepath = _getFilePath(filename);

@@ -64,3 +64,18 @@ export const createAsyncPromiseSaga = <P, R>({
     effect,
   };
 };
+
+export type ExtractPromiseResolveType<
+  T = PromiseAction<any, any, any>
+> = T extends PromiseAction<any, any, infer R> ? R : never;
+
+/**
+ * This is a bit of a headache, but I can't figure out how to get all the types
+ * to play nicely together. Once the typing issue is solved, we can remove all
+ * of the calls to this.
+ */
+export const getAsyncPromiseResolveValue = <
+  T extends PromiseAction<any, any, any>
+>(
+  resolved: T
+) => resolved as ExtractPromiseResolveType<T>;

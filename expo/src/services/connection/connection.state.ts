@@ -78,6 +78,9 @@ export const makeSelectConnectionAndRepoById = (connectionId: string) =>
     }
   );
 
-export const { selectAll: selectAllRepoShares } = repoShareAdapter.getSelectors(
+export const {
+  selectAll: selectAllRepoShares,
+  selectById: selectRepoShareById,
+} = repoShareAdapter.getSelectors(
   (state: RootState) => state[REDUCER_KEY].repoShares
 );

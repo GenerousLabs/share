@@ -31,6 +31,7 @@ const LibraryForm = () => {
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
+            autoCapitalize="words"
           />
         )}
         name="title"

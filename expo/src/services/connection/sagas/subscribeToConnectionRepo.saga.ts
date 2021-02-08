@@ -1,6 +1,6 @@
-import { call, putResolve } from "typed-redux-saga/macro";
+import { call, put, putResolve } from "typed-redux-saga/macro";
 import { RepoType } from "../../../shared.constants";
-import { RepoYaml } from "../../../shared.types";
+import { RepoInRedux, RepoYaml } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import {
@@ -10,18 +10,20 @@ import {
 } from "../../repo/repo.service";
 import { loadRepoFromFilesystemSagaAction } from "../../repo/sagas/loadRepoFromFilesystem.saga";
 import { saveNewRepoToReduxAndReposYamlSagaAction } from "../../repo/sagas/saveNewRepoToReduxAndReposYaml.saga";
+import { updateOneConnectionAction } from "../connection.state";
 
 const saga = createAsyncPromiseSaga<
   {
-    remoteUrl: string;
-    name: string;
     connectionId: string;
+    remoteUrl: string;
   },
-  void
+  {
+    repo: RepoInRedux;
+  }
 >({
-  prefix: "SHARE/library/subscribeToLibrary",
+  prefix: "SHARE/connection/subscribeToConnectionRepo",
   *effect(action) {
-    const { name, connectionId, remoteUrl } = action.payload;
+    const { connectionId, remoteUrl } = action.payload;
 
     const id = yield* call(generateId);
     const type = RepoType.library;
@@ -31,7 +33,6 @@ const saga = createAsyncPromiseSaga<
     const repoYaml: RepoYaml = {
       id,
       isReadOnly: true,
-      name,
       type,
       remoteUrl,
       connectionId,
@@ -45,6 +46,15 @@ const saga = createAsyncPromiseSaga<
 
     yield* putResolve(saveNewRepoToReduxAndReposYamlSagaAction({ repo }));
 
+    yield* put(
+      updateOneConnectionAction({
+        id: connectionId,
+        changes: {
+          theirRepoId: repo.id,
+        },
+      })
+    );
+
     // NOTE: This must be invoked after the `addOneRepoAction()` has successfully
     // dispatched because this method requires the repo to exist in redux.
     yield* putResolve(
@@ -52,14 +62,14 @@ const saga = createAsyncPromiseSaga<
         repoYaml,
       })
     );
+
+    return {
+      repo,
+    };
   },
 });
 
 export const {
-  request: subscribeToLibrarySagaAction,
-  success: subscribeToLibrarySuccess,
-  failure: subscribeToLibraryError,
-  effect,
+  request: subscribeToConnectionRepoSagaAction,
+  saga: subscribeToConnectionRepoSaga,
 } = saga;
-const subscribeToLibrarySaga = saga.saga;
-export default subscribeToLibrarySaga;

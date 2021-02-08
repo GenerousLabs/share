@@ -3,18 +3,15 @@ import * as Updates from "expo-updates";
 import { ensureDirectoryExists } from "git-encrypted";
 import { purgeStoredState } from "redux-persist";
 import { all, takeEvery } from "redux-saga/effects";
-import { call, put } from "typed-redux-saga/macro";
+import { call, put, putResolve } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
 import { createNewLibraryEffect } from "../library/library.saga";
 import { createNewLibrarySagaAction } from "../library/library.state";
 import { rootLogger } from "../log/log.service";
-import {
-  saveNewRepoToReduxEffect,
-  saveNewRepoToReduxSagaAction,
-} from "../repo/repo.saga";
 import { createCommandsRepo, createMeRepo } from "../repo/repo.service";
+import { saveNewRepoToReduxAndReposYamlSagaAction } from "../repo/sagas/saveNewRepoToReduxAndReposYaml.saga";
 import { maybeStartupSagaAction } from "../startup/startup.state";
 import { persistConfig } from "../store/store.config";
 import {
@@ -36,15 +33,14 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
     yield* call(writeConfigToFilesystem, { config });
 
     const meRepo = yield* call(createMeRepo);
-    yield* call(
-      saveNewRepoToReduxEffect,
-      saveNewRepoToReduxSagaAction({ repo: meRepo })
+
+    yield* putResolve(
+      saveNewRepoToReduxAndReposYamlSagaAction({ repo: meRepo })
     );
 
     const commandsRepo = yield* call(createCommandsRepo);
-    yield* call(
-      saveNewRepoToReduxEffect,
-      saveNewRepoToReduxSagaAction({ repo: commandsRepo })
+    yield* putResolve(
+      saveNewRepoToReduxAndReposYamlSagaAction({ repo: commandsRepo })
     );
 
     // Create an empty library to start

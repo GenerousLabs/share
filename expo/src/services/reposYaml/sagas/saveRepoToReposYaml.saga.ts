@@ -1,27 +1,22 @@
-import { createAction } from "@reduxjs/toolkit";
-import { call, put, takeEvery } from "typed-redux-saga/macro";
+import { call } from "typed-redux-saga/macro";
 import { RepoInRedux } from "../../../shared.types";
-import { makeErrorActionCreator } from "../../../utils/errors.utils";
+import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { rootLogger } from "../../log/log.service";
 import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { addNewRepoToReposYaml } from "../reposYaml.service";
 
 const log = rootLogger.extend("repoYaml").extend("saveRepoToReposYaml");
 
-export const saveRepoToReposYamlSagaAction = createAction<{
-  repo: RepoInRedux;
-}>("SHARE/reposYaml/saveRepoToReposYaml");
-export const saveRepoToReposYamlError = makeErrorActionCreator(
-  saveRepoToReposYamlSagaAction
-);
+const saga = createAsyncPromiseSaga<
+  {
+    repo: RepoInRedux;
+  },
+  void
+>({
+  prefix: "SHARE/reposYaml/saveRepoToReposYaml",
+  *effect(action) {
+    log.debug("addOneRepoEffect() #K2X6P8", { action });
 
-export function* saveRepoToReposYamlEffect(
-  action: ReturnType<typeof saveRepoToReposYamlSagaAction>
-) {
-  // Write the repo into our `repos.yaml` file
-  log.debug("addOneRepoEffect() #K2X6P8", { action });
-
-  try {
     yield* call(addNewRepoToReposYaml, action.payload);
 
     yield* call(
@@ -31,16 +26,10 @@ export function* saveRepoToReposYamlEffect(
         repoId: action.payload.repo.id,
       })
     );
-  } catch (error) {
-    yield* put(
-      saveRepoToReposYamlError({
-        message: "saveRepoToReposYamlEffect() error #gjfMBB",
-        error,
-      })
-    );
-  }
-}
+  },
+});
 
-export default function* saveRepoToReposYamlSaga() {
-  yield takeEvery(saveRepoToReposYamlSagaAction, saveRepoToReposYamlEffect);
-}
+export const {
+  request: saveRepoToReposYamlSagaAction,
+  saga: saveRepoToReposYamlSaga,
+} = saga;

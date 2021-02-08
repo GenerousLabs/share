@@ -11,6 +11,10 @@ only would be possible.
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
 - [ ] Update git-encrypted in expo
+  - URLs are now self contained, no keys required
+  - Change invite codes, INVITE_base64encodedURL ?
+  - Ignore the codes and use the postoffice?
+    - Fall back to actual URLs? - Advanced use case anyway
 - [ ] Remove the Settings view
   - Put it behind triple tapping the logo or something
 - [ ] Make a plan on deletion, correcting errors, etc
@@ -37,6 +41,10 @@ only would be possible.
   - If the server returns a 404, we currenty log it as an error
   - Maybe we need to return an enum to handle expected failures
 - [ ] Handle failure of postoffice server
+- [ ] Refactor all sagas
+  - All sagas are named exports (no more default export)
+  - All sagas refactored to use the `createAsyncPromiseSaga()` helper
+- [ ] Block navigation during form submission
 
 # Sprint 1
 

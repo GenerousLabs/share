@@ -6,7 +6,7 @@ import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { createInviteSagaAction } from "../../../../services/connection/connection.saga";
+import { createInviteSagaAction } from "../../../../services/connection/sagas/createInvite.saga";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
@@ -33,9 +33,7 @@ const Invite = ({
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
-      const { inviteCode, postofficeCode } = await dispatch(
-        createInviteSagaAction(data)
-      );
+      const { postofficeCode } = await dispatch(createInviteSagaAction(data));
       setConnectionName(data.name);
       setInviteCode(postofficeCode);
       setIsSubmitting(false);
@@ -55,11 +53,12 @@ const Invite = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Name"
-                      style={styles.input}
+                      placeholder="Name (only seen by you)"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
+                      autoCapitalize="words"
                     />
                   )}
                   name="name"
@@ -70,13 +69,12 @@ const Invite = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Notes"
-                      style={styles.inputMultiline}
+                      placeholder="Notes (optional)"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       multiline={true}
-                      numberOfLines={5}
                     />
                   )}
                   name="notes"
@@ -111,16 +109,7 @@ export default Invite;
 const styles = StyleSheet.create({
   ...sharedStyles,
   input: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
-  },
-  inputMultiline: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
+    fontSize: 14,
   },
   authButtonWrapper: {
     marginTop: 40,

@@ -144,6 +144,7 @@ const OfferForm = ({
                       ? "There is an error in the title"
                       : "eg. Pasta machine"
                   }
+                  autoCapitalize="words"
                 />
               )}
               name="title"
