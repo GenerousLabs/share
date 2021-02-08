@@ -28,6 +28,7 @@ only would be possible.
 - [ ] Change settings top right to help / home link
   - Also add note to homepage that it is top right
 - [ ] Add text to invite link
+- [ ] Explore markdown in ReactNative
 
 ## Sprint 2 Nice to Have
 
