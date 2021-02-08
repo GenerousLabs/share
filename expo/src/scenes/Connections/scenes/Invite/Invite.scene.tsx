@@ -1,12 +1,13 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Share, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { createInviteSagaAction } from "../../../../services/connection/sagas/createInvite.saga";
+import { getShareInviteMessage } from "../../../../services/messages/messages.service";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
@@ -95,6 +96,17 @@ const Invite = ({
                   <Text style={{ fontWeight: "bold" }}>{connectionName}</Text>
                 </Text>
                 <Input value={inviteCode} />
+
+                <Button
+                  title="Share this invite code"
+                  onPress={() => {
+                    const shareMessage = getShareInviteMessage({
+                      code: inviteCode,
+                    });
+
+                    Share.share({ message: shareMessage });
+                  }}
+                />
               </>
             )}
           </View>

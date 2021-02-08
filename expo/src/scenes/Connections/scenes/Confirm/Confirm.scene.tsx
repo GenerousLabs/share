@@ -5,6 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { makeSelectConnectionAndRepoById } from "../../../../services/connection/connection.state";
+import { getShareInviteMessage } from "../../../../services/messages/messages.service";
 import { sharedStyles } from "../../../../shared.styles";
 import { log as parentLogger } from "../../Connections.log";
 
@@ -56,7 +57,8 @@ const Confirm = ({
                 );
               }
 
-              const result = await Share.share({ message: code });
+              const message = getShareInviteMessage({ code });
+              const result = await Share.share({ message: message });
               if (result.action === Share.dismissedAction) {
                 log.debug("Sharing cancelled #g4hRzl");
               }
