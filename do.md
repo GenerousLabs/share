@@ -15,7 +15,7 @@ only would be possible.
   - Change invite codes, INVITE_base64encodedURL ?
   - Ignore the codes and use the postoffice?
     - Fall back to actual URLs? - Advanced use case anyway
-- [ ] Remove the Settings view
+- [x] Remove the Settings view
   - Put it behind triple tapping the logo or something
 - [ ] Make a plan on deletion, correcting errors, etc
   - What about a "tech view" screen?
