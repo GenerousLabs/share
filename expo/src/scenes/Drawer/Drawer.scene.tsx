@@ -5,10 +5,13 @@ import { Text } from "react-native-elements";
 import {
   ScrollView,
   TouchableHighlight,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
 import { RootDrawerParamList } from "../../shared.types";
+
+const SETTINGS_TAP_COUNT = 3;
+const MINIMUM_TAP_INTERVAL_MS = 800;
 
 const menuItems = [
   {
@@ -64,29 +67,30 @@ const DrawerScene = ({
   // navigation: DrawerNavigationProp<DrawerParamList>;
   navigation: any;
 }) => {
-  const [logoTapped, setLogoTapped] = useState({ tapCount: 0, tapTime: 0 });
+  const [settingsTapState, setSettingsTapState] = useState({
+    tapCount: 0,
+    lastTapTime: 0,
+  });
 
-  const maybeShowSettings = () => {
-    const TAP_IN_TIME_THRESHOLD = 800;
-    const MIN_TAP_IN_TIME_COUNT = 3;
-    const currentTime = Date.now();
-    const tappedInTime =
-      logoTapped.tapCount === 0 ||
-      currentTime - logoTapped.tapTime < TAP_IN_TIME_THRESHOLD;
+  const handleSettingsTap = () => {
+    const lastTapTime = Date.now();
+    const tapCount = settingsTapState.tapCount + 1;
 
-    if (tappedInTime) {
-      if (logoTapped.tapCount + 1 < MIN_TAP_IN_TIME_COUNT) {
-        setLogoTapped({
-          tapCount: logoTapped.tapCount + 1,
-          tapTime: currentTime,
-        });
-      } else {
-        navigation.navigate("Settings");
-        setLogoTapped({ tapCount: 0, tapTime: 0 });
-      }
-    } else {
-      setLogoTapped({ tapCount: 0, tapTime: 0 });
+    const timeSinceLastTap = lastTapTime - settingsTapState.lastTapTime;
+    const wasARepeatedTap = timeSinceLastTap < MINIMUM_TAP_INTERVAL_MS;
+
+    if (!wasARepeatedTap) {
+      setSettingsTapState({ tapCount: 1, lastTapTime });
+      return;
     }
+
+    if (tapCount >= SETTINGS_TAP_COUNT) {
+      navigation.navigate("Settings");
+      setSettingsTapState({ tapCount: 0, lastTapTime: 0 });
+      return;
+    }
+
+    setSettingsTapState({ tapCount, lastTapTime });
   };
 
   return (
@@ -94,12 +98,12 @@ const DrawerScene = ({
       <ScrollView>
         <View style={styles.innerContainer}>
           <View style={styles.logoWrapper}>
-            <TouchableWithoutFeedback onPress={maybeShowSettings}>
+            <TouchableOpacity onPress={handleSettingsTap}>
               <Image
                 style={styles.logo}
                 source={require("../../../assets/images/drawerLogo.png")}
               />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
           </View>
           <View style={styles.menu}>
             {menuItems.map((item) => (
