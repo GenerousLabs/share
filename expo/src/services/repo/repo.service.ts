@@ -140,17 +140,14 @@ export const getRepoParamsFromFilesystem = async ({
 export const cloneNewLibraryRepo = async ({
   path,
   remoteUrl,
-  keysBase64,
 }: {
   path: string;
   remoteUrl: string;
-  keysBase64: KeysBase64;
 }) => {
   await simpleEncryptedClone({
     ...gitFsHttp,
     dir: path,
     url: remoteUrl,
-    keysBase64,
   });
 };
 

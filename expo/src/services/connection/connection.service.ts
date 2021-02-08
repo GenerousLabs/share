@@ -1,23 +1,13 @@
-import * as zod from "zod";
-import { KeysBase64 } from "git-encrypted";
 import * as yaml from "js-yaml";
-import { gitFsHttp, INVITE_PREFIX, RepoType } from "../../shared.constants";
+import { gitFsHttp, RepoType } from "../../shared.constants";
 import {
   ConnectionInRedux,
   ConnectionOnDisk,
   ConnectionSchema,
-  RepoInRedux,
+  Invitation,
 } from "../../shared.types";
 import { getFileContents, join } from "../fs/fs.service";
 import { getRepoPath } from "../repo/repo.service";
-import { createRemoteUrlForSharedRepo } from "../remote/remote.service";
-import { getKeysIfEncryptedRepo } from "../../utils/key.utils";
-
-export enum ConnectionCodeType {
-  INVITE = "INVITE",
-  CONFIRM = "CONFIRM",
-  SHARING = "SHARING",
-}
 
 export const base64ToString = (input: string) => {
   return globalThis.atob(input);
@@ -25,64 +15,6 @@ export const base64ToString = (input: string) => {
 
 export const stringToBase64 = (input: string) => {
   return globalThis.btoa(input);
-};
-
-export const createConnectionCode = ({
-  myKeysBase64,
-  myRemoteUrl,
-  type,
-}: {
-  myRemoteUrl: string;
-  myKeysBase64: KeysBase64;
-  type: ConnectionCodeType;
-}) => {
-  const dataString = JSON.stringify({
-    u: myRemoteUrl,
-    k: {
-      c: myKeysBase64.content,
-      f: myKeysBase64.filename,
-      s: myKeysBase64.salt,
-    },
-  });
-  const dataBase64 = stringToBase64(dataString);
-  return `${type}_${dataBase64}`;
-};
-
-const DecodeSchema = zod.object({
-  u: zod.string().url().nonempty(),
-  k: zod.object({
-    c: zod.string().nonempty(),
-    f: zod.string().nonempty(),
-    s: zod.string().nonempty(),
-  }),
-});
-
-export const parseSharingCode = ({
-  code,
-  type,
-}: {
-  code: string;
-  type: ConnectionCodeType;
-}): {
-  theirRemoteUrl: string;
-  theirKeysBase64: KeysBase64;
-} => {
-  if (!code.startsWith(`${type}_`)) {
-    throw new Error(`Invalid code. Must begin ${type}. #Ic2bYT`);
-  }
-  const base64 = code.substr(type.length + 1);
-  const jsonString = base64ToString(base64);
-  const data = JSON.parse(jsonString);
-  const validData = DecodeSchema.parse(data);
-
-  return {
-    theirRemoteUrl: validData.u,
-    theirKeysBase64: {
-      content: validData.k.c,
-      filename: validData.k.f,
-      salt: validData.k.s,
-    },
-  };
 };
 
 export const parseYaml = (input: string): ConnectionOnDisk[] => {
@@ -140,29 +72,19 @@ export const saveConnectionToConnectionsYaml = async (
   });
 };
 
-export const getConnectionCode = async ({
-  connection,
-  repo,
-  type,
+export const createInvitationMessage = ({
+  connectionRepoRemoteUrl,
+  libraryRemoteUrl,
 }: {
-  connection: ConnectionInRedux;
-  repo: RepoInRedux;
-  type: ConnectionCodeType;
+  connectionRepoRemoteUrl: string;
+  libraryRemoteUrl: string;
 }) => {
-  const { url } = await createRemoteUrlForSharedRepo({
-    repo,
-    token: connection.token,
-  });
-  // TODO Figure out how to better handle adding `encrypted::` to the url
-  const myRemoteUrl = `encrypted::${url}`;
+  const messageContent: Invitation = {
+    connectionRepoRemoteUrl,
+    libraryRemoteUrl,
+  };
 
-  // TODO Get the token for the new repo
-  const myKeysBase64 = await getKeysIfEncryptedRepo({ repo });
-  if (typeof myKeysBase64 === "undefined") {
-    throw new Error("Cannot get keys for invite repo #v9vvan");
-  }
+  const message = JSON.stringify(messageContent);
 
-  const code = createConnectionCode({ type, myRemoteUrl, myKeysBase64 });
-
-  return code;
+  return message;
 };

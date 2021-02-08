@@ -1,15 +1,14 @@
-import { describe, it, expect } from "@jest/globals";
-import { matches } from "lodash";
-import createMockStore from "redux-mock-store";
+import { describe, expect, it } from "@jest/globals";
 import { testSaga } from "redux-saga-test-plan";
 import { call } from "redux-saga/effects";
 import { RepoType } from "../../../shared.constants";
 import { RepoInRedux } from "../../../shared.types";
-import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
-import { selectCommandRepo, selectRepoById } from "../../repo/repo.state";
 import { addReadAuthTokenForRepo } from "../commands.service";
-import { effect, request } from "./createReadAuthTokenForRepo.saga";
+import {
+  createReadAuthTokenForRepoSagaAction,
+  effect,
+} from "./createReadAuthTokenForRepo.saga";
 
 describe("createReadAuthTokenForRepo.saga", () => {
   it("Creates a new invitation and returns a token #QkEGyv", () => {
@@ -42,8 +41,9 @@ describe("createReadAuthTokenForRepo.saga", () => {
 
     testSaga(
       effect,
-      request({
+      createReadAuthTokenForRepoSagaAction({
         repoId: "repo1",
+        connectionId: "connection1",
       })
     )
       .next()

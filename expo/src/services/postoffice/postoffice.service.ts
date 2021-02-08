@@ -4,18 +4,32 @@ import {
 } from "@stablelib/base64";
 import { decode as utf8Decode, encode as utf8Encode } from "@stablelib/utf8";
 import fetch from "cross-fetch";
-import { customRandom } from "nanoid";
-import nolookalikes from "nanoid-dictionary/nolookalikes";
 import "react-native-get-random-values";
 import { scrypt } from "scrypt-js";
 import tweetnacl from "tweetnacl";
-import { getPostofficeUrl } from "../remote/remote.service";
+import { createPassword } from "../../utils/password.utils";
+
+// TODO TODOCONFIG Move this out to an .env or app build config file
+const POSTOFFICE_URL = "https://share.generous.software/postoffice";
 
 const SCRYPT_N = 1024;
 const SCRYPT_R = 8;
 const SCRYPT_P = 1;
 
-const createPassword = customRandom(nolookalikes, 10, tweetnacl.randomBytes);
+export const getPostofficeUrl = async (
+  {
+    id,
+    reply,
+  }: {
+    id?: string;
+    reply?: boolean;
+  } = { reply: false }
+) => {
+  const idSection = typeof id === "string" && id.length > 0 ? `/${id}` : "";
+  const replySection = reply ? "/reply" : "";
+  const url = `${POSTOFFICE_URL}${idSection}${replySection}`;
+  return url;
+};
 
 export const concat = (a: Uint8Array, b: Uint8Array) => {
   const length = a.length + b.length;

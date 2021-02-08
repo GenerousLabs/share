@@ -8,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../components/Header/Header.component";
+import { colours } from "../../root.theme";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
@@ -69,7 +70,7 @@ const Setup = ({
             is still in early testing. Please reach out to us and send a
             screenshot of this error, we'll do our best to help.
           </Text>
-          <Text>
+          <Text style={styles.errorText}>
             {setup.setupError ? JSON.stringify(setup.setupError) : ""}
           </Text>
         </ScrollView>
@@ -163,4 +164,7 @@ export default Setup;
 
 const styles = StyleSheet.create({
   ...sharedStyles,
+  errorText: {
+    color: colours.grey5,
+  },
 });

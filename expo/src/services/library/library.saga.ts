@@ -1,15 +1,11 @@
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
-import { call, put } from "typed-redux-saga/macro";
+import { call, put, putResolve } from "typed-redux-saga/macro";
 import { generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
-import {
-  commitAllEffect,
-  commitAllSagaAction,
-  saveNewRepoToReduxEffect,
-  saveNewRepoToReduxSagaAction,
-} from "../repo/repo.saga";
+import { commitAllEffect, commitAllSagaAction } from "../repo/repo.saga";
 import { createLibraryRepo } from "../repo/repo.service";
+import { saveNewRepoToReduxAndReposYamlSagaAction } from "../repo/sagas/saveNewRepoToReduxAndReposYaml.saga";
 import { readOfferFromDisk } from "./library.service";
 import {
   createNewLibraryErrorAction,
@@ -39,10 +35,7 @@ export function* createNewLibraryEffect(
       bodyMarkdown,
     });
 
-    yield* call(
-      saveNewRepoToReduxEffect,
-      saveNewRepoToReduxSagaAction({ repo })
-    );
+    yield* putResolve(saveNewRepoToReduxAndReposYamlSagaAction({ repo }));
 
     yield* call(
       commitAllEffect,

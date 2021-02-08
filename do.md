@@ -10,7 +10,11 @@ only would be possible.
   - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
-- [ ] Update git-encrypted in expo
+- [x] Update git-encrypted in expo
+  - URLs are now self contained, no keys required
+  - Change invite codes, INVITE_base64encodedURL ?
+  - Ignore the codes and use the postoffice?
+    - Fall back to actual URLs? - Advanced use case anyway
 - [ ] Remove the Settings view
   - Put it behind triple tapping the logo or something
 - [ ] Make a plan on deletion, correcting errors, etc
@@ -19,11 +23,16 @@ only would be possible.
   - Waiting for design confirmation on how / where this happens
   - Define format on disk
 - [x] Round of UI polishing
+- [x] Check deep linking in exp://
+- [ ] Change settings top right to help / home link
+  - Also add note to homepage that it is top right
+- [ ] Add text to invite link
+- [x] Explore markdown in ReactNative
 
 ## Sprint 2 Nice to Have
 
 - [ ] Simplify / cleanup setup screen
-- [ ] Inviestigate the `lirary/loadOffer/ERROR` actions
+- [x] Investigate the `lirary/loadOffer/ERROR` actions
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
   - They will bubble errors, which potentially breaks the sagas
   - I'm mostly using them to await, but I might not want them to throw
@@ -31,6 +40,13 @@ only would be possible.
   - See TODO21 in the codebase
   - If the server returns a 404, we currenty log it as an error
   - Maybe we need to return an enum to handle expected failures
+- [ ] Handle failure of postoffice server
+- [ ] Refactor all sagas
+  - All sagas are named exports (no more default export)
+  - All sagas refactored to use the `createAsyncPromiseSaga()` helper
+- [ ] Block navigation during form submission
+- [ ] Create a build time config
+  - [ ] Move postoffice URL into build config
 
 # Sprint 1
 

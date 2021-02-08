@@ -2,13 +2,23 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
+import MarkdownRenderer from "react-native-markdown-display";
 import Header from "../../components/Header/Header.component";
+import Markdown from "../../components/Markdown/Markdown.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 
 const log = rootLogger.extend("Home");
+
+const md = `# Welcome
+
+This app is very much a work in progress.
+
+If you have issues, please reach out on the telegram group and we'll do our best to help.
+`;
 
 const Home = ({
   navigation,
@@ -19,14 +29,10 @@ const Home = ({
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
-        <WarningBox />
-        <Text h2>Welcome</Text>
-        <Text>Check the menu top left.</Text>
-        <Text>
-          We're still in the early testing phase, so all data will be deleted
-          before we launch this version. Thanks for helping to test it. Let us
-          know if you find any issues.
-        </Text>
+        <ScrollView>
+          <WarningBox />
+          <Markdown content={md} />
+        </ScrollView>
       </View>
     </View>
   );

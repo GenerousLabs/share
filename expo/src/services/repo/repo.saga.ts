@@ -1,5 +1,6 @@
 import { all, putResolve, takeEvery } from "redux-saga/effects";
 import { call, put, select } from "typed-redux-saga/macro";
+import { RepoType } from "../../shared.constants";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { loadOfferEffect } from "../library/library.saga";
@@ -17,7 +18,7 @@ import commitAllSaga from "./sagas/commitAll.saga";
 import loadRepoFromFilesystemSaga, {
   loadRepoFromFilesystemSagaAction,
 } from "./sagas/loadRepoFromFilesystem.saga";
-import saveNewRepoToReduxSaga from "./sagas/saveNewRepoToRedux.saga";
+import { saveNewRepoToReduxAndReposYamlSaga } from "./sagas/saveNewRepoToReduxAndReposYaml.saga";
 
 const log = rootLogger.extend("repo.saga");
 
@@ -25,10 +26,6 @@ export {
   sagaAction as commitAllSagaAction,
   sagaEffect as commitAllEffect,
 } from "./sagas/commitAll.saga";
-export {
-  sagaAction as saveNewRepoToReduxSagaAction,
-  sagaEffect as saveNewRepoToReduxEffect,
-} from "./sagas/saveNewRepoToRedux.saga";
 
 export function* loadRepoContentsEffect(
   action: ReturnType<typeof loadRepoContentsSagaAction>
@@ -39,7 +36,13 @@ export function* loadRepoContentsEffect(
     invariantSelector(selectRepoById, "Repo not found #6jBGXO"),
     repoId
   );
-  const path = getRepoPath(repo);
+
+  // The commands and me repos should not be loaded from disk
+  if (repo.type === RepoType.commands || repo.type === RepoType.me) {
+    return;
+  }
+
+  const path = yield* call(getRepoPath, repo);
 
   const { directories } = yield* call(getDirectoryContents, {
     path,
@@ -93,9 +96,9 @@ export function* repoStartupEffect() {
 
 export default function* repoSaga() {
   yield all([
-    saveNewRepoToReduxSaga(),
-    loadRepoFromFilesystemSaga(),
     commitAllSaga(),
+    loadRepoFromFilesystemSaga(),
+    saveNewRepoToReduxAndReposYamlSaga(),
     takeEvery(loadRepoContentsSagaAction, loadRepoContentsEffect),
     takeEvery(startupSagaAction, repoStartupEffect),
   ]);

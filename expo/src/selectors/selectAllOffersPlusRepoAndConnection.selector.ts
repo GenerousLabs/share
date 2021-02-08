@@ -25,7 +25,6 @@ export const selectAllOffersPlusRepoAndConnection = createSelector(
           "Offer -> Repo -> Connection failed #s3x51r"
         );
       } catch (error) {
-        debugger;
         throw error;
       }
       const connection = selectConnectionById(

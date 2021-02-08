@@ -62,45 +62,18 @@ export type GitParams = {
   };
 };
 
-export const RepoYamlKeysSchema = zod.object({
-  keysContentBase64: zod.string().nonempty(),
-  keysFilenamesBase64: zod.string().nonempty(),
-  keysSaltBase64: zod.string().nonempty(),
-});
-export const RepoYamlBaseSchema = zod.object({
+export const RepoYamlSchema = zod.object({
   id: zod.string().nonempty(),
-  name: zod.string().nonempty(),
+  // Connection repos will not have a name, the connection has its own name
+  name: zod.string().nonempty().optional(),
   type: zod.nativeEnum(RepoType),
   remoteUrl: zod.string().nonempty(),
   isReadOnly: zod.boolean(),
   // If a repo does not have a connectionId then it is mine
   connectionId: zod.string().nonempty().optional(),
 });
-export const RepoYamlBaseWithKeysSchema = RepoYamlBaseSchema.merge(
-  RepoYamlKeysSchema
-);
-export const RepoYamlSchema = zod.union([
-  RepoYamlBaseSchema,
-  RepoYamlBaseWithKeysSchema,
-]);
-// .refine((obj) => {
-//   // If any 1 key is present, they must all be present
-//   if (
-//     "keysContentBase64" in obj ||
-//     "keysFilenamesBase64" in obj ||
-//     "keysSaltBase64" in obj
-//   ) {
-//     const { keysContentBase64, keysFilenamesBase64, keysSaltBase64 } = obj;
-//     return RepoYamlKeysSchema.check({
-//       keysContentBase64,
-//       keysFilenamesBase64,
-//       keysSaltBase64,
-//     });
-//   }
-//   return true;
-// });
+
 export type RepoYaml = zod.infer<typeof RepoYamlSchema>;
-export type RepoYamlWithoutKeys = zod.infer<typeof RepoYamlBaseSchema>;
 
 export type RepoOnDiskFrontMatter = {
   uuid: string;
@@ -128,7 +101,7 @@ export type RepoGitMetadata = {
   commitsBehindOrigin?: number;
 };
 
-export type RepoInRedux = RepoOnDisk & RepoYamlWithoutKeys & RepoGitMetadata;
+export type RepoInRedux = RepoOnDisk & RepoYaml & RepoGitMetadata;
 
 /**
  * An offer which is mine.
@@ -204,3 +177,10 @@ export const RepoShareSchema = zod.object({
   token: zod.string().nonempty(),
 });
 export type RepoShareInRedux = zod.infer<typeof RepoShareSchema>;
+
+export const InvitationSchema = zod.object({
+  connectionRepoRemoteUrl: zod.string().nonempty(),
+  libraryRemoteUrl: zod.string().nonempty(),
+});
+
+export type Invitation = zod.infer<typeof InvitationSchema>;

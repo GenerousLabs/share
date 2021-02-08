@@ -1,12 +1,8 @@
-import { getKeysFromDisk, keysToBase64 } from "git-encrypted";
-import { getIsEncryptedRemoteUrl } from "isomorphic-git-remote-encrypted";
 import * as yaml from "js-yaml";
 import { pick } from "remeda";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { RepoInRedux, RepoYaml, RepoYamlSchema } from "../../shared.types";
-import { getKeysIfEncryptedRepo } from "../../utils/key.utils";
 import { doesFileExist, join } from "../fs/fs.service";
-import { getRepoPath } from "../repo/repo.service";
 
 /**
  * NAMING
@@ -49,34 +45,13 @@ export const writeRepoYaml = async ({
   await fs.promises.writeFile(reposYamlPath, yamlString, { encoding: "utf8" });
 };
 
-export const getYamlKeysIfEncryptedRepo = async ({
-  repo,
-}: {
-  repo: RepoInRedux;
-}) => {
-  const keysBase64 = await getKeysIfEncryptedRepo({ repo });
-
-  if (typeof keysBase64 === "undefined") {
-    return;
-  }
-
-  return {
-    keysContentBase64: keysBase64.content,
-    keysFilenamesBase64: keysBase64.filename,
-    keysSaltBase64: keysBase64.salt,
-  };
-};
-
 export const addNewRepoToReposYaml = async ({
   repo,
 }: {
   repo: RepoInRedux;
 }) => {
-  const yamlKeys = await getYamlKeysIfEncryptedRepo({ repo });
-
   const repoYaml: RepoYaml = {
     ...pick(repo, ["id", "type", "name", "remoteUrl", "isReadOnly"]),
-    ...yamlKeys,
   };
 
   const data = await loadRepoYaml();
