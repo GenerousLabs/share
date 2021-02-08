@@ -7,3 +7,13 @@
   text-align: center;
   max-width: 720px;
 }
+
+.buttonLink {
+  border: 1px solid black;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin: 12px;
+  line-height: 3rem;
+}

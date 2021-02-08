@@ -106,6 +106,7 @@ const Home = () => {
                 href="https://itunes.apple.com/app/apple-store/id982107779"
                 target="_blank"
                 rel="noopener noreferrer"
+                className={styles.buttonLink}
               >
                 Install for iOS
               </a>{" "}
@@ -114,6 +115,7 @@ const Home = () => {
                 href="https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www"
                 target="_blank"
                 rel="noopener noreferrer"
+                className={styles.buttonLink}
               >
                 Install for Android
               </a>
@@ -126,7 +128,10 @@ const Home = () => {
               just for you {username}.
             </p>
             <p>
-              <a href="exp://exp.dev/generouslabs/share?username=foo&token=bar&invitecode=baz">
+              <a
+                href="exp://exp.dev/generouslabs/share?username=foo&token=bar&invitecode=baz"
+                className={styles.buttonLink}
+              >
                 Launch {username}'s Generous Share app (inside Expo Go)
               </a>
             </p>
