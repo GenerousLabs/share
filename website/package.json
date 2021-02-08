@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "next build && next export",
+    "start": "next dev",
+    "serve": "yarn build && serve ./out"
   },
   "dependencies": {
     "next": "10.0.6",
