@@ -58,6 +58,7 @@ const Invite = ({
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
+                      autoCapitalize="words"
                     />
                   )}
                   name="name"
