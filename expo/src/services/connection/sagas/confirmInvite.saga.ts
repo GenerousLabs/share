@@ -19,7 +19,6 @@ const saga = createAsyncPromiseSaga<
       connectionRepoRemoteUrl,
       libraryRemoteUrl,
     } = action.payload;
-    debugger;
 
     yield* putResolve(
       subscribeToConnectionRepoSagaAction({
