@@ -10,7 +10,7 @@ only would be possible.
   - [x] Add libraries to shares
 - [x] Catch startup errors and show them to the user
   - Currently it fails silently, which is ugly
-- [ ] Update git-encrypted in expo
+- [x] Update git-encrypted in expo
   - URLs are now self contained, no keys required
   - Change invite codes, INVITE_base64encodedURL ?
   - Ignore the codes and use the postoffice?
@@ -23,12 +23,11 @@ only would be possible.
   - Waiting for design confirmation on how / where this happens
   - Define format on disk
 - [x] Round of UI polishing
-- [ ] Move postoffice URL to config
 - [x] Check deep linking in exp://
 - [ ] Change settings top right to help / home link
   - Also add note to homepage that it is top right
 - [ ] Add text to invite link
-- [ ] Explore markdown in ReactNative
+- [x] Explore markdown in ReactNative
 
 ## Sprint 2 Nice to Have
 
@@ -46,6 +45,8 @@ only would be possible.
   - All sagas are named exports (no more default export)
   - All sagas refactored to use the `createAsyncPromiseSaga()` helper
 - [ ] Block navigation during form submission
+- [ ] Create a build time config
+  - [ ] Move postoffice URL into build config
 
 # Sprint 1
 
