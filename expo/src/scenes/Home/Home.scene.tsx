@@ -2,6 +2,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 import MarkdownRenderer from "react-native-markdown-display";
 import Header from "../../components/Header/Header.component";
 import Markdown from "../../components/Markdown/Markdown.component";
@@ -12,20 +13,12 @@ import { RootDrawerParamList } from "../../shared.types";
 
 const log = rootLogger.extend("Home");
 
-const md = `# A heading one
+const md = `# Welcome
 
-- A list
-- another item
+This app is very much a work in progress.
 
-## Check the menu
-
-> And a little blockquote
-
-* Check the menu
-* For **more**
-* And _Check_
-
-Check the menu`;
+If you have issues, please reach out on the telegram group and we'll do our best to help.
+`;
 
 const Home = ({
   navigation,
@@ -36,8 +29,10 @@ const Home = ({
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
-        <WarningBox />
-        <Markdown content={md} />
+        <ScrollView>
+          <WarningBox />
+          <Markdown content={md} />
+        </ScrollView>
       </View>
     </View>
   );
