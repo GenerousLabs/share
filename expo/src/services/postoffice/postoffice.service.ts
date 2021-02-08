@@ -11,6 +11,7 @@ import { createPassword } from "../../utils/password.utils";
 
 // TODO TODOCONFIG Move this out to an .env or app build config file
 const POSTOFFICE_URL = "https://share.generous.software/postoffice";
+const POSTOFFICE_SEPARATOR = "_";
 
 const SCRYPT_N = 1024;
 const SCRYPT_R = 8;
@@ -87,7 +88,7 @@ export const getMessageFromPostoffice = async ({
   postofficeCode: string;
   getReply?: boolean;
 }) => {
-  const parts = postofficeCode.split("#");
+  const parts = postofficeCode.split(POSTOFFICE_SEPARATOR);
   // TODO Better validation here
   if (parts.length !== 2) {
     throw new Error("Invalid postofficeCode. #YdEHir");
@@ -159,7 +160,7 @@ export const sendMessageToPostoffice = async ({
     },
   });
   const { id }: { id: string } = await response.json();
-  return `${id}#${password}`;
+  return `${id}${POSTOFFICE_SEPARATOR}${password}`;
 };
 
 export const sendReplyToPostoffice = async ({
