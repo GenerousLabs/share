@@ -5277,10 +5277,10 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-git-encrypted@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/git-encrypted/-/git-encrypted-0.4.1.tgz#d58f0e98bc5dbb42aab9a19e5655dc30b848de06"
-  integrity sha512-+X2ihNJPB1SiOiKZzRTzU4oOye34cxXwEoASF4lY/A6fKQwXkJCbZpnvleMExN52FntCRMPvJw6jBhdxPP22Mg==
+git-encrypted@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/git-encrypted/-/git-encrypted-0.4.3.tgz#edd992643b205f0b76c75e526d8f5896a17c9e67"
+  integrity sha512-wvDNWB5jYPYIeSEB2lyjyjlQMLh9VydR4vclpyhkoFRkpKhyHMuC8ousq5QKLtOb+QUmEU1rPRjKOCsekA0/jQ==
   dependencies:
     bluebird "^3.7.2"
     debug "^4.3.1"
@@ -5961,13 +5961,13 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-isomorphic-git-remote-encrypted@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.4.2.tgz#fdb2ed0f9727df827d4367943acfb6ee7c8d3c4b"
-  integrity sha512-t5qBK7aug6X3/2a2h0Ar+g6pjZEEU7VzatJS/JYwxm8N22Iwt37NwKCXF3LrMfLmLQPRV9AwryIMXpm+vwaonQ==
+isomorphic-git-remote-encrypted@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/isomorphic-git-remote-encrypted/-/isomorphic-git-remote-encrypted-0.4.3.tgz#93fa325ef8bfa4275973357002dbe983083d693c"
+  integrity sha512-j/xL+tQIyd0UtgoEXhqBjb9wJTJfb/qy/5eFWJ3D9ps5/L7YMWrJcWNfJr3/xuUyPz1YaG6jDfCZVT+UhjaIXA==
   dependencies:
     debug "^4.3.1"
-    git-encrypted "^0.4.1"
+    git-encrypted "^0.4.3"
     isomorphic-git "^1.8.0"
     superpathjoin "^2.0.1"
 
