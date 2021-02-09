@@ -15,6 +15,7 @@ import { theme, montserrat, montserratBold } from "./src/root.theme";
 import Navigation from "./src/scenes/Navigation/Navigation.scene";
 import store, { persistor } from "./src/services/store/store.service";
 import { initLogger } from "./src/services/log/log.service";
+import { startLinkService } from "./src/services/link/link.service";
 
 const appLoad = async () => {
   const fontsPromise = Font.loadAsync({
@@ -24,6 +25,8 @@ const appLoad = async () => {
   });
 
   const loggerPromise = initLogger();
+
+  startLinkService();
 
   await Promise.all([fontsPromise, loggerPromise]);
 };

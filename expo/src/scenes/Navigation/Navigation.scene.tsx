@@ -1,10 +1,11 @@
 import { useReduxDevToolsExtension } from "@react-navigation/devtools";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import * as Linking from "expo-linking";
-import * as React from "react";
+import React from "react";
 import { useSelector } from "react-redux";
+import { navigationRef } from "../../root.navref";
 import { colours } from "../../root.theme";
+import { startLinkService } from "../../services/link/link.service";
 import { RootState } from "../../services/store/store.service";
 import Browse from "../Browse/Browse.scene";
 import Connections from "../Connections/Connections.scene";
@@ -24,7 +25,6 @@ const DrawerNavigator = createDrawerNavigator();
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 const Navigation = () => {
   // NOTE: Typed this as `any` to stop TypeScript complainin
-  const navigationRef: any = React.useRef();
   const setup = useSelector((state: RootState) => state.setup);
 
   const { isSetupComplete, didSetupFail } = setup;
@@ -36,7 +36,7 @@ const Navigation = () => {
   return (
     <NavigationContainer
       ref={navigationRef}
-      linking={LinkingConfiguration}
+      onReady={() => startLinkService()}
       theme={{
         dark: false,
         colors: {
@@ -80,26 +80,3 @@ const Navigation = () => {
 };
 
 export default Navigation;
-
-export const LinkingConfiguration = {
-  prefixes: [Linking.makeUrl("/")],
-  config: {
-    screens: {
-      Root: {
-        screens: {
-          TabOne: {
-            screens: {
-              TabOneScreen: "one",
-            },
-          },
-          TabTwo: {
-            screens: {
-              TabTwoScreen: "two",
-            },
-          },
-        },
-      },
-      NotFound: "*",
-    },
-  },
-};
