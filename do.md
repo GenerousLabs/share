@@ -17,14 +17,14 @@ only would be possible.
     - Fall back to actual URLs? - Advanced use case anyway
 - [x] Remove the Settings view
   - Put it behind triple tapping the logo or something
-- [ ] Make a plan on deletion, correcting errors, etc
+- [x] Make a plan on deletion, correcting errors, etc
   - What about a "tech view" screen?
 - [x] Post offers and requests
   - Waiting for design confirmation on how / where this happens
   - Define format on disk
 - [x] Round of UI polishing
 - [x] Check deep linking in exp://
-- [ ] Change settings top right to help / home link
+- [x] Change settings top right to help / home link
   - Also add note to homepage that it is top right
 - [ ] Add text to invite link
 - [x] Explore markdown in ReactNative
@@ -33,6 +33,18 @@ only would be possible.
   - [x] Create the web page
   - [ ] Capture the links
 - [x] Switch postoffice codes to \_ separator
+- [ ] Leave only the header sticky, the rest scrolls
+- [x] Change Johannes to the user's actual name in the web site!
+- [ ] Host our own build
+  - Android requests `/assets/xxx` instead of `/app/assets/xxx`
+  - Maybe move it to the root?
+  - Folders are only `assets` and `bundles`, plus the `platform-index.json`
+
+## Sprint 2 Design Suggestions
+
+- [ ] Splash screen 1284x2778
+- [ ] Web site design
+- [ ] Home / help page content
 
 ## Sprint 2 Nice to Have
 
