@@ -113,16 +113,13 @@ app.use(
       headers: req.headers,
     });
 
-    if (typeof req.headers["expo-platform"] === "string") {
-      const platform = req.headers["expo-platform"];
-      logger.info("/app expo-platform #dLjneR", { platform });
-      const jsonString = await readFile(
-        join(APP_PATH, `${platform}-index.json`),
-        { encoding: "utf8" }
-      );
-      const json = JSON.parse(jsonString);
-      res.send(json);
-      return;
+    if (req.path === "/") {
+      if (typeof req.headers["expo-platform"] === "string") {
+        const platform = req.headers["expo-platform"];
+
+        res.redirect(`/app/${platform}-index.json`);
+        return;
+      }
     }
 
     next();
