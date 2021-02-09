@@ -7,6 +7,8 @@ export const __DEV__ = process.env.NODE_ENV !== "production";
 export const CWD = process.cwd();
 export const DATA_PATH = join(CWD, "data");
 
+export const APP_PATH = join(DATA_PATH, "app");
+
 export const POSTOFFICE_PATH = join(DATA_PATH, "postoffice");
 
 export const REPOS_ROOT = join(DATA_PATH, "repos");

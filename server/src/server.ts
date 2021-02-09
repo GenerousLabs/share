@@ -1,9 +1,11 @@
 import Server from "@chmac/node-git-server";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { join } from "path";
 import express from "express";
-import { stat } from "fs/promises";
+import { stat, readFile } from "fs/promises";
 import {
+  APP_PATH,
   CWD,
   ENOENT,
   POSTOFFICE_PATH,
@@ -101,6 +103,32 @@ const app = express();
 
 // Add CORS headers to all incoming requests
 app.use(cors());
+
+app.use(
+  "/app",
+  async (req, res, next) => {
+    logger.debug("/app request #s73X25", {
+      path: req.path,
+      params: req.params,
+      headers: req.headers,
+    });
+
+    if (typeof req.headers["expo-platform"] === "string") {
+      const platform = req.headers["expo-platform"];
+      logger.info("/app expo-platform #dLjneR", { platform });
+      const jsonString = await readFile(
+        join(APP_PATH, `${platform}-index.json`),
+        { encoding: "utf8" }
+      );
+      const json = JSON.parse(jsonString);
+      res.send(json);
+      return;
+    }
+
+    next();
+  },
+  express.static(APP_PATH)
+);
 
 app.get("/postoffice/:boxId/reply", async (req, res) => {
   try {
