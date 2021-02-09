@@ -39,6 +39,7 @@ only would be possible.
   - Android requests `/assets/xxx` instead of `/app/assets/xxx`
   - Maybe move it to the root?
   - Folders are only `assets` and `bundles`, plus the `platform-index.json`
+- [ ] Build script including website and expo
 
 ## Sprint 2 Design Suggestions
 
