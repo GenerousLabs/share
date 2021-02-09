@@ -110,7 +110,6 @@ app.use(
     logger.debug("/app request #s73X25", {
       path: req.path,
       params: req.params,
-      headers: req.headers,
     });
 
     if (typeof req.headers["expo-platform"] === "string") {
