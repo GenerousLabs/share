@@ -22,13 +22,14 @@ const Settings = ({
   const dispatch: RootDispatch = useDispatch();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const allRepos = useSelector(selectAllRepos);
-  const allReposText = allRepos
-    .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
-    .join("\n");
 
   const closeOverlay = useCallback(() => {
     setIsOverlayVisible(false);
-  }, []);
+  }, [setIsOverlayVisible]);
+
+  const allReposText = allRepos
+    .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
+    .join("\n");
 
   return (
     <View style={styles.container}>
