@@ -32,10 +32,12 @@ only would be possible.
 - [ ] Web links
   - [x] Create the web page
   - [ ] Capture the links
+    - How to start the setup?
+    - Redirect to the connection accept form prefilled?
 - [x] Switch postoffice codes to \_ separator
 - [ ] Leave only the header sticky, the rest scrolls
 - [x] Change Johannes to the user's actual name in the web site!
-- [ ] Host our own build
+- [x] Host our own build
   - Android requests `/assets/xxx` instead of `/app/assets/xxx`
   - Maybe move it to the root?
   - Folders are only `assets` and `bundles`, plus the `platform-index.json`
