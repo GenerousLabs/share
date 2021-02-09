@@ -30,11 +30,6 @@ const menuItems = [
     title: "Your Community",
     subtitle: "Build your trusted community. Invite new friends to share with.",
   },
-  {
-    route: "Settings",
-    title: "Your Settings",
-    subtitle: "Your control panel. Beep boop.",
-  },
 ] as const;
 
 const MenuItem = ({
