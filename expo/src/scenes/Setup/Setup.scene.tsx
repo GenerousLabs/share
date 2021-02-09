@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import Constants from "expo-constants";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
@@ -14,10 +15,18 @@ import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 
+// The port to OUR server application, not the expo server
+const DEV_SERVER_PORT = "8000";
+
+const [devHost] =
+  typeof Constants.manifest.debuggerHost === "string"
+    ? Constants.manifest.debuggerHost.split(":")
+    : ":";
+
 const defaultValues = __DEV__
   ? {
       protocol: "http",
-      host: "192.168.178.59:8000",
+      host: `${devHost}:8000`,
     }
   : {
       protocol: "https",
