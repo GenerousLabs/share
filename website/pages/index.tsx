@@ -94,7 +94,7 @@ const Home = () => {
                 <p>
                   To get started, join the{" "}
                   <a
-                    href="https://t.me/"
+                    href="https://t.me/joinchat/T3LiaaNN-eHTCTVh"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
