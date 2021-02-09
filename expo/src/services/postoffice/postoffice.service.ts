@@ -7,10 +7,11 @@ import fetch from "cross-fetch";
 import "react-native-get-random-values";
 import { scrypt } from "scrypt-js";
 import tweetnacl from "tweetnacl";
+import { CONFIG } from "../../shared.constants";
 import { createPassword } from "../../utils/password.utils";
 
 // TODO TODOCONFIG Move this out to an .env or app build config file
-const POSTOFFICE_URL = "https://share.generous.software/postoffice";
+const POSTOFFICE_URL = CONFIG.postofficeUrl;
 const POSTOFFICE_SEPARATOR = "_";
 
 const SCRYPT_N = 1024;
