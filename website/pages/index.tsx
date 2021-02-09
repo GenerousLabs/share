@@ -2,26 +2,97 @@ import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
+type UrlData =
+  | {
+      type: "token";
+      token: string;
+      username: string;
+      name?: string;
+    }
+  | {
+      type: "invite";
+      inviteCode: string;
+      recipientName: string;
+      senderName?: string;
+    };
+
+type UrlState = Partial<{
+  token: string;
+  username: string;
+  name: string;
+  inviteCode: string;
+  recipientName: string;
+  senderName: string;
+}>;
+
+const getUrlParams = ({ hash }: { hash: string }): UrlData => {
+  const [
+    ,
+    type,
+    credential,
+    recipientNameOrUsername,
+    senderNameOrName,
+  ] = hash.split("/");
+  if (type === "token") {
+    return {
+      type,
+      token: credential,
+      username: recipientNameOrUsername,
+      name: senderNameOrName,
+    };
+  }
+  if (type === "invite") {
+    return {
+      type,
+      inviteCode: credential,
+      recipientName: recipientNameOrUsername,
+      senderName: senderNameOrName,
+    };
+  }
+};
+
+const STORAGE_KEY = "__generousShareParams";
+
+const persistUrlState = (state: UrlState) => {
+  if ("localStorage" in globalThis === false) {
+    return;
+  }
+  globalThis.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+};
+
+const loadUrlState = (): UrlState => {
+  if ("localStorage" in globalThis === false) {
+    return {};
+  }
+  const json = globalThis.localStorage.getItem(STORAGE_KEY);
+  if (json === null) {
+    return {};
+  }
+  try {
+    return JSON.parse(json);
+  } catch (error) {
+    console.error("Error parsing stored state #CWY6Hc");
+    return {};
+  }
+};
+
 const Home = () => {
   const [isBooting, setIsBooting] = useState(true);
-  const [token, setToken] = useState("");
-  const [username, setUsername] = useState("");
-  const [invite, setInvite] = useState("");
+  const [urlState, setUrlState] = useState<UrlState>(() => loadUrlState());
   const [isExistingUser, setIsExistingUser] = useState<boolean>(undefined);
 
   const readHash = useCallback(() => {
-    const hash = window.location.hash;
-    if (hash.startsWith("#/token/")) {
-      const [, , token, username] = hash.split("/");
-      setToken(token);
-      setUsername(username);
-    } else if (hash.startsWith("#/invite/")) {
-      const [, , invite, username] = hash.split("/");
-      setInvite(invite);
-      setUsername(username);
+    const params = getUrlParams({ hash: window.location.hash });
+    if (typeof params === "undefined") {
+      return;
     }
+    const { type, ...rest } = params;
+    const newState = { ...urlState, ...rest };
+    setUrlState(newState);
+    persistUrlState(newState);
+
     setIsBooting(false);
-  }, [setIsBooting, setToken, setUsername, setInvite]);
+  }, [setIsBooting, setUrlState]);
 
   useEffect(() => {
     readHash();
@@ -32,9 +103,18 @@ const Home = () => {
     return null;
   }
 
-  const isToken = token !== "";
-  const isInvite = !isToken && invite !== "";
-  console.log("Running #oxD7Q8", isToken, isInvite);
+  const { token, username, inviteCode } = urlState;
+  const name =
+    typeof urlState.name === "string"
+      ? urlState.name
+      : typeof urlState.recipientName === "string"
+      ? urlState.recipientName
+      : "";
+  const senderName =
+    typeof urlState.senderName === "string" ? urlState.senderName : "A Friend";
+
+  const showToken = typeof token === "string";
+  const showInvite = !showToken && typeof inviteCode === "string";
 
   return (
     <div className={styles.Wrapper}>
@@ -45,11 +125,12 @@ const Home = () => {
 
       <main className={styles.App}>
         <h1>Generous Share</h1>
-        {!isInvite ? null : (
+        {!showInvite ? null : (
           <>
-            <p>Hey {username}, welcome to the revolution.</p>
+            <p>Hey {name}, welcome to the revolution.</p>
             <p>
-              Johannes has invited you to join the Generous Share revolution.
+              {senderName} has invited you to join the Generous Share
+              revolution.
             </p>
             <p>
               Do you already have the Generous Share app installed and setup?
@@ -78,7 +159,7 @@ const Home = () => {
                 <p>
                   <a
                     className={styles.buttonLink}
-                    href={`exp://exp.dev/generouslabs/share?invitecode=${invite}`}
+                    href={`exp://exp.dev/generouslabs/share?invitecode=${inviteCode}`}
                   >
                     Click here to accept the invitation
                   </a>
@@ -113,9 +194,9 @@ const Home = () => {
             )}
           </>
         )}
-        {!isToken ? null : (
+        {!showToken ? null : (
           <>
-            <p>Hey {username}, welcome to the revolution.</p>
+            <p>Hey {name}, welcome to the revolution.</p>
             <p>
               Installing the Generous Share app is a bit more involved than the
               usual app. That's because it's built for humanity rather than
@@ -150,14 +231,18 @@ const Home = () => {
               you're ready to launch Generous Share inside Expo Go. Confused?
               Sorry, we're working on making it easier, but usurping the man is
               a hard task! You can always come back to this page, it's tailored
-              just for you {username}.
+              just for you {name}.
             </p>
             <p>
               <a
-                href={`exp://exp.dev/generouslabs/share?username=${username}&token=${token}&invitecode=${invite}`}
+                href={`exp://exp.dev/generouslabs/share?username=${username}&token=${token}${
+                  typeof inviteCode === "string"
+                    ? `&invitecode=${inviteCode}`
+                    : ""
+                }`}
                 className={styles.buttonLink}
               >
-                Launch {username}'s Generous Share app (inside Expo Go)
+                Launch {name}'s Generous Share app (inside Expo Go)
               </a>
             </p>
             <p>
