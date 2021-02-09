@@ -9,6 +9,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../components/Header/Header.component";
+import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { colours } from "../../root.theme";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { sharedStyles } from "../../shared.styles";
@@ -93,13 +94,13 @@ const Setup = ({
       <View style={styles.contentContainer}>
         <ScrollView>
           <View style={styles.ScrollViewInner}>
-            <Text h1>Setup</Text>
+            <WarningBox />
             <Text>Welcome to the Generous Share app.</Text>
             <Controller
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <Input
-                  label="Protocol"
+                  placeholder="Protocol"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
@@ -113,7 +114,7 @@ const Setup = ({
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <Input
-                  label="Host"
+                  placeholder="Host"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
@@ -127,7 +128,7 @@ const Setup = ({
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <Input
-                  label="Username"
+                  placeholder="Username"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
@@ -143,7 +144,7 @@ const Setup = ({
               control={control}
               render={({ onChange, onBlur, value }) => (
                 <Input
-                  label="Token"
+                  placeholder="Token"
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
                   value={value}
