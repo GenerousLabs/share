@@ -1,4 +1,5 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import Constants from "expo-constants";
 import React, { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
@@ -12,6 +13,8 @@ import { RootDrawerParamList } from "../../shared.types";
 
 const SETTINGS_TAP_COUNT = 3;
 const MINIMUM_TAP_INTERVAL_MS = 800;
+
+const version = Constants?.manifest?.extra?.commitHash || "DEV";
 
 const menuItems = [
   {
@@ -114,6 +117,9 @@ const DrawerScene = ({
               directly together without intermediaries, surveillance or
               censorship. We believe this can lead to a radical transformation
               of human society.
+              {"\n"}
+              {"\n"}
+              version: {version}
             </Text>
           </View>
         </View>

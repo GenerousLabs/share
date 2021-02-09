@@ -13,9 +13,6 @@ import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
 import Log from "./scenes/Log/Log.scene";
-import Constants from "expo-constants";
-
-const version = Constants?.manifest?.extra?.commitHash || "DEV";
 
 const Settings = ({
   navigation,
@@ -43,7 +40,6 @@ const Settings = ({
             message="This app is a work in progress. This screen gives you access to the nuts and bolts. It's possible to break things here.  Please take a full backup before you mess with this."
             type="error"
           />
-          <Text>Version: {version}</Text>
           <Button
             title="Export logs as zip"
             buttonStyle={[styles.buttonBase, styles.exportButton]}
