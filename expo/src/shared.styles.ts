@@ -1,3 +1,4 @@
+import { montserratBold } from "./root.theme";
 import { SCROLLVIEW_INNER_BOTTOM_PADDING } from "./shared.constants";
 
 export const sharedStyles = {
@@ -15,5 +16,9 @@ export const sharedStyles = {
   },
   FlatListWrapper: {
     flexGrow: 1,
+  },
+  bold: {
+    fontFamily: montserratBold,
+    fontWeight: "normal",
   },
 } as const;
