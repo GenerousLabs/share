@@ -54,7 +54,7 @@ const Invite = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      placeholder="Name (only seen by you)"
+                      placeholder="Name"
                       inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
