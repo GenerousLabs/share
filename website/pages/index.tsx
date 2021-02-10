@@ -159,7 +159,7 @@ const Home = () => {
                 <p>
                   <a
                     className={styles.buttonLink}
-                    href={`exp://exp.dev/generouslabs/share?invitecode=${inviteCode}`}
+                    href={`exp://exp.dev/generouslabs/share?inviteCode=${inviteCode}`}
                   >
                     Click here to accept the invitation
                   </a>
