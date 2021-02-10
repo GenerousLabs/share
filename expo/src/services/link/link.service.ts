@@ -61,6 +61,7 @@ export const _handleLink = ({ url }: { url: string }) => {
         "It looks like you opened a link, but there was a problem with the link. " +
           "Please reach out on telegram if this issue repeats."
       );
+      return;
     }
 
     // TODO What to do now?
