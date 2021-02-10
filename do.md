@@ -26,14 +26,7 @@ only would be possible.
 - [x] Check deep linking in exp://
 - [x] Change settings top right to help / home link
   - Also add note to homepage that it is top right
-- [ ] Add text to invite link
 - [x] Explore markdown in ReactNative
-- [ ] Create a basic web page
-- [ ] Web links
-  - [x] Create the web page
-  - [ ] Capture the links
-    - How to start the setup?
-    - Redirect to the connection accept form prefilled?
 - [x] Switch postoffice codes to \_ separator
 - [ ] Leave only the header sticky, the rest scrolls
 - [x] Change Johannes to the user's actual name in the web site!
@@ -41,7 +34,21 @@ only would be possible.
   - Android requests `/assets/xxx` instead of `/app/assets/xxx`
   - Maybe move it to the root?
   - Folders are only `assets` and `bundles`, plus the `platform-index.json`
+
+## Closing stage
+
+- [x] Create a basic web page
+- Web links
+  - [x] Create the web page
+  - [ ] Capture the links
+    - How to start the setup?
+    - Redirect to the connection accept form prefilled?
+    - Yes, redirect to setup, add name field
+- [ ] Add text to invite link
+- [ ] Markdown update on homepage
+  - Pull via a web request? - later
 - [ ] Build script including website and expo
+- [ ] Check exps:// links without app launch
 
 ## Sprint 2 Design Suggestions
 
