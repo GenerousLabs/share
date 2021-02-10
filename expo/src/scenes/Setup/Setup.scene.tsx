@@ -9,12 +9,26 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import * as zod from "zod";
 import Header from "../../components/Header/Header.component";
+import Markdown from "../../components/Markdown/Markdown.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { colours } from "../../root.theme";
 import { setupSagaAction } from "../../services/setup/setup.state";
 import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
+
+const welcomeMessage = `Welcome to the Generous Share app.
+
+This setup process might take a minute.
+
+This app keeps everything entirely on your phone. It saves only an encrypted
+copy on the server. That means your phone is the boss.
+
+It also means that after the setup, you'll need to save a password. **This
+password is the only way to recover your account.** If you ever lose it, and
+lose your phone, then there's no way to get your account back. You will have
+to start over.
+`;
 
 // The port to OUR server application, not the expo server
 const DEV_SERVER_PORT = "8000";
@@ -95,7 +109,7 @@ const Setup = ({
         <ScrollView>
           <View style={styles.ScrollViewInner}>
             <WarningBox />
-            <Text>Welcome to the Generous Share app.</Text>
+            <Markdown content={welcomeMessage} />
             <Controller
               control={control}
               render={({ onChange, onBlur, value }) => (
