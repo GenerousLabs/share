@@ -91,7 +91,7 @@ export const theme: Partial<FullTheme> = {
     },
   },
   CardTitle: {
-    style: normal,
+    style: { ...normal, textAlign: "left", marginBottom: 0 },
     h1Style: bold,
     h2Style: bold,
     h3Style: bold,
