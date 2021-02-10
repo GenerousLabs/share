@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text } from "react-native-elements";
 import MarkdownRenderer, { RenderRules } from "react-native-markdown-display";
 import { montserrat, montserratBold } from "../../root.theme";
@@ -25,6 +25,7 @@ const rules: RenderRules = {
       {children}
     </Text>
   ),
+  softbreak: (node) => <Text key={node.key}> </Text>,
 };
 
 const Markdown = ({ content }: { content: string }) => {
