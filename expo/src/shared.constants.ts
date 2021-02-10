@@ -5,6 +5,10 @@ import { FS } from "./shared.types";
 export const CONFIG = {
   websiteUrl: "https://share.generous.software",
   postofficeUrl: "https://share.generous.software/postoffice",
+  defaultRemote: {
+    protocol: "https",
+    host: "share.generous.software",
+  },
 } as const;
 
 export const REPOS_PATH = "/repos/" as const;

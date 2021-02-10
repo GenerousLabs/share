@@ -3,6 +3,7 @@ import urlLib from "url";
 import { navigationRef } from "../../root.navref";
 import { CONFIG } from "../../shared.constants";
 import { rootLogger } from "../log/log.service";
+import { setRemoteParams } from "../setup/setup.state";
 import store from "../store/store.service";
 
 const WEBSITE_URL = CONFIG.websiteUrl;
@@ -69,6 +70,14 @@ export const _handleLink = ({ url }: { url: string }) => {
       token: query.token,
       username: query.username,
     });
+
+    store.dispatch(
+      setRemoteParams({
+        ...CONFIG.defaultRemote,
+        username: query.username,
+        token: query.token,
+      })
+    );
   }
 };
 

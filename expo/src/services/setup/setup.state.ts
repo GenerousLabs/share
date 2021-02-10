@@ -1,15 +1,23 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
 import { Config } from "../config/config.service";
 
 export const REDUCER_KEY = "setup" as const;
 
+type RemoteParams = {
+  protocol: string;
+  host: string;
+  username: string;
+  token: string;
+};
 type State = {
   /** Has the application finished its first time setup? */
   isSetupComplete: boolean;
   /** Did setup fail? */
   didSetupFail?: boolean;
   setupError?: Error;
+  remoteParams?: RemoteParams;
+  name?: string;
 };
 
 const initialState: State = { isSetupComplete: false };
@@ -27,6 +35,12 @@ const setupSlice = createSlice({
       state.didSetupFail = false;
       state.setupError = undefined;
     },
+    setName: (state, action: PayloadAction<{ name: string }>) => {
+      state.name = action.payload.name;
+    },
+    setRemoteParams: (state, action: PayloadAction<RemoteParams>) => {
+      state.remoteParams = action.payload;
+    },
   },
   extraReducers: {
     [setupErrorAction.toString()]: (state, action) => {
@@ -36,7 +50,11 @@ const setupSlice = createSlice({
   },
 });
 
-export const { setSetupCompleteAction } = setupSlice.actions;
+export const {
+  setSetupCompleteAction,
+  setName,
+  setRemoteParams,
+} = setupSlice.actions;
 
 export default setupSlice.reducer;
 
