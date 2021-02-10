@@ -3,7 +3,7 @@ import urlLib from "url";
 import { navigationRef } from "../../root.navref";
 import { CONFIG } from "../../shared.constants";
 import { rootLogger } from "../log/log.service";
-import { setRemoteParams } from "../setup/setup.state";
+import { addInviteCode, setRemoteParams } from "../setup/setup.state";
 import store from "../store/store.service";
 
 const WEBSITE_URL = CONFIG.websiteUrl;
@@ -27,12 +27,17 @@ export const getInviteLink = ({
   return `${WEBSITE_URL}/#/invite/${inviteCode}/${recipientName}${senderSegment}`;
 };
 
+/**
+ * Process a link click. This will be invoked on every app load.
+ *
+ * There are 2 packages of data that might be passed in the URL. They are a
+ * username + token (to authenticate against the remote service) and an
+ * inviteCode (to accept an invitation from a friend). These two packages can
+ * be passed in the same request.
+ */
 export const _handleLink = ({ url }: { url: string }) => {
-  // TODO We probably need to queue things here as they might be invoked before
-  // the navigator has rendered
-
-  console.log("_handleLink() #PD3mUh", url);
   const { query } = urlLib.parse(url, true);
+  log.debug("_handleLink() #TQXOJx", { url, query });
 
   if (query === null) {
     return;
@@ -46,6 +51,10 @@ export const _handleLink = ({ url }: { url: string }) => {
         "Sorry for the inconvenience. If the problem repeats, please let us know on telegram."
     );
     return;
+  }
+
+  if (typeof query.inviteCode === "string") {
+    store.dispatch(addInviteCode({ inviteCode: query.inviteCode }));
   }
 
   if (typeof query.token === "string") {
@@ -64,12 +73,6 @@ export const _handleLink = ({ url }: { url: string }) => {
       );
       return;
     }
-
-    // TODO What to do now?
-    console.log("Ready to start setup #vx7FGp", {
-      token: query.token,
-      username: query.username,
-    });
 
     store.dispatch(
       setRemoteParams({

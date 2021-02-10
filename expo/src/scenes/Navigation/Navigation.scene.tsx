@@ -5,7 +5,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { navigationRef } from "../../root.navref";
 import { colours } from "../../root.theme";
-import { startLinkService } from "../../services/link/link.service";
 import { RootState } from "../../services/store/store.service";
 import Browse from "../Browse/Browse.scene";
 import Connections from "../Connections/Connections.scene";
@@ -36,7 +35,6 @@ const Navigation = () => {
   return (
     <NavigationContainer
       ref={navigationRef}
-      onReady={() => startLinkService()}
       theme={{
         dark: false,
         colors: {

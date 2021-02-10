@@ -47,6 +47,7 @@ const preloadedState: RootState = {
   },
   setup: {
     isSetupComplete: true,
+    inviteCodes: [],
   },
 };
 

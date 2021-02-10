@@ -1,6 +1,7 @@
 import fs from "expo-fs";
 
 export type Config = {
+  name: string;
   remote: {
     protocol: string;
     host: string;

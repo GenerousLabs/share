@@ -18,12 +18,13 @@ type State = {
   setupError?: Error;
   remoteParams?: RemoteParams;
   name?: string;
+  inviteCodes: string[];
 };
 
-const initialState: State = { isSetupComplete: false };
+const initialState: State = { isSetupComplete: false, inviteCodes: [] };
 
 const SETUP = "SHARE/setup/setup";
-export const setupSagaAction = createAction<{ config: Config }>(SETUP);
+export const setupSagaAction = createAction(SETUP);
 export const setupErrorAction = makeErrorActionCreator(SETUP);
 
 const setupSlice = createSlice({
@@ -41,6 +42,14 @@ const setupSlice = createSlice({
     setRemoteParams: (state, action: PayloadAction<RemoteParams>) => {
       state.remoteParams = action.payload;
     },
+    addInviteCode: (state, action: PayloadAction<{ inviteCode: string }>) => {
+      if (state.inviteCodes.indexOf(action.payload.inviteCode) === -1) {
+        state.inviteCodes.push(action.payload.inviteCode);
+      }
+    },
+    clearInviteCodes: (state) => {
+      state.inviteCodes = [];
+    },
   },
   extraReducers: {
     [setupErrorAction.toString()]: (state, action) => {
@@ -54,6 +63,8 @@ export const {
   setSetupCompleteAction,
   setName,
   setRemoteParams,
+  addInviteCode,
+  clearInviteCodes,
 } = setupSlice.actions;
 
 export default setupSlice.reducer;
