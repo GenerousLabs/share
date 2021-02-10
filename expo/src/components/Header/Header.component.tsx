@@ -33,9 +33,12 @@ const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
       rightComponent={{
         icon: "home",
         onPress: () => {
-          // Typing here doesn't seem to know that Settings is in both possible
-          // types, so cast to any.
-          (navigation as any).navigate("Home");
+          const navState = navigation.dangerouslyGetState();
+          if (navState.routeNames.includes("Home")) {
+            navigation.navigate("Home");
+          } else {
+            // Do nothing when the user presses the home / help icon during setup?
+          }
         },
       }}
     />
