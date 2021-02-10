@@ -40,10 +40,16 @@ only would be possible.
 - [x] Create a basic web page
 - Web links
   - [x] Create the web page
-  - [ ] Capture the links
+  - [x] Capture the links
     - How to start the setup?
     - Redirect to the connection accept form prefilled?
     - Yes, redirect to setup, add name field
+- [ ] Check repo names to make sure they're not empty
+  - Causes a bug in saving / reading from repos.yaml
+- [ ] Add home / help page intro section
+  - Were you invited? Try clicking the link again...
+  - Click here to accept your invitation
+- [ ] Add password section to home / help page
 - [ ] Add text to invite link
 - [ ] Markdown update on homepage
   - Pull via a web request? - later
