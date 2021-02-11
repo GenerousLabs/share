@@ -1,24 +1,30 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
-import { Input, Text, Button } from "react-native-elements";
+import { Alert, StyleSheet, View } from "react-native";
+import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as zod from "zod";
 import Header from "../../../../components/Header/Header.component";
 import { acceptInviteSagaAction } from "../../../../services/connection/sagas/acceptInvite.saga";
 import { rootLogger } from "../../../../services/log/log.service";
 import { sharedStyles } from "../../../../shared.styles";
 import { ConnectionsStackParameterList } from "../../../../shared.types";
-import { RootDispatch } from "../../../../store";
+import { RootDispatch, RootState } from "../../../../store";
 
 const log = rootLogger.extend("Accept");
+const inviteCodeRegex = new RegExp(
+  "[a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+_[a-zA-Z0-9]{8,}"
+);
 
-type Inputs = {
-  name: string;
-  notes: string;
-  inviteCode: string;
-};
+const InputsSchema = zod.object({
+  name: zod.string().nonempty(),
+  notes: zod.string(),
+  inviteCode: zod.string().nonempty().regex(inviteCodeRegex),
+});
+type Inputs = zod.infer<typeof InputsSchema>;
 
 const Accept = ({
   navigation,
@@ -28,8 +34,13 @@ const Accept = ({
     "ConnectionsAccept"
   >;
 }) => {
+  const cachedInviteCodes = useSelector(
+    (state: RootState) => state.setup.inviteCodes
+  );
   const dispatch: RootDispatch = useDispatch();
-  const { control, handleSubmit, errors } = useForm<Inputs>();
+  const { control, handleSubmit, errors } = useForm({
+    resolver: zodResolver(InputsSchema),
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -40,12 +51,21 @@ const Accept = ({
 
       const { inviteCode, ...rest } = data;
 
-      await dispatch(
-        acceptInviteSagaAction({
-          ...data,
-          postofficeCode: inviteCode,
-        })
-      );
+      try {
+        await dispatch(
+          acceptInviteSagaAction({
+            ...rest,
+            postofficeCode: inviteCode,
+          })
+        );
+      } catch (error) {
+        const errorText =
+          "error" in error && "toString" in error.error
+            ? error.error.toString()
+            : "Unknown error. Please report this via telegram. #yLMP1O";
+        Alert.alert("Error accepting invite #sx61Dj", errorText);
+        return;
+      }
 
       setIsFinished(true);
       setIsSubmitting(false);
@@ -53,9 +73,15 @@ const Accept = ({
     [dispatch, setIsFinished]
   );
 
+  const cachedInviteCode =
+    cachedInviteCodes.length > 0 ? cachedInviteCodes[0] : "";
+
   return (
     <View style={styles.container}>
-      <Header title="Accept invite" goBack={navigation.goBack} />
+      <Header
+        title="Accept invite"
+        goBack={() => navigation.navigate("ConnectionsHome")}
+      />
       <View style={styles.contentContainer}>
         <ScrollView>
           <View style={styles.ScrollViewInner}>
@@ -70,52 +96,62 @@ const Accept = ({
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Code"
+                      placeholder="Code"
                       style={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       autoCapitalize="none"
                       autoCompleteType="password"
+                      errorMessage={
+                        errors.inviteCode &&
+                        "There's an error in your invite code."
+                      }
                     />
                   )}
                   name="inviteCode"
-                  rules={{ required: false }}
-                  defaultValue=""
+                  rules={{ required: true }}
+                  defaultValue={cachedInviteCode}
                 />
+
                 <Controller
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Name"
-                      style={styles.input}
+                      placeholder="Name"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       autoCapitalize="words"
+                      errorMessage={errors.name && "Name is a required field"}
                     />
                   )}
                   name="name"
                   defaultValue=""
                 />
-                {errors.name && <Text>Name is a required field</Text>}
+
                 <Controller
                   control={control}
                   render={({ onChange, onBlur, value }) => (
                     <Input
-                      label="Notes"
-                      style={styles.inputMultiline}
+                      placeholder="Notes"
+                      inputStyle={styles.input}
                       onBlur={onBlur}
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       multiline={true}
-                      numberOfLines={5}
+                      errorMessage={
+                        errors.notes &&
+                        "There's an error in your note, sorry, we don't know what it is, we really didn't expect you to see this message."
+                      }
                     />
                   )}
                   name="notes"
                   rules={{ required: false }}
                   defaultValue=""
                 />
+
                 <Button
                   loading={isSubmitting}
                   title="Accept Invitation"
@@ -135,18 +171,13 @@ export default Accept;
 const styles = StyleSheet.create({
   ...sharedStyles,
   input: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
-  },
-  inputMultiline: {
-    borderColor: "black",
-    borderWidth: 2,
-    padding: 4,
-    margin: 10,
+    fontSize: 14,
   },
   authButtonWrapper: {
     marginTop: 40,
+  },
+  errorText: {
+    fontSize: 12,
+    marginTop: 0,
   },
 });
