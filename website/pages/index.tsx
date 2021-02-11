@@ -76,6 +76,22 @@ const loadUrlState = (): UrlState => {
   }
 };
 
+const getName = (state: UrlState) => {
+  if (
+    typeof state.recipientName === "string" &&
+    state.recipientName.length > 0
+  ) {
+    return state.recipientName;
+  }
+  if (typeof state.name === "string" && state.name.length > 0) {
+    return state.name;
+  }
+  if (typeof state.username === "string" && state.username.length > 0) {
+    return state.username;
+  }
+  return "";
+};
+
 const Home = () => {
   const [isBooting, setIsBooting] = useState(true);
   const [urlState, setUrlState] = useState<UrlState>(() => loadUrlState());
@@ -104,17 +120,13 @@ const Home = () => {
   }
 
   const { token, username, inviteCode } = urlState;
-  const name =
-    typeof urlState.name === "string"
-      ? urlState.name
-      : typeof urlState.recipientName === "string"
-      ? urlState.recipientName
-      : "";
+  const name = getName(urlState);
   const senderName =
     typeof urlState.senderName === "string" ? urlState.senderName : "A Friend";
 
-  const showToken = typeof token === "string";
-  const showInvite = !showToken && typeof inviteCode === "string";
+  const showToken = typeof token === "string" && token.length > 0;
+  const showInvite =
+    !showToken && typeof inviteCode === "string" && inviteCode.length > 0;
 
   return (
     <div className={styles.Wrapper}>
