@@ -4,7 +4,10 @@ import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
-import { makeSelectConnectionAndRepoById } from "../../../../services/connection/connection.state";
+import {
+  makeSelectConnectionAndRepoById,
+  selectName,
+} from "../../../../services/connection/connection.state";
 import { getShareInviteMessage } from "../../../../services/messages/messages.service";
 import { sharedStyles } from "../../../../shared.styles";
 import { log as parentLogger } from "../../Connections.log";
@@ -23,6 +26,7 @@ const Confirm = ({
     [connectionId]
   );
   const { connection, repo } = useSelector(selector);
+  const name = useSelector(selectName);
   const [isWorking, setIsworking] = useState(false);
 
   if (typeof connection === "undefined" || typeof repo === "undefined") {
@@ -57,7 +61,11 @@ const Confirm = ({
                 );
               }
 
-              const message = getShareInviteMessage({ code });
+              const message = getShareInviteMessage({
+                inviteCode: code,
+                recipientName: connection.name,
+                senderName: name,
+              });
               const result = await Share.share({ message: message });
               if (result.action === Share.dismissedAction) {
                 log.debug("Sharing cancelled #g4hRzl");

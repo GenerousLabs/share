@@ -4,8 +4,9 @@ import { Controller, useForm } from "react-hook-form";
 import { Share, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
+import { selectName } from "../../../../services/connection/connection.state";
 import { createInviteSagaAction } from "../../../../services/connection/sagas/createInvite.saga";
 import { getShareInviteMessage } from "../../../../services/messages/messages.service";
 import { sharedStyles } from "../../../../shared.styles";
@@ -27,6 +28,7 @@ const Invite = ({
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm<Inputs>();
+  const name = useSelector(selectName);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
   const [connectionName, setConnectionName] = useState("");
@@ -60,6 +62,7 @@ const Invite = ({
                       onChangeText={(value) => onChange(value)}
                       value={value}
                       autoCapitalize="words"
+                      autoCompleteType="name"
                     />
                   )}
                   name="name"
@@ -101,7 +104,9 @@ const Invite = ({
                   title="Share this invite code"
                   onPress={() => {
                     const shareMessage = getShareInviteMessage({
-                      code: inviteCode,
+                      inviteCode,
+                      recipientName: connectionName,
+                      senderName: name,
                     });
 
                     Share.share({ message: shareMessage });

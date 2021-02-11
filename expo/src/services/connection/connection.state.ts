@@ -51,9 +51,24 @@ const repoShareSlice = createSlice({
 
 export const { addOneRepoShare } = repoShareSlice.actions;
 
+const connectionMetaSlice = createSlice({
+  name: "SHARE/connection/meta",
+  initialState: {
+    name: "",
+  },
+  reducers: {
+    setName: (state, action: PayloadAction<{ name: string }>) => {
+      state.name = action.payload.name;
+    },
+  },
+});
+
+export const { setName } = connectionMetaSlice.actions;
+
 const connectionReducer = combineReducers({
   connections: connectionSlice.reducer,
   repoShares: repoShareSlice.reducer,
+  meta: connectionMetaSlice.reducer,
 });
 
 export default connectionReducer;
@@ -86,3 +101,5 @@ export const {
 } = repoShareAdapter.getSelectors(
   (state: RootState) => state[REDUCER_KEY].repoShares
 );
+
+export const selectName = (state: RootState) => state[REDUCER_KEY].meta.name;

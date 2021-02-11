@@ -6,6 +6,7 @@ import { all, takeEvery } from "redux-saga/effects";
 import { call, put, putResolve } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
 import { writeConfigToFilesystem } from "../config/config.service";
+import { setName } from "../connection/connection.state";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
 import { createNewLibraryEffect } from "../library/library.saga";
 import { createNewLibrarySagaAction } from "../library/library.state";
@@ -49,6 +50,8 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
       createNewLibraryEffect,
       createNewLibrarySagaAction({ title: "Everybody", bodyMarkdown: "" })
     );
+
+    yield* put(setName({ name: config.name }));
 
     yield* put(setSetupCompleteAction());
 

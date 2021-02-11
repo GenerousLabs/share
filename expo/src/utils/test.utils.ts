@@ -20,6 +20,9 @@ const preloadedState: RootState = {
       ids: [],
       entities: {},
     },
+    meta: {
+      name: "",
+    },
   },
   library: {
     filters: { tags: [] },
