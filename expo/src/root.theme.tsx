@@ -50,7 +50,7 @@ export const theme: Partial<FullTheme> = {
       marginLeft: 0,
       marginRight: 0,
     },
-    style: normal,
+    style: { ...normal, fontSize: 14 },
   },
   Header: {
     leftComponent: {
