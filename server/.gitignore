@@ -40,5 +40,5 @@ dist/**/*
 # Ignore our data folder
 data
 
-# Ignore the built folder where built assets get copied for docker
+# Ignore the static folder where built assets get copied for docker
 static/

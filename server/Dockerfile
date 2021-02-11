@@ -37,7 +37,7 @@ WORKDIR /usr/src/
 COPY --from=builder /usr/src/dist/ ./dist/
 
 # Copy our built assets from other parts of the project
-COPY built built
+COPY static static
 
 # # Expose the port we use
 # EXPOSE 14000

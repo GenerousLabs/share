@@ -8,5 +8,5 @@ coverage/*
 /src/public/
 # custom definition files
 /src/types/
-# ignore the built copied files
+# ignore the built static files from other parts of the project
 static/*
