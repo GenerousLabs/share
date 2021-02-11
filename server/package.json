@@ -12,7 +12,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "copy:clean": "rimraf static/*",
+    "copy:clean": "rimraf static/* && mkdirp static/expo && mkdirp static/website",
     "copy:expo": "ncp ../expo/dist static/expo --stopOnErr",
     "copy:website": "ncp ../website/out static/website --stopOnErr",
     "copy": "yarn copy:clean && yarn copy:expo && yarn copy:website",
@@ -66,6 +66,7 @@
     "concurrently": "^5.0.0",
     "eslint": "^7.15.0",
     "jest": "^26.6.3",
+    "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
     "nodemon": "^2.0.6",
     "prettier": "^2.1.1",
