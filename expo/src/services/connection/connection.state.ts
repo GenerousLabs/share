@@ -64,6 +64,8 @@ export const {
 } = connectionAdapter.getSelectors(
   (state: RootState) => state[REDUCER_KEY].connections
 );
+export const selectAllConnectionsCount = (state: RootState) =>
+  state[REDUCER_KEY].connections.ids.length;
 export const makeSelectConnectionById = (id: string) => (state: RootState) =>
   selectConnectionById(state, id);
 export const makeSelectConnectionAndRepoById = (connectionId: string) =>
