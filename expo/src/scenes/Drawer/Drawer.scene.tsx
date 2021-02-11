@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import Constants from "expo-constants";
-import React, { useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { useCallback, useState } from "react";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import {
   ScrollView,
@@ -9,14 +9,24 @@ import {
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { colours, montserrat, montserratBold } from "../../root.theme";
-import { RootDrawerParamList } from "../../shared.types";
+import { RootDrawerParamList, SetupDrawerParamList } from "../../shared.types";
 
 const SETTINGS_TAP_COUNT = 3;
 const MINIMUM_TAP_INTERVAL_MS = 800;
 
 const version = Constants?.manifest?.extra?.commitHash || "DEV";
 
-const menuItems = [
+export enum DrawerType {
+  setup,
+  normal,
+}
+
+type MenuItem = {
+  route: keyof RootDrawerParamList | keyof SetupDrawerParamList;
+  title: string;
+  subtitle: string;
+};
+const normalMenuItems: MenuItem[] = [
   {
     route: "Browse",
     title: "Browse list",
@@ -33,7 +43,16 @@ const menuItems = [
     title: "Your Community",
     subtitle: "Build your trusted community. Invite new friends to share with.",
   },
-] as const;
+];
+
+const setupMenuItems: MenuItem[] = [
+  {
+    route: "Setup",
+    title: "Setup",
+    subtitle:
+      "Complete the (admittedly arduous) setup process to get started building your personal sharing community.",
+  },
+];
 
 const MenuItem = ({
   route,
@@ -41,37 +60,44 @@ const MenuItem = ({
   title,
   navigation,
 }: {
-  route: keyof RootDrawerParamList;
+  route: keyof RootDrawerParamList | keyof SetupDrawerParamList;
   title: string;
   subtitle: string;
-  navigation: DrawerNavigationProp<RootDrawerParamList>;
+  navigation:
+    | DrawerNavigationProp<RootDrawerParamList>
+    | DrawerNavigationProp<SetupDrawerParamList>;
 }) => (
-  <TouchableHighlight
+  <Pressable
     style={styles.menuItem}
     onPress={() => {
       // TODO Navigate to the first screen within the drawer if it has a navigator
-      navigation.navigate(route);
+      (navigation.navigate as any)(route);
+      // NOTE: I've casted the type of navigate to any here because TypeScript
+      // doesn't know which of the two drawer navigators we're going to have
+      // available, and so it can't know if the `route` param is correct or not.
     }}
   >
     <View>
       <Text style={styles.menuItemTitle}>{title}</Text>
       <Text style={styles.menuItemSubtitle}>{subtitle}</Text>
     </View>
-  </TouchableHighlight>
+  </Pressable>
 );
 
 const DrawerScene = ({
   navigation,
+  type = DrawerType.normal,
 }: {
   // navigation: DrawerNavigationProp<DrawerParamList>;
   navigation: any;
+  type?: DrawerType;
 }) => {
   const [settingsTapState, setSettingsTapState] = useState({
     tapCount: 0,
     lastTapTime: 0,
   });
 
-  const handleSettingsTap = () => {
+  const handleSettingsTap = useCallback(() => {
     const lastTapTime = Date.now();
     const tapCount = settingsTapState.tapCount + 1;
 
@@ -90,7 +116,10 @@ const DrawerScene = ({
     }
 
     setSettingsTapState({ tapCount, lastTapTime });
-  };
+  }, [settingsTapState, setSettingsTapState, navigation]);
+
+  const menuItems =
+    type === DrawerType.setup ? setupMenuItems : normalMenuItems;
 
   return (
     <View style={styles.container}>

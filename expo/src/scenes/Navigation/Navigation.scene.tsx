@@ -8,7 +8,7 @@ import { colours } from "../../root.theme";
 import { RootState } from "../../services/store/store.service";
 import Browse from "../Browse/Browse.scene";
 import Connections from "../Connections/Connections.scene";
-import DrawerScene from "../Drawer/Drawer.scene";
+import DrawerScene, { DrawerType } from "../Drawer/Drawer.scene";
 import Home from "../Home/Home.scene";
 import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
@@ -49,7 +49,12 @@ const Navigation = () => {
       // theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       {showSetupScreens ? (
-        <DrawerNavigator.Navigator initialRouteName="Setup">
+        <DrawerNavigator.Navigator
+          initialRouteName="Setup"
+          drawerContent={(props) => (
+            <DrawerScene {...props} type={DrawerType.setup} />
+          )}
+        >
           <DrawerNavigator.Screen name="Setup" component={Setup} />
           <DrawerNavigator.Screen name="Settings" component={Settings} />
         </DrawerNavigator.Navigator>
