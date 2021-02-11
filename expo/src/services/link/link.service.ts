@@ -21,10 +21,12 @@ export const getInviteLink = ({
 }) => {
   const senderSegment =
     typeof senderName === "string" && senderName.length > 0
-      ? `/${senderName}`
+      ? `/${globalThis.encodeURIComponent(senderName)}`
       : "";
 
-  return `${WEBSITE_URL}/#/invite/${inviteCode}/${recipientName}${senderSegment}`;
+  return `${WEBSITE_URL}/#/invite/${inviteCode}/${globalThis.encodeURIComponent(
+    recipientName
+  )}${senderSegment}`;
 };
 
 /**
