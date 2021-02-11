@@ -70,7 +70,7 @@ echo ./buildDocker.sh
 echo "############################################################"
 
 read -p "Push to docker hub? " -n 1 -r
-echo "############################################################"
+echo
 if [[ "$REPLY" == "y" ]]
 then
   echo ./pushDocker.sh
