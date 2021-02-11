@@ -1,4 +1,4 @@
-import { call, putResolve } from "typed-redux-saga/macro";
+import { call, put, putResolve } from "typed-redux-saga/macro";
 import { ConnectionInRedux, InvitationSchema } from "../../../shared.types";
 import {
   createAsyncPromiseSaga,
@@ -9,6 +9,7 @@ import {
   getMessageFromPostoffice,
   sendReplyToPostoffice,
 } from "../../postoffice/postoffice.service";
+import { removeInviteCode } from "../../setup/setup.state";
 import { createInvitationMessage } from "../connection.service";
 import { confirmInviteSagaAction } from "./confirmInvite.saga";
 import { createConnectionSagaAction } from "./createConnection.saga";
@@ -38,6 +39,8 @@ const saga = createAsyncPromiseSaga<
     const message = yield* call(getMessageFromPostoffice, {
       postofficeCode,
     });
+
+    yield* put(removeInviteCode({ inviteCode: postofficeCode }));
 
     const {
       connectionRepoRemoteUrl: theirConnectionRepoRemoteUrl,
