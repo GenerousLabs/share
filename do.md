@@ -44,15 +44,16 @@ only would be possible.
     - How to start the setup?
     - Redirect to the connection accept form prefilled?
     - Yes, redirect to setup, add name field
-- [ ] Check repo names to make sure they're not empty
+- [x] Add text to invite link
+- [x] Check repo names to make sure they're not empty
   - Causes a bug in saving / reading from repos.yaml
+  - Where do we save name?
 - [x] Add home / help page intro section
   - Were you invited? Try clicking the link again...
   - Click here to accept your invitation
 - [x] Add password section to home / help page
 - [ ] Build script including website and expo
-- [ ] Add name (senderName) to link service when generating invite links
-- [ ] Add text to invite link
+- [x] Add name (senderName) to link service when generating invite links
 - [ ] Markdown update on homepage
   - Pull via a web request? - later
 - [ ] Check exps:// links without app launch
@@ -65,6 +66,7 @@ only would be possible.
 
 ## Sprint 2 Nice to Have
 
+- [ ] base64 encode names in share URLs?
 - [ ] Simplify / cleanup setup screen
 - [x] Investigate the `lirary/loadOffer/ERROR` actions
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
