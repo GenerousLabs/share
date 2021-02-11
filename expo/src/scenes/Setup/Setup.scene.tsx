@@ -18,6 +18,8 @@ import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
 import { RootDispatch, RootState } from "../../store";
 
+const { host, protocol } = CONFIG.defaultRemote;
+
 const welcomeMessage = `Welcome to the Generous Share app.
 
 This setup process might take a minute or two.
@@ -30,21 +32,6 @@ password is the only way to recover your account.** If you ever lose it, and
 lose your phone, then there's no way to get your account back. You will have
 to start over.
 `;
-
-// The port to OUR server application, not the expo server
-const DEV_SERVER_PORT = "8000";
-
-const [devHost] =
-  typeof Constants.manifest.debuggerHost === "string"
-    ? Constants.manifest.debuggerHost.split(":")
-    : ":";
-
-const defaultValues = __DEV__
-  ? {
-      protocol: "http",
-      host: `${devHost}:${DEV_SERVER_PORT}`,
-    }
-  : CONFIG.defaultRemote;
 
 const Schema = zod.object({
   protocol: zod.string().nonempty(),
@@ -140,7 +127,7 @@ const Setup = ({
             <Controller
               control={control}
               render={({ onChange, onBlur, value }) => {
-                if (value === defaultValues.protocol) {
+                if (value === protocol) {
                   return (
                     <View>
                       <Pressable
@@ -148,7 +135,7 @@ const Setup = ({
                         delayLongPress={2e3}
                       >
                         <Text style={styles.defaultValueText}>
-                          Protocol: {defaultValues.protocol}
+                          Protocol: {protocol}
                         </Text>
                       </Pressable>
                     </View>
@@ -169,13 +156,13 @@ const Setup = ({
                 );
               }}
               name="protocol"
-              defaultValue={defaultValues.protocol}
+              defaultValue={protocol}
             />
 
             <Controller
               control={control}
               render={({ onChange, onBlur, value }) => {
-                if (value === defaultValues.host) {
+                if (value === host) {
                   return (
                     <View>
                       <Pressable
@@ -183,7 +170,7 @@ const Setup = ({
                         delayLongPress={2e3}
                       >
                         <Text style={styles.defaultValueText}>
-                          Host: {defaultValues.host}
+                          Host: {host}
                         </Text>
                       </Pressable>
                     </View>
@@ -204,7 +191,7 @@ const Setup = ({
                 );
               }}
               name="host"
-              defaultValue={defaultValues.host}
+              defaultValue={host}
             />
 
             <Controller

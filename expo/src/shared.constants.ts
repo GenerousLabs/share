@@ -1,13 +1,26 @@
 import fs from "expo-fs";
 import http from "isomorphic-git/http/web";
 import { FS } from "./shared.types";
+import Constants from "expo-constants";
+
+const prodHost: string = Constants.manifest.extra.hostname;
+
+const DEV_SERVER_PORT = "8000";
+
+const [devHostWithoutPort] =
+  typeof Constants.manifest.debuggerHost === "string"
+    ? Constants.manifest.debuggerHost.split(":")
+    : ":";
+const devHost = `${devHostWithoutPort}:${DEV_SERVER_PORT}`;
+
+const host = __DEV__ ? devHost : prodHost;
 
 export const CONFIG = {
-  websiteUrl: "https://share.generous.software",
-  postofficeUrl: "https://share.generous.software/postoffice",
+  websiteUrl: `https://${host}`,
+  postofficeUrl: `https://${host}/postoffice`,
   defaultRemote: {
-    protocol: "https",
-    host: "share.generous.software",
+    protocol: __DEV__ ? "http" : "https",
+    host,
   },
 } as const;
 
