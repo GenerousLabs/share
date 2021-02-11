@@ -36,6 +36,9 @@ WORKDIR /usr/src/
 # We only need to copy the dist directory from the builder
 COPY --from=builder /usr/src/dist/ ./dist/
 
+# Copy our built assets from other parts of the project
+COPY built built
+
 # # Expose the port we use
 # EXPOSE 14000
 

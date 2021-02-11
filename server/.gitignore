@@ -37,5 +37,9 @@ Thumbs.db
 # Ignore built ts files
 dist/**/*
 
-# ignore yarn.lock
+# Ignore our data folder
 data
+
+# Ignore the built folder where built assets get copied for docker
+built/
+built/

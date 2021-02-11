@@ -10,7 +10,7 @@
     "test": "jest --watchAll",
     "postinstall": "patch-package",
     "build:clean": "rimraf dist",
-    "build:expo": "expo export --public-url \"https://\\$SHARE_HOSTNAME/app\" --force",
+    "build:expo": "expo export --public-url \"https://\\$SHARE_HOSTNAME/expo\" --force",
     "build": "yarn build:clean && yarn build:expo"
   },
   "jest": {

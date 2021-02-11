@@ -5,9 +5,11 @@ export const __DEV__ = process.env.NODE_ENV !== "production";
 // NOTE: We need to run `process.cwd()` here, when running it inside `join()` we
 // get the `dist/` folder. No idea why. Insanity.
 export const CWD = process.cwd();
-export const DATA_PATH = join(CWD, "data");
 
-export const APP_PATH = join(DATA_PATH, "app");
+export const EXPO_PATH = join(CWD, "built", "expo");
+export const WEBSITE_PATH = join(CWD, "built", "website");
+
+export const DATA_PATH = join(CWD, "data");
 
 export const POSTOFFICE_PATH = join(DATA_PATH, "postoffice");
 
