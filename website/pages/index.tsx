@@ -2,6 +2,8 @@ import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
+const hostname = process.env.SHARE_HOSTNAME;
+
 type UrlData =
   | {
       type: "token";
@@ -116,7 +118,25 @@ const Home = () => {
   }, []);
 
   if (isBooting) {
-    return null;
+    <div className={styles.Wrapper}>
+      <Head>
+        <title>Generous Share</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.App}>
+        <h1>Generous Share</h1>
+        <p>
+          If you're already setup, launch the Generous Share app here. If not,
+          find a friend to invite you.
+        </p>
+        <p>
+          <a className={styles.buttonLink} href={`exps://${hostname}/`}>
+            Click here to accept the invitation
+          </a>
+        </p>
+      </main>
+    </div>;
   }
 
   const { token, username, inviteCode } = urlState;
@@ -171,7 +191,7 @@ const Home = () => {
                 <p>
                   <a
                     className={styles.buttonLink}
-                    href={`exp://exp.dev/generouslabs/share?inviteCode=${inviteCode}`}
+                    href={`exps://${hostname}/?inviteCode=${inviteCode}`}
                   >
                     Click here to accept the invitation
                   </a>
@@ -247,7 +267,7 @@ const Home = () => {
             </p>
             <p>
               <a
-                href={`exp://exp.dev/generouslabs/share?username=${username}&token=${token}${
+                href={`exps://${hostname}/?username=${username}&token=${token}${
                   typeof inviteCode === "string"
                     ? `&invitecode=${inviteCode}`
                     : ""
