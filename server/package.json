@@ -12,6 +12,9 @@
     "node": ">=14"
   },
   "scripts": {
+    "copy:expo": "copyfiles ../expo/dist built/expo",
+    "copy:website": "copyfiles ../website/out built/website",
+    "copy": "yarn copy:expo && yarn copy:website",
     "build": "yarn lint && yarn build-ts",
     "build-ts": "ncc build src/server.ts -o dist",
     "debug": "yarn build && yarn watch-debug",
@@ -60,6 +63,7 @@
     "@vercel/ncc": "^0.27.0",
     "chai": "^4.2.0",
     "concurrently": "^5.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^7.15.0",
     "jest": "^26.6.3",
     "nodemon": "^2.0.6",
