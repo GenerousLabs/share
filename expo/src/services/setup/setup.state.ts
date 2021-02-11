@@ -18,7 +18,10 @@ type State = {
   setupError?: Error;
   remoteParams?: RemoteParams;
   name?: string;
-  inviteCodes: string[];
+  // NOTE: We don't really want this to be optional, but as we deployed a test
+  // version without `inviteCodes`, making it optional avoids the need to
+  // increment the redux-persist version and deal with redux-persist migrations.
+  inviteCodes?: string[];
 };
 
 const initialState: State = { isSetupComplete: false, inviteCodes: [] };
@@ -45,7 +48,7 @@ const setupSlice = createSlice({
       state.remoteParams = action.payload;
     },
     addInviteCode: (state, action: PayloadAction<{ inviteCode: string }>) => {
-      if (state.inviteCodes.indexOf(action.payload.inviteCode) === -1) {
+      if (state.inviteCodes?.indexOf(action.payload.inviteCode) === -1) {
         state.inviteCodes.push(action.payload.inviteCode);
       }
     },
@@ -53,7 +56,7 @@ const setupSlice = createSlice({
       state,
       action: PayloadAction<{ inviteCode: string }>
     ) => {
-      state.inviteCodes = state.inviteCodes.filter(
+      state.inviteCodes = state.inviteCodes?.filter(
         (code) => code !== action.payload.inviteCode
       );
     },

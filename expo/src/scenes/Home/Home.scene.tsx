@@ -84,7 +84,7 @@ const Home = ({
     (state: RootState) => state.setup.inviteCodes
   );
   const connectionCount = useSelector(selectAllConnectionsCount);
-  const hasInvitesWaiting = inviteCodes.length > 0;
+  const hasInvitesWaiting = inviteCodes?.length !== 0;
   const hasConnections = connectionCount > 0;
   const showInviteReminder = !hasInvitesWaiting && !hasConnections;
 
