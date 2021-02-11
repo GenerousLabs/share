@@ -1,6 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
-import { Config } from "../config/config.service";
 
 export const REDUCER_KEY = "setup" as const;
 
