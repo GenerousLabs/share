@@ -3,13 +3,15 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import { stat } from "fs/promises";
+import { join } from "path";
 import {
-  EXPO_PATH,
   CWD,
   ENOENT,
+  EXPO_PATH,
   POSTOFFICE_PATH,
   REPOS_ROOT,
   REPO_TEMPLATE_PATH,
+  WEBSITE_PATH,
 } from "./constants";
 import {
   getMessage,
@@ -125,6 +127,18 @@ app.use(
   },
   express.static(EXPO_PATH)
 );
+
+// Serve the website static content
+const indexHtmlPath = join(WEBSITE_PATH, "index.html");
+const faviconIcoPath = join(WEBSITE_PATH, "favicon.ico");
+const nextPath = join(WEBSITE_PATH, "_next");
+app.use([/^\/$/, "/index.html"], (req, res) => {
+  return res.sendFile(indexHtmlPath);
+});
+app.use("/favicon.ico", (req, res) => {
+  return res.sendFile(faviconIcoPath);
+});
+app.use("/_next", express.static(nextPath));
 
 app.get("/postoffice/:boxId/reply", async (req, res) => {
   try {
