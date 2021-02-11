@@ -33,10 +33,9 @@ const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
       rightComponent={{
         icon: "home",
         onPress: () => {
-          const navState = navigation.dangerouslyGetState();
-          if (navState.routeNames.includes("Home")) {
+          try {
             navigation.navigate("Home");
-          } else {
+          } catch (error) {
             // Do nothing when the user presses the home / help icon during setup?
           }
         },
