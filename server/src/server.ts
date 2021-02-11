@@ -117,8 +117,7 @@ app.use(
       if (typeof req.headers["expo-platform"] === "string") {
         const platform = req.headers["expo-platform"];
 
-        res.redirect(`/expo/${platform}-index.json`);
-        return;
+        return res.redirect(`/expo/${platform}-index.json`);
       }
     }
 
@@ -130,34 +129,29 @@ app.use(
 app.get("/postoffice/:boxId/reply", async (req, res) => {
   try {
     const message = await getReply({ id: req.params.boxId });
-    res.send({ message });
+    return res.send({ message });
   } catch (error) {
     if (error.code === ENOENT) {
-      res.writeHead(404);
-      res.end();
-      return;
+      return res.status(404).end();
     }
 
     logger.error("Caught error in /postoffice/:boxId/reply GET #zCTGN3", {
       error,
     });
-    res.writeHead(500);
-    res.send();
+    return res.status(500).end();
   }
 });
 
 app.get("/postoffice/:boxId", async (req, res) => {
   try {
     const message = await getMessage({ id: req.params.boxId });
-    res.send({ message });
+    return res.send({ message });
   } catch (error) {
     if (error.code === ENOENT) {
       logger.info("Not found postoffice request #4txNq1", {
         boxId: req.params.boxId,
       });
-      res.writeHead(404);
-      res.end();
-      return;
+      return res.status(404).end();
     }
 
     logger.error("Caught error in /postoffice/:boxId GET #8tV4rq", { error });
@@ -169,20 +163,17 @@ app.post("/postoffice/:boxId", jsonParser, async (req, res) => {
   try {
     if (typeof req.body.message !== "string" || req.body.message.length === 0) {
       logger.warn("Invalid /postoffice POST #fHRCJu", { body: req.body });
-      res.writeHead(400);
-      res.send();
-      return;
+      return res.status(400).end();
     }
     await saveMessageReply({
       id: req.params.boxId,
       message: req.body.message,
       timestamp: Date.now(),
     });
-    res.send({ replied: true });
+    return res.send({ replied: true });
   } catch (error) {
     logger.error("Caught error in /postoffice/:boxId POST #1oBt7X", { error });
-    res.writeHead(500);
-    res.send();
+    return res.status(500).end();
   }
 });
 
@@ -191,17 +182,14 @@ app.post("/postoffice", jsonParser, async (req, res) => {
   try {
     if (typeof req.body.message !== "string" || req.body.message.length === 0) {
       logger.warn("Invalid /postoffice POST #fHRCJu", { body: req.body });
-      res.writeHead(400);
-      res.send();
-      return;
+      return res.status(400).end();
     }
     const timestamp = Date.now();
     const id = await saveNewMessage({ message: req.body.message, timestamp });
-    res.send({ id });
+    return res.send({ id });
   } catch (error) {
     logger.error("Caught error in /postoffice POST #cpyuvA", { error });
-    res.writeHead(500);
-    res.send();
+    return res.status(500).end();
   }
 });
 
@@ -212,8 +200,7 @@ app.use("/postoffice", (req, res) => {
     postofficePath: req.path,
     method: req.method,
   });
-  res.writeHead(404);
-  res.send();
+  return res.status(404).end();
 });
 
 // Last step, if none of the other express routes caught this request, then send
