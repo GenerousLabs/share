@@ -42,7 +42,7 @@ const [devHost] =
 const defaultValues = __DEV__
   ? {
       protocol: "http",
-      host: `${devHost}:8000`,
+      host: `${devHost}:${DEV_SERVER_PORT}`,
     }
   : CONFIG.defaultRemote;
 
