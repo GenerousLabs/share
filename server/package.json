@@ -12,9 +12,9 @@
     "node": ">=14"
   },
   "scripts": {
-    "copy:clean": "rimraf built/*",
-    "copy:expo": "ncp ../expo/dist built/expo --stopOnErr",
-    "copy:website": "ncp ../website/out built/website --stopOnErr",
+    "copy:clean": "rimraf static/*",
+    "copy:expo": "ncp ../expo/dist static/expo --stopOnErr",
+    "copy:website": "ncp ../website/out static/website --stopOnErr",
     "copy": "yarn copy:clean && yarn copy:expo && yarn copy:website",
     "build": "yarn lint && yarn build-ts",
     "build-ts": "ncc build src/server.ts -o dist",

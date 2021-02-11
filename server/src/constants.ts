@@ -6,8 +6,8 @@ export const __DEV__ = process.env.NODE_ENV !== "production";
 // get the `dist/` folder. No idea why. Insanity.
 export const CWD = process.cwd();
 
-export const EXPO_PATH = join(CWD, "built", "expo");
-export const WEBSITE_PATH = join(CWD, "built", "website");
+export const EXPO_PATH = join(CWD, "static", "expo");
+export const WEBSITE_PATH = join(CWD, "static", "website");
 
 export const DATA_PATH = join(CWD, "data");
 
