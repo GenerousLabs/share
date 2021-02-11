@@ -49,6 +49,7 @@ const MenuItem = ({
   <TouchableHighlight
     style={styles.menuItem}
     onPress={() => {
+      // TODO Navigate to the first screen within the drawer if it has a navigator
       navigation.navigate(route);
     }}
   >
