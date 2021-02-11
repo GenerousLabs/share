@@ -46,14 +46,15 @@ only would be possible.
     - Yes, redirect to setup, add name field
 - [ ] Check repo names to make sure they're not empty
   - Causes a bug in saving / reading from repos.yaml
-- [ ] Add home / help page intro section
+- [x] Add home / help page intro section
   - Were you invited? Try clicking the link again...
   - Click here to accept your invitation
-- [ ] Add password section to home / help page
+- [x] Add password section to home / help page
+- [ ] Build script including website and expo
+- [ ] Add name (senderName) to link service when generating invite links
 - [ ] Add text to invite link
 - [ ] Markdown update on homepage
   - Pull via a web request? - later
-- [ ] Build script including website and expo
 - [ ] Check exps:// links without app launch
 
 ## Sprint 2 Design Suggestions
