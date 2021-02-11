@@ -10,7 +10,7 @@
     "test": "jest --watchAll",
     "postinstall": "patch-package",
     "build:clean": "rimraf dist",
-    "build:expo": "expo export --public-url \"https://\\$SHARE_HOSTNAME/expo\" --force",
+    "build:expo": "cross-env expo export --public-url \"https://$SHARE_HOSTNAME/expo\" --force",
     "build": "yarn build:clean && yarn build:expo"
   },
   "jest": {
@@ -111,6 +111,7 @@
     "@types/redux-mock-store": "^1.0.2",
     "@types/uuid": "^8.3.0",
     "babel-plugin-macros": "^2.8.0",
+    "cross-env": "^7.0.3",
     "jest-expo": "^40.0.0",
     "memfs": "^3.2.0",
     "react-test-renderer": "^17.0.1",
