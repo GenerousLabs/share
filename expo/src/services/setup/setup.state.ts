@@ -47,6 +47,14 @@ const setupSlice = createSlice({
         state.inviteCodes.push(action.payload.inviteCode);
       }
     },
+    removeInviteCode: (
+      state,
+      action: PayloadAction<{ inviteCode: string }>
+    ) => {
+      state.inviteCodes = state.inviteCodes.filter(
+        (code) => code !== action.payload.inviteCode
+      );
+    },
     clearInviteCodes: (state) => {
       state.inviteCodes = [];
     },
@@ -64,6 +72,7 @@ export const {
   setName,
   setRemoteParams,
   addInviteCode,
+  removeInviteCode,
   clearInviteCodes,
 } = setupSlice.actions;
 
