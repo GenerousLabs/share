@@ -4,6 +4,7 @@ import {
 } from "@stablelib/base64";
 import { decode as utf8Decode, encode as utf8Encode } from "@stablelib/utf8";
 import fetch from "cross-fetch";
+import Constants from "expo-constants";
 import "react-native-get-random-values";
 import { scrypt } from "scrypt-js";
 import tweetnacl from "tweetnacl";
@@ -11,7 +12,13 @@ import { CONFIG } from "../../shared.constants";
 import { createPassword } from "../../utils/password.utils";
 
 // TODO TODOCONFIG Move this out to an .env or app build config file
-const POSTOFFICE_URL = CONFIG.postofficeUrl;
+const [devHost] =
+  typeof Constants.manifest.debuggerHost === "string"
+    ? Constants.manifest.debuggerHost.split(":")
+    : ":";
+const devUrl =
+  devHost.length > 0 ? `${devHost}:8000/postoffice` : CONFIG.postofficeUrl;
+const POSTOFFICE_URL = __DEV__ ? devUrl : CONFIG.postofficeUrl;
 const POSTOFFICE_SEPARATOR = "_";
 
 const SCRYPT_N = 1024;
