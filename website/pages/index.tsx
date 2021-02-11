@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
-const hostname = process.env.SHARE_HOSTNAME;
+const hostname = process.env.hostname;
 
 type UrlData =
   | {
@@ -117,28 +117,6 @@ const Home = () => {
     window.onpopstate = () => readHash();
   }, []);
 
-  if (isBooting) {
-    <div className={styles.Wrapper}>
-      <Head>
-        <title>Generous Share</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.App}>
-        <h1>Generous Share</h1>
-        <p>
-          If you're already setup, launch the Generous Share app here. If not,
-          find a friend to invite you.
-        </p>
-        <p>
-          <a className={styles.buttonLink} href={`exps://${hostname}/`}>
-            Click here to accept the invitation
-          </a>
-        </p>
-      </main>
-    </div>;
-  }
-
   const { token, username, inviteCode } = urlState;
   const name = getName(urlState);
   const senderName =
@@ -147,6 +125,32 @@ const Home = () => {
   const showToken = typeof token === "string" && token.length > 0;
   const showInvite =
     !showToken && typeof inviteCode === "string" && inviteCode.length > 0;
+
+  const showGeneric = isBooting || (!showToken && !showInvite);
+
+  if (showGeneric) {
+    return (
+      <div className={styles.Wrapper}>
+        <Head>
+          <title>Generous Share</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <main className={styles.App}>
+          <h1>Generous Share</h1>
+          <p>
+            If you're already setup, launch the Generous Share app here. If not,
+            find a friend to invite you.
+          </p>
+          <p>
+            <a className={styles.buttonLink} href={`exps://${hostname}/`}>
+              Click here to accept the invitation
+            </a>
+          </p>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.Wrapper}>
