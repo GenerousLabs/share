@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
@@ -53,20 +54,21 @@ const getUrlParams = ({ hash }: { hash: string }): UrlData => {
   }
 };
 
-const STORAGE_KEY = "__generousShareParams";
+const URL_STATE_STORAGE_KEY = "__generousShareParams";
+const IS_EXISTING_USER_STORAGE_KEY = "__generousShareIsExistingUser";
 
 const persistUrlState = (state: UrlState) => {
   if ("localStorage" in globalThis === false) {
     return;
   }
-  globalThis.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  globalThis.localStorage.setItem(URL_STATE_STORAGE_KEY, JSON.stringify(state));
 };
 
 const loadUrlState = (): UrlState => {
   if ("localStorage" in globalThis === false) {
     return {};
   }
-  const json = globalThis.localStorage.getItem(STORAGE_KEY);
+  const json = globalThis.localStorage.getItem(URL_STATE_STORAGE_KEY);
   if (json === null) {
     return {};
   }
@@ -94,10 +96,44 @@ const getName = (state: UrlState) => {
   return "";
 };
 
+const persistIsExistingUser = (isExistinguser: boolean) => {
+  if ("localStorage" in globalThis === false) {
+    return;
+  }
+  globalThis.localStorage.setItem(
+    IS_EXISTING_USER_STORAGE_KEY,
+    isExistinguser ? "1" : "0"
+  );
+};
+
+const loadIsExistingUser = () => {
+  if ("localStorage" in globalThis === false) {
+    return;
+  }
+  const storedVal = globalThis.localStorage.getItem(
+    IS_EXISTING_USER_STORAGE_KEY
+  );
+  if (storedVal === "0") {
+    return false;
+  }
+  if (storedVal === "1") {
+    return true;
+  }
+};
+
+enum View {
+  generic = "generic",
+  token = "token",
+  invite = "invite",
+}
+
 const Home = () => {
   const [isBooting, setIsBooting] = useState(true);
+  const [showView, setShowView] = useState(View.generic);
   const [urlState, setUrlState] = useState<UrlState>(() => loadUrlState());
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(undefined);
+  const [isExistingUser, _setIsExistingUser] = useState<boolean>(() =>
+    loadIsExistingUser()
+  );
 
   const readHash = useCallback(() => {
     const params = getUrlParams({ hash: window.location.hash });
@@ -109,8 +145,18 @@ const Home = () => {
     setUrlState(newState);
     persistUrlState(newState);
 
+    setShowView(View[type]);
+
     setIsBooting(false);
   }, [setIsBooting, setUrlState]);
+
+  const setIsExistingUser = useCallback(
+    (isExistingUser) => {
+      _setIsExistingUser(isExistingUser);
+      persistIsExistingUser(isExistingUser);
+    },
+    [_setIsExistingUser]
+  );
 
   useEffect(() => {
     readHash();
@@ -173,7 +219,10 @@ const Home = () => {
             </p>
             <p>
               <button
-                className={styles.button}
+                className={classnames([
+                  styles.button,
+                  isExistingUser ? styles.buttonSelected : null,
+                ])}
                 onClick={() => {
                   setIsExistingUser(true);
                 }}
@@ -181,7 +230,10 @@ const Home = () => {
                 Yes
               </button>{" "}
               <button
-                className={styles.button}
+                className={classnames([
+                  styles.button,
+                  !isExistingUser ? styles.buttonSelected : null,
+                ])}
                 onClick={() => {
                   setIsExistingUser(false);
                 }}
