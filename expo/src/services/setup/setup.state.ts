@@ -1,5 +1,6 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
+import { Config } from "../config/config.service";
 
 export const REDUCER_KEY = "setup" as const;
 
@@ -23,7 +24,7 @@ type State = {
 const initialState: State = { isSetupComplete: false, inviteCodes: [] };
 
 const SETUP = "SHARE/setup/setup";
-export const setupSagaAction = createAction(SETUP);
+export const setupSagaAction = createAction<{ config: Config }>(SETUP);
 export const setupErrorAction = makeErrorActionCreator(SETUP);
 
 const setupSlice = createSlice({
@@ -34,6 +35,8 @@ const setupSlice = createSlice({
       state.isSetupComplete = true;
       state.didSetupFail = false;
       state.setupError = undefined;
+      delete state.name;
+      delete state.remoteParams;
     },
     setName: (state, action: PayloadAction<{ name: string }>) => {
       state.name = action.payload.name;

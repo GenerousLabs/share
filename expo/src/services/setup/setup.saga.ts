@@ -3,9 +3,8 @@ import * as Updates from "expo-updates";
 import { ensureDirectoryExists } from "git-encrypted";
 import { purgeStoredState } from "redux-persist";
 import { all, takeEvery } from "redux-saga/effects";
-import { call, put, putResolve, select } from "typed-redux-saga/macro";
+import { call, put, putResolve } from "typed-redux-saga/macro";
 import { gitFsHttp, REPOS_PATH } from "../../shared.constants";
-import { RootState } from "../../store";
 import { writeConfigToFilesystem } from "../config/config.service";
 import { DANGEROUS_deleteEverything } from "../fs/fs.service";
 import { createNewLibraryEffect } from "../library/library.saga";
@@ -28,14 +27,7 @@ export function* setupEffect(action: ReturnType<typeof setupSagaAction>) {
   try {
     const { fs } = gitFsHttp;
 
-    const setup = yield* select((state: RootState) => state.setup);
-    if (typeof setup.remoteParams === "undefined") {
-      throw new Error("Dispatched setup before setting remote params #Knbeg2");
-    }
-    if (typeof setup.name === "undefined") {
-      throw new Error("Dispatched setup before setting name #TW4eKS");
-    }
-    const config = { name: setup.name, remote: setup.remoteParams };
+    const { config } = action.payload;
 
     yield* call(ensureDirectoryExists, { fs, path: REPOS_PATH });
 

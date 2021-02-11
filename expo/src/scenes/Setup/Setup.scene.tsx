@@ -3,7 +3,7 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import Constants from "expo-constants";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,12 +12,7 @@ import Header from "../../components/Header/Header.component";
 import Markdown from "../../components/Markdown/Markdown.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { colours } from "../../root.theme";
-import {
-  setName,
-  setRemoteParams,
-  setSetupCompleteAction,
-  setupSagaAction,
-} from "../../services/setup/setup.state";
+import { setupSagaAction } from "../../services/setup/setup.state";
 import { CONFIG } from "../../shared.constants";
 import { sharedStyles } from "../../shared.styles";
 import { SetupDrawerParamList } from "../../shared.types";
@@ -56,6 +51,7 @@ const Schema = zod.object({
   host: zod.string().nonempty(),
   token: zod.string().nonempty(),
   username: zod.string().nonempty(),
+  name: zod.string().nonempty(),
 });
 type Inputs = zod.infer<typeof Schema>;
 
@@ -72,30 +68,20 @@ const Setup = ({
   });
 
   const onSubmit = useCallback(
-    (data?: Inputs) => {
+    (data: Inputs) => {
       setHasSetupStarted(true);
-      if (typeof data !== "undefined") {
-        dispatch(setRemoteParams(data));
-      }
-      dispatch(setupSagaAction());
+      const { name, ...remote } = data;
+      dispatch(setupSagaAction({ config: { name, remote } }));
     },
     [dispatch, setupSagaAction, setHasSetupStarted]
   );
 
-  // If the remote params we require for setup are already in redux, then we can
-  // hide the form that requests them.
-  // TODO Allow users to edit remote params behind a switch
-  const hasRemoteParams = typeof setup.remoteParams !== "undefined";
-  console.log("Setup.scene #KZHyEM", hasRemoteParams);
-
-  const remoteParamsMarkdown =
-    typeof setup.remoteParams === "undefined"
-      ? ""
-      : `Your parameters are:  
-Protocol: ${setup.remoteParams.protocol}  
-Host: ${setup.remoteParams.host}  
-Username: ${setup.remoteParams.username}  
-Token: ${setup.remoteParams.token}`;
+  const defaultUsername =
+    typeof setup.remoteParams !== "undefined"
+      ? setup.remoteParams.username
+      : "";
+  const defaultToken =
+    typeof setup.remoteParams !== "undefined" ? setup.remoteParams.token : "";
 
   if (setup.didSetupFail) {
     return (
@@ -128,100 +114,189 @@ Token: ${setup.remoteParams.token}`;
         <ScrollView>
           <View style={styles.ScrollViewInner}>
             <WarningBox />
+
             <Markdown content={welcomeMessage} />
-            {hasRemoteParams ? null : (
-              <>
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Protocol"
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                    />
-                  )}
-                  name="protocol"
-                  defaultValue={defaultValues.protocol}
+
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  placeholder="Your name"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  autoCapitalize="words"
+                  autoCompleteType="name"
+                  errorMessage={
+                    errors.name &&
+                    "Sorry, setup requires a name. Feel free to make one up."
+                  }
                 />
-                {errors.protocol && <Text>Protocol is a required field</Text>}
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Host"
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                    />
-                  )}
-                  name="host"
-                  defaultValue={defaultValues.host}
-                />
-                {errors.host && <Text>Host is a required field</Text>}
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Username"
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                      autoCapitalize="none"
-                      autoCompleteType="username"
-                    />
-                  )}
-                  name="username"
-                  defaultValue=""
-                />
-                {errors.username && <Text>Username is a required field</Text>}
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Token"
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                      autoCapitalize="none"
-                      autoCompleteType="password"
-                    />
-                  )}
-                  name="token"
-                  defaultValue=""
-                />
-                {errors.token && <Text>Token is a required field</Text>}
-              </>
-            )}
-            <Input
-              placeholder="Your name"
-              onChangeText={(value) => dispatch(setName({ name: value }))}
-              autoCapitalize="words"
-              autoCompleteType="name"
+              )}
+              name="name"
+              defaultValue=""
             />
+
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => {
+                if (value === defaultValues.protocol) {
+                  return (
+                    <View>
+                      <Pressable
+                        onLongPress={() => onChange("")}
+                        delayLongPress={2e3}
+                      >
+                        <Text style={styles.defaultValueText}>
+                          Protocol: {defaultValues.protocol}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  );
+                }
+
+                return (
+                  <Input
+                    labelStyle={styles.inputLabel}
+                    placeholder="Protocol"
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    errorMessage={
+                      errors.protocol && "A protocol is required for setup."
+                    }
+                  />
+                );
+              }}
+              name="protocol"
+              defaultValue={defaultValues.protocol}
+            />
+
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => {
+                if (value === defaultValues.host) {
+                  return (
+                    <View>
+                      <Pressable
+                        onLongPress={() => onChange("")}
+                        delayLongPress={2e3}
+                      >
+                        <Text style={styles.defaultValueText}>
+                          Host: {defaultValues.host}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  );
+                }
+
+                return (
+                  <Input
+                    labelStyle={styles.inputLabel}
+                    placeholder="Host"
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    errorMessage={
+                      errors.host && "A host is required for setup."
+                    }
+                  />
+                );
+              }}
+              name="host"
+              defaultValue={defaultValues.host}
+            />
+
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => {
+                if (value === "" && defaultUsername.length > 0) {
+                  console.log("Setting username after first paint #bXUFiD");
+                  onChange(defaultUsername);
+                }
+
+                if (value === defaultUsername && value.length > 0) {
+                  return (
+                    <View>
+                      <Pressable
+                        onLongPress={() => onChange("")}
+                        delayLongPress={2e3}
+                      >
+                        <Text style={styles.defaultValueText}>
+                          Username: {defaultUsername}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  );
+                }
+
+                return (
+                  <Input
+                    placeholder="Username"
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    autoCapitalize="none"
+                    autoCompleteType="username"
+                    errorMessage={
+                      errors.username && "A username is required for setup."
+                    }
+                  />
+                );
+              }}
+              name="username"
+              defaultValue={defaultUsername}
+            />
+
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => {
+                if (value === "" && defaultToken.length > 0) {
+                  console.log("Setting token after first paint #Fjx2uC");
+                  onChange(defaultToken);
+                }
+
+                if (value === defaultToken && value.length > 0) {
+                  return (
+                    <View>
+                      <Pressable
+                        onLongPress={() => onChange("")}
+                        delayLongPress={2e3}
+                      >
+                        <Text style={styles.defaultValueText}>
+                          Token: {defaultToken}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  );
+                }
+
+                return (
+                  <Input
+                    placeholder="Token"
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    autoCapitalize="none"
+                    autoCompleteType="password"
+                    errorMessage={
+                      errors.token && "A token is required for setup."
+                    }
+                  />
+                );
+              }}
+              name="token"
+              defaultValue={defaultToken}
+            />
+
             <Button
               title="Startup setup"
               loading={formState.isSubmitting || hasSetupStarted}
               onPress={() => {
-                // Do not submit the form unless a name has been entered
-                if (typeof setup.name !== "string" || setup.name.length === 0) {
-                  Alert.alert("Please enter a name");
-                  return;
-                }
-
-                if (hasRemoteParams) {
-                  onSubmit();
-                } else {
-                  // NOTE: `onSubmit()`'s argument is optional here, which
-                  // doesn't fit the required type signature for
-                  // `handleSubmit()` so we cast it to any as a hack.
-                  handleSubmit(onSubmit as any)();
-                }
+                handleSubmit(onSubmit)();
               }}
+              containerStyle={styles.submitButton}
             />
-            {!hasRemoteParams ? null : (
-              <Text style={styles.remoteParams}>{remoteParamsMarkdown}</Text>
-            )}
           </View>
         </ScrollView>
       </View>
@@ -237,8 +312,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: colours.grey5,
   },
-  remoteParams: {
-    marginTop: 20,
+  defaultValueText: {
     color: colours.grey5,
+    marginVertical: 3,
+  },
+  inputLabel: {
+    fontSize: 12,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  submitButton: {
+    marginTop: 12,
   },
 });
