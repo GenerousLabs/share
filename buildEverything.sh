@@ -27,7 +27,9 @@ then
   exit 0
 fi
 
+set -a
 source .env
+set +a
 
 echo "############################################################"
 echo "##### Building expo"
