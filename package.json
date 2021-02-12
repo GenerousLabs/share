@@ -7,7 +7,7 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-commit": "cd expo && yarn lint && cd ../server && yarn lint"
+      "pre-commit": "cd expo && yarn lint && cd ../server && yarn lint && cd ../website && yarn lint"
     }
   },
   "devDependencies": {
