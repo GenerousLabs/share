@@ -190,7 +190,7 @@ const Home = () => {
           </p>
           <p>
             <a className={styles.buttonLink} href={`exps://${hostname}/`}>
-              Click here to accept the invitation
+              Launch Generous Share in Expo
             </a>
           </p>
         </main>
