@@ -98,7 +98,7 @@ header h1 {
 
 .logoContainer {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 h2 {
