@@ -62,6 +62,7 @@ a.button {
 
 .stepHeaderWrapper h3 {
   margin: 0;
+  flex-grow: 1;
 }
 
 .time {
