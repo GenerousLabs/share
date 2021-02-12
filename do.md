@@ -52,22 +52,16 @@ only would be possible.
   - Were you invited? Try clicking the link again...
   - Click here to accept your invitation
 - [x] Add password section to home / help page
-- [ ] Build script including website and expo
+- [x] Build script including website and expo
 - [x] Add name (senderName) to link service when generating invite links
 - [ ] Markdown update on homepage
   - Pull via a web request? - later
 - [ ] Check exps:// links without app launch
 
-## Sprint 2 Design Suggestions
-
-- [ ] Splash screen 1284x2778
-- [ ] Web site design
-- [ ] Home / help page content
-
 ## Sprint 2 Nice to Have
 
 - [ ] base64 encode names in share URLs?
-- [ ] Simplify / cleanup setup screen
+- [x] Simplify / cleanup setup screen
 - [x] Investigate the `lirary/loadOffer/ERROR` actions
 - [ ] Investigate all `yield dispatch()` or `yield putResolve()` calls
   - They will bubble errors, which potentially breaks the sagas
