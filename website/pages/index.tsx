@@ -6,6 +6,7 @@ import styles from "../styles/Home.module.css";
 
 const hostname = process.env.hostname;
 const version = process.env.version;
+const url = `exps://${hostname}/app/`;
 
 type UrlData =
   | {
@@ -187,7 +188,7 @@ const Home = () => {
               not, find a friend to invite you.
             </p>
             <p>
-              <a className={styles.buttonLink} href={`exps://${hostname}/`}>
+              <a className={styles.buttonLink} href={url}>
                 Launch Generous Share in Expo
               </a>
             </p>
@@ -233,7 +234,7 @@ const Home = () => {
                 <p>
                   <a
                     className={styles.buttonLink}
-                    href={`exps://${hostname}/?inviteCode=${inviteCode}`}
+                    href={`${url}?inviteCode=${inviteCode}`}
                   >
                     Click here to accept the invitation
                   </a>
@@ -309,7 +310,7 @@ const Home = () => {
             </p>
             <p>
               <a
-                href={`exps://${hostname}/?username=${username}&token=${token}${
+                href={`${url}/?username=${username}&token=${token}${
                   typeof inviteCode === "string"
                     ? `&invitecode=${inviteCode}`
                     : ""
