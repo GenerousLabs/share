@@ -27,6 +27,7 @@ then
   exit 0
 fi
 
+# set -a means that the FOO=bar declarations in .env are exported
 set -a
 source .env
 set +a
