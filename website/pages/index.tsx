@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 const hostname = process.env.hostname;
+const version = process.env.version;
 
 type UrlData =
   | {
@@ -309,6 +310,9 @@ const Home = () => {
           </>
         )}
       </main>
+      <footer className={styles.footer}>
+        <p>v: {version}</p>
+      </footer>
     </div>
   );
 };

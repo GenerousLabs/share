@@ -1,15 +1,18 @@
 .Wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .App {
   text-align: center;
   max-width: 720px;
+  flex-grow: 1;
 }
 
 .buttonLink {
-  border: 1px solid black;
+  border: 1px solid #212121;
   padding-left: 24px;
   padding-right: 24px;
   padding-top: 12px;
@@ -19,7 +22,7 @@
 }
 
 .button {
-  border: 1px solid black;
+  border: 1px solid #212121;
   background-color: white;
   min-width: 60px;
   padding-left: 12px;
@@ -31,4 +34,9 @@
 
 .buttonSelected {
   background-color: greenyellow;
+}
+
+.footer {
+  font-size: 0.8rem;
+  color: #c4c4c4;
 }
