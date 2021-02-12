@@ -72,7 +72,7 @@ const transports = __DEV__
 if (enableProductionDebugLogger) {
   transports.push(
     new winston.transports.File({
-      filename: "data/info.debug",
+      filename: "data/debug.log",
       level: "debug",
       format: buildFileFormatter({ level: "debug" }),
     })
