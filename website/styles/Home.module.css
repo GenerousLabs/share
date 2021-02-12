@@ -10,10 +10,10 @@
 
 .buttonLink {
   border: 1px solid black;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   margin: 12px;
   line-height: 3rem;
 }
