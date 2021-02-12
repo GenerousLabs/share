@@ -1,6 +1,9 @@
 import winston, { format, Logform } from "winston";
 
 const __DEV__ = process.env.NODE_ENV !== "production";
+const enableProductionDebugLogger =
+  typeof process.env.SHARE_DEBUG === "string" &&
+  process.env.SHARE_DEBUG === "1";
 
 /**
  * Build a set of file loggers that optionally filters to a specific log level.
@@ -66,10 +69,7 @@ const transports = __DEV__
       }),
     ];
 
-if (
-  typeof process.env.SHARE_DEBUG === "string" &&
-  process.env.SHARE_DEBUG === "1"
-) {
+if (enableProductionDebugLogger) {
   transports.push(
     new winston.transports.File({
       filename: "data/info.debug",
@@ -85,7 +85,7 @@ const options: winston.LoggerOptions = {
 
 const logger = winston.createLogger(options);
 
-if (process.env.NODE_ENV !== "production") {
+if (__DEV__ || enableProductionDebugLogger) {
   logger.debug("Logging initialized at debug level #tKMPf1");
 }
 
