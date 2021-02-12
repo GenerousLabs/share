@@ -30,7 +30,12 @@ const PasswordCard = ({ password }: { password: string }) => {
           These are the key sot your account. You will need it if you ever lose
           your phone or delete your Generous app.
         </Text>
-        <Input value={password} errorStyle={styles.passwordInput} />
+        <Input
+          value={password}
+          errorStyle={styles.passwordInput}
+          autoCompleteType="password"
+          selectTextOnFocus
+        />
       </Card>
     </TouchableOpacity>
   );
