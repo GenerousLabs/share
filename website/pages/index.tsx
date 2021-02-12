@@ -1,6 +1,7 @@
 import Bowser from "bowser";
 import classnames from "classnames";
 import Head from "next/head";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
@@ -202,7 +203,7 @@ const Home = () => {
 
       <main className="appContainer">
         <div className="logoContainer">
-          <img src="/_static/logo.png" height="48" width="48" />
+          <Image src="/_static/logo.png" height="46" width="41" />
         </div>
 
         {showView === View.generic && (
