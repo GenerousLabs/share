@@ -1,7 +1,7 @@
 import winston, { format, Logform } from "winston";
 
 const __DEV__ = process.env.NODE_ENV !== "production";
-const enableProductionDebugLogger =
+export const enableProductionDebugLogger =
   typeof process.env.SHARE_DEBUG === "string" &&
   process.env.SHARE_DEBUG === "1";
 

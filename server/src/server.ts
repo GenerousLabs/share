@@ -23,7 +23,7 @@ import {
   getIsValidReadToken,
   getIsValidWriteToken,
 } from "./services/repos/repos.service";
-import logger from "./util/logger";
+import logger, { enableProductionDebugLogger } from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
 
@@ -104,6 +104,14 @@ const app = express();
 
 // Add CORS headers to all incoming requests
 app.use(cors());
+
+if (enableProductionDebugLogger) {
+  app.use((req, res, next) => {
+    const { path, params, headers } = req;
+    logger.debug("Request incoming #hEjOXS", { path, params, headers });
+    next();
+  });
+}
 
 // Serve the expo content from the subdirectory `/expo`
 app.use(
