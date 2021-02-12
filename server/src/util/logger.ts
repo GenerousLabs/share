@@ -64,6 +64,19 @@ const prodTransports = [
   }),
 ];
 
+if (
+  typeof process.env.SHARE_DEBUG === "string" &&
+  process.env.SHARE_DEBUG === "1"
+) {
+  prodTransports.push(
+    new winston.transports.File({
+      filename: "data/info.debug",
+      level: "debug",
+      format: buildFileFormatter({ level: "debug" }),
+    })
+  );
+}
+
 const options: winston.LoggerOptions = {
   transports:
     process.env.NODE_ENV === "production" ? prodTransports : devTransports,
