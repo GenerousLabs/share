@@ -221,7 +221,7 @@ const Home = () => {
               <button
                 className={classnames([
                   styles.button,
-                  isExistingUser ? styles.buttonSelected : null,
+                  isExistingUser === true ? styles.buttonSelected : null,
                 ])}
                 onClick={() => {
                   setIsExistingUser(true);
@@ -232,7 +232,7 @@ const Home = () => {
               <button
                 className={classnames([
                   styles.button,
-                  !isExistingUser ? styles.buttonSelected : null,
+                  isExistingUser === false ? styles.buttonSelected : null,
                 ])}
                 onClick={() => {
                   setIsExistingUser(false);
