@@ -1,3 +1,29 @@
+.overlayWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #212121;
+  opacity: 0.8;
+}
+.overlayContainer {
+  max-width: 360px;
+  opacity: 1;
+  background-color: white;
+  padding: 20px;
+}
+.overlayButton {
+  width: 100%;
+  background-color: white;
+  border-radius: 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 .Wrapper {
   display: flex;
   flex-direction: column;

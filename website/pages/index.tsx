@@ -1,3 +1,4 @@
+import Bowser from "bowser";
 import classnames from "classnames";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
@@ -98,6 +99,11 @@ const loadIsExistingUser = () => {
   }
 };
 
+const isMobile =
+  typeof window === "undefined"
+    ? true
+    : Bowser.parse(window.navigator.userAgent).platform.type === "mobile";
+
 enum View {
   generic = "generic",
   token = "token",
@@ -115,6 +121,7 @@ const Home = () => {
   const [isExistingUser, _setIsExistingUser] = useState<boolean>(() =>
     loadIsExistingUser()
   );
+  const [hideOverlay, setHideOverlay] = useState(isMobile);
 
   const readHash = useCallback(() => {
     const params = getUrlParams({ hash: window.location.hash });
@@ -152,6 +159,24 @@ const Home = () => {
         <title>Generous Share</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      {hideOverlay ? null : (
+        <div className={styles.overlayWrapper}>
+          <div className={styles.overlayContainer}>
+            <h3>It looks like you've opened this link on a computer</h3>
+            <p>
+              For the buttons to work, you need to be on the phone where you use
+              the Generous Share app.
+            </p>
+            <button
+              className={styles.overlayButton}
+              onClick={() => setHideOverlay(true)}
+            >
+              OK, got it.
+            </button>
+          </div>
+        </div>
+      )}
 
       <main className={styles.App}>
         <h1>Generous Share</h1>
