@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 
 const hostname = process.env.hostname;
 const version = process.env.version;
-const url = `exps://${hostname}/app/`;
+const url = `exps://${hostname}/expo/`;
 
 type UrlData =
   | {
@@ -310,7 +310,7 @@ const Home = () => {
             </p>
             <p>
               <a
-                href={`${url}/?username=${username}&token=${token}${
+                href={`${url}?username=${username}&token=${token}${
                   typeof inviteCode === "string"
                     ? `&invitecode=${inviteCode}`
                     : ""
