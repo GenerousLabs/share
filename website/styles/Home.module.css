@@ -22,45 +22,60 @@
   padding-bottom: 6px;
 }
 
-.Wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.App {
-  text-align: center;
-  max-width: 720px;
-  flex-grow: 1;
-}
-
-.buttonLink {
-  border: 1px solid #212121;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin: 12px;
-  line-height: 3rem;
-}
-
 .button {
   border: 1px solid #212121;
   background-color: white;
-  min-width: 60px;
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin: 12px;
+  color: #212121;
+  width: 208px;
+  padding: 15px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+button.button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+a.button {
+  line-height: 60px;
+  white-space: nowrap;
 }
 
 .buttonSelected {
-  background-color: greenyellow;
+  background-color: #212121;
+  color: white;
 }
 
-.footer {
-  font-size: 0.8rem;
+.afterAnswerBox {
+  background-color: #f1f1f1;
+  padding: 18px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.inviteCode {
+  text-align: center;
+}
+
+.stepHeaderWrapper {
+  display: flex;
+  margin-top: 45px;
+}
+
+.stepHeaderWrapper h3 {
+  margin: 0;
+}
+
+.time {
+  background-color: #c4c4c4;
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.footer p {
+  font-size: 0.6rem;
   color: #c4c4c4;
 }

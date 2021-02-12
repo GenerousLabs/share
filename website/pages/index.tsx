@@ -7,6 +7,7 @@ import styles from "../styles/Home.module.css";
 const hostname = process.env.hostname;
 const version = process.env.version;
 const url = `exps://${hostname}/expo/`;
+const telegramGroupUrl = "https://t.me/joinchat/T3LiaaNN-eHTCTVh";
 
 type UrlData =
   | {
@@ -111,6 +112,23 @@ enum View {
   invite = "invite",
 }
 
+const GotQuestions = () => {
+  return (
+    <>
+      <p>
+        Still got questions?
+        <br />
+        Hit us up on telegram.
+      </p>
+      <p>
+        <a href={telegramGroupUrl} target="_blank" rel="noopener noreferrer">
+          Generous Share Telegram Group
+        </a>
+      </p>
+    </>
+  );
+};
+
 const Home = () => {
   const [showView, setShowView] = useState(View.generic);
   const [urlState, setUrlState] = useState<UrlState>(() => {
@@ -155,11 +173,14 @@ const Home = () => {
     typeof urlState.senderName === "string" ? urlState.senderName : "A Friend";
 
   return (
-    <div className={styles.Wrapper}>
+    <div className="appWrapper">
       <Head>
         <title>Generous Share</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <header>
+        <h1>Generous Share</h1>
+      </header>
 
       {hideOverlay ? null : (
         <div className={styles.overlayWrapper}>
@@ -179,30 +200,45 @@ const Home = () => {
         </div>
       )}
 
-      <main className={styles.App}>
-        <h1>Generous Share</h1>
+      <main className="appContainer">
+        <div className="logoContainer">
+          <img src="/_static/logo.png" height="48" width="48" />
+        </div>
+
         {showView === View.generic && (
           <>
-            <p>
-              If you're already setup, launch the Generous Share app here. If
-              not, find a friend to invite you.
-            </p>
-            <p>
-              <a className={styles.buttonLink} href={url}>
-                Launch Generous Share in Expo
+            <h2>
+              Welcome to the
+              <br />
+              <span className="h2SecondLine">revolution</span>
+            </h2>
+            <p className="buttonLinkP">
+              <a className="buttonLink" href={url}>
+                Launch Your Generous App inside Expo
               </a>
             </p>
+            <hr />
+            <GotQuestions />
           </>
         )}
+
         {showView === View.invite && (
           <>
-            <p>Hey {name}, welcome to the revolution.</p>
+            <h2>
+              {name}, <span className="nobreak">welcome to the</span>
+              <br />
+              <span className="h2SecondLine">revolution.</span>
+            </h2>
             <p>
               {senderName} has invited you to join the Generous Share
               revolution.
             </p>
+            <hr />
+            <h4>Do you have the Generous App already?</h4>
             <p>
-              Do you already have the Generous Share app installed and setup?
+              Installing the Generous Share App is a bit more involved than the
+              usual app installation process, so you would remember if you have
+              done it. Have you?
             </p>
             <p>
               <button
@@ -228,111 +264,153 @@ const Home = () => {
                 No
               </button>
             </p>
-            {typeof isExistingUser === "undefined" ? null : isExistingUser ? (
-              <>
-                <p>AWESOME! - Welcome back</p>
-                <p>
-                  <a
-                    className={styles.buttonLink}
-                    href={`${url}?inviteCode=${inviteCode}`}
-                  >
-                    Click here to accept the invitation
+            {isExistingUser === true && (
+              <div className={styles.afterAnswerBox}>
+                <p>Awesome, welcome back!</p>
+                <p className="buttonLinkP">
+                  <a href={`${url}?inviteCode=${inviteCode}`}>
+                    {senderName.length > 0
+                      ? `Accept ${senderName}'s friend invitation`
+                      : `Accept the invitation`}
                   </a>
                 </p>
-              </>
-            ) : (
-              <>
-                <p>No? - No worries, we'll be happy to help you get setup.</p>
+                <p className={styles.inviteCode}>
+                  Invitation code: {inviteCode}
+                </p>
+              </div>
+            )}
+            {isExistingUser === false && (
+              <div className={styles.afterAnswerBox}>
                 <p>
-                  The process is a little convoluted. Unfortunately this kind of
-                  revolutionary software requires a little work.
+                  <strong>OK then, let’s get you setup!</strong>
                 </p>
                 <p>
-                  To get started, join the{" "}
+                  The process is a little confusing at times but we will walk
+                  you through it. This kind of revolutionary software requires a
+                  little patience from you and some magic from us.
+                </p>
+                <p>
+                  First, you’ll need a username. Request one on our community
+                  Telegram group. Post a message and say "I would like an
+                  account with [insert awesome username here]". Choose whatever
+                  username you like, we'll let you know if it's not available.
+                </p>
+                <p>
+                  Somebody will create an account for you and send you a unique
+                  installation link. It's a manual process, so unfortunately you
+                  might need to wait a little until someone is available to
+                  respond.
+                </p>
+                <p className="buttonLinkP">
                   <a
-                    href="https://t.me/joinchat/T3LiaaNN-eHTCTVh"
+                    href={telegramGroupUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Generous telegram group
                   </a>
-                  . Post a message and say "I want an account with username
-                  xxx". Choose whatever username you like, we'll let you know if
-                  it's not available.
                 </p>
-                <p>
-                  Somebody will create an account for you and send you an
-                  installation link. It's a manual process, so unfortunately you
-                  might need to wait a day or two.
-                </p>
-              </>
+              </div>
             )}
           </>
         )}
         {showView === View.token && (
           <>
-            <p>Hey {name}, welcome to the revolution.</p>
+            <h2>
+              {name}, welcome to the <br />
+              <span className="h2SecondLine">revolution.</span>
+            </h2>
             <p>
+              This is your unique page. It has instructions to ensure a smooth
+              onboarding process. Consider saving it and don’t share it with
+              others.
+            </p>
+            <p className="blackHighlight">
               Installing the Generous Share app is a bit more involved than the
               usual app. That's because it's built for humanity rather than
               profit. We're working on making it easier, please bear with us in
               the meantime.
             </p>
+            <div className={styles.stepHeaderWrapper}>
+              <h3>Step 1: Download Expo Go </h3>
+              <p className={styles.time}>1 min</p>
+            </div>
             <p>
-              The app is built on top of something called expo. The first step
-              is to install Expo Go.
+              The Generous Share App is built on top of another App that is
+              called Expo. The first step is go to the Apple App or Android Play
+              store and download <strong>“Expo Go”</strong>.
+            </p>
+            <p>
+              Once you have downloaded the App, return to this page and proceed
+              to Step 2.
             </p>
             <p>
               <a
                 href="https://itunes.apple.com/app/apple-store/id982107779"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.buttonLink}
+                className={styles.button}
               >
                 Install for iOS
               </a>{" "}
-              -{" "}
               <a
                 href="https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.buttonLink}
+                className={styles.button}
               >
                 Install for Android
               </a>
             </p>
+            <div className={styles.stepHeaderWrapper}>
+              <h3>Step 2: Launch Generous Share </h3>
+              <p className={styles.time}>4 mins</p>
+            </div>
             <p>
-              After you've installed Expo Go, come back to this page, and then
-              you're ready to launch Generous Share inside Expo Go. Confused?
-              Sorry, we're working on making it easier, but usurping the man is
-              a hard task! You can always come back to this page, it's tailored
-              just for you {name}.
+              Now you will need to launch Generous Share inside Expo. This part
+              is a hella confusing, so we have provided screenshots below and
+              instructions for you to follow. We're working on making it easier,
+              but usurping the man is a hard task!
             </p>
             <p>
+              A) Start your set up process using your unique button. You will
+              find this at the end of these instructions.
+            </p>
+            <p>
+              B) Expo will open and you will see the welcome screen for expo.
+              Click OK.
+            </p>
+            <p>
+              C) Now, you will see a Generous Share overlay. Just click the
+              Close button (X) in the top corner of that overlay.
+            </p>
+            <p>
+              D) That’s it! Follow the final prompts to complete set up. Then
+              save your password and connect with friends who have sent you
+              invitation codes.
+            </p>
+            <hr />
+            <h4>Start set up process</h4>
+            <p>
+              This button is UNIQUE TO YOU. It will launch the Expo App. It
+              includes your SECRET tokens. We recommend you DON’T SHARE IT!
+            </p>
+            <p className="buttonLinkP">
               <a
                 href={`${url}?username=${username}&token=${token}${
                   typeof inviteCode === "string"
                     ? `&invitecode=${inviteCode}`
                     : ""
                 }`}
-                className={styles.buttonLink}
               >
-                Launch {name}'s Generous Share app (inside Expo Go)
+                Start {name}'s set up process
               </a>
             </p>
-            <p>
-              This link is PRIVATE. It includes your secret tokens. We recommend
-              you don't share it.
-            </p>
-            <p>
-              When you launch for the first time, you'll see a welcome message
-              from Expo Go. You can safely ignore that. The first time you
-              launch, and anytime you shake your phone with Expo Go open, you'll
-              see the developer menu. Again, you can safely close and ignore it.
-              Be careful with the "Home" or "Reload" buttons in that menu
-              though, if you reload, anything you're working on won't be saved.
-              Sorry, we know this is so 1999.
-            </p>
+            <h2>
+              Welcome to the <br />
+              <span>Generous revolution.</span>
+            </h2>
+            <GotQuestions />
           </>
         )}
       </main>

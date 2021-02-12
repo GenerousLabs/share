@@ -52,6 +52,106 @@ a {
   font-weight: bold;
 }
 
+p {
+  font-size: 16px;
+}
+
 * {
   box-sizing: border-box;
+}
+
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+@media screen and (max-width: 580px) {
+  .appContainer {
+    max-width: 580px;
+    flex-grow: 1;
+    padding: 15px;
+  }
+}
+@media screen and (min-width: 581px) {
+  .appContainer {
+    width: 580px;
+    flex-grow: 1;
+  }
+}
+
+header {
+  position: sticky;
+  width: 100vw;
+  top: 0;
+  background-color: #212121;
+  color: white;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+header h1 {
+  text-transform: uppercase;
+  font-size: 26px;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: start;
+}
+
+h2 {
+  font-size: 36px;
+}
+
+.h2SecondLine {
+  font-size: 60px;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin-top: 45px;
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+hr {
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #c4c4c4;
+  margin-top: 34px;
+  margin-bottom: 34px;
+}
+
+.buttonLinkP {
+  font-size: 14px;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #212121;
+  width: 100%;
+  background-color: white;
+}
+
+.buttonLinkP a {
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.blackHighlight {
+  background-color: #212121;
+  color: white;
+  padding: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.nobreak {
+  white-space: nowrap;
 }
