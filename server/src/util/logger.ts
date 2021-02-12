@@ -1,5 +1,7 @@
 import winston, { format, Logform } from "winston";
 
+const __DEV__ = process.env.NODE_ENV !== "production";
+
 /**
  * Build a set of file loggers that optionally filters to a specific log level.
  * So we get errors in `error.log`, warnings only in `warn.log` and so on.
@@ -23,52 +25,52 @@ const buildFileFormatter = ({ level }: { level?: string } = {}) => {
   return format.combine(...formats);
 };
 
-const devTransports = [
-  new winston.transports.Console({
-    level: "debug",
-    format: format.combine(
-      winston.format.timestamp(),
-      winston.format.colorize(),
-      winston.format.simple()
-    ),
-  }),
-  new winston.transports.File({
-    filename: "data/debug.log",
-    level: "debug",
-  }),
-];
-
-const prodTransports = [
-  new winston.transports.Console({
-    level: "info",
-    format: format.combine(
-      winston.format.timestamp(),
-      winston.format.colorize(),
-      winston.format.simple()
-    ),
-  }),
-  new winston.transports.File({
-    filename: "data/error.log",
-    level: "error",
-    format: buildFileFormatter({ level: "error" }),
-  }),
-  new winston.transports.File({
-    filename: "data/warn.log",
-    level: "warn",
-    format: buildFileFormatter({ level: "warn" }),
-  }),
-  new winston.transports.File({
-    filename: "data/info.log",
-    level: "info",
-    format: buildFileFormatter({ level: "info" }),
-  }),
-];
+const transports = __DEV__
+  ? [
+      new winston.transports.Console({
+        level: "debug",
+        format: format.combine(
+          winston.format.timestamp(),
+          winston.format.colorize(),
+          winston.format.simple()
+        ),
+      }),
+      new winston.transports.File({
+        filename: "data/debug.log",
+        level: "debug",
+      }),
+    ]
+  : [
+      new winston.transports.Console({
+        level: "info",
+        format: format.combine(
+          winston.format.timestamp(),
+          winston.format.colorize(),
+          winston.format.simple()
+        ),
+      }),
+      new winston.transports.File({
+        filename: "data/error.log",
+        level: "error",
+        format: buildFileFormatter({ level: "error" }),
+      }),
+      new winston.transports.File({
+        filename: "data/warn.log",
+        level: "warn",
+        format: buildFileFormatter({ level: "warn" }),
+      }),
+      new winston.transports.File({
+        filename: "data/info.log",
+        level: "info",
+        format: buildFileFormatter({ level: "info" }),
+      }),
+    ];
 
 if (
   typeof process.env.SHARE_DEBUG === "string" &&
   process.env.SHARE_DEBUG === "1"
 ) {
-  prodTransports.push(
+  transports.push(
     new winston.transports.File({
       filename: "data/info.debug",
       level: "debug",
@@ -78,8 +80,7 @@ if (
 }
 
 const options: winston.LoggerOptions = {
-  transports:
-    process.env.NODE_ENV === "production" ? prodTransports : devTransports,
+  transports,
 };
 
 const logger = winston.createLogger(options);
