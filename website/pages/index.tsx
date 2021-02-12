@@ -54,31 +54,7 @@ const getUrlParams = ({ hash }: { hash: string }): UrlData => {
   }
 };
 
-const URL_STATE_STORAGE_KEY = "__generousShareParams";
 const IS_EXISTING_USER_STORAGE_KEY = "__generousShareIsExistingUser";
-
-const persistUrlState = (state: UrlState) => {
-  if ("localStorage" in globalThis === false) {
-    return;
-  }
-  globalThis.localStorage.setItem(URL_STATE_STORAGE_KEY, JSON.stringify(state));
-};
-
-const loadUrlState = (): UrlState => {
-  if ("localStorage" in globalThis === false) {
-    return {};
-  }
-  const json = globalThis.localStorage.getItem(URL_STATE_STORAGE_KEY);
-  if (json === null) {
-    return {};
-  }
-  try {
-    return JSON.parse(json);
-  } catch (error) {
-    console.error("Error parsing stored state #CWY6Hc");
-    return {};
-  }
-};
 
 const getName = (state: UrlState) => {
   if (
@@ -128,9 +104,13 @@ enum View {
 }
 
 const Home = () => {
-  const [isBooting, setIsBooting] = useState(true);
   const [showView, setShowView] = useState(View.generic);
-  const [urlState, setUrlState] = useState<UrlState>(() => loadUrlState());
+  const [urlState, setUrlState] = useState<UrlState>(() => {
+    if (typeof window !== "undefined") {
+      getUrlParams({ hash: window.location.hash });
+    }
+    return {};
+  });
   const [isExistingUser, _setIsExistingUser] = useState<boolean>(() =>
     loadIsExistingUser()
   );
@@ -143,12 +123,9 @@ const Home = () => {
     const { type, ...rest } = params;
     const newState = { ...urlState, ...rest };
     setUrlState(newState);
-    persistUrlState(newState);
 
     setShowView(View[type]);
-
-    setIsBooting(false);
-  }, [setIsBooting, setUrlState]);
+  }, [setUrlState]);
 
   const setIsExistingUser = useCallback(
     (isExistingUser) => {
@@ -168,36 +145,6 @@ const Home = () => {
   const senderName =
     typeof urlState.senderName === "string" ? urlState.senderName : "A Friend";
 
-  const showToken = typeof token === "string" && token.length > 0;
-  const showInvite =
-    !showToken && typeof inviteCode === "string" && inviteCode.length > 0;
-
-  const showGeneric = isBooting || (!showToken && !showInvite);
-
-  if (showGeneric) {
-    return (
-      <div className={styles.Wrapper}>
-        <Head>
-          <title>Generous Share</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <main className={styles.App}>
-          <h1>Generous Share</h1>
-          <p>
-            If you're already setup, launch the Generous Share app here. If not,
-            find a friend to invite you.
-          </p>
-          <p>
-            <a className={styles.buttonLink} href={`exps://${hostname}/`}>
-              Launch Generous Share in Expo
-            </a>
-          </p>
-        </main>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.Wrapper}>
       <Head>
@@ -207,7 +154,20 @@ const Home = () => {
 
       <main className={styles.App}>
         <h1>Generous Share</h1>
-        {!showInvite ? null : (
+        {showView === View.generic && (
+          <>
+            <p>
+              If you're already setup, launch the Generous Share app here. If
+              not, find a friend to invite you.
+            </p>
+            <p>
+              <a className={styles.buttonLink} href={`exps://${hostname}/`}>
+                Launch Generous Share in Expo
+              </a>
+            </p>
+          </>
+        )}
+        {showView === View.invite && (
           <>
             <p>Hey {name}, welcome to the revolution.</p>
             <p>
@@ -282,7 +242,7 @@ const Home = () => {
             )}
           </>
         )}
-        {!showToken ? null : (
+        {showView === View.token && (
           <>
             <p>Hey {name}, welcome to the revolution.</p>
             <p>
