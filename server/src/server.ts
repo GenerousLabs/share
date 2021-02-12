@@ -132,6 +132,7 @@ app.use(
 const indexHtmlPath = join(WEBSITE_PATH, "index.html");
 const faviconIcoPath = join(WEBSITE_PATH, "favicon.ico");
 const nextPath = join(WEBSITE_PATH, "_next");
+const nextStaticPath = join(WEBSITE_PATH, "_static");
 app.use([/^\/$/, "/index.html"], (req, res) => {
   return res.sendFile(indexHtmlPath);
 });
@@ -139,6 +140,7 @@ app.use("/favicon.ico", (req, res) => {
   return res.sendFile(faviconIcoPath);
 });
 app.use("/_next", express.static(nextPath));
+app.use("/_static", express.static(nextStaticPath));
 
 app.get("/postoffice/:boxId/reply", async (req, res) => {
   try {
