@@ -7,12 +7,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #212121;
-  opacity: 0.8;
+  background-color: rgba(33, 33, 33, 0.8);
 }
 .overlayContainer {
   max-width: 360px;
-  opacity: 1;
   background-color: white;
   padding: 20px;
 }
