@@ -1,4 +1,5 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import * as FileSystem from "expo-file-system";
 import React, { useCallback, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Button, Input, Overlay, Text } from "react-native-elements";
@@ -6,6 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
+import { colours } from "../../root.theme";
 import { selectAllRepos } from "../../services/repo/repo.state";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
@@ -30,6 +32,13 @@ const Settings = ({
   const allReposText = allRepos
     .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
     .join("\n");
+  const debuggingText = `Filesystem
+documentDirectory: ${FileSystem.documentDirectory}
+bundleDirectory: ${FileSystem.bundleDirectory}
+cacheDirectory: ${FileSystem.cacheDirectory}
+
+Repos
+${allReposText}`;
 
   return (
     <View style={styles.container}>
@@ -81,9 +90,20 @@ const Settings = ({
             onPress={() => setIsOverlayVisible(true)}
           />
           <Text h2 style={styles.reposHeader}>
-            Repos
+            Debugging
           </Text>
-          <Input value={allReposText} multiline />
+          <View style={styles.debugWarning}>
+            <Text>
+              WARNING: The following text contains passwords that allow access
+              to your account. Only share this with somebody you trust.
+            </Text>
+          </View>
+          <Input
+            containerStyle={styles.debugInput}
+            value={debuggingText}
+            multiline
+            selectTextOnFocus={true}
+          />
           <Overlay
             overlayStyle={styles.overlay}
             isVisible={isOverlayVisible}
@@ -124,4 +144,17 @@ const styles = StyleSheet.create({
     // height: "90%",
   },
   reposHeader: { marginTop: 40, marginBottom: 20 },
+  debugWarning: {
+    padding: 10,
+    backgroundColor: "red",
+    marginBottom: 20,
+  },
+  debugInput: {
+    borderColor: colours.black,
+    borderWidth: 1,
+    padding: 5,
+    // These need to be specified separately to override the theme defaults
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
 });
