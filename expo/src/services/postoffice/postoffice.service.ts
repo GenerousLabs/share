@@ -178,7 +178,7 @@ export const sendReplyToPostoffice = async ({
   message: string;
   replyToPostofficeCode: string;
 }) => {
-  const parts = replyToPostofficeCode.split("#");
+  const parts = replyToPostofficeCode.split(POSTOFFICE_SEPARATOR);
   // TODO Better validation here
   if (parts.length !== 2) {
     throw new Error("Invalid postofficeCode. #eechOc");
