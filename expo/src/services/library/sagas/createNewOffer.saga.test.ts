@@ -11,7 +11,7 @@ jest.mock("../../../utils/time.utils", () => {
     getTimestampSeconds: () => {
       const d = new Date(mockStart);
       // Add 10s to each call
-      mockStart = mockStart + 10;
+      mockStart = mockStart + 10e3;
       return Math.round(d.getTime() / 1e3);
     },
   };
