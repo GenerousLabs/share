@@ -246,6 +246,7 @@ app.listen(PORT, async () => {
     REPOS_ROOT,
     POSTOFFICE_PATH,
     REPO_TEMPLATE_PATH,
+    enableProductionDebugLogger,
   });
 
   try {
