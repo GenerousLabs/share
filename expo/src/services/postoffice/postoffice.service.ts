@@ -161,6 +161,7 @@ export const sendMessageToPostoffice = async ({
     code: message,
   });
   const url = await getPostofficeUrl();
+
   const response = await fetch(url, {
     method: "POST",
     body: JSON.stringify({ message: encryptedMessage }),
