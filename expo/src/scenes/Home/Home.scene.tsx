@@ -103,7 +103,7 @@ const Home = ({
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <WarningBox />
           <PasswordCard password={password} />
           {hasInvitesWaiting ? (

@@ -82,7 +82,7 @@ const Accept = ({
         goBack={() => navigation.navigate("ConnectionsHome")}
       />
       <View style={styles.contentContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.ScrollViewInner}>
             {isFinished ? (
               <>

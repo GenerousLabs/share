@@ -123,7 +123,7 @@ const DrawerScene = ({
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.innerContainer}>
           <View style={styles.logoWrapper}>
             <TouchableOpacity onPress={handleSettingsTap}>

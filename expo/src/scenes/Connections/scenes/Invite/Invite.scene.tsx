@@ -48,7 +48,7 @@ const Invite = ({
     <View style={styles.container}>
       <Header title="Invite" goBack={navigation.goBack} />
       <View style={styles.contentContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.ScrollViewInner}>
             {inviteCode === "" ? (
               <>

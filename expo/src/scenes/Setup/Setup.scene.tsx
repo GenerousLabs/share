@@ -75,7 +75,7 @@ const Setup = ({
       <View style={styles.container}>
         <Header />
         <View style={styles.contentContainer}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <View style={styles.ScrollViewInner}>
               <Text h1>Error</Text>
               <Text>There was an error during setup.</Text>
@@ -98,7 +98,7 @@ const Setup = ({
     <View style={styles.container}>
       <Header />
       <View style={styles.contentContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.ScrollViewInner}>
             <WarningBox />
 

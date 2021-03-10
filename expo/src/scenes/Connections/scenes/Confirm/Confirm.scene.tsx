@@ -36,7 +36,7 @@ const Confirm = ({
   return (
     <View style={styles.container}>
       <Header title="Waiting for a reply" goBack={goBack} />
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={styles.contentContainer}>
           <Text>
             Waiting for{" "}

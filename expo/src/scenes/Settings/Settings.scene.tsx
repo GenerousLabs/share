@@ -44,7 +44,7 @@ ${allReposText}`;
     <View style={styles.container}>
       <Header title="Settings" />
       <View style={styles.contentContainer}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="handled">
           <Text h2>Here be dragons</Text>
           <WarningBox
             message="This app is a work in progress. This screen gives you access to the nuts and bolts. It's possible to break things here.  Please take a full backup before you mess with this."
@@ -112,7 +112,7 @@ ${allReposText}`;
               setIsOverlayVisible(false);
             }}
           >
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
               <Log closeOverlay={closeOverlay} />
             </ScrollView>
           </Overlay>
