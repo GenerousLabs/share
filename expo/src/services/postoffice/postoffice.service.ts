@@ -17,7 +17,9 @@ const [devHost] =
     ? Constants.manifest.debuggerHost.split(":")
     : ":";
 const devUrl =
-  devHost.length > 0 ? `${devHost}:8000/postoffice` : CONFIG.postofficeUrl;
+  devHost.length > 0
+    ? `http://${devHost}:8000/postoffice`
+    : CONFIG.postofficeUrl;
 const POSTOFFICE_URL = __DEV__ ? devUrl : CONFIG.postofficeUrl;
 const POSTOFFICE_SEPARATOR = "_";
 
