@@ -1,4 +1,5 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import Constants from "expo-constants";
 import {
   FLUSH,
   PAUSE,
@@ -24,17 +25,18 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 const sagaMonitorLogFactory = (name: string) => (p: any) =>
   log.debug(`SagaMonitor.${name} #Ub3D0G`, p);
 
-const sagaOptions = __DEV__
-  ? {
-      sagaMonitor: {
-        actionDispatched: sagaMonitorLogFactory("actionDispatched"),
-        effectTriggered: sagaMonitorLogFactory("effectTriggered"),
-        effectResolved: sagaMonitorLogFactory("effectResolved"),
-        effectCancelled: sagaMonitorLogFactory("effectCancelled"),
-        effectRejected: sagaMonitorLogFactory("effectRejected"),
-      },
-    }
-  : undefined;
+const sagaOptions =
+  __DEV__ && Constants.manifest.extra.logSagas
+    ? {
+        sagaMonitor: {
+          actionDispatched: sagaMonitorLogFactory("actionDispatched"),
+          effectTriggered: sagaMonitorLogFactory("effectTriggered"),
+          effectResolved: sagaMonitorLogFactory("effectResolved"),
+          effectCancelled: sagaMonitorLogFactory("effectCancelled"),
+          effectRejected: sagaMonitorLogFactory("effectRejected"),
+        },
+      }
+    : undefined;
 
 const sagaMiddleware = createSagaMiddleware(sagaOptions);
 
