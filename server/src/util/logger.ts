@@ -2,8 +2,9 @@ import winston, { format, Logform } from "winston";
 
 const __DEV__ = process.env.NODE_ENV !== "production";
 export const enableProductionDebugLogger =
-  typeof process.env.SHARE_DEBUG === "string" &&
-  process.env.SHARE_DEBUG === "1";
+  __DEV__ ||
+  (typeof process.env.SHARE_DEBUG === "string" &&
+    process.env.SHARE_DEBUG === "1");
 
 /**
  * Build a set of file loggers that optionally filters to a specific log level.
