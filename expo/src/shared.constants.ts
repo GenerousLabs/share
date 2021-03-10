@@ -50,4 +50,4 @@ export const READ_TOKENS_FILE_NAME = "read_tokens.txt" as const;
 export const MINIMUM_USERNAME_LENGTH = 3 as const;
 export const MINIMUM_TOKEN_LENGTH = 20 as const;
 
-export const SCROLLVIEW_INNER_BOTTOM_PADDING = 300;
+export const SCROLLVIEW_INNER_BOTTOM_PADDING = 400;
