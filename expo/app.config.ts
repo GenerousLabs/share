@@ -1,5 +1,7 @@
 import { ExpoConfig, ConfigContext } from "@expo/config";
 
+// NOTE: It seems that `app.config.ts` is not loaded during jest tests
+
 const __DEV__ = process.env.NODE_ENV !== "production";
 const commitHash = process.env.SHARE_VERSION || "dev";
 const hostname = process.env.SHARE_HOSTNAME || "localhost:8000";
