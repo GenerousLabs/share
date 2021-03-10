@@ -58,6 +58,14 @@ only would be possible.
   - Pull via a web request? - later
 - [ ] Check exps:// links without app launch
 
+## Sprint 2 Follow ups
+
+- [ ] Delete a connection
+  - How do they know we deleted our repo?
+- [ ] Retry on failure
+  - Lots of things can go wrong, can we retry them?
+  - Maybe a "refetch" type action that runs all the git pull commands again?
+
 ## Sprint 2 Nice to Have
 
 - [ ] base64 encode names in share URLs?
@@ -75,6 +83,8 @@ only would be possible.
   - All sagas are named exports (no more default export)
   - All sagas refactored to use the `createAsyncPromiseSaga()` helper
 - [ ] Block navigation during form submission
+  - The user shouldn't be able to go back out of the current view, even with
+    the side slider action in iOS or the back button in Android
 - [ ] Create a build time config
   - [ ] Move postoffice URL into build config
 
