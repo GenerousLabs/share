@@ -3,7 +3,9 @@ import http from "isomorphic-git/http/web";
 import { FS } from "./shared.types";
 import Constants from "expo-constants";
 
-const prodHost: string = Constants.manifest.extra.hostname;
+const extra = Constants.manifest.extra || {};
+
+const prodHost: string = extra.hostname;
 
 const DEV_SERVER_PORT = "8000";
 
@@ -15,6 +17,8 @@ const devHost = `${devHostWithoutPort}:${DEV_SERVER_PORT}`;
 
 const host = __DEV__ ? devHost : prodHost;
 
+const logSagas = extra.logSagas || false;
+
 export const CONFIG = {
   websiteUrl: `https://${host}`,
   postofficeUrl: `https://${host}/postoffice`,
@@ -22,6 +26,7 @@ export const CONFIG = {
     protocol: __DEV__ ? "http" : "https",
     host,
   },
+  logSagas,
 } as const;
 
 export const REPOS_PATH = "/repos/" as const;

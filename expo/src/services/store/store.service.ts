@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 import { promiseMiddleware } from "redux-saga-promise-actions";
+import { CONFIG } from "../../shared.constants";
 import { rootLogger } from "../log/log.service";
 import { maybeStartupSagaAction } from "../startup/startup.state";
 import reducer from "./root.reducer";
@@ -26,7 +27,7 @@ const sagaMonitorLogFactory = (name: string) => (p: any) =>
   log.debug(`SagaMonitor.${name} #Ub3D0G`, p);
 
 const sagaOptions =
-  __DEV__ && Constants.manifest.extra.logSagas
+  __DEV__ && CONFIG.logSagas
     ? {
         sagaMonitor: {
           actionDispatched: sagaMonitorLogFactory("actionDispatched"),
