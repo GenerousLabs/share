@@ -232,6 +232,7 @@ app.use("/postoffice", (req, res) => {
 app.use((req, res) => {
   // TODO Fix typing here, `.handle()` needs to be added to node-git-server
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (repos as any).handle(req, res);
   } catch (error) {
     logger.error("Git Server.handle() threw #zTawz8", { error });
