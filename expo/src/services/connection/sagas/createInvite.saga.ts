@@ -1,25 +1,13 @@
-import { call, put, putResolve, select } from "typed-redux-saga/macro";
-import { ConnectionInRedux, Invitation } from "../../../shared.types";
-import { generateId } from "../../../utils/id.utils";
-import { invariantSelector } from "../../../utils/invariantSelector.util";
+import { call, put, putResolve } from "typed-redux-saga/macro";
+import { ConnectionInRedux } from "../../../shared.types";
 import {
   createAsyncPromiseSaga,
   getAsyncPromiseResolveValue,
 } from "../../../utils/saga.utils";
-import { createReadAuthTokenForRepoSagaAction } from "../../commands/sagas/createReadAuthTokenForRepo.saga";
 import { sendMessageToPostoffice } from "../../postoffice/postoffice.service";
-import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
-import { selectMeRepo, selectMyLibraryRepo } from "../../repo/repo.state";
-import {
-  createInvitationMessage,
-  saveConnectionToConnectionsYaml,
-} from "../connection.service";
-import { addOneConnectionAction, setPostofficeCode } from "../connection.state";
-import createConnectionSaga, {
-  createConnectionSagaAction,
-} from "./createConnection.saga";
-import { createConnectionRepoSagaAction } from "./createConnectionRepo.saga";
+import { createInvitationMessage } from "../connection.service";
+import { setPostofficeCode } from "../connection.state";
+import { createConnectionSagaAction } from "./createConnection.saga";
 
 const saga = createAsyncPromiseSaga<
   Pick<ConnectionInRedux, "name" | "notes">,
