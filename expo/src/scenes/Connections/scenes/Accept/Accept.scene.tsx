@@ -73,7 +73,7 @@ const Accept = ({
     [dispatch, setIsFinished]
   );
 
-  const [cachedInviteCode] = cachedInviteCodes || [""];
+  const cachedInviteCode = cachedInviteCodes?.[0] || "";
 
   return (
     <View style={styles.container}>
