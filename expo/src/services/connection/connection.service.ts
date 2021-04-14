@@ -1,7 +1,6 @@
 import * as yaml from "js-yaml";
 import { gitFsHttp, RepoType } from "../../shared.constants";
 import {
-  ConnectionInRedux,
   ConnectionOnDisk,
   ConnectionSchema,
   Invitation,
@@ -55,7 +54,7 @@ export const loadConnectionsFromConnectionsYaml = async () => {
 };
 
 export const saveConnectionToConnectionsYaml = async (
-  connection: ConnectionInRedux
+  connection: ConnectionOnDisk
 ) => {
   const { fs } = gitFsHttp;
   const connectionsYamlPath = getConnectionsYamlPath();
