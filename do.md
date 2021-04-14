@@ -1,3 +1,7 @@
+# Scratchpad
+
+- [x] The commands repo is not being pushed
+
 # Sprint 2
 
 Get this in the hands of users. Preferrably on both platforms, but Android
@@ -62,8 +66,8 @@ only would be possible.
 
 ## Sven
 
-- [ ] Only allow each postoffice code to be used once
-- [ ] Save postoffice reply to redux, retry http request if it fails
+- [x] Only allow each postoffice code to be used once
+- [x] Save postoffice reply to redux, retry http request if it fails
 
 ## Sprint 2 Follow ups
 
