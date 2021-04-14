@@ -56,15 +56,31 @@ only would be possible.
 - [x] Add name (senderName) to link service when generating invite links
 - [ ] Markdown update on homepage
   - Pull via a web request? - later
-- [ ] Check exps:// links without app launch
+- [x] Check exps:// links without app launch
+  - Works on Android
+  - [ ] Check iOS
+
+## Sven
+
+- [ ] Only allow each postoffice code to be used once
+- [ ] Save postoffice reply to redux, retry http request if it fails
 
 ## Sprint 2 Follow ups
 
+- [ ] Add a postoffice history
+  - Redux
+  - Save all operations so they can be retried if they fail
+- [ ] Build the expo app to a domain where it sits at the root
+  - Stop messing around with the redirects and so on, it doesn't work
 - [ ] Delete a connection
   - How do they know we deleted our repo?
+  - Return a 410 gone instead of the usual git nonsense
+    - Keep the access token and use it to trigger a 410?
 - [ ] Retry on failure
   - Lots of things can go wrong, can we retry them?
   - Maybe a "refetch" type action that runs all the git pull commands again?
+- [ ] Decide on a "refetch" strategy
+  - Read from disk and rebuild redux state
 
 ## Sprint 2 Nice to Have
 
