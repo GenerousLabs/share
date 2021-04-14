@@ -43,10 +43,14 @@ export const createAsyncPromiseSaga = <P, R>({
         resolvePromiseAction(action, response);
       } catch (error) {
         // QUESTION Is there a better way to handle errors here?
-        log.error("Error resolving promise action #Kfygxz");
+        log.error("Error resolving promise action #Kfygxz", {
+          error,
+          action,
+          response,
+        });
       }
     } catch (error) {
-      log.debug("saga error #QXYogF", error);
+      log.debug("saga error #QXYogF", { error, action });
       yield put(failure({ error: getSerializableError(error) }));
       yield rejectPromiseAction(action, { error });
     }
