@@ -193,6 +193,9 @@ export const sendReplyToPostoffice = async ({
     password,
   });
 
+  // NOTE: A reply is POST'd to the mailbox URL, so we do not specify
+  // `reply: true` in the `getPostofficeUrl()` call here as we do not want the
+  // `/reply` URL.
   const url = await getPostofficeUrl({ id });
   await fetch(url, {
     method: "POST",
