@@ -1,13 +1,13 @@
 import nolookalikes from "nanoid-dictionary/nolookalikes-safe";
 import { customAlphabet } from "nanoid/non-secure";
-import { call, select, put } from "typed-redux-saga/macro";
+import { call, select, put, putResolve } from "typed-redux-saga/macro";
 import { RepoShareInRedux } from "../../../shared.types";
 import { generateId } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { addOneRepoShare } from "../../connection/connection.state";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { selectCommandRepo, selectRepoById } from "../../repo/repo.state";
+import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { addReadAuthTokenForRepo } from "../commands.service";
 
 export const _generateToken = customAlphabet(nolookalikes, 22);
@@ -33,8 +33,7 @@ const saga = createAsyncPromiseSaga<
 
     yield* call(addReadAuthTokenForRepo, { repo, token });
 
-    yield* call(
-      commitAllEffect,
+    yield* putResolve(
       commitAllSagaAction({
         repoId: commandRepo.id,
         message: "Granted access to repo. #PNgr60",

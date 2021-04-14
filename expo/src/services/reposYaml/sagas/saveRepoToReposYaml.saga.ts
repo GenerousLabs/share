@@ -1,8 +1,8 @@
-import { call } from "typed-redux-saga/macro";
+import { call, putResolve } from "typed-redux-saga/macro";
 import { RepoInRedux } from "../../../shared.types";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { rootLogger } from "../../log/log.service";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
+import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { addNewRepoToReposYaml } from "../reposYaml.service";
 
 const log = rootLogger.extend("repoYaml").extend("saveRepoToReposYaml");
@@ -19,8 +19,7 @@ const saga = createAsyncPromiseSaga<
 
     yield* call(addNewRepoToReposYaml, action.payload);
 
-    yield* call(
-      commitAllEffect,
+    yield* putResolve(
       commitAllSagaAction({
         message: "Adding a new repo to repos.yaml",
         repoId: action.payload.repo.id,

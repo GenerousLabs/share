@@ -1,14 +1,14 @@
 import fs from "expo-fs";
 import slugify from "slugify";
-import { call, put, select } from "typed-redux-saga/macro";
+import { call, put, putResolve, select } from "typed-redux-saga/macro";
 import { OfferOnDisk } from "../../../shared.types";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { getTimestampSeconds } from "../../../utils/time.utils";
 import { join } from "../../fs/fs.service";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { getRepoPath } from "../../repo/repo.service";
 import { selectRepoById } from "../../repo/repo.state";
+import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { offerToString } from "../library.service";
 import { addOneOfferAction } from "../library.state";
 
@@ -48,8 +48,7 @@ const saga = createAsyncPromiseSaga<
       encoding: "utf8",
     });
 
-    yield* call(
-      commitAllEffect,
+    yield* putResolve(
       commitAllSagaAction({
         repoId: repoId,
         message: "Creating a new offer",

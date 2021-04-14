@@ -8,8 +8,8 @@ import {
 } from "../../../utils/saga.utils";
 import { createReadAuthTokenForRepoSagaAction } from "../../commands/sagas/createReadAuthTokenForRepo.saga";
 import { createRemoteUrlForSharedRepo } from "../../remote/remote.service";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
 import { selectMeRepo, selectMyLibraryRepo } from "../../repo/repo.state";
+import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { saveConnectionToConnectionsYaml } from "../connection.service";
 import { addOneConnectionAction } from "../connection.state";
 import { createConnectionRepoSagaAction } from "./createConnectionRepo.saga";
@@ -58,8 +58,7 @@ const saga = createAsyncPromiseSaga<
     };
 
     yield* call(saveConnectionToConnectionsYaml, connectionOnDisk);
-    yield* call(
-      commitAllEffect,
+    yield* putResolve(
       commitAllSagaAction({
         repoId: meRepo.id,
         message: "Saving a new connection #3UujQ1",

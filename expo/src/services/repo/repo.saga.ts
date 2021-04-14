@@ -22,11 +22,6 @@ import { saveNewRepoToReduxAndReposYamlSaga } from "./sagas/saveNewRepoToReduxAn
 
 const log = rootLogger.extend("repo.saga");
 
-export {
-  sagaAction as commitAllSagaAction,
-  sagaEffect as commitAllEffect,
-} from "./sagas/commitAll.saga";
-
 export function* loadRepoContentsEffect(
   action: ReturnType<typeof loadRepoContentsSagaAction>
 ) {

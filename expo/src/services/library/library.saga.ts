@@ -3,8 +3,8 @@ import slugify from "slugify";
 import { call, put, putResolve } from "typed-redux-saga/macro";
 import { generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
-import { commitAllEffect, commitAllSagaAction } from "../repo/repo.saga";
 import { createLibraryRepo } from "../repo/repo.service";
+import { commitAllSagaAction } from "../repo/sagas/commitAll.saga";
 import { saveNewRepoToReduxAndReposYamlSagaAction } from "../repo/sagas/saveNewRepoToReduxAndReposYaml.saga";
 import { readOfferFromDisk } from "./library.service";
 import {
@@ -37,8 +37,7 @@ export function* createNewLibraryEffect(
 
     yield* putResolve(saveNewRepoToReduxAndReposYamlSagaAction({ repo }));
 
-    yield* call(
-      commitAllEffect,
+    yield* putResolve(
       commitAllSagaAction({
         repoId: repo.id,
         message: "Initial commit. #hhpj2X",

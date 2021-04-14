@@ -1,5 +1,6 @@
-import { call, put, select, takeEvery } from "typed-redux-saga/macro";
+import { call, put, select } from "typed-redux-saga/macro";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
+import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
 import { gitAddAndCommit, gitPush } from "../../git/git.service";
 import { getRepoPath } from "../repo.service";
 import {
@@ -8,18 +9,16 @@ import {
   setNewCommitHashAction,
   updateOneRepoAction,
 } from "../repo.state";
-import { log } from "../repo.saga.log";
-import { createAction } from "@reduxjs/toolkit";
-import { makeErrorActionCreator } from "../../../utils/errors.utils";
 
-export const sagaAction = createAction<{
-  repoId: string;
-  message: string;
-}>("SHARE/repo/commitAll");
-export const commitAllErrorAction = makeErrorActionCreator(sagaAction);
-
-export function* sagaEffect(action: ReturnType<typeof sagaAction>) {
-  try {
+const saga = createAsyncPromiseSaga<
+  {
+    repoId: string;
+    message: string;
+  },
+  void
+>({
+  prefix: "SHARE/repo/commitAll",
+  *effect(action) {
     const { repoId, message } = action.payload;
 
     const repo = yield* select(
@@ -56,17 +55,10 @@ export function* sagaEffect(action: ReturnType<typeof sagaAction>) {
 
       yield* put(loadRepoContentsSagaAction({ repoId }));
     }
-  } catch (error) {
-    log.error("commitAllEffct() unknown error #UEQp4W", error);
-    yield put(
-      commitAllErrorAction({
-        error,
-        message: "commitAllEffect() unknown error. #6qOvlk",
-      })
-    );
-  }
-}
+  },
+});
 
-export default function* commitAllSaga() {
-  yield takeEvery(sagaAction, sagaEffect);
-}
+export const { request: commitAllSagaAction } = saga;
+
+const commitAllSaga = saga.saga;
+export default commitAllSaga;

@@ -1,9 +1,9 @@
 import { describe, expect, it } from "@jest/globals";
 import { testSaga } from "redux-saga-test-plan";
-import { call } from "redux-saga/effects";
+import { call, putResolve } from "redux-saga/effects";
 import { RepoType } from "../../../shared.constants";
 import { RepoInRedux } from "../../../shared.types";
-import { commitAllEffect, commitAllSagaAction } from "../../repo/repo.saga";
+import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { addReadAuthTokenForRepo } from "../commands.service";
 import {
   createReadAuthTokenForRepoSagaAction,
@@ -61,8 +61,7 @@ describe("createReadAuthTokenForRepo.saga", () => {
       })
       .next()
       .inspect((callEffect) => {
-        const matchEffect = call(
-          commitAllEffect,
+        const matchEffect = putResolve(
           commitAllSagaAction({
             repoId: commandRepo.id,
             message: (expect.any(String) as unknown) as string,
