@@ -2,12 +2,12 @@ import { call, put, putResolve } from "typed-redux-saga/macro";
 import { ConnectionInRedux, InvitationSchema } from "../../../shared.types";
 import {
   createAsyncPromiseSaga,
-  getAsyncPromiseResolveValue
+  getAsyncPromiseResolveValue,
 } from "../../../utils/saga.utils";
 import { rootLogger } from "../../log/log.service";
 import {
   getMessageFromPostoffice,
-  sendReplyToPostoffice
+  sendReplyToPostoffice,
 } from "../../postoffice/postoffice.service";
 import { removeInviteCode } from "../../setup/setup.state";
 import { createInvitationMessage } from "../connection.service";
