@@ -1,16 +1,19 @@
 {
   "folders": [
-	{
-		"name": "expo",
-		"path": "expo"
-	},
-	{
-		"path": "server"
-	},
-	{
-		"path": "website"
-	}
-],
+    {
+      "name": "expo",
+      "path": "expo"
+    },
+    {
+      "path": "server"
+    },
+    {
+      "path": "website"
+    },
+    {
+      "path": "adrs"
+    }
+  ],
   "settings": {
     "typescript.preferences.importModuleSpecifier": "relative",
     "workbench.colorCustomizations": {
