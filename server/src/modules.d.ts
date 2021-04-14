@@ -35,9 +35,15 @@ declare module "@chmac/node-git-server" {
       path: string,
       opts?: {
         /**
-         * If provided, this path will be supplied to the git init command as --t
+         * If specified, this path will be given to the `git init
+         * --template=options.repoTemplatePath` command like so
          */
         repoTemplatePath?: string;
+        /**
+         * If specified, this branch will be given to the `git init
+         * --initial-branch=options.initialBranch` command like so
+         */
+        initialBranch?: string;
         autoCreate?: boolean;
         /**
          * If authenticate() returns a promise, it will be awaited. If not, the
