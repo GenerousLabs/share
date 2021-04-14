@@ -71,8 +71,8 @@ const OfferForm = ({
   return (
     <View style={styles.container}>
       <Header title="Add something to share" goBack={navigation.goBack} />
-        <View style={styles.contentContainer}>
       <ScrollView keyboardShouldPersistTaps="handled">
+        <View style={[styles.contentContainer, styles.ScrollViewInner]}>
           {/* <Text>Repo:</Text>
           <Controller
             control={control}
