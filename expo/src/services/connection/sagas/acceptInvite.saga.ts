@@ -1,16 +1,15 @@
-import { call, put, putResolve } from "typed-redux-saga/macro";
+import { call, put, putResolve, select } from "typed-redux-saga/macro";
 import { ConnectionInRedux, InvitationSchema } from "../../../shared.types";
 import {
   createAsyncPromiseSaga,
   getAsyncPromiseResolveValue,
 } from "../../../utils/saga.utils";
 import { rootLogger } from "../../log/log.service";
-import {
-  getMessageFromPostoffice,
-  sendReplyToPostoffice,
-} from "../../postoffice/postoffice.service";
+import { getMessageFromPostoffice } from "../../postoffice/postoffice.service";
+import { sendReplySagaAction } from "../../postoffice/sagas/sendReply.saga";
 import { removeInviteCode } from "../../setup/setup.state";
 import { createInvitationMessage } from "../connection.service";
+import { makeSelectConnectionByReceivedPostofficeCode } from "../connection.state";
 import { confirmInviteSagaAction } from "./confirmInvite.saga";
 import { createConnectionSagaAction } from "./createConnection.saga";
 
@@ -34,6 +33,15 @@ const saga = createAsyncPromiseSaga<
   *effect(action) {
     const { name, notes, postofficeCode } = action.payload;
 
+    // If this postofficeCode is already attached to a connection, then it has
+    // been used, do not allow it to be used a second time.
+    const duplicatedConnection = yield* select(
+      makeSelectConnectionByReceivedPostofficeCode(postofficeCode)
+    );
+    if (typeof duplicatedConnection !== "undefined") {
+      throw new Error("This code has already been used. #YEnkRU");
+    }
+
     // NOTE: We fetch the message from the postoffice FIRST, because if this
     // fails, we will abort before creating any repos, etc.
     const message = yield* call(getMessageFromPostoffice, {
@@ -52,7 +60,13 @@ const saga = createAsyncPromiseSaga<
       connectionRepoRemoteUrl,
       libraryRemoteUrl,
     } = getAsyncPromiseResolveValue(
-      yield* putResolve(createConnectionSagaAction({ name, notes }))
+      yield* putResolve(
+        createConnectionSagaAction({
+          name,
+          notes,
+          receivedPostofficeCode: postofficeCode,
+        })
+      )
     );
 
     yield* putResolve(
@@ -68,10 +82,12 @@ const saga = createAsyncPromiseSaga<
       libraryRemoteUrl,
     });
 
-    yield* call(sendReplyToPostoffice, {
-      message: replyMessage,
-      replyToPostofficeCode: postofficeCode,
-    });
+    yield* put(
+      sendReplySagaAction({
+        message: replyMessage,
+        replyToPostofficeCode: postofficeCode,
+      })
+    );
   },
 });
 

@@ -8,8 +8,10 @@ import Constants from "expo-constants";
 import "react-native-get-random-values";
 import { scrypt } from "scrypt-js";
 import tweetnacl from "tweetnacl";
-import { CONFIG } from "../../shared.constants";
+import { CONFIG, POSTOFFICE_SEPARATOR } from "../../shared.constants";
+import { PostofficeReply } from "../../shared.types";
 import { createPassword } from "../../utils/password.utils";
+import { getPostofficeCodeParams } from "./postoffice.utils";
 
 // TODO TODOCONFIG Move this out to an .env or app build config file
 const [devHost] =
@@ -21,7 +23,6 @@ const devUrl =
     ? `http://${devHost}:8000/postoffice`
     : CONFIG.postofficeUrl;
 const POSTOFFICE_URL = __DEV__ ? devUrl : CONFIG.postofficeUrl;
-const POSTOFFICE_SEPARATOR = "_";
 
 const SCRYPT_N = 1024;
 const SCRYPT_R = 8;
@@ -94,16 +95,14 @@ export const encryptMessage = async ({
 export const getMessageFromPostoffice = async ({
   postofficeCode,
   getReply,
+  returnEmptyStringOn404,
 }: {
   postofficeCode: string;
   getReply?: boolean;
+  /** If set to `true` instead of throwing on 404 an empty string will be returned */
+  returnEmptyStringOn404?: boolean;
 }) => {
-  const parts = postofficeCode.split(POSTOFFICE_SEPARATOR);
-  // TODO Better validation here
-  if (parts.length !== 2) {
-    throw new Error("Invalid postofficeCode. #YdEHir");
-  }
-  const [id, password] = parts;
+  const { id, password } = getPostofficeCodeParams(postofficeCode);
 
   const url = await getPostofficeUrl({
     id,
@@ -112,7 +111,9 @@ export const getMessageFromPostoffice = async ({
   const result = await fetch(url);
 
   if (result.status === 404) {
-    // TODO21 Handle 404 on replies gracefully, we don't know if they exist or not
+    if (returnEmptyStringOn404) {
+      return "";
+    }
     throw new Error("Message does not exist. #GISvL4");
   }
 
@@ -177,16 +178,8 @@ export const sendMessageToPostoffice = async ({
 export const sendReplyToPostoffice = async ({
   message,
   replyToPostofficeCode,
-}: {
-  message: string;
-  replyToPostofficeCode: string;
-}) => {
-  const parts = replyToPostofficeCode.split(POSTOFFICE_SEPARATOR);
-  // TODO Better validation here
-  if (parts.length !== 2) {
-    throw new Error("Invalid postofficeCode. #eechOc");
-  }
-  const [id, password] = parts;
+}: PostofficeReply) => {
+  const { id, password } = getPostofficeCodeParams(replyToPostofficeCode);
 
   const { encryptedMessage } = await encryptMessage({
     code: message,
@@ -197,6 +190,7 @@ export const sendReplyToPostoffice = async ({
   // `reply: true` in the `getPostofficeUrl()` call here as we do not want the
   // `/reply` URL.
   const url = await getPostofficeUrl({ id });
+
   await fetch(url, {
     method: "POST",
     body: JSON.stringify({ message: encryptedMessage }),

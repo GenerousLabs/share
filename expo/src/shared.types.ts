@@ -166,8 +166,19 @@ export const ConnectionSchema = zod.object({
 
 export type ConnectionOnDisk = zod.infer<typeof ConnectionSchema>;
 
+/**
+ * PROBLEM
+ *
+ * We want to stop users trying to add the same postoffice code multiple times.
+ *
+ * Do we want to put that code on disk, or only in redux?
+ */
+
 export type ConnectionInRedux = ConnectionOnDisk & {
+  /** If we created a postoffice code, it is stored here */
   postofficeCode?: string;
+  /** If we received an invite, then the postoffice code is stored here */
+  receivedPostofficeCode?: string;
 };
 
 export const RepoShareSchema = zod.object({
@@ -184,3 +195,10 @@ export const InvitationSchema = zod.object({
 });
 
 export type Invitation = zod.infer<typeof InvitationSchema>;
+
+export const PostofficeReplySchema = zod.object({
+  message: zod.string().nonempty(),
+  replyToPostofficeCode: zod.string().nonempty(),
+});
+
+export type PostofficeReply = zod.infer<typeof PostofficeReplySchema>;

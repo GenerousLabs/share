@@ -15,7 +15,7 @@ import { addOneConnectionAction } from "../connection.state";
 import { createConnectionRepoSagaAction } from "./createConnectionRepo.saga";
 
 const saga = createAsyncPromiseSaga<
-  Pick<ConnectionInRedux, "name" | "notes">,
+  Pick<ConnectionInRedux, "name" | "notes" | "receivedPostofficeCode">,
   {
     connection: ConnectionInRedux;
     connectionRepoRemoteUrl: string;
@@ -24,7 +24,7 @@ const saga = createAsyncPromiseSaga<
 >({
   prefix: "SHARE/connection/createConnection",
   *effect(action) {
-    const { name, notes } = action.payload;
+    const { name, notes, receivedPostofficeCode } = action.payload;
 
     const connectionRepo = getAsyncPromiseResolveValue(
       yield* putResolve(createConnectionRepoSagaAction())
@@ -45,15 +45,19 @@ const saga = createAsyncPromiseSaga<
       )
     );
 
-    const connection = {
+    const connectionOnDisk = {
       id: connectionId,
       name,
       notes,
       myRepoId: connectionRepo.id,
       token: connectionRepoShare.token,
     };
+    const connection = {
+      ...connectionOnDisk,
+      receivedPostofficeCode,
+    };
 
-    yield* call(saveConnectionToConnectionsYaml, connection);
+    yield* call(saveConnectionToConnectionsYaml, connectionOnDisk);
     yield* call(
       commitAllEffect,
       commitAllSagaAction({

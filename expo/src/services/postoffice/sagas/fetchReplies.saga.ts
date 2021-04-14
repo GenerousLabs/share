@@ -23,7 +23,15 @@ const saga = createAsyncPromiseSaga<{ connection: ConnectionInRedux }, void>({
     const message = yield* call(getMessageFromPostoffice, {
       postofficeCode: connection.postofficeCode,
       getReply: true,
+      returnEmptyStringOn404: true,
     });
+
+    // If we got an empty string, then the reply is not yet available, in that
+    // case we simply return doing nothing more, and this attempt will be
+    // retried.
+    if (message.length === 0) {
+      return;
+    }
 
     const {
       connectionRepoRemoteUrl: theirConnectionRepoRemoteUrl,

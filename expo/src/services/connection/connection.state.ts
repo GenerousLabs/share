@@ -94,6 +94,15 @@ export const makeSelectConnectionAndRepoById = (connectionId: string) =>
       return { connection, repo };
     }
   );
+export const makeSelectConnectionByReceivedPostofficeCode = (
+  receivedPostofficeCode: string
+) =>
+  createSelector([selectAllConnections], (connections) => {
+    return connections.find(
+      (connection) =>
+        connection.receivedPostofficeCode === receivedPostofficeCode
+    );
+  });
 
 export const {
   selectAll: selectAllRepoShares,

@@ -56,3 +56,5 @@ export const MINIMUM_USERNAME_LENGTH = 3 as const;
 export const MINIMUM_TOKEN_LENGTH = 20 as const;
 
 export const SCROLLVIEW_INNER_BOTTOM_PADDING = 400;
+
+export const POSTOFFICE_SEPARATOR = "_";

@@ -31,6 +31,10 @@ const preloadedState: RootState = {
       entities: {},
     },
   },
+  postoffice: {
+    ids: [],
+    entities: {},
+  },
   repo: {
     ids: ["repo1"],
     entities: {
