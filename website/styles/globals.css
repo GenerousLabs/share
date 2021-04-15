@@ -144,6 +144,15 @@ hr {
   text-decoration: none;
 }
 
+.alternateLinkP {
+  font-size: 12px;
+  text-align: center;
+}
+
+.alternateLinkP a {
+  font-weight: normal;
+}
+
 .blackHighlight {
   background-color: #212121;
   color: white;

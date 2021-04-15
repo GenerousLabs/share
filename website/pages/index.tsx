@@ -101,10 +101,14 @@ const loadIsExistingUser = () => {
   }
 };
 
-const isMobile =
+const bowser =
   typeof window === "undefined"
-    ? true
-    : Bowser.parse(window.navigator.userAgent).platform.type === "mobile";
+    ? { platform: { type: "mobile" }, os: { name: "android" } }
+    : Bowser.parse(window.navigator.userAgent);
+const isMobile = bowser.platform.type === "mobile";
+const isIos = bowser.os.name === "iOS";
+const urlIos = `${url}ios-index.json`;
+const urlAndroid = `${url}android-index.json`;
 
 enum View {
   generic = "generic",
@@ -218,8 +222,13 @@ const Home = () => {
               <span className="h2SecondLine">revolution</span>
             </h2>
             <p className="buttonLinkP">
-              <a className="buttonLink" href={url}>
+              <a className="buttonLink" href={isIos ? urlIos : urlAndroid}>
                 Launch Your Generous App inside Expo
+              </a>
+            </p>
+            <p className="alternateLinkP">
+              <a className="" href={isIos ? urlAndroid : urlIos}>
+                On {isIos ? "Android" : "iOS"}? Click here instead
               </a>
             </p>
             <hr />
@@ -273,10 +282,24 @@ const Home = () => {
               <div className={styles.afterAnswerBox}>
                 <p>Awesome, welcome back!</p>
                 <p className="buttonLinkP">
-                  <a href={`${url}?inviteCode=${inviteCode}`}>
+                  <a
+                    href={`${
+                      isIos ? urlIos : urlAndroid
+                    }?inviteCode=${inviteCode}`}
+                  >
                     {senderName.length > 0
                       ? `Accept ${senderName}'s friend invitation`
                       : `Accept the invitation`}
+                  </a>
+                </p>
+                <p className="alternateLinkP">
+                  <a
+                    className=""
+                    href={`${
+                      isIos ? urlAndroid : urlIos
+                    }?inviteCode=${inviteCode}`}
+                  >
+                    On {isIos ? "Android" : "iOS"}? Click here instead
                   </a>
                 </p>
                 <p className={styles.inviteCode}>
@@ -402,13 +425,29 @@ const Home = () => {
             </p>
             <p className="buttonLinkP">
               <a
-                href={`${url}?username=${username}&token=${token}${
+                href={`${
+                  isIos ? urlIos : urlAndroid
+                }?username=${username}&token=${token}${
                   typeof inviteCode === "string"
                     ? `&invitecode=${inviteCode}`
                     : ""
                 }`}
               >
                 Start {name}'s set up process
+              </a>
+            </p>
+            <p className="alternateLinkP">
+              <a
+                className=""
+                href={`${
+                  isIos ? urlAndroid : urlIos
+                }?username=${username}&token=${token}${
+                  typeof inviteCode === "string"
+                    ? `&invitecode=${inviteCode}`
+                    : ""
+                }`}
+              >
+                On {isIos ? "Android" : "iOS"}? Click here instead
               </a>
             </p>
             <h2>
