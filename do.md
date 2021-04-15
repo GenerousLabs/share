@@ -32,7 +32,7 @@ only would be possible.
   - Also add note to homepage that it is top right
 - [x] Explore markdown in ReactNative
 - [x] Switch postoffice codes to \_ separator
-- [ ] Leave only the header sticky, the rest scrolls
+- [x] Leave only the header sticky, the rest scrolls
 - [x] Change Johannes to the user's actual name in the web site!
 - [x] Host our own build
   - Android requests `/assets/xxx` instead of `/app/assets/xxx`
