@@ -71,10 +71,10 @@ only would be possible.
 
 ## Sprint 2 Follow ups
 
-- [ ] Add a postoffice history
+- [x] Add a postoffice history
   - Redux
   - Save all operations so they can be retried if they fail
-- [ ] Build the expo app to a domain where it sits at the root
+- [x] Use `os-index.json` in the URL
   - Stop messing around with the redirects and so on, it doesn't work
 - [ ] Delete a connection
   - How do they know we deleted our repo?
