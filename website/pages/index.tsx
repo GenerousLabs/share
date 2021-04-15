@@ -133,6 +133,14 @@ const GotQuestions = () => {
   );
 };
 
+const scrollByY = (y: number) => {
+  setTimeout(() => {
+    window.scrollBy({
+      top: y,
+    });
+  }, 0);
+};
+
 const Home = () => {
   const [showView, setShowView] = useState(View.generic);
   const [urlState, setUrlState] = useState<UrlState>(() => {
@@ -248,7 +256,7 @@ const Home = () => {
               revolution.
             </p>
             <hr />
-            <h4>Do you have the Generous App already?</h4>
+            <h4 id="dyhv">Do you have the Generous App already?</h4>
             <p>
               Installing the Generous Share App is a bit more involved than the
               usual app installation process, so you would remember if you have
@@ -260,8 +268,9 @@ const Home = () => {
                   styles.button,
                   isExistingUser === true ? styles.buttonSelected : null,
                 ])}
-                onClick={() => {
+                onClick={(event) => {
                   setIsExistingUser(true);
+                  scrollByY(event.currentTarget.getClientRects()[0].y);
                 }}
               >
                 Yes
@@ -271,8 +280,9 @@ const Home = () => {
                   styles.button,
                   isExistingUser === false ? styles.buttonSelected : null,
                 ])}
-                onClick={() => {
+                onClick={(event) => {
                   setIsExistingUser(false);
+                  scrollByY(event.currentTarget.getClientRects()[0].y);
                 }}
               >
                 No
