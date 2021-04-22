@@ -31,7 +31,8 @@ const jsonParser = bodyParser.json();
 
 const repos = new Server(REPOS_ROOT, {
   repoTemplatePath: REPO_TEMPLATE_PATH,
-  initialBranch: "master",
+  // Try disabling this because of our git version
+  // initialBranch: "master",
   checkout: true,
   autoCreate: true,
   authenticate: ({ type, repo: repoPath, headers, user }) => {
