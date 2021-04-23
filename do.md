@@ -8,6 +8,7 @@
   - No back option, no chance to escape this view
 - [ ] There's a URL encoding issue in the link generation
   - Emojis don't work, spaces in names cause issues
+- [ ] Long names without spaces break the website on mobile
 
 # Sprint 2
 
