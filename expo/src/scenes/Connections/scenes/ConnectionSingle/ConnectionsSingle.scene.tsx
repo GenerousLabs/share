@@ -50,7 +50,11 @@ const ConnectionsSingle = ({
       <View style={styles.contentContainer}>
         <ScrollView>
           <View style={styles.ScrollViewInner}>
-            <Text>Messaging is coming soon...</Text>
+            <Text>You are connected!</Text>
+            <Text>
+              Messaging is coming soon, until then, unfortunately there's
+              nothing to do here...
+            </Text>
           </View>
         </ScrollView>
       </View>
