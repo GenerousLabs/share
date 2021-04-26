@@ -246,6 +246,7 @@ app.use((req, res) => {
 app.listen(PORT, async () => {
   logger.info("Generous share server started #OKzflB", {
     cwd: process.cwd(),
+    __DEV__,
     CWD,
     PORT,
     REPOS_ROOT,
