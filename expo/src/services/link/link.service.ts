@@ -66,7 +66,7 @@ export const _handleLink = ({ url }: { url: string }) => {
     // TODO Check if we are in a position to handle invite links or not
     Alert.alert(
       "Accept invite?",
-      "It looks like you just cliked an invite link.\n\n" +
+      "It looks like you just opened an invite link.\n\n" +
         "Do you want to accept it now?",
       [
         { text: "No" },
