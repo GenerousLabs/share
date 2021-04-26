@@ -295,7 +295,7 @@ const Home = () => {
                   <a
                     href={`${
                       isIos ? urlIos : urlAndroid
-                    }?inviteCode=${inviteCode}`}
+                    }?inviteCode=${inviteCode}&senderName=${senderName}`}
                   >
                     {senderName.length > 0
                       ? `Accept ${senderName}'s friend invitation`
@@ -307,7 +307,7 @@ const Home = () => {
                     className=""
                     href={`${
                       isIos ? urlAndroid : urlIos
-                    }?inviteCode=${inviteCode}`}
+                    }?inviteCode=${inviteCode}&senderName=${senderName}`}
                   >
                     On {isIos ? "Android" : "iOS"}? Click here instead
                   </a>

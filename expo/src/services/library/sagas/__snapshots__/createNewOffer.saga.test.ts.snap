@@ -48,19 +48,21 @@ Object {
   "@@redux-saga/IO": true,
   "combinator": false,
   "payload": Object {
-    "args": Array [
-      Object {
-        "payload": Object {
-          "message": "Creating a new offer",
-          "repoId": "repo1",
-        },
-        "type": "SHARE/repo/commitAll",
+    "action": Object {
+      "meta": Object {
+        "promise": Object {},
+        "promiseAction": true,
       },
-    ],
-    "context": null,
-    "fn": [Function],
+      "payload": Object {
+        "message": "Creating a new offer",
+        "repoId": "repo1",
+      },
+      "type": "SHARE/repo/commitAll/request",
+    },
+    "channel": undefined,
+    "resolve": true,
   },
-  "type": "CALL",
+  "type": "PUT",
 }
 `;
 

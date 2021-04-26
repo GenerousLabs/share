@@ -22,6 +22,7 @@ type State = {
   // version without `inviteCodes`, making it optional avoids the need to
   // increment the redux-persist version and deal with redux-persist migrations.
   inviteCodes?: string[];
+  // TODO Upgrade `inviteCodes` to also include names
 };
 
 const initialState: State = { isSetupComplete: false, inviteCodes: [] };
