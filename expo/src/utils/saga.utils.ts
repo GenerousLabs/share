@@ -62,7 +62,7 @@ export const createAsyncPromiseSaga = <P, R>({
     } catch (error) {
       log.debug("saga error #QXYogF", { error, action });
       yield put(failure({ error: getSerializableError(error) }));
-      yield rejectPromiseAction(action, { error });
+      yield rejectPromiseAction(action, error);
     }
   }
 
