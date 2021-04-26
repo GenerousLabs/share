@@ -26,13 +26,15 @@ import {
 import logger, { enableProductionDebugLogger } from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
+const __DEV__ = process.env.NODE_ENV !== "development";
 
 const jsonParser = bodyParser.json();
 
 const repos = new Server(REPOS_ROOT, {
   repoTemplatePath: REPO_TEMPLATE_PATH,
-  // Try disabling this because of our git version
-  // initialBranch: "master",
+  // NOTE: This crashes git versions < 2.28, our docker host has an older
+  // version of git, so only set this on dev
+  initialBranch: __DEV__ ? "master" : undefined,
   checkout: true,
   autoCreate: true,
   authenticate: ({ type, repo: repoPath, headers, user }) => {
