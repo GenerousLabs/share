@@ -18,14 +18,9 @@ type State = {
   setupError?: Error;
   remoteParams?: RemoteParams;
   name?: string;
-  // NOTE: We don't really want this to be optional, but as we deployed a test
-  // version without `inviteCodes`, making it optional avoids the need to
-  // increment the redux-persist version and deal with redux-persist migrations.
-  inviteCodes?: string[];
-  // TODO Upgrade `inviteCodes` to also include names
 };
 
-const initialState: State = { isSetupComplete: false, inviteCodes: [] };
+const initialState: State = { isSetupComplete: false };
 
 const SETUP = "SHARE/setup/setup";
 export const setupSagaAction = createAction<{ config: Config }>(SETUP);
@@ -48,22 +43,6 @@ const setupSlice = createSlice({
     setRemoteParams: (state, action: PayloadAction<RemoteParams>) => {
       state.remoteParams = action.payload;
     },
-    addInviteCode: (state, action: PayloadAction<{ inviteCode: string }>) => {
-      if (state.inviteCodes?.indexOf(action.payload.inviteCode) === -1) {
-        state.inviteCodes.push(action.payload.inviteCode);
-      }
-    },
-    removeInviteCode: (
-      state,
-      action: PayloadAction<{ inviteCode: string }>
-    ) => {
-      state.inviteCodes = state.inviteCodes?.filter(
-        (code) => code !== action.payload.inviteCode
-      );
-    },
-    clearInviteCodes: (state) => {
-      state.inviteCodes = [];
-    },
   },
   extraReducers: {
     [setupErrorAction.toString()]: (state, action) => {
@@ -77,9 +56,6 @@ export const {
   setSetupCompleteAction,
   setName,
   setRemoteParams,
-  addInviteCode,
-  removeInviteCode,
-  clearInviteCodes,
 } = setupSlice.actions;
 
 export default setupSlice.reducer;

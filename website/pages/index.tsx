@@ -6,7 +6,8 @@ import styles from "../styles/Home.module.css";
 
 const hostname = process.env.hostname;
 const version = process.env.version;
-const url = `exps://${hostname}/expo/`;
+const __DEV__ = process.env.NODE_ENV === "development";
+const url = `exp${__DEV__ ? "" : "s"}://${hostname}/expo/`;
 const telegramGroupUrl = "https://t.me/joinchat/T3LiaaNN-eHTCTVh";
 
 type UrlData =

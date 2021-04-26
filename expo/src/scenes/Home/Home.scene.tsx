@@ -85,13 +85,8 @@ const Home = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Home">;
 }) => {
   const meRepo = useSelector(selectMeRepo);
-  const inviteCodes = useSelector(
-    (state: RootState) => state.setup.inviteCodes
-  );
   const connectionCount = useSelector(selectAllConnectionsCount);
-  const hasInvitesWaiting = inviteCodes?.length !== 0;
-  const hasConnections = connectionCount > 0;
-  const showInviteReminder = !hasInvitesWaiting && !hasConnections;
+  const showInviteReminder = connectionCount === 0;
 
   if (typeof meRepo === "undefined") {
     // This should not happen, something went wrong
@@ -106,9 +101,6 @@ const Home = ({
         <ScrollView keyboardShouldPersistTaps="handled">
           <WarningBox />
           <PasswordCard password={password} />
-          {hasInvitesWaiting ? (
-            <InviteWaitingCard navigation={navigation} />
-          ) : null}
           {showInviteReminder ? <InviteReminderCard /> : null}
           <Markdown content={md} />
         </ScrollView>

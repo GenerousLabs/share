@@ -22,7 +22,7 @@ export type SetupDrawerParamList = {
 export type ConnectionsStackParameterList = {
   ConnectionsHome: undefined;
   ConnectionsInvite: undefined;
-  ConnectionsAccept: undefined;
+  ConnectionsAccept?: { inviteCode?: string; senderName?: string };
   ConnectionsSingle: { connectionId: string };
 };
 

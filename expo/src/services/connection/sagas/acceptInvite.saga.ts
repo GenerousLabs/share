@@ -7,7 +7,6 @@ import {
 import { rootLogger } from "../../log/log.service";
 import { getMessageFromPostoffice } from "../../postoffice/postoffice.service";
 import { sendReplySagaAction } from "../../postoffice/sagas/sendReply.saga";
-import { removeInviteCode } from "../../setup/setup.state";
 import { createInvitationMessage } from "../connection.service";
 import { makeSelectConnectionByReceivedPostofficeCode } from "../connection.state";
 import { confirmInviteSagaAction } from "./confirmInvite.saga";
@@ -47,8 +46,6 @@ const saga = createAsyncPromiseSaga<
     const message = yield* call(getMessageFromPostoffice, {
       postofficeCode,
     });
-
-    yield* put(removeInviteCode({ inviteCode: postofficeCode }));
 
     const {
       connectionRepoRemoteUrl: theirConnectionRepoRemoteUrl,

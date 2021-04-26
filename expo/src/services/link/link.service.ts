@@ -3,7 +3,7 @@ import urlLib from "url";
 import { navigationRef } from "../../root.navref";
 import { CONFIG } from "../../shared.constants";
 import { rootLogger } from "../log/log.service";
-import { addInviteCode, setRemoteParams } from "../setup/setup.state";
+import { setRemoteParams } from "../setup/setup.state";
 import store from "../store/store.service";
 
 const WEBSITE_URL = CONFIG.websiteUrl;
@@ -45,7 +45,13 @@ export const _handleLink = ({ url }: { url: string }) => {
     return;
   }
 
-  if (typeof navigationRef.current === "undefined") {
+  const isNavigationRefReady =
+    typeof navigationRef.current === "undefined" ||
+    navigationRef.current === null;
+
+  /*
+  if (
+  ) {
     Alert.alert(
       "Error handling link #7Kt10G",
       "It looks like you opened a link, but there was an error handling it. " +
@@ -54,16 +60,34 @@ export const _handleLink = ({ url }: { url: string }) => {
     );
     return;
   }
+  */
 
   if (typeof query.inviteCode === "string") {
-    store.dispatch(addInviteCode({ inviteCode: query.inviteCode }));
+    // TODO Check if we are in a position to handle invite links or not
     Alert.alert(
-      "Invite code added",
-      "It looks like you just cliked an invite link. " +
-        'To finish accepting the invite open the menu and go to:\n\n"Your Community"\n\n' +
-        'Then choose:\n\n"Accept Invite"\n\n' +
-        "The invite code you just received " +
-        "will be auto-filled for you."
+      "Accept invite?",
+      "It looks like you just cliked an invite link.\n\n" +
+        "Do you want to accept it now?",
+      [
+        { text: "No" },
+        {
+          text: "Yes",
+          onPress: () => {
+            // TODO Navigate to the accept invite screen
+            if (navigationRef.current === null) {
+              // Error state
+              throw new Error("Unknown error. #xqTu7k");
+            }
+            navigationRef.current.navigate("Connections", {
+              screen: "ConnectionsAccept",
+              params: {
+                inviteCode: query.inviteCode,
+                senderName: query.senderName,
+              },
+            });
+          },
+        },
+      ]
     );
   }
 

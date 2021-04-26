@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,16 +28,16 @@ const InputsSchema = zod.object({
 type Inputs = zod.infer<typeof InputsSchema>;
 
 const Accept = ({
+  route,
   navigation,
 }: {
+  route: RouteProp<ConnectionsStackParameterList, "ConnectionsAccept">;
   navigation: StackNavigationProp<
     ConnectionsStackParameterList,
     "ConnectionsAccept"
   >;
 }) => {
-  const cachedInviteCodes = useSelector(
-    (state: RootState) => state.setup.inviteCodes
-  );
+  console.log("Accept #4fcvK1", route);
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm({
     resolver: zodResolver(InputsSchema),
@@ -73,7 +74,8 @@ const Accept = ({
     [dispatch, setIsFinished]
   );
 
-  const cachedInviteCode = cachedInviteCodes?.[0] || "";
+  const inviteCode = route.params?.inviteCode || "";
+  const senderName = route.params?.senderName || "";
 
   return (
     <View style={styles.container}>
@@ -110,7 +112,7 @@ const Accept = ({
                   )}
                   name="inviteCode"
                   rules={{ required: true }}
-                  defaultValue={cachedInviteCode}
+                  defaultValue={inviteCode}
                 />
 
                 <Controller
@@ -127,7 +129,7 @@ const Accept = ({
                     />
                   )}
                   name="name"
-                  defaultValue=""
+                  defaultValue={senderName}
                 />
 
                 <Controller
