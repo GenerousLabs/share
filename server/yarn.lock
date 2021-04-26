@@ -286,10 +286,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@chmac/node-git-server@^0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@chmac/node-git-server/-/node-git-server-0.6.4.tgz#3d3cee1583408ecfdfc1372336788f73be04f2e7"
-  integrity sha512-Z58HDNCP4ixzBA41bdjrqKncmdcNtJUongQxPt610M0h5xijov66IlYzVWBvJtDXABXQfAR77J5/gH3PmaVxSw==
+"@chmac/node-git-server@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/@chmac/node-git-server/-/node-git-server-0.6.5.tgz#dc68662e6a939d2c6afea8b5b5c8d26e7afa69a9"
+  integrity sha512-IL8dnq8KjRVmI4gsr8XBUvtTlSEqzsW1Z7znZThjwYbTrm7q2JnHWYCeSYFsU85/UrpoOGTUiDcU46JDeASJRA==
   dependencies:
     through "^2.3.8"
 

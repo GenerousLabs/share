@@ -32,7 +32,7 @@
     "watch-ts": "ncc build --watch src/server.ts -o dist"
   },
   "dependencies": {
-    "@chmac/node-git-server": "^0.6.4",
+    "@chmac/node-git-server": "^0.6.5",
     "async": "^3.1.0",
     "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
