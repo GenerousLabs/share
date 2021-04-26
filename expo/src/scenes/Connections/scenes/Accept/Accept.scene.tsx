@@ -58,11 +58,15 @@ const Accept = ({
           })
         );
       } catch (error) {
-        const errorText =
-          "error" in error && "toString" in error.error
-            ? error.error.toString()
+        const errorMessage =
+          "message" in error
+            ? error.message
             : "Unknown error. Please report this via telegram. #yLMP1O";
-        Alert.alert("Error accepting invite #sx61Dj", errorText);
+        const errorData =
+          "data" in error && typeof error.data === "object"
+            ? `\n\n${JSON.stringify(error.data)}`
+            : "";
+        Alert.alert("Error accepting invite #sx61Dj", errorMessage + errorData);
         return;
       }
 
