@@ -37,7 +37,6 @@ const Accept = ({
     "ConnectionsAccept"
   >;
 }) => {
-  console.log("Accept #4fcvK1", route);
   const dispatch: RootDispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm({
     resolver: zodResolver(InputsSchema),
