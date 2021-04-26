@@ -44,17 +44,17 @@ const getUrlParams = ({ hash }: { hash: string }): UrlData => {
   if (type === "token") {
     return {
       type,
-      token: credential,
-      username: recipientNameOrUsername,
-      name: senderNameOrName,
+      token: decodeURIComponent(credential),
+      username: decodeURIComponent(recipientNameOrUsername),
+      name: decodeURIComponent(senderNameOrName),
     };
   }
   if (type === "invite") {
     return {
       type,
-      inviteCode: credential,
-      recipientName: recipientNameOrUsername,
-      senderName: senderNameOrName,
+      inviteCode: decodeURIComponent(credential),
+      recipientName: decodeURIComponent(recipientNameOrUsername),
+      senderName: decodeURIComponent(senderNameOrName),
     };
   }
 };
@@ -296,7 +296,9 @@ const Home = () => {
                   <a
                     href={`${
                       isIos ? urlIos : urlAndroid
-                    }?inviteCode=${inviteCode}&senderName=${senderName}`}
+                    }?inviteCode=${inviteCode}&senderName=${encodeURIComponent(
+                      senderName
+                    )}`}
                   >
                     {senderName.length > 0
                       ? `Accept ${senderName}'s friend invitation`
@@ -308,7 +310,9 @@ const Home = () => {
                     className=""
                     href={`${
                       isIos ? urlAndroid : urlIos
-                    }?inviteCode=${inviteCode}&senderName=${senderName}`}
+                    }?inviteCode=${inviteCode}&senderName=${encodeURIComponent(
+                      senderName
+                    )}`}
                   >
                     On {isIos ? "Android" : "iOS"}? Click here instead
                   </a>
@@ -438,11 +442,7 @@ const Home = () => {
               <a
                 href={`${
                   isIos ? urlIos : urlAndroid
-                }?username=${username}&token=${token}${
-                  typeof inviteCode === "string"
-                    ? `&invitecode=${inviteCode}`
-                    : ""
-                }`}
+                }?username=${username}&token=${token}`}
               >
                 Start {name}'s set up process
               </a>
@@ -452,11 +452,7 @@ const Home = () => {
                 className=""
                 href={`${
                   isIos ? urlAndroid : urlIos
-                }?username=${username}&token=${token}${
-                  typeof inviteCode === "string"
-                    ? `&invitecode=${inviteCode}`
-                    : ""
-                }`}
+                }?username=${username}&token=${token}`}
               >
                 On {isIos ? "Android" : "iOS"}? Click here instead
               </a>
