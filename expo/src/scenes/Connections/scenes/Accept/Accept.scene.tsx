@@ -42,7 +42,6 @@ const Accept = ({
     resolver: zodResolver(InputsSchema),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
 
   const onSubmit = useCallback(
     async (data: Inputs) => {
@@ -67,10 +66,10 @@ const Accept = ({
         return;
       }
 
-      setIsFinished(true);
-      setIsSubmitting(false);
+      Alert.alert("Connected", "You are connected.");
+      navigation.navigate("ConnectionsHome");
     },
-    [dispatch, setIsFinished]
+    [dispatch]
   );
 
   const inviteCode = route.params?.inviteCode || "";
@@ -85,80 +84,70 @@ const Accept = ({
       <View style={styles.contentContainer}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <View style={styles.ScrollViewInner}>
-            {isFinished ? (
-              <>
-                <Text h2>Connected</Text>
-                <Text>You are connected</Text>
-              </>
-            ) : (
-              <>
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Code"
-                      style={styles.input}
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                      autoCapitalize="none"
-                      autoCompleteType="password"
-                      errorMessage={
-                        errors.inviteCode &&
-                        "There's an error in your invite code."
-                      }
-                    />
-                  )}
-                  name="inviteCode"
-                  rules={{ required: true }}
-                  defaultValue={inviteCode}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  placeholder="Code"
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  autoCapitalize="none"
+                  autoCompleteType="password"
+                  errorMessage={
+                    errors.inviteCode && "There's an error in your invite code."
+                  }
                 />
+              )}
+              name="inviteCode"
+              rules={{ required: true }}
+              defaultValue={inviteCode}
+            />
 
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Name"
-                      inputStyle={styles.input}
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                      autoCapitalize="words"
-                      errorMessage={errors.name && "Name is a required field"}
-                    />
-                  )}
-                  name="name"
-                  defaultValue={senderName}
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  placeholder="Name"
+                  inputStyle={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  autoCapitalize="words"
+                  errorMessage={errors.name && "Name is a required field"}
                 />
+              )}
+              name="name"
+              defaultValue={senderName}
+            />
 
-                <Controller
-                  control={control}
-                  render={({ onChange, onBlur, value }) => (
-                    <Input
-                      placeholder="Notes"
-                      inputStyle={styles.input}
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      value={value}
-                      multiline={true}
-                      errorMessage={
-                        errors.notes &&
-                        "There's an error in your note, sorry, we don't know what it is, we really didn't expect you to see this message."
-                      }
-                    />
-                  )}
-                  name="notes"
-                  rules={{ required: false }}
-                  defaultValue=""
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <Input
+                  placeholder="Notes"
+                  inputStyle={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
+                  multiline={true}
+                  errorMessage={
+                    errors.notes &&
+                    "There's an error in your note, sorry, we don't know what it is, we really didn't expect you to see this message."
+                  }
                 />
+              )}
+              name="notes"
+              rules={{ required: false }}
+              defaultValue=""
+            />
 
-                <Button
-                  loading={isSubmitting}
-                  title="Accept Invitation"
-                  onPress={handleSubmit(onSubmit)}
-                />
-              </>
-            )}
+            <Button
+              loading={isSubmitting}
+              title="Accept Invitation"
+              onPress={handleSubmit(onSubmit)}
+            />
           </View>
         </ScrollView>
       </View>
