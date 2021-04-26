@@ -57,6 +57,14 @@ export const _handleLink = ({ url }: { url: string }) => {
 
   if (typeof query.inviteCode === "string") {
     store.dispatch(addInviteCode({ inviteCode: query.inviteCode }));
+    Alert.alert(
+      "Invite code added",
+      "It looks like you just cliked an invite link. " +
+        'To finish accepting the invite open the menu and go to:\n\n"Your Community"\n\n' +
+        'Then choose:\n\n"Accept Invite"\n\n' +
+        "The invite code you just received " +
+        "will be auto-filled for you."
+    );
   }
 
   if (typeof query.token === "string") {
