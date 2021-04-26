@@ -1,7 +1,7 @@
 # Scratchpad
 
 - [x] The commands repo is not being pushed
-- [ ] Long names without spaces break the website on mobile
+- [x] Long names without spaces break the website on mobile
 - [ ] When clicking "accept invite", there's no action visible in the app
   - Also it lacks the name of the person
 - [ ] The code doesn't clear after accepting an invite
