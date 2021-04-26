@@ -1,6 +1,7 @@
 # Scratchpad
 
 - [x] The commands repo is not being pushed
+- [ ] Long names without spaces break the website on mobile
 - [ ] When clicking "accept invite", there's no action visible in the app
   - Also it lacks the name of the person
 - [ ] The code doesn't clear after accepting an invite
@@ -8,7 +9,6 @@
   - No back option, no chance to escape this view
 - [ ] There's a URL encoding issue in the link generation
   - Emojis don't work, spaces in names cause issues
-- [ ] Long names without spaces break the website on mobile
 
 # Sprint 2
 
