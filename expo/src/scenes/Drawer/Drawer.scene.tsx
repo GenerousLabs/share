@@ -15,6 +15,7 @@ const SETTINGS_TAP_COUNT = 3;
 const MINIMUM_TAP_INTERVAL_MS = 800;
 
 const version = Constants?.manifest?.extra?.commitHash || "DEV";
+const slug = Constants?.manifest?.slug || "uknown-slug";
 
 export enum DrawerType {
   setup,
@@ -132,6 +133,11 @@ const DrawerScene = ({
                 source={require("../../../assets/images/drawerLogo.png")}
               />
             </TouchableOpacity>
+            {__DEV__ ? (
+              <Text style={{ color: "white", position: "absolute", top: 160 }}>
+                {slug}
+              </Text>
+            ) : null}
           </View>
           <View style={styles.menu}>
             {menuItems.map((item) => (
