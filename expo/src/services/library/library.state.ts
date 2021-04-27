@@ -10,7 +10,7 @@ import { intersection, uniq } from "remeda";
 import { OfferInRedux, OfferMine } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
-import { isOfferMine } from "./library.service";
+import { isOfferMine, isOfferNotMine } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -58,7 +58,7 @@ export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
 );
 export const selectAllImportedOffers = createSelector(
   [selectAllOffers],
-  (offers) => offers.filter((offer) => !offer.mine)
+  (offers) => offers.filter(isOfferNotMine)
 );
 export const selectAllMyOffers = createSelector([selectAllOffers], (offers) =>
   offers.filter(isOfferMine)

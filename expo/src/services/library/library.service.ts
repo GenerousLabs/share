@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import { negate } from "lodash/fp";
 import { gitFsHttp } from "../../shared.constants";
 import {
   OfferInRedux,
@@ -12,6 +13,7 @@ import { log } from "./library.log";
 export const isOfferMine = (offer: OfferInRedux): offer is OfferMine => {
   return offer.mine;
 };
+export const isOfferNotMine = negate(isOfferMine);
 
 /**
  * Given an offer, convert it to a markdown & frontmatter string
