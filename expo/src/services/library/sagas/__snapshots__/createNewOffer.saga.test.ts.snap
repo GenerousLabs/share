@@ -6,11 +6,22 @@ Object {
   "combinator": false,
   "payload": Object {
     "args": Array [
-      "repo1",
+      Object {
+        "offer": Object {
+          "bodyMarkdown": "An offer example",
+          "proximity": 0,
+          "shareToProximity": 1,
+          "tags": Array [],
+          "title": "An example offer",
+          "uuid": "offer1-uuid",
+        },
+        "repoId": "repo1",
+      },
     ],
-    "selector": [Function],
+    "context": null,
+    "fn": [Function],
   },
-  "type": "SELECT",
+  "type": "CALL",
 }
 `;
 
