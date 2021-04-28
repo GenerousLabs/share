@@ -202,8 +202,16 @@ export const PostofficeReplySchema = zod.object({
 
 export type PostofficeReply = zod.infer<typeof PostofficeReplySchema>;
 
+/**
+ * An offer will always have a repo, and may have a connection. Each offer may
+ * be duplicated. The same rules apply to those duplicates.
+ */
 export type EnhancedOffer = {
   offer: OfferInRedux;
   repo: RepoInRedux;
   connection?: ConnectionInRedux;
+};
+
+export type EnhancedOfferWithAlternates = EnhancedOffer & {
+  alternates?: EnhancedOffer[];
 };

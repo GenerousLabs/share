@@ -1,7 +1,10 @@
 import invariant from "tiny-invariant";
-import { EnhancedOffer } from "../shared.types";
+import { EnhancedOfferWithAlternates } from "../shared.types";
 
-export const getOfferSharingText = ({ offer, connection }: EnhancedOffer) => {
+export const getOfferSharingText = ({
+  offer,
+  connection,
+}: EnhancedOfferWithAlternates) => {
   if (offer.mine && offer.proximity === 0) {
     if (offer.isSeeking) {
       return `You are looking for`;

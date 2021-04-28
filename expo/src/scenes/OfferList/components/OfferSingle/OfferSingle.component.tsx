@@ -4,33 +4,39 @@ import { Button, Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { montserratBold } from "../../../../root.theme";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
-import { rootLogger } from "../../../../services/log/log.service";
 import { selectMyLibraryRepo } from "../../../../services/repo/repo.state";
-import { EnhancedOffer } from "../../../../shared.types";
+import { EnhancedOfferWithAlternates } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
 import { getOfferSharingText } from "../../../../utils/offer.utils";
 
-const OfferSingle = ({ enhancedOffer }: { enhancedOffer: EnhancedOffer }) => {
+const OfferSingle = ({
+  enhancedOffer,
+}: {
+  enhancedOffer: EnhancedOfferWithAlternates;
+}) => {
   const dispatch: RootDispatch = useDispatch();
   const libraryRepo = useSelector(selectMyLibraryRepo);
-  const sharingText = getOfferSharingText(enhancedOffer);
 
-  const { offer } = enhancedOffer;
+  const { offer, alternates } = enhancedOffer;
+  const { title, bodyMarkdown, tags } = offer;
 
-  const canBeImported =
-    // TODO - The `proximity` value in redux should be correct
-    offer.proximity + 1 < offer.shareToProximity && !offer.mine;
-  rootLogger.debug("OfferSingle #KsMXt9", offer);
+  const isMine = offer.mine && offer.proximity === 0;
+  const myImportedCopy = alternates?.find(
+    ({ offer }) => offer.mine && offer.proximity > 0
+  );
+  const hasBeenImported = typeof myImportedCopy !== "undefined";
+
+  const canBeImported = !isMine && offer.proximity + 1 < offer.shareToProximity;
 
   return (
     <View>
-      <Text style={styles.sharedBy}>{sharingText}</Text>
-      <Text style={styles.title}>{offer.title}</Text>
-      <Text style={styles.bodyMarkdown}>{offer.bodyMarkdown}</Text>
-      {offer.tags.length > 0 ? (
-        <Text style={styles.tags}>#{offer.tags.join(" #")}</Text>
+      <Text style={styles.sharedBy}>{getOfferSharingText(enhancedOffer)}</Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.bodyMarkdown}>{bodyMarkdown}</Text>
+      {tags.length > 0 ? (
+        <Text style={styles.tags}>#{tags.join(" #")}</Text>
       ) : null}
-      {canBeImported ? (
+      {canBeImported && !hasBeenImported ? (
         <Button
           title="Import into Your Stuff"
           onPress={() => {
@@ -62,6 +68,7 @@ const OfferSingle = ({ enhancedOffer }: { enhancedOffer: EnhancedOffer }) => {
           }}
         />
       ) : null}
+      {hasBeenImported ? <Text>You have already imported this. </Text> : null}
     </View>
   );
 };

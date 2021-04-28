@@ -8,22 +8,25 @@ import * as R from "remeda";
 import Header from "../../../../components/Header/Header.component";
 import WarningBox from "../../../../components/WarningBox/WarningBox.component";
 import { colours } from "../../../../root.theme";
-import { selectAllEnhancedOffers } from "../../../../selectors/selectAllEnhancedOffers.selector";
+import { selectAllEnhnancedOffersWithAlternates } from "../../../../selectors/selectAllEnhancedOffersWithAlternates.selector";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import OfferList from "../../../OfferList/OfferList.scene";
 
-const selector = createSelector([selectAllEnhancedOffers], (enhancedOffers) => {
-  return R.pipe(
-    enhancedOffers,
-    // TODO Figure out how to group duplicated offers here
-    R.filter(
-      (enhancedOffer) =>
-        enhancedOffer.offer.mine && enhancedOffer.offer.proximity === 0
-    ),
-    R.sortBy((enhancedOffer) => enhancedOffer.offer.updatedAt),
-    R.reverse()
-  );
-});
+const selector = createSelector(
+  [selectAllEnhnancedOffersWithAlternates],
+  (enhancedOffers) => {
+    return R.pipe(
+      enhancedOffers,
+      // TODO Figure out how to group duplicated offers here
+      R.filter(
+        (enhancedOffer) =>
+          enhancedOffer.offer.mine && enhancedOffer.offer.proximity === 0
+      ),
+      R.sortBy((enhancedOffer) => enhancedOffer.offer.updatedAt),
+      R.reverse()
+    );
+  }
+);
 
 const YourStuffList = ({
   navigation,

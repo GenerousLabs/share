@@ -4,18 +4,23 @@ import { FlatList } from "react-native-gesture-handler";
 import { colours } from "../../root.theme";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
-import { EnhancedOffer } from "../../shared.types";
+import { EnhancedOffer, EnhancedOfferWithAlternates } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
 const log = rootLogger.extend("OfferList");
 
-const keyExtractor = (enhancedOffer: EnhancedOffer) => enhancedOffer.offer.id;
+const keyExtractor = (enhancedOffer: EnhancedOfferWithAlternates) =>
+  enhancedOffer.offer.id;
 
-const renderItem = ({ item }: { item: EnhancedOffer }) => (
+const renderItem = ({ item }: { item: EnhancedOfferWithAlternates }) => (
   <OfferSingle enhancedOffer={item} />
 );
 
-const OfferList = ({ enhancedOffers }: { enhancedOffers: EnhancedOffer[] }) => {
+const OfferList = ({
+  enhancedOffers,
+}: {
+  enhancedOffers: EnhancedOfferWithAlternates[];
+}) => {
   return (
     <FlatList
       data={enhancedOffers}
