@@ -113,25 +113,20 @@ export type OfferMine = OfferInRedux & {
   mine: true;
 };
 
-/**
- * These properties are stored in the markdown file.
- */
-export type OfferOnDiskFrontmatter = {
-  /** The uuid specified by the offer itself */
-  uuid: string;
-  /** The title of this offer */
-  title: string;
-  /** A set of tags, each a single string (no leading #, etc) */
-  tags: string[];
-  /** When exists and `true`, this is a request, not an ofer */
-  isSeeking?: boolean;
-  /** How close to me is this offer? 0 = mine, 1 = a friend of mine, etc. */
-  proximity: number;
-  /** How far is this to be shared? 1 = my friends, 2 = their friends, etc */
-  shareToProximity: number;
-  createdAt: number;
-  updatedAt: number;
-};
+export const OfferOnDiskFrontmatterSchema = zod.object({
+  uuid: zod.string(),
+  title: zod.string(),
+  tags: zod.string().array(),
+  isSeeking: zod.boolean().optional(),
+  proximity: zod.number().int(),
+  shareToProximity: zod.number().int(),
+  createdAt: zod.number().int(),
+  updatedAt: zod.number().int(),
+});
+
+export type OfferOnDiskFrontmatter = zod.infer<
+  typeof OfferOnDiskFrontmatterSchema
+>;
 
 export type OfferOnDisk = OfferOnDiskFrontmatter & {
   /** A markdown string that describes this offer */
@@ -152,6 +147,10 @@ export type OfferInRedux = OfferOnDisk & {
   repoId: string;
   /** Is this an offer which I own, which means I can edit it */
   mine: boolean;
+};
+
+export type EnhancedOfferInRedux = OfferInRedux & {
+  repoIds: string[];
 };
 
 export const ConnectionSchema = zod.object({
@@ -202,3 +201,9 @@ export const PostofficeReplySchema = zod.object({
 });
 
 export type PostofficeReply = zod.infer<typeof PostofficeReplySchema>;
+
+export type EnhancedOffer = {
+  offer: OfferInRedux;
+  repo: RepoInRedux;
+  connection?: ConnectionInRedux;
+};

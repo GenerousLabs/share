@@ -1,25 +1,24 @@
 import matter from "gray-matter";
-import { negate } from "lodash/fp";
 import { gitFsHttp } from "../../shared.constants";
 import {
   OfferInRedux,
-  OfferMine,
   OfferOnDisk,
+  OfferOnDiskFrontmatterSchema,
   RepoInRedux,
 } from "../../shared.types";
 import { join } from "../fs/fs.service";
 import { log } from "./library.log";
-
-export const isOfferMine = (offer: OfferInRedux): offer is OfferMine => {
-  return offer.mine;
-};
-export const isOfferNotMine = negate(isOfferMine);
 
 /**
  * Given an offer, convert it to a markdown & frontmatter string
  */
 export const offerToString = ({ offer }: { offer: OfferOnDisk }) => {
   const { bodyMarkdown, ...frontmatter } = offer;
+
+  // This is an additional safety check because TypeScript will usually allow
+  // additional properties in `offer` and we don't want to write extra
+  // properties into the yaml frontmatter.
+  OfferOnDiskFrontmatterSchema.parse(frontmatter);
 
   const output = matter.stringify(bodyMarkdown, frontmatter);
 

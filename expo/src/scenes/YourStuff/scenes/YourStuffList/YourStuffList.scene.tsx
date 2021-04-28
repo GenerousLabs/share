@@ -1,26 +1,36 @@
 import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useMemo } from "react";
+import { createSelector } from "@reduxjs/toolkit";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
 import { useSelector } from "react-redux";
-import { reverse, sortBy } from "remeda";
+import * as R from "remeda";
 import Header from "../../../../components/Header/Header.component";
 import WarningBox from "../../../../components/WarningBox/WarningBox.component";
 import { colours } from "../../../../root.theme";
-import { selectAllMyOffers } from "../../../../services/library/library.state";
+import { selectAllEnhancedOffers } from "../../../../selectors/selectAllEnhancedOffers.selector";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import OfferList from "../../../OfferList/OfferList.scene";
+
+const selector = createSelector([selectAllEnhancedOffers], (enhancedOffers) => {
+  return R.pipe(
+    enhancedOffers,
+    // TODO Figure out how to group duplicated offers here
+    R.filter(
+      (enhancedOffer) =>
+        enhancedOffer.offer.mine && enhancedOffer.offer.proximity === 0
+    ),
+    R.sortBy((enhancedOffer) => enhancedOffer.offer.updatedAt),
+    R.reverse()
+  );
+});
 
 const YourStuffList = ({
   navigation,
 }: {
   navigation: StackNavigationProp<YourStuffStackParameterList, "YourStuffList">;
 }) => {
-  const offers = useSelector(selectAllMyOffers);
-  const sortedOffers = useMemo(
-    () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
-    [offers]
-  );
+  const enhancedOffers = useSelector(selector);
 
   return (
     <View style={styles.container}>
@@ -37,7 +47,7 @@ const YourStuffList = ({
           }}
         />
         <View style={styles.FlatListWrapper}>
-          <OfferList offers={sortedOffers} />
+          <OfferList enhancedOffers={enhancedOffers} />
         </View>
       </View>
     </View>

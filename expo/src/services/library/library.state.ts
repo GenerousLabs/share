@@ -7,10 +7,9 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { intersection, uniq } from "remeda";
-import { OfferInRedux, OfferMine } from "../../shared.types";
+import { OfferInRedux } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
-import { isOfferMine, isOfferNotMine } from "./library.service";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -53,16 +52,10 @@ const libraryReducer = combineReducers({
 
 export default libraryReducer;
 
-export const { selectAll: selectAllOffers } = offerAdapter.getSelectors(
-  (state: RootState) => state.library.offers
-);
-export const selectAllImportedOffers = createSelector(
-  [selectAllOffers],
-  (offers) => offers.filter(isOfferNotMine)
-);
-export const selectAllMyOffers = createSelector([selectAllOffers], (offers) =>
-  offers.filter(isOfferMine)
-);
+export const {
+  selectAll: selectAllOffers,
+  selectById: selectOfferById,
+} = offerAdapter.getSelectors((state: RootState) => state.library.offers);
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],
   (offers) => {

@@ -1,7 +1,7 @@
 import { all, takeEvery } from "redux-saga/effects";
 import slugify from "slugify";
 import { call, put, putResolve } from "typed-redux-saga/macro";
-import { generateUuid } from "../../utils/id.utils";
+import { generateId, generateUuid } from "../../utils/id.utils";
 import { rootLogger } from "../log/log.service";
 import { createLibraryRepo } from "../repo/repo.service";
 import { commitAllSagaAction } from "../repo/sagas/commitAll.saga";
@@ -61,7 +61,7 @@ export function* loadOfferEffect(
 
     const offer = yield* call(readOfferFromDisk, { directoryPath });
 
-    yield put(upsertOneOfferAction({ ...offer, id: offer.uuid, repoId }));
+    yield put(upsertOneOfferAction({ ...offer, id: directoryPath, repoId }));
   } catch (error) {
     yield put(
       loadOfferError({

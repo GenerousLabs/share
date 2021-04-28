@@ -2,28 +2,21 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { colours } from "../../root.theme";
-import { OfferPlusRepoAndConnection } from "../../selectors/selectAllOffersPlusRepoAndConnection.selector";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
-import { OfferMine } from "../../shared.types";
+import { EnhancedOffer } from "../../shared.types";
 import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
 const log = rootLogger.extend("OfferList");
 
-const renderItem = ({
-  item: offer,
-}: {
-  item: OfferPlusRepoAndConnection | OfferMine;
-}) => <OfferSingle offer={offer} />;
+const renderItem = ({ item }: { item: EnhancedOffer }) => (
+  <OfferSingle enhancedOffer={item} />
+);
 
-const OfferList = ({
-  offers,
-}: {
-  offers: (OfferPlusRepoAndConnection | OfferMine)[];
-}) => {
+const OfferList = ({ enhancedOffers }: { enhancedOffers: EnhancedOffer[] }) => {
   return (
     <FlatList
-      data={offers}
+      data={enhancedOffers}
       renderItem={renderItem}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListFooterComponent={View}

@@ -1,18 +1,17 @@
-import { OfferPlusRepoAndConnection } from "../selectors/selectAllOffersPlusRepoAndConnection.selector";
-import { isOfferMine } from "../services/library/library.service";
-import { OfferMine } from "../shared.types";
+import invariant from "tiny-invariant";
+import { EnhancedOffer } from "../shared.types";
 
-export const getOfferSharingText = (
-  offer: OfferMine | OfferPlusRepoAndConnection
-) => {
-  if (isOfferMine(offer)) {
+export const getOfferSharingText = ({ offer, connection }: EnhancedOffer) => {
+  if (offer.mine && offer.proximity === 0) {
     if (offer.isSeeking) {
       return `You are looking for`;
     }
     return `You share`;
   }
 
-  const { name } = offer.connection;
+  invariant(connection, "Offer not mine and no connection. #8ilZoi");
+
+  const { name } = connection;
 
   if (offer.proximity === 0) {
     if (offer.isSeeking) {

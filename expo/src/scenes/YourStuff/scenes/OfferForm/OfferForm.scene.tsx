@@ -47,20 +47,29 @@ const OfferForm = ({
       setIsSubmitting(true);
       const uuid = generateUuid();
       const tags = parseTags(data.tags);
-      await dispatch(
-        createNewOfferSagaAction({
-          repoId: library.id,
-          offer: {
-            uuid,
-            proximity: 0,
-            shareToProximity: data.shareToProximity2 ? 2 : 1,
-            tags,
-            bodyMarkdown: data.bodyMarkdown || "",
-            title: data.title,
-            isSeeking: !data.isOffer,
-          },
-        })
-      );
+      try {
+        await dispatch(
+          createNewOfferSagaAction({
+            repoId: library.id,
+            offer: {
+              uuid,
+              proximity: 0,
+              shareToProximity: data.shareToProximity2 ? 2 : 1,
+              tags,
+              bodyMarkdown: data.bodyMarkdown || "",
+              title: data.title,
+              isSeeking: !data.isOffer,
+            },
+          })
+        );
+      } catch (error) {
+        setIsSubmitting(false);
+        Alert.alert(
+          "Error creating offer",
+          `There was an error creating the offer. Sorry, we're not sure what to suggest here. If this persists, please let us know.\n\n${error.message}`
+        );
+        return;
+      }
       Alert.alert("Saved", "Your offer has been saved.");
       reset();
       setIsSubmitting(false);

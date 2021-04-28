@@ -1,30 +1,35 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import React, { useMemo } from "react";
+import { createSelector } from "@reduxjs/toolkit";
+import React from "react";
 import { StyleSheet, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import { reverse, sortBy } from "remeda";
+import { useSelector } from "react-redux";
+import * as R from "remeda";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
-import { selectAllOffersPlusRepoAndConnection } from "../../selectors/selectAllOffersPlusRepoAndConnection.selector";
+import { selectAllEnhancedOffers } from "../../selectors/selectAllEnhancedOffers.selector";
 import { rootLogger } from "../../services/log/log.service";
-import { RootDispatch } from "../../services/store/store.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 import OfferList from "../OfferList/OfferList.scene";
 
 const log = rootLogger.extend("Browse");
 
+const selector = createSelector([selectAllEnhancedOffers], (enhancedOffers) => {
+  return R.pipe(
+    enhancedOffers,
+    // TODO Figure out how to group duplicated offers here
+    R.filter((enhancedOffer) => !enhancedOffer.offer.mine),
+    R.sortBy((enhancedOffer) => enhancedOffer.offer.updatedAt),
+    R.reverse()
+  );
+});
+
 const Browse = ({
   navigation,
 }: {
   navigation: DrawerNavigationProp<RootDrawerParamList, "Browse">;
 }) => {
-  const dispatch: RootDispatch = useDispatch();
-  const offers = useSelector(selectAllOffersPlusRepoAndConnection);
-  const sortedOffers = useMemo(
-    () => reverse(sortBy(offers, (offer) => offer.updatedAt)),
-    [offers]
-  );
+  const enhancedOffers = useSelector(selector);
 
   return (
     <View style={styles.container}>
@@ -32,7 +37,7 @@ const Browse = ({
       <View style={styles.contentContainer}>
         <WarningBox />
         <View style={styles.FlatListWrapper}>
-          <OfferList offers={sortedOffers} />
+          <OfferList enhancedOffers={enhancedOffers} />
         </View>
       </View>
     </View>
