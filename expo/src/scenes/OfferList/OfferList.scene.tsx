@@ -9,6 +9,8 @@ import OfferSingle from "./components/OfferSingle/OfferSingle.component";
 
 const log = rootLogger.extend("OfferList");
 
+const keyExtractor = (enhancedOffer: EnhancedOffer) => enhancedOffer.offer.id;
+
 const renderItem = ({ item }: { item: EnhancedOffer }) => (
   <OfferSingle enhancedOffer={item} />
 );
@@ -17,6 +19,7 @@ const OfferList = ({ enhancedOffers }: { enhancedOffers: EnhancedOffer[] }) => {
   return (
     <FlatList
       data={enhancedOffers}
+      keyExtractor={keyExtractor}
       renderItem={renderItem}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       ListFooterComponent={View}
