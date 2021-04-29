@@ -5,7 +5,7 @@ import { rootLogger } from "../../log/log.service";
 import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
 import { addNewRepoToReposYaml } from "../reposYaml.service";
 
-const log = rootLogger.extend("repoYaml").extend("saveRepoToReposYaml");
+const log = rootLogger.extend("repoYaml.saveRepoToReposYaml");
 
 const saga = createAsyncPromiseSaga<
   {

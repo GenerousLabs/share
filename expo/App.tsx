@@ -13,19 +13,22 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { theme, montserrat, montserratBold } from "./src/root.theme";
 import Navigation from "./src/scenes/Navigation/Navigation.scene";
-import store, { persistor } from "./src/services/store/store.service";
+import store, {
+  persistor,
+  startSagas,
+} from "./src/services/store/store.service";
 import { initLogger } from "./src/services/log/log.service";
 
-const appLoad = async () => {
+const loadFonts = async () => {
   const fontsPromise = Font.loadAsync({
     ...Ionicons.font,
     [montserrat]: require("./assets/fonts/Montserrat-Regular.ttf"),
     [montserratBold]: require("./assets/fonts/Montserrat-Bold.ttf"),
   });
+};
 
-  const loggerPromise = initLogger();
-
-  await Promise.all([fontsPromise, loggerPromise]);
+const appLoad = async () => {
+  await Promise.all([loadFonts(), initLogger()]);
 };
 
 export default function App() {
@@ -35,7 +38,10 @@ export default function App() {
     return (
       <AppLoading
         startAsync={appLoad}
-        onFinish={() => setIsLoading(false)}
+        onFinish={() => {
+          startSagas();
+          setIsLoading(false);
+        }}
         onError={console.error}
       />
     );

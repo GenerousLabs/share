@@ -6,6 +6,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../../../components/Header/Header.component";
 import { selectAllConnectionsWithLibraries } from "../../../../selectors/selectAllConnectionsWithLibraries.selector";
+import { rootLogger } from "../../../../services/log/log.service";
 import { sharedStyles } from "../../../../shared.styles";
 import {
   ConnectionInRedux,
@@ -13,9 +14,8 @@ import {
   RepoInRedux,
 } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
-import { log as parentLogger } from "../../Connections.log";
 
-const log = parentLogger.extend("ConnectionsList");
+const log = rootLogger.extend("Connections.ConnectionsList");
 
 const ConnectionsList = ({
   navigation,

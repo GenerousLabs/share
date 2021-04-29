@@ -1,6 +1,4 @@
 import { createSelector } from "@reduxjs/toolkit";
-import * as R from "remeda";
-import invariant from "tiny-invariant";
 import { selectConnectionById } from "../services/connection/connection.state";
 import { selectAllOffers } from "../services/library/library.state";
 import { rootLogger } from "../services/log/log.service";

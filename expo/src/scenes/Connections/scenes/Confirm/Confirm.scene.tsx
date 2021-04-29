@@ -8,11 +8,11 @@ import {
   makeSelectConnectionAndRepoById,
   selectName,
 } from "../../../../services/connection/connection.state";
+import { rootLogger } from "../../../../services/log/log.service";
 import { getShareInviteMessage } from "../../../../services/messages/messages.service";
 import { sharedStyles } from "../../../../shared.styles";
-import { log as parentLogger } from "../../Connections.log";
 
-const log = parentLogger.extend("Confirm");
+const log = rootLogger.extend("Connections.Confirm");
 
 const Confirm = ({
   connectionId,

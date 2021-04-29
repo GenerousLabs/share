@@ -55,9 +55,11 @@ const store = configureStore({
 
 export const persistor = persistStore(store);
 
-sagaMiddleware.run(rootSaga);
+export const startSagas = () => {
+  sagaMiddleware.run(rootSaga);
 
-store.dispatch(maybeStartupSagaAction());
+  store.dispatch(maybeStartupSagaAction());
+};
 
 export default store;
 
