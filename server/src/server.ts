@@ -26,7 +26,7 @@ import {
 import logger, { enableProductionDebugLogger } from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
-const __DEV__ = process.env.NODE_ENV !== "development";
+const __DEV__ = process.env.NODE_ENV === "development";
 
 const jsonParser = bodyParser.json();
 
