@@ -1,21 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`selectAllEnhancedOffers() resultFunc Matches a snapshot #YOjqlN 1`] = `
+exports[`selectAllEnhancedOffersWithAlternates() resultFunc Combines offer, repo and connection #R8dDBO 1`] = `
 Array [
   Object {
-    "connection": Object {
-      "id": "c1",
-      "myRepoId": "fake1",
-      "name": "C",
-      "notes": "",
-      "theirRepoId": "fake2",
-      "token": "abc123",
-    },
+    "alternates": Array [],
     "offer": Object {
       "bodyMarkdown": "",
       "createdAt": 1,
       "id": "id1",
-      "mine": false,
+      "mine": true,
       "proximity": 0,
       "repoId": "repo1",
       "shareToProximity": 1,
@@ -26,7 +19,6 @@ Array [
     },
     "repo": Object {
       "bodyMarkdown": "",
-      "connectionId": "c1",
       "id": "repo1",
       "isReadOnly": false,
       "remoteUrl": "fakeRemoteUrl",
