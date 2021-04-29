@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectAllEnhancedOffers() resultFunc Matches a snapshot #YOjqlN 1`] = `
+Array [
+  Object {
+    "connection": undefined,
+    "offer": Object {
+      "bodyMarkdown": "",
+      "createdAt": 1,
+      "id": "id1",
+      "mine": true,
+      "proximity": 0,
+      "repoId": "repo1",
+      "shareToProximity": 1,
+      "tags": Array [],
+      "title": "An offer",
+      "updatedAt": 1,
+      "uuid": "id1uuid",
+    },
+    "repo": Object {
+      "bodyMarkdown": "",
+      "id": "repo1",
+      "isReadOnly": false,
+      "remoteUrl": "fakeRemoteUrl",
+      "title": "Repo",
+      "type": "library",
+      "uuid": "repo1uuid",
+    },
+  },
+]
+`;
