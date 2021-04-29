@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import * as R from "remeda";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
-import { selectAllEnhnancedOffersWithAlternates } from "../../selectors/selectAllEnhancedOffersWithAlternates.selector";
+import { selectAllEnhancedOffersWithAlternates } from "../../selectors/selectAllEnhancedOffersWithAlternates.selector";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
@@ -15,7 +15,7 @@ import OfferList from "../OfferList/OfferList.scene";
 const log = rootLogger.extend("Browse");
 
 const selector = createSelector(
-  [selectAllEnhnancedOffersWithAlternates],
+  [selectAllEnhancedOffersWithAlternates],
   (enhancedOffers) => {
     return R.pipe(
       enhancedOffers,
@@ -32,6 +32,8 @@ const Browse = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Browse">;
 }) => {
   const enhancedOffers = useSelector(selector);
+  log.debug("enhancedOffer", enhancedOffers);
+  debugger;
 
   return (
     <View style={styles.container}>

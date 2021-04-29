@@ -17,7 +17,7 @@ import { selectAllEnhancedOffers } from "./selectAllEnhancedOffers.selector";
  * the item.
  */
 
-export const selectAllEnhnancedOffersWithAlternates = createSelector(
+export const selectAllEnhancedOffersWithAlternates = createSelector(
   [selectAllEnhancedOffers],
   (enhancedOffers): EnhancedOfferWithAlternates[] => {
     return R.pipe(

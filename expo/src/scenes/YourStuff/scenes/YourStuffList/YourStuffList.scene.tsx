@@ -8,12 +8,12 @@ import * as R from "remeda";
 import Header from "../../../../components/Header/Header.component";
 import WarningBox from "../../../../components/WarningBox/WarningBox.component";
 import { colours } from "../../../../root.theme";
-import { selectAllEnhnancedOffersWithAlternates } from "../../../../selectors/selectAllEnhancedOffersWithAlternates.selector";
+import { selectAllEnhancedOffersWithAlternates } from "../../../../selectors/selectAllEnhancedOffersWithAlternates.selector";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import OfferList from "../../../OfferList/OfferList.scene";
 
 const selector = createSelector(
-  [selectAllEnhnancedOffersWithAlternates],
+  [selectAllEnhancedOffersWithAlternates],
   (enhancedOffers) => {
     return R.pipe(
       enhancedOffers,
