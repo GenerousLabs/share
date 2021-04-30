@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import Constants from "expo-constants";
+import { Alert } from "react-native";
 import {
   FLUSH,
   PAUSE,
@@ -56,9 +57,17 @@ const store = configureStore({
 export const persistor = persistStore(store);
 
 export const startSagas = () => {
-  sagaMiddleware.run(rootSaga);
+  try {
+    sagaMiddleware.run(rootSaga);
 
-  store.dispatch(maybeStartupSagaAction());
+    store.dispatch(maybeStartupSagaAction());
+  } catch (error) {
+    console.error("startSagas() caught error #7u3TOB", error);
+    Alert.alert(
+      "Fatal error",
+      `Sorry, something has gone wrong, and we don't have a good suggestion for you. :-( If you see this again, or get stuck here, please contact us on the telegram group.`
+    );
+  }
 };
 
 export default store;
