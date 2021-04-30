@@ -7,11 +7,14 @@ export function* linkSagaEffect() {
   while (true) {
     const action = yield* take("*");
 
-    const { isRehydrated } = yield* select((state: RootState) => ({
-      isRehydrated: state._persist.rehydrated,
-    }));
+    const { isRehydrated, splashScreenHidden } = yield* select(
+      (state: RootState) => ({
+        isRehydrated: state._persist.rehydrated,
+        splashScreenHidden: state.startup.splashScreenHidden,
+      })
+    );
 
-    if (isRehydrated) {
+    if (isRehydrated && splashScreenHidden) {
       // Once redux has rehydrated, start the link service
       yield* call(startLinkService);
       break;
