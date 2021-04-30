@@ -135,7 +135,7 @@ only would be possible.
 - [x] Convert createNewOfferSagaAction to a promise action
   - OfferForm doesn't finish submitting
 - [x] Add friends / friends-of-friends to OfferForm
-- [ ] Add tags to OfferForm
+- [x] Add tags to OfferForm
   - Comma separated? That might do for now, can improve it
 
 # Next
@@ -177,36 +177,36 @@ only would be possible.
   - [x] Generate an invite
     - Create a connection repo
     - Grant access
-  - [ ] Accept an invite
+  - [x] Accept an invite
     - Import the repo
     - Create a repo
     - Post a ping message
     - Grant access
-  - [ ] Confirm connection
+  - [x] Confirm connection
     - Import the repo
     - Read the ping message
     - Post a pong message
   - Put a connections.yaml file in the me repo
     - Array of objects, one per connection
-- [ ] Kill the console.error() on key creation
+- [x] Kill the console.error() on key creation
 
 ## Low priority
 
-- [ ] Pass name from connection / subscription through to redux
+- [x] Pass name from connection / subscription through to redux
   - Currently it's silently dropped in `_createNewRepo()`
 - [ ] Refactor creating repos into a saga
   - Right now it's a function that returns a RepoInRedux
   - It should be a saga that pushes to redux on its own
 - [ ] p2 Add server to host git repos
-- [ ] p3 Add password key derivation to encryption
-- [ ] Move reposYaml to be a sub service of repos
+- [x] p3 Add password key derivation to encryption
+- [x] Move reposYaml to be a sub service of repos
   - I don't need to access it directly
 - [ ] Implement the load repo from filesystem
   - In theory can be done later
 
 ## Friends of friends
 
-- [ ] Dedupe items by uuid
+- [x] Dedupe items by uuid
   - Maybe favour the proximity?
 
 ## Later
