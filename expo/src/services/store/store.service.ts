@@ -62,7 +62,7 @@ export const startSagas = () => {
 
     store.dispatch(maybeStartupSagaAction());
   } catch (error) {
-    console.error("startSagas() caught error #7u3TOB", error);
+    log.error("startSagas() caught error #7u3TOB", error);
     Alert.alert(
       "Fatal error",
       `Sorry, something has gone wrong, and we don't have a good suggestion for you. :-( If you see this again, or get stuck here, please contact us on the telegram group.`
