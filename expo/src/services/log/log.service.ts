@@ -36,6 +36,19 @@ const loadEnabledLogger = async () => {
   }
 };
 
+export const enableAllLogExtensions = async () => {
+  const extensions = rootLogger.getExtensions();
+  extensions.forEach(rootLogger.enable);
+  const enabled = extensions.join(",");
+  await AsyncStorage.setItem(ENABLED_STORAGE_KEY, enabled);
+};
+
+export const disableAllLogExtensions = async () => {
+  const extensions = rootLogger.getExtensions();
+  extensions.forEach(rootLogger.disable);
+  await AsyncStorage.setItem(ENABLED_STORAGE_KEY, "");
+};
+
 const loadDebugSettings = async () => {
   try {
     const debugFromStorage = await AsyncStorage.getItem(DEBUG_STORAGE_KEY);

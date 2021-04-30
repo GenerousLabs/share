@@ -1,21 +1,24 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
 import * as Updates from "expo-updates";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, Input, Overlay, Text } from "react-native-elements";
+import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { colours } from "../../root.theme";
+import {
+  disableAllLogExtensions,
+  enableAllLogExtensions,
+} from "../../services/log/log.service";
 import { selectAllRepos } from "../../services/repo/repo.state";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
 import { RootDispatch } from "../../store";
-import Log from "./scenes/Log/Log.scene";
 
 const Settings = ({
   navigation,
@@ -25,10 +28,6 @@ const Settings = ({
   const dispatch: RootDispatch = useDispatch();
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const allRepos = useSelector(selectAllRepos);
-
-  const closeOverlay = useCallback(() => {
-    setIsOverlayVisible(false);
-  }, [setIsOverlayVisible]);
 
   const allReposText = allRepos
     .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
@@ -59,9 +58,38 @@ ${allReposText}`;
             }}
           />
           <Button
+            title="Open log view"
+            buttonStyle={styles.buttonBase}
+            onPress={() => navigation.navigate("Log")}
+          />
+          <Button
             title="Browse file system"
             buttonStyle={styles.buttonBase}
             onPress={() => navigation.navigate("BrowseFileSystem")}
+          />
+          <Button
+            title="Enable debug logging"
+            buttonStyle={styles.buttonBase}
+            onPress={async () => {
+              try {
+                await enableAllLogExtensions();
+                Alert.alert("Success", "Full debug logs are now enabled.");
+              } catch (error) {
+                Alert.alert("Error #OQAJtf", error.message);
+              }
+            }}
+          />
+          <Button
+            title="Disable debug logging"
+            buttonStyle={styles.buttonBase}
+            onPress={async () => {
+              try {
+                await disableAllLogExtensions();
+                Alert.alert("Success", "Full debug logs are now disabled.");
+              } catch (error) {
+                Alert.alert("Error #pgBbUb", error.message);
+              }
+            }}
           />
           <Button
             title="Export logs as zip"
@@ -97,11 +125,6 @@ ${allReposText}`;
               );
             }}
           />
-          <Button
-            title="Open log view"
-            buttonStyle={styles.buttonBase}
-            onPress={() => setIsOverlayVisible(true)}
-          />
           <Text h2 style={styles.reposHeader}>
             Debugging
           </Text>
@@ -117,18 +140,6 @@ ${allReposText}`;
             multiline
             selectTextOnFocus={true}
           />
-          <Overlay
-            overlayStyle={styles.overlay}
-            isVisible={isOverlayVisible}
-            fullScreen
-            onBackdropPress={() => {
-              setIsOverlayVisible(false);
-            }}
-          >
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <Log closeOverlay={closeOverlay} />
-            </ScrollView>
-          </Overlay>
         </ScrollView>
       </View>
     </View>
