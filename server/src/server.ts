@@ -34,7 +34,7 @@ const repos = new Server(REPOS_ROOT, {
   repoTemplatePath: REPO_TEMPLATE_PATH,
   // NOTE: This crashes git versions < 2.28, our docker host has an older
   // version of git, so only set this on dev
-  // initialBranch: __DEV__ ? "master" : undefined,
+  initialBranch: __DEV__ ? "master" : undefined,
   checkout: true,
   autoCreate: true,
   authenticate: ({ type, repo: repoPath, headers, user }) => {
