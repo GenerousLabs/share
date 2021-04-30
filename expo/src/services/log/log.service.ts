@@ -10,6 +10,7 @@ import {
   logger,
 } from "react-native-logs";
 import { gitFsHttp, LOGS_PATH } from "../../shared.constants";
+import { getFileContents, join } from "../fs/fs.service";
 
 const ENABLED_STORAGE_KEY = "__enabledLogExtensions";
 const DEBUG_STORAGE_KEY = "__DEBUG";
@@ -68,11 +69,30 @@ export const _getFileName = (dayjs: Dayjs) => {
   return `${dayjs.format("YYYY-MM-DD")}.log`;
 };
 
+export const _getFilePath = (filename: string) => join(LOGS_PATH, filename);
+
 export const rootLogger = logger.createLogger({
-  transport: __DEV__ ? consoleTransport : fileAsyncTransport,
+  transport: (props) => {
+    console.log("transport #RmbEGG");
+    if (__DEV__) {
+      consoleTransport(props);
+    }
+    fileAsyncTransport(props);
+  },
   severity: __DEV__ ? "debug" : "error",
   transportOptions: {
     FS: FileSystem,
-    fileName: _getFileName(dayjs),
+    fileName: _getFilePath(_getFileName(dayjs)),
   },
 });
+
+export const getLogs = async ({ skipDays = 0 }: { skipDays?: number } = {}) => {
+  const filepath = _getFilePath(_getFileName(dayjs));
+  const l = await getFileContents({
+    filepath,
+    createParentDir: false,
+  });
+  debugger;
+  return l;
+  return await getFileContents({ filepath, createParentDir: false });
+};
