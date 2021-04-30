@@ -13,6 +13,7 @@ import Home from "../Home/Home.scene";
 import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
 import Offers from "../Offers/Offers.scene";
+import BrowseFileSystem from "../Settings/scenes/BrowseFileSystem/BrowseFileSystem.scene";
 import Settings from "../Settings/Settings.scene";
 import Setup from "../Setup/Setup.scene";
 import YourStuff from "../YourStuff/YourStuff.scene";
@@ -71,6 +72,10 @@ const Navigation = () => {
           <DrawerNavigator.Screen name="Offers" component={Offers} />
           <DrawerNavigator.Screen name="Root" component={BottomTabNavigator} />
           <DrawerNavigator.Screen name="Settings" component={Settings} />
+          <DrawerNavigator.Screen
+            name="BrowseFileSystem"
+            component={BrowseFileSystem}
+          />
           <DrawerNavigator.Screen
             name="NotFound"
             component={NotFoundScreen}

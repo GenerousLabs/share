@@ -59,6 +59,11 @@ ${allReposText}`;
             }}
           />
           <Button
+            title="Browse file system"
+            buttonStyle={styles.buttonBase}
+            onPress={() => navigation.navigate("BrowseFileSystem")}
+          />
+          <Button
             title="Export logs as zip"
             buttonStyle={[styles.buttonBase, styles.exportButton]}
             onPress={async () => {
