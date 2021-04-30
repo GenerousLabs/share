@@ -42,6 +42,10 @@ const transports = __DEV__
       new winston.transports.File({
         filename: "data/debug.log",
         level: "debug",
+        format: format.combine(
+          winston.format.timestamp(),
+          winston.format.simple()
+        ),
       }),
     ]
   : [
