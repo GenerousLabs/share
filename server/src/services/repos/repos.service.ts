@@ -9,6 +9,7 @@ import {
   READ_TOKENS_FILE_NAME,
   REPOS_ROOT,
   USER_TOKEN_PATH,
+  __DEV__,
 } from "../../constants";
 import logger from "../../util/logger";
 import { splitRepo } from "../../util/repoNames";
@@ -35,10 +36,11 @@ export const _parseTokensYaml = ({
   const filteredEntries = Object.entries(userTokenMap).filter(
     ([username, token]) => {
       if (
-        typeof username !== "string" ||
-        username.length < MINIMUM_USERNAME_LENGTH ||
-        typeof token !== "string" ||
-        token.length < MINIMUM_TOKEN_LENGTH
+        (typeof username !== "string" ||
+          username.length < MINIMUM_USERNAME_LENGTH ||
+          typeof token !== "string" ||
+          token.length < MINIMUM_TOKEN_LENGTH) &&
+        __DEV__
       ) {
         logger.warn("Excluding invalid token #y7kmqs", { username, token });
         return false;
