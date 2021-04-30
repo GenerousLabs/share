@@ -55,6 +55,9 @@ const preloadedState: RootState = {
   setup: {
     isSetupComplete: true,
   },
+  startup: {
+    splashScreenHidden: true,
+  },
 };
 
 export const getEmptyFilesystem = () => {

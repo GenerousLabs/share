@@ -1,4 +1,22 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
+
+export const REDUCER_KEY = "startup";
+
+const slice = createSlice({
+  name: "SHARE/startup",
+  initialState: {
+    splashScreenHidden: false,
+  },
+  reducers: {
+    splashScreenHasBeenHidden: (state) => {
+      state.splashScreenHidden = true;
+    },
+  },
+});
+
+export const { splashScreenHasBeenHidden } = slice.actions;
+
+export default slice.reducer;
 
 /**
  * This action gets dispatched on application boot.

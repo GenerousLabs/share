@@ -8,6 +8,7 @@ import postoffice, {
 } from "../postoffice/postoffice.state";
 import repo, { REDUCER_KEY as repoKey } from "../repo/repo.state";
 import setup, { REDUCER_KEY as setupKey } from "../setup/setup.state";
+import startup, { REDUCER_KEY as startupKey } from "../startup/startup.state";
 
 const reducer = combineReducers({
   [connectionKey]: connection,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   [postofficeKey]: postoffice,
   [repoKey]: repo,
   [setupKey]: setup,
+  [startupKey]: startup,
 });
 
 export default reducer;
