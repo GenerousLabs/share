@@ -46,6 +46,17 @@ const promptAcceptInvite = ({
   // this is because the `_handleLink()` callback gets bound and on every code
   // reload it binds the new version IN ADDITION TO the existing version.
   setTimeout(() => {
+    const { isSetupComplete } = store.getState().setup;
+
+    if (!isSetupComplete) {
+      Alert.alert(
+        "Invite link",
+        "It looks like you just opened an invite link but haven't yet finished the setup process.\n\n" +
+          "After you've finished setup, you can click the invite link again to accept it."
+      );
+      return;
+    }
+
     Alert.alert(
       "Accept invite?",
       "It looks like you just opened an invite link.\n\n" +
