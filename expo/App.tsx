@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Provider } from "react-redux";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import { InteractionManager } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "react-native-elements";
 import { PersistGate } from "redux-persist/integration/react";
@@ -18,6 +19,7 @@ import store, {
   startSagas,
 } from "./src/services/store/store.service";
 import { initLogger } from "./src/services/log/log.service";
+import { splashScreenHasBeenHidden } from "./src/services/startup/startup.state";
 
 const loadFonts = async () => {
   const fontsPromise = Font.loadAsync({
@@ -31,6 +33,13 @@ const appLoad = async () => {
   await Promise.all([loadFonts(), initLogger()]);
 };
 
+const dispatchSplashScreenHasBeenHidden = () => {
+  // TODO Is `InteractionsManager` the correct approach here?
+  InteractionManager.runAfterInteractions(() => {
+    store.dispatch(splashScreenHasBeenHidden());
+  });
+};
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,6 +50,7 @@ export default function App() {
         onFinish={() => {
           startSagas();
           setIsLoading(false);
+          dispatchSplashScreenHasBeenHidden();
         }}
         onError={console.error}
       />
