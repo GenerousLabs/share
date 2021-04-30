@@ -12,6 +12,7 @@ import {
   REPOS_ROOT,
   REPO_TEMPLATE_PATH,
   WEBSITE_PATH,
+  __DEV__,
 } from "./constants";
 import {
   getMessage,
@@ -26,7 +27,6 @@ import {
 import logger, { enableProductionDebugLogger } from "./util/logger";
 
 const PORT = parseInt(process.env.PORT || "8000");
-const __DEV__ = process.env.NODE_ENV === "development";
 
 const jsonParser = bodyParser.json();
 
