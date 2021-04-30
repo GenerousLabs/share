@@ -12,6 +12,7 @@ export type RootDrawerParamList = {
   Root: undefined;
   Settings: undefined;
   BrowseFileSystem: undefined;
+  Log: undefined;
   NotFound: undefined;
 };
 

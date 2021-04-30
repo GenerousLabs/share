@@ -14,6 +14,7 @@ import Libraries from "../Libraries/Libraries.scene";
 import NotFoundScreen from "../NotFound/NotFound.scene";
 import Offers from "../Offers/Offers.scene";
 import BrowseFileSystem from "../Settings/scenes/BrowseFileSystem/BrowseFileSystem.scene";
+import Log from "../Settings/scenes/Log/Log.scene";
 import Settings from "../Settings/Settings.scene";
 import Setup from "../Setup/Setup.scene";
 import YourStuff from "../YourStuff/YourStuff.scene";
@@ -76,6 +77,7 @@ const Navigation = () => {
             name="BrowseFileSystem"
             component={BrowseFileSystem}
           />
+          <DrawerNavigator.Screen name="Log" component={Log} />
           <DrawerNavigator.Screen
             name="NotFound"
             component={NotFoundScreen}

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
+import Header from "../../../../components/Header/Header.component";
 import { getLogs } from "../../../../services/log/log.service";
 
-const Log = ({ closeOverlay }: { closeOverlay: () => void }) => {
+const Log = () => {
   const [logs, setLogs] = useState("");
 
   const loadLogs = useCallback(async () => {
@@ -15,17 +15,12 @@ const Log = ({ closeOverlay }: { closeOverlay: () => void }) => {
 
   return (
     <View style={styles.container}>
-      <Text h1>Log</Text>
+      <Header title="Logs" />
       <View style={styles.buttonsContainer}>
         <Button
           containerStyle={styles.buttonContainer}
           title="Load logs"
           onPress={loadLogs}
-        />
-        <Button
-          containerStyle={styles.buttonContainer}
-          title="Close logs"
-          onPress={closeOverlay}
         />
       </View>
       {/* {logs !== "" ? <Input multiline numberOfLines={30} value={logs} /> : null} */}
