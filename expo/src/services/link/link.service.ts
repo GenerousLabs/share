@@ -29,6 +29,8 @@ export const getInviteLink = ({
   )}${senderSegment}`;
 };
 
+// NOTE: If we trigger an `Alert.alert()` before the splash screen has lifted,
+// then the app gets stuck in that state (at least on iOS).
 const promptAcceptInvite = ({
   inviteCode,
   senderName,
