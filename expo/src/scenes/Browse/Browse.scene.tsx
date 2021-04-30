@@ -33,7 +33,6 @@ const Browse = ({
 }) => {
   const enhancedOffers = useSelector(selector);
   log.debug("enhancedOffer", enhancedOffers);
-  debugger;
 
   return (
     <View style={styles.container}>
