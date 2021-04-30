@@ -10,7 +10,7 @@
     "test": "jest --watchAll",
     "postinstall": "patch-package",
     "build:clean": "rimraf dist",
-    "build:expo": "cross-env expo export --public-url \"https://$SHARE_HOSTNAME/expo\" --force",
+    "build:expo": "cross-env expo export --public-url \"https://$SHARE_HOSTNAME/expo\"",
     "build": "yarn build:clean && yarn build:expo",
     "postbuild": "shx sed -i \"\\\"assetUrlOverride\\\":\\\"./assets\\\"\" \"\\\"assetUrlOverride\\\":\\\"/expo/assets\\\"\" dist/ios-index.json"
   },
