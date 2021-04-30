@@ -37,7 +37,7 @@ const promptAcceptInvite = ({
   senderName?: string;
 }) => {
   // NOTE: This `Alert.alert()` regularly failed to show during testing.
-  // Wrappting it in a `setImmediate()` didn't work, neither did
+  // Wrapping it in a `setImmediate()` didn't work, neither did
   // `InteractionManager.runAfterInteractions()`, so in the end, the
   // `setTimeout()` with a timeout of 10ms worked and so I'm leaving it as that.
   // Also, note that to test this, you need to restart the Expo app, I think
