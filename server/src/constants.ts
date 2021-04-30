@@ -1,6 +1,6 @@
 import { join } from "path";
 
-export const __DEV__ = process.env.NODE_ENV !== "production";
+export const __DEV__ = process.env.NODE_ENV === "development";
 
 // NOTE: We need to run `process.cwd()` here, when running it inside `join()` we
 // get the `dist/` folder. No idea why. Insanity.
