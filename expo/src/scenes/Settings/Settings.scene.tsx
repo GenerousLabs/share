@@ -1,5 +1,6 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
+import * as Updates from "expo-updates";
 import React, { useCallback, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Button, Input, Overlay, Text } from "react-native-elements";
@@ -49,6 +50,13 @@ ${allReposText}`;
           <WarningBox
             message="This app is a work in progress. This screen gives you access to the nuts and bolts. It's possible to break things here.  Please take a full backup before you mess with this."
             type="error"
+          />
+          <Button
+            title="Reload the app"
+            buttonStyle={styles.buttonBase}
+            onPress={() => {
+              Updates.reloadAsync();
+            }}
           />
           <Button
             title="Export logs as zip"
