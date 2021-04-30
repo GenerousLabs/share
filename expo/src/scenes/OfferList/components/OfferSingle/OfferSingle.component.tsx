@@ -1,8 +1,9 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Alert, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
-import { montserratBold } from "../../../../root.theme";
+import { colours, montserratBold } from "../../../../root.theme";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
 import { selectMyLibraryRepo } from "../../../../services/repo/repo.state";
 import { EnhancedOfferWithAlternates } from "../../../../shared.types";
@@ -31,44 +32,55 @@ const OfferSingle = ({
   return (
     <View>
       <Text style={styles.sharedBy}>{getOfferSharingText(enhancedOffer)}</Text>
-      <Text style={styles.title}>{title}</Text>
+      <View>
+        <Text style={styles.title}>{title}</Text>
+        {!canBeImported ? null : hasBeenImported ? (
+          <MaterialIcons
+            name="cloud-done"
+            color={colours.grey5}
+            size={26}
+            style={styles.importIcon}
+          />
+        ) : (
+          <MaterialIcons
+            name="cloud-download"
+            color={colours.black}
+            size={26}
+            style={styles.importIcon}
+            onPress={() => {
+              Alert.alert(
+                "Import this offer?",
+                "Do you want to import this offer and add it to your own collection to share with your community?",
+                [
+                  { text: "No" },
+                  {
+                    text: "Yes",
+                    onPress: async () => {
+                      try {
+                        await dispatch(
+                          createNewOfferSagaAction({
+                            repoId: libraryRepo.id,
+                            importOfferId: offer.id,
+                          })
+                        );
+                      } catch (error) {
+                        Alert.alert(
+                          "Error",
+                          `There was an error.\n\n${error.message}`
+                        );
+                      }
+                    },
+                  },
+                ]
+              );
+            }}
+          />
+        )}
+      </View>
       <Text style={styles.bodyMarkdown}>{bodyMarkdown}</Text>
       {tags.length > 0 ? (
         <Text style={styles.tags}>#{tags.join(" #")}</Text>
       ) : null}
-      {canBeImported && !hasBeenImported ? (
-        <Button
-          title="Import into Your Stuff"
-          onPress={() => {
-            Alert.alert(
-              "Import this offer?",
-              "Do you want to import this offer and add it to your own collection to share with your community?",
-              [
-                { text: "No" },
-                {
-                  text: "Yes",
-                  onPress: async () => {
-                    try {
-                      await dispatch(
-                        createNewOfferSagaAction({
-                          repoId: libraryRepo.id,
-                          importOfferId: offer.id,
-                        })
-                      );
-                    } catch (error) {
-                      Alert.alert(
-                        "Error",
-                        `There was an error.\n\n${error.message}`
-                      );
-                    }
-                  },
-                },
-              ]
-            );
-          }}
-        />
-      ) : null}
-      {hasBeenImported ? <Text>You have already imported this. </Text> : null}
     </View>
   );
 };
@@ -76,10 +88,16 @@ const OfferSingle = ({
 export default OfferSingle;
 
 const styles = StyleSheet.create({
+  importIcon: {
+    position: "absolute",
+    right: 0,
+  },
   title: {
     fontFamily: montserratBold,
     fontSize: 20,
     lineHeight: 24,
+    marginRight: 26 + 4,
+    flexGrow: 1,
   },
   sharedBy: {
     fontSize: 10,
