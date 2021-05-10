@@ -141,7 +141,7 @@ only would be possible.
 # Next
 
 - [x] Why do I need to double press some buttons?
-- [ ] Remvoe parentLogger stuff, extend from rootLogger every time
+- [ ] Remove parentLogger stuff, extend from rootLogger every time
 - [ ] Validate action shape in sagas
   - I introduced a bug where two actions had the same name
   - Various functions were invoked with the wrong params because the code
@@ -197,7 +197,7 @@ only would be possible.
 - [ ] Refactor creating repos into a saga
   - Right now it's a function that returns a RepoInRedux
   - It should be a saga that pushes to redux on its own
-- [ ] p2 Add server to host git repos
+- [x] p2 Add server to host git repos
 - [x] p3 Add password key derivation to encryption
 - [x] Move reposYaml to be a sub service of repos
   - I don't need to access it directly
@@ -213,4 +213,4 @@ only would be possible.
 
 - [ ] Implement setup from an existing me repo
 - [ ] Running setup on an existing repo will fail in odd ways see #1
-- [ ] Implement deleteLogs() #rCOtsm
+- [ ] Implement `deleteLogs()` #rCOtsm
