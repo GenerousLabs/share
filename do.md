@@ -1,5 +1,31 @@
+# Sprint 3
+
+Let's start planning the next sprint properly.
+
+Key focus candidates:
+
+- Friends of friends
+- Stability, error recovery, reliability
+- Archiving content
+
+Questions for foaf:
+
+- [x] How do we track this in redux?
+  - What about keeping the format as is and using a selector to find
+    duplicated uuids, then somehow presenting them as a single unit to the user?
+- [x] What about multiple friends sharing the same item with me?
+  - How do we present this?
+  - Some kind of change to the UI, but can be figured out later
+- [x] Can I archive something that I imported?
+  - Defer that until the archive stage...
+- [x] How do I see what items are available for me to "import"?
+  - Add an icon to lists in Browse
+
 # Scratchpad
 
+- [x] Browser links with variables don't work on iOS
+- [x] Add a reload button to refetch
+- [ ] Workflow to add users to the server and create the links
 - [x] The commands repo is not being pushed
 - [x] Long names without spaces break the website on mobile
 - [x] When clicking "accept invite", there's no action visible in the app
@@ -110,10 +136,10 @@ only would be possible.
 - [ ] Refactor all sagas
   - All sagas are named exports (no more default export)
   - All sagas refactored to use the `createAsyncPromiseSaga()` helper
-- [ ] Block navigation during form submission
+- [ ] Block navigation during form submission #next
   - The user shouldn't be able to go back out of the current view, even with
     the side slider action in iOS or the back button in Android
-- [ ] Create a build time config
+- [ ] Create a build time config #next
   - [ ] Move postoffice URL into build config
 
 # Sprint 1
