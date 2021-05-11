@@ -23,6 +23,9 @@ Questions for foaf:
 
 # Scratchpad
 
+- [ ] The Home button leaves stack navigators in a weird state
+  - Maybe we want to add a `goBack()` action beforehand?
+  - Or add some "go home" action to the `Header` component?
 - [x] Browser links with variables don't work on iOS
 - [x] Add a reload button to refetch
 - [ ] Workflow to add users to the server and create the links
