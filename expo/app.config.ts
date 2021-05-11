@@ -2,7 +2,6 @@ import { ExpoConfig, ConfigContext } from "@expo/config";
 
 // NOTE: It seems that `app.config.ts` is not loaded during jest tests
 
-const __DEV__ = process.env.NODE_ENV !== "production";
 const commitHash = process.env.SHARE_VERSION || "dev";
 const hostname = process.env.SHARE_HOSTNAME || "localhost:8000";
 const logSagas =
@@ -10,15 +9,38 @@ const logSagas =
     ? true
     : false;
 
+const extra = {
+  commitHash,
+  hostname,
+  logSagas,
+};
+
+const getAdditionalConfig = () => {
+  if (process.env.NODE_ENV === "production") {
+    return {
+      name: "Generous Share",
+      slug: "generous-share",
+      extra,
+    };
+  } else if (process.env.NODE_ENV === "staging") {
+    return {
+      name: "Generous Share Staging",
+      slug: "generous-share-staging",
+      extra,
+    };
+  }
+  return {
+    name: "Generous Share DEV",
+    slug: "generous-share-dev",
+    extra,
+  };
+};
+
 export default ({ config }: ConfigContext): ExpoConfig => {
+  const additionalConfig = getAdditionalConfig();
+
   return {
     ...config,
-    name: __DEV__ ? "Generous Share DEV" : "Generous Share",
-    slug: __DEV__ ? "generous-share-dev" : "generous-share",
-    extra: {
-      commitHash,
-      hostname,
-      logSagas,
-    },
+    ...additionalConfig,
   };
 };

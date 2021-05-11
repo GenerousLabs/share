@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 STATUS=$(git status --porcelain | grep -c '^')
 
 if [[ "$STATUS" != "0" ]]
@@ -9,15 +8,52 @@ then
   exit 1
 fi
 
+# Stop if any of the steps fail
 set -e
 
+# Switch between production and staging based on git branch name
+BRANCH=$(git branch --show-current)
+
+if [[ "$BRANCH" != "production" ]]
+then
+  export ENV_FILENAME=".env.staging"
+  # export NODE_ENV=staging
+  echo "Building staging version"
+else
+  export ENV_FILENAME=".env"
+  # export NODE_ENV=production
+  echo "Building PRODUCTION version"
+fi
+
 export SHARE_VERSION=$(git rev-parse --short HEAD)
-export NODE_ENV=production
 
 echo "############################################################"
-echo cat .env
-cat .env
+echo cat "${ENV_FILENAME}"
+cat "${ENV_FILENAME}"
 echo "############################################################"
+
+# set -a means that the FOO=bar declarations in .env are exported
+set -a
+source "${ENV_FILENAME}"
+set +a
+
+if [ -z ${NODE_ENV+x} ]
+then
+  echo
+  echo "##### FATAL ERROR"
+  echo
+  echo "NODE_ENV is not set"
+  exit
+fi
+
+if [ -z ${SHARE_HOSTNAME+x} ]
+then
+  echo
+  echo "##### FATAL ERROR"
+  echo
+  echo "SHARE_HOSTNAME is not set"
+  exit
+fi
 
 read -p "Proceed with this .env? (press y to continue) " -n 1 -r
 echo
@@ -26,11 +62,6 @@ then
   echo "Okay, stopping now. #fwC6iB"
   exit 0
 fi
-
-# set -a means that the FOO=bar declarations in .env are exported
-set -a
-source .env
-set +a
 
 echo "############################################################"
 echo "##### Building expo"
