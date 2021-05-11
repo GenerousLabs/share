@@ -4,6 +4,7 @@ import utcPlugin from "dayjs/plugin/utc";
 import debug from "debug";
 import * as FileSystem from "expo-file-system";
 import { ensureDirectoryExists } from "git-encrypted";
+import { Alert } from "react-native";
 import {
   consoleTransport,
   fileAsyncTransport,
@@ -47,6 +48,23 @@ export const disableAllLogExtensions = async () => {
   const extensions = rootLogger.getExtensions();
   extensions.forEach(rootLogger.disable);
   await AsyncStorage.setItem(ENABLED_STORAGE_KEY, "");
+};
+
+export const setDebug = async (debugString: string) => {
+  try {
+    await AsyncStorage.setItem(DEBUG_STORAGE_KEY, debugString);
+    debug.enable(debugString);
+  } catch (error) {
+    Alert.alert("Error #YWEs8I", error.message);
+  }
+};
+
+export const debugEverything = async () => {
+  await setDebug("*");
+};
+
+export const debugNothing = async () => {
+  await setDebug("");
 };
 
 const loadDebugSettings = async () => {
