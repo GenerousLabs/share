@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:next": "cross-env NODE_ENV=production next build && next export",
+    "build:next": "yarn build:next:build && yarn build:next:export",
+    "build:next:build": "cross-env NODE_ENV=production next build",
+    "build:next:export": "cross-env NODE_ENV=production next export",
     "build:clean": "rimraf out",
     "build": "yarn build:clean && yarn build:next",
     "lint": "tsc --noEmit",
