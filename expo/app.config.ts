@@ -20,19 +20,28 @@ const getAdditionalConfig = () => {
     return {
       name: "Generous Share",
       slug: "generous-share",
-      extra,
+      extra: {
+        ...extra,
+        environment: "production",
+      },
     };
   } else if (process.env.NODE_ENV === "staging") {
     return {
       name: "Generous Share Staging",
       slug: "generous-share-staging",
-      extra,
+      extra: {
+        ...extra,
+        environment: "staging",
+      },
     };
   }
   return {
     name: "Generous Share DEV",
     slug: "generous-share-dev",
-    extra,
+    extra: {
+      ...extra,
+      environment: "development",
+    },
   };
 };
 
