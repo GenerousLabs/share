@@ -5,6 +5,16 @@ import { Header as RNEHeader } from "react-native-elements";
 import { colours } from "../../root.theme";
 import { RootDrawerParamList } from "../../shared.types";
 
+const getBackgroundColor = () => {
+  if (__DEV__) {
+    return "red";
+  }
+  if (process.env.NODE_ENV === "staging") {
+    return "purple";
+  }
+  return colours.white;
+};
+
 const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
   const navigation: DrawerNavigationProp<
     RootDrawerParamList,
@@ -41,7 +51,7 @@ const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
           }
         },
       }}
-      backgroundColor={__DEV__ ? "red" : colours.white}
+      backgroundColor={getBackgroundColor()}
     />
   );
 };
