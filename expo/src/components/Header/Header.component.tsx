@@ -40,7 +40,7 @@ const Header = ({ title, goBack }: { title?: string; goBack?: () => void }) => {
       leftComponent={leftComponent}
       placement="left"
       centerComponent={{
-        text: title || "Generous Share",
+        text: title || Constants.manifest.name || "Generous Share",
       }}
       rightComponent={{
         icon: "home",
