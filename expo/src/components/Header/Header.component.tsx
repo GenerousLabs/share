@@ -10,7 +10,7 @@ const getBackgroundColor = () => {
   if (__DEV__) {
     return "red";
   }
-  if (Constants.manifest.extra.environment === "staging") {
+  if (Constants.manifest.extra?.environment === "staging") {
     return "purple";
   }
   return colours.white;

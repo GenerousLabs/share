@@ -15,7 +15,3 @@ import "react-native-get-random-values";
 
 // import { Buffer } from "buffer";
 // (globalThis as any).Buffer = Buffer;
-
-// This should lead to performance enhancements in navigation screens
-import { enableScreens } from "react-native-screens";
-enableScreens();

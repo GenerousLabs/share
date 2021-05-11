@@ -10,6 +10,7 @@ import { intersection, uniq } from "remeda";
 import { OfferInRedux } from "../../shared.types";
 import { RootState } from "../../store";
 import { makeErrorActionCreator } from "../../utils/errors.utils";
+import * as R from "remeda";
 
 export const REDUCER_KEY = "library" as const;
 
@@ -59,7 +60,8 @@ export const {
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],
   (offers) => {
-    const tags = uniq(offers.flatMap((offer) => offer.tags)).sort();
+    const unsortedTags = R.flatMap(offers, (offer) => offer.tags);
+    const tags = uniq(unsortedTags).sort();
     return tags;
   }
 );
