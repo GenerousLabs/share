@@ -8,7 +8,8 @@ then
   exit 1
 fi
 
-source .env
+# Source the file defined in ENV_FILENAME or fallback to .env.staging
+source "${ENV_FILENAME-.env.staging}"
 
 OS=$(uname -s)
 
