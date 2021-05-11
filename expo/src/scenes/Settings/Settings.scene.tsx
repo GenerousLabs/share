@@ -1,7 +1,7 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as FileSystem from "expo-file-system";
 import * as Updates from "expo-updates";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -9,10 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { colours } from "../../root.theme";
-import {
-  disableAllLogExtensions,
-  enableAllLogExtensions,
-} from "../../services/log/log.service";
+import { rootLogger, setLogSeverity } from "../../services/log/log.service";
 import { selectAllRepos } from "../../services/repo/repo.state";
 import { DANGEROUS_setupResetSagaAction } from "../../services/setup/setup.state";
 import { createAndShareZipFile } from "../../services/zip/zip.service";
@@ -26,8 +23,16 @@ const Settings = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Settings">;
 }) => {
   const dispatch: RootDispatch = useDispatch();
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const allRepos = useSelector(selectAllRepos);
+  const [_logSeverity, _setLogSeverity] = useState(rootLogger.getSeverity());
+
+  const toggleDebugLogging = useCallback(() => {
+    const severity = _logSeverity === "debug" ? "error" : "debug";
+    setLogSeverity(severity);
+    _setLogSeverity(severity);
+  }, [_logSeverity, _setLogSeverity]);
+
+  useEffect(() => {}, []);
 
   const allReposText = allRepos
     .map((repo) => `${repo.name}\n${repo.remoteUrl}`)
@@ -68,28 +73,11 @@ ${allReposText}`;
             onPress={() => navigation.navigate("BrowseFileSystem")}
           />
           <Button
-            title="Enable debug logging"
+            title={`Log everything (currently ${
+              _logSeverity === "debug" ? "enabled" : "disabled"
+            })`}
             buttonStyle={styles.buttonBase}
-            onPress={async () => {
-              try {
-                await enableAllLogExtensions();
-                Alert.alert("Success", "Full debug logs are now enabled.");
-              } catch (error) {
-                Alert.alert("Error #OQAJtf", error.message);
-              }
-            }}
-          />
-          <Button
-            title="Disable debug logging"
-            buttonStyle={styles.buttonBase}
-            onPress={async () => {
-              try {
-                await disableAllLogExtensions();
-                Alert.alert("Success", "Full debug logs are now disabled.");
-              } catch (error) {
-                Alert.alert("Error #pgBbUb", error.message);
-              }
-            }}
+            onPress={toggleDebugLogging}
           />
           <Button
             title="Export logs as zip"

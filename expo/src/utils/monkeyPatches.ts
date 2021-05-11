@@ -3,10 +3,15 @@
  * other easy way to set debugging flags across all nested packages
  * unfortunately.
  */
-// TODO Remove this for production somehow
+import Constants from "expo-constants";
+
 process.env = {
-  NODE_ENV: __DEV__ ? "development" : "production",
-  DEBUG: __DEV__ ? "" : "",
+  // When running under testing, `app.config.ts` doesn't seem to be parsed, so
+  // therefore `extra` is undefined.  But in development and in production, it
+  // will be set, and `extra.environment` will be `development` or `production`
+  // respectively.
+  NODE_ENV: Constants.manifest.extra?.environment || "test",
+  DEBUG: Constants.manifest.extra?.debug || "",
 };
 
 import "./patch-FileReader";

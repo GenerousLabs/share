@@ -8,11 +8,13 @@ const logSagas =
   typeof process.env.LOG_SAGAS === "string" && process.env.LOG_SAGAS === "1"
     ? true
     : false;
+const debug = process.env.DEBUG || "";
 
 const extra = {
   commitHash,
   hostname,
   logSagas,
+  debug,
 };
 
 const getAdditionalConfig = () => {
