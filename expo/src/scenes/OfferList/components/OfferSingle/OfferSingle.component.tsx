@@ -34,19 +34,53 @@ const OfferSingle = ({
       <Text style={styles.sharedBy}>{getOfferSharingText(enhancedOffer)}</Text>
       <View>
         <Text style={styles.title}>{title}</Text>
+        {isMine ? (
+          <MaterialIcons
+            name="archive"
+            color={colours.black}
+            size={26}
+            style={styles.actionIcon}
+            onPress={() => {
+              Alert.alert(
+                "Archive this item?",
+                "Do you want to archive this item? There is no undo.",
+                [
+                  { text: "No" },
+                  {
+                    text: "Yes",
+                    onPress: async () => {
+                      try {
+                        // We'll need to do something here...
+                        Alert.alert(
+                          "Coming soon",
+                          "This is a work in progress feature. It will be available soon."
+                        );
+                      } catch (error) {
+                        Alert.alert(
+                          "Error #xL8JbK",
+                          `There was an error.\n\n${error.message}`
+                        );
+                      }
+                    },
+                  },
+                ]
+              );
+            }}
+          />
+        ) : null}
         {!canBeImported ? null : hasBeenImported ? (
           <MaterialIcons
             name="cloud-done"
             color={colours.grey5}
             size={26}
-            style={styles.importIcon}
+            style={styles.actionIcon}
           />
         ) : (
           <MaterialIcons
             name="cloud-download"
             color={colours.black}
             size={26}
-            style={styles.importIcon}
+            style={styles.actionIcon}
             onPress={() => {
               Alert.alert(
                 "Import this offer?",
@@ -65,7 +99,7 @@ const OfferSingle = ({
                         );
                       } catch (error) {
                         Alert.alert(
-                          "Error",
+                          "Error #ywMkO7",
                           `There was an error.\n\n${error.message}`
                         );
                       }
@@ -88,7 +122,7 @@ const OfferSingle = ({
 export default OfferSingle;
 
 const styles = StyleSheet.create({
-  importIcon: {
+  actionIcon: {
     position: "absolute",
     right: 0,
   },
