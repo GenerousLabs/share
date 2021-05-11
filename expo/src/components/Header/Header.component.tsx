@@ -1,5 +1,6 @@
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useNavigation } from "@react-navigation/native";
+import Constants from "expo-constants";
 import React from "react";
 import { Header as RNEHeader } from "react-native-elements";
 import { colours } from "../../root.theme";
@@ -9,7 +10,7 @@ const getBackgroundColor = () => {
   if (__DEV__) {
     return "red";
   }
-  if (process.env.NODE_ENV === "staging") {
+  if (Constants.manifest.extra.environment === "staging") {
     return "purple";
   }
   return colours.white;
