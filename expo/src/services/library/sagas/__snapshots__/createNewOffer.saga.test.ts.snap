@@ -13,7 +13,6 @@ Object {
           "shareToProximity": 1,
           "tags": Array [],
           "title": "An example offer",
-          "uuid": "offer1-uuid",
         },
         "repoId": "repo1",
       },

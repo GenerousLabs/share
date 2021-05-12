@@ -16,7 +16,6 @@ import { selectMyLibraryRepo } from "../../../../services/repo/repo.state";
 import { sharedStyles } from "../../../../shared.styles";
 import { YourStuffStackParameterList } from "../../../../shared.types";
 import { RootDispatch } from "../../../../store";
-import { generateUuid } from "../../../../utils/id.utils";
 import { hashifyTags, parseTags } from "../../../../utils/tags.utils";
 
 const InputSchema = zod.object({
@@ -45,14 +44,12 @@ const OfferForm = ({
   const onSubmit = useCallback(
     async (data: Inputs) => {
       setIsSubmitting(true);
-      const uuid = generateUuid();
       const tags = parseTags(data.tags);
       try {
         await dispatch(
           createNewOfferSagaAction({
             repoId: library.id,
             offer: {
-              uuid,
               proximity: 0,
               shareToProximity: data.shareToProximity2 ? 2 : 1,
               tags,

@@ -35,7 +35,6 @@ describe("createNewOfferEffect()", () => {
       effect,
       createNewOfferSagaAction({
         offer: {
-          uuid: "offer1-uuid",
           bodyMarkdown: "An offer example",
           proximity: 0,
           shareToProximity: 1,

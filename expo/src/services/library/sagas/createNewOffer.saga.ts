@@ -7,6 +7,7 @@ import {
   OfferOnDisk,
   OfferOnDiskFrontmatterSchema,
 } from "../../../shared.types";
+import { generateUuid } from "../../../utils/id.utils";
 import { invariantSelector } from "../../../utils/invariantSelector.util";
 import { assertNever } from "../../../utils/never.utils";
 import { createAsyncPromiseSaga } from "../../../utils/saga.utils";
@@ -21,7 +22,7 @@ import { addOneOfferAction, selectOfferById } from "../library.state";
 const getOffer = function* (
   args:
     | {
-        offer: Omit<OfferOnDisk, "createdAt" | "updatedAt">;
+        offer: Omit<OfferOnDisk, "createdAt" | "updatedAt" | "uuid">;
       }
     | {
         importOfferId: string;
@@ -30,8 +31,10 @@ const getOffer = function* (
   if ("offer" in args) {
     const { offer } = args;
     const now = getTimestampSeconds();
+    const uuid = yield* call(generateUuid);
     return {
       ...offer,
+      uuid,
       createdAt: now,
       updatedAt: now,
     } as OfferInRedux;
@@ -51,7 +54,7 @@ const getOffer = function* (
 const saga = createAsyncPromiseSaga<
   (
     | {
-        offer: Omit<OfferOnDisk, "createdAt" | "updatedAt">;
+        offer: Omit<OfferOnDisk, "createdAt" | "updatedAt" | "uuid">;
       }
     | {
         importOfferId: string;
