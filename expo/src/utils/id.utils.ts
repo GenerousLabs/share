@@ -8,5 +8,5 @@ export const generateId = async () => {
 };
 
 export const generateUuid = () => {
-  return _generateId();
+  return _generateUuid();
 };
