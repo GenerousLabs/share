@@ -1,3 +1,14 @@
+# Archiving
+
+Add the option to archive content.
+
+- What happens if somebody archives something that I have imported?
+  - How do I even notice?
+  - Do I automatically "archive" my copy?
+  - What happens if they remove me as a connection? Same thing?
+- What does "archiving" look like on a filesystem level?
+  - `archived: true` added?
+
 # Sprint 3
 
 Let's start planning the next sprint properly.
