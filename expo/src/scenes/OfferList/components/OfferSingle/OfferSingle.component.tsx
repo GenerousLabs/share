@@ -36,7 +36,7 @@ const OfferSingle = ({
         <Text style={styles.title}>{title}</Text>
         {isMine ? (
           <MaterialIcons
-            name="archive"
+            name="delete-outline"
             color={colours.black}
             size={26}
             style={styles.actionIcon}
