@@ -16,7 +16,7 @@ import { join } from "../../fs/fs.service";
 import { getRepoPath } from "../../repo/repo.service";
 import { selectRepoById } from "../../repo/repo.state";
 import { commitAllSagaAction } from "../../repo/sagas/commitAll.saga";
-import { offerToString } from "../library.service";
+import { getOfferFilesystemParams, offerToString } from "../library.service";
 import { addOneOfferAction, selectOfferById } from "../library.state";
 
 const getOffer = function* (
@@ -80,19 +80,18 @@ const saga = createAsyncPromiseSaga<
       repoId
     );
 
-    const repoPath = getRepoPath(repo);
-
     const offerString = offerToString({ offer });
 
-    const directoryName = slugify(offer.title, { lower: true });
-    const directoryPath = join(repoPath, directoryName);
-    const offerPath = join(directoryPath, "index.md");
+    const { directoryPath, filePath } = getOfferFilesystemParams({
+      offer,
+      repo,
+    });
 
     // TODO If I create 2 offers with the same name, the second will throw, this
     // is going to be more likely when I can import somebody else's offers.
     // Perhaps it makes more sense to use an ID for the folder name?
     yield* call(fs.promises.mkdir, directoryPath);
-    yield* call(fs.promises.writeFile, offerPath, offerString, {
+    yield* call(fs.promises.writeFile, filePath, offerString, {
       encoding: "utf8",
     });
 

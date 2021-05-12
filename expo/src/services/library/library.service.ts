@@ -1,5 +1,6 @@
 import matter from "gray-matter";
 import { pick } from "remeda";
+import slugify from "slugify";
 import { gitFsHttp } from "../../shared.constants";
 import {
   OfferInRedux,
@@ -8,6 +9,7 @@ import {
   RepoInRedux,
 } from "../../shared.types";
 import { join } from "../fs/fs.service";
+import { getRepoPath } from "../repo/repo.service";
 import { log } from "./library.log";
 
 const FRONTMATTER_KEYS = Object.keys(
@@ -54,6 +56,25 @@ export const readOfferFromDisk = async ({
     OfferInRedux,
     "id" | "repoId"
   >;
+};
+
+export const getOfferFilesystemParams = ({
+  offer,
+  repo,
+}: {
+  offer: OfferInRedux;
+  repo: RepoInRedux;
+}) => {
+  const repoPath = getRepoPath(repo);
+
+  const directoryName = slugify(offer.title, { lower: true });
+  const directoryPath = join(repoPath, directoryName);
+  const filePath = join(directoryPath, "index.md");
+
+  return {
+    directoryPath,
+    filePath,
+  };
 };
 
 export const getLibrarySharingCode = async ({

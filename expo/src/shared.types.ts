@@ -124,6 +124,7 @@ export const OfferOnDiskFrontmatterSchema = zod.object({
   shareToProximity: zod.number().int(),
   createdAt: zod.number().int(),
   updatedAt: zod.number().int(),
+  archivedAt: zod.number().int().optional(),
 });
 
 export type OfferOnDiskFrontmatter = zod.infer<

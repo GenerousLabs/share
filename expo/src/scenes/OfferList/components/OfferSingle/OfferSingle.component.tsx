@@ -4,6 +4,7 @@ import { Alert, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { colours, montserratBold } from "../../../../root.theme";
+import { archiveOfferSagaAction } from "../../../../services/library/sagas/archiveOffer.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
 import { selectMyLibraryRepo } from "../../../../services/repo/repo.state";
 import { EnhancedOfferWithAlternates } from "../../../../shared.types";
@@ -29,12 +30,16 @@ const OfferSingle = ({
 
   const canBeImported = !isMine && offer.proximity + 1 < offer.shareToProximity;
 
+  const isArchived = typeof offer.archivedAt === "number";
+
+  const wrappingStyle = isArchived ? { opacity: 0.2 } : undefined;
+
   return (
-    <View>
+    <View style={wrappingStyle}>
       <Text style={styles.sharedBy}>{getOfferSharingText(enhancedOffer)}</Text>
       <View>
         <Text style={styles.title}>{title}</Text>
-        {isMine ? (
+        {isMine && !isArchived ? (
           <MaterialIcons
             name="delete-outline"
             color={colours.black}
@@ -50,10 +55,8 @@ const OfferSingle = ({
                     text: "Yes",
                     onPress: async () => {
                       try {
-                        // We'll need to do something here...
-                        Alert.alert(
-                          "Coming soon",
-                          "This is a work in progress feature. It will be available soon."
+                        await dispatch(
+                          archiveOfferSagaAction({ id: offer.id })
                         );
                       } catch (error) {
                         Alert.alert(

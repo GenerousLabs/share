@@ -14,6 +14,7 @@ import {
   loadOfferSagaAction,
   upsertOneOfferAction,
 } from "./library.state";
+import archiveOfferSaga from "./sagas/archiveOffer.saga";
 import createNewOfferSaga from "./sagas/createNewOffer.saga";
 import subscribeToLibrarySaga from "./sagas/subscribeToLibrary.saga";
 
@@ -74,6 +75,7 @@ export function* loadOfferEffect(
 
 export default function* librarySaga() {
   yield all([
+    archiveOfferSaga(),
     createNewOfferSaga(),
     subscribeToLibrarySaga(),
     // TODO: Refactor this to the create saga helper
