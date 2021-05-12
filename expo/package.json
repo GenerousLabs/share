@@ -72,7 +72,7 @@
     "react-dom": "16.13.1",
     "react-hook-form": "^6.11.5",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
-    "react-native-elements": "^3.0.0-alpha.1",
+    "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-get-random-values": "~1.7.0",
     "react-native-logs": "^3.0.3",
