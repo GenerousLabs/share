@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import { pick } from "remeda";
 import { gitFsHttp } from "../../shared.constants";
 import {
   OfferInRedux,
@@ -9,15 +10,24 @@ import {
 import { join } from "../fs/fs.service";
 import { log } from "./library.log";
 
+const FRONTMATTER_KEYS = Object.keys(
+  OfferOnDiskFrontmatterSchema.shape
+) as (keyof OfferOnDisk)[];
+
 /**
  * Given an offer, convert it to a markdown & frontmatter string
  */
-export const offerToString = ({ offer }: { offer: OfferOnDisk }) => {
-  const { bodyMarkdown, ...frontmatter } = offer;
+export const offerToString = ({
+  offer,
+}: {
+  offer: OfferOnDisk | OfferInRedux;
+}) => {
+  const { bodyMarkdown } = offer;
 
-  // This is an additional safety check because TypeScript will usually allow
-  // additional properties in `offer` and we don't want to write extra
-  // properties into the yaml frontmatter.
+  const frontmatter = pick(offer, FRONTMATTER_KEYS);
+
+  // In addition to picking just the frontmatter keys we also validate with the
+  // schema as it can perform more detailed checks.
   OfferOnDiskFrontmatterSchema.parse(frontmatter);
 
   const output = matter.stringify(bodyMarkdown, frontmatter);

@@ -82,13 +82,7 @@ const saga = createAsyncPromiseSaga<
 
     const repoPath = getRepoPath(repo);
 
-    // TODO Get only the properties that are supposed to be frontmatter
-    const keys = Object.keys(
-      OfferOnDiskFrontmatterSchema.shape
-    ) as (keyof OfferOnDisk)[];
-    const offerOnDisk = pick(offer, keys.concat("bodyMarkdown"));
-
-    const offerString = offerToString({ offer: offerOnDisk });
+    const offerString = offerToString({ offer });
 
     const directoryName = slugify(offer.title, { lower: true });
     const directoryPath = join(repoPath, directoryName);
