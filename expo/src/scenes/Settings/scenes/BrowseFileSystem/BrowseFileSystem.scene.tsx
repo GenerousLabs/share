@@ -71,7 +71,6 @@ const BrowseFileSystem = () => {
             if (item.stats.isDirectory()) {
               navigateToPath(item.itemPath);
             } else if (item.stats.isFile()) {
-              console.log("showFile() #cTOvtg");
               showFile(item.itemPath);
             }
           }}
