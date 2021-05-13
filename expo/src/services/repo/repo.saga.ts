@@ -1,5 +1,5 @@
-import { all, putResolve, takeEvery } from "redux-saga/effects";
-import { call, put, select } from "typed-redux-saga/macro";
+import { all, takeEvery } from "redux-saga/effects";
+import { call, put, putResolve, select } from "typed-redux-saga/macro";
 import { RepoType } from "../../shared.constants";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
@@ -76,8 +76,7 @@ export function* repoStartupEffect() {
           })
         );
 
-        // TODO Change this after fixing the putResolve type issue
-        yield putResolve(
+        yield* putResolve(
           loadRepoFromFilesystemSagaAction({ repoYaml: library })
         );
       }
