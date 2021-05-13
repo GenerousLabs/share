@@ -8,7 +8,6 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest --watchAll",
-    "postinstall": "patch-package",
     "build:clean": "rimraf dist",
     "build:expo": "cross-env expo export --public-url \"https://$SHARE_HOSTNAME/expo\"",
     "build": "yarn build:clean && yarn build:expo"
@@ -66,7 +65,6 @@
     "nanoid-dictionary": "^4.1.0",
     "node-libs-react-native": "^1.2.0",
     "original": "^1.0.2",
-    "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
