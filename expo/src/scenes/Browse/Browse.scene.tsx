@@ -32,7 +32,6 @@ const Browse = ({
   navigation: DrawerNavigationProp<RootDrawerParamList, "Browse">;
 }) => {
   const enhancedOffers = useSelector(selector);
-  log.debug("enhancedOffer", enhancedOffers);
 
   return (
     <View style={styles.container}>
