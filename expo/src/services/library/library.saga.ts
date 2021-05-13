@@ -59,11 +59,13 @@ export function* loadOfferEffect(
   action: ReturnType<typeof loadOfferSagaAction>
 ) {
   try {
-    const { directoryPath, repoId } = action.payload;
+    const { directoryPath, repoId, mine } = action.payload;
 
     const offer = yield* call(readOfferFromDisk, { directoryPath });
 
-    yield put(upsertOneOfferAction({ ...offer, id: directoryPath, repoId }));
+    const reduxOffer = { ...offer, id: directoryPath, repoId, mine };
+
+    yield put(upsertOneOfferAction(reduxOffer));
   } catch (error) {
     yield put(
       loadOfferError({

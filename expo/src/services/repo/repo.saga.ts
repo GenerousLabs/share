@@ -1,7 +1,6 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put, putResolve, select } from "typed-redux-saga/macro";
 import { RepoType } from "../../shared.constants";
-import { RepoInRedux } from "../../shared.types";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { gitPush } from "../git/git.service";
@@ -46,6 +45,8 @@ export function* loadRepoContentsEffect(
 
   const path = yield* call(getRepoPath, repo);
 
+  const mine = typeof repo.connectionId === "undefined";
+
   const { directories } = yield* call(getDirectoryContents, {
     path,
   });
@@ -53,7 +54,11 @@ export function* loadRepoContentsEffect(
   for (const directory of directories) {
     yield* call(
       loadOfferEffect,
-      loadOfferSagaAction({ repoId, directoryPath: directory.path })
+      loadOfferSagaAction({
+        repoId,
+        directoryPath: directory.path,
+        mine,
+      })
     );
   }
 }

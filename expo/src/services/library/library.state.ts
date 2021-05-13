@@ -88,5 +88,6 @@ export const loadOfferSagaAction =
   createAction<{
     repoId: string;
     directoryPath: string;
+    mine: boolean;
   }>(LOAD_OFFER);
 export const loadOfferError = makeErrorActionCreator(LOAD_OFFER);
