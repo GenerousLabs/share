@@ -1,11 +1,12 @@
 import Bluebird from "bluebird";
 import fs from "expo-fs";
 import React, { useCallback, useEffect, useState } from "react";
-import { Alert, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import Header from "../../../../components/Header/Header.component";
 import { dirname, join } from "../../../../services/fs/fs.service";
+import { sharedStyles } from "../../../../shared.styles";
 
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
 type Item = {
@@ -85,19 +86,36 @@ const BrowseFileSystem = () => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header title="Browse file system" />
-      <Text>
-        This is an ultra simple file browser. Opening files which are not text
-        may break your phone, eat your cat, or open a black hole and swallow
-        your hand. You have been warned.
-      </Text>
-      <FlatList
-        data={contents}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
+      <View style={styles.contentContainer}>
+        <Text style={styles.intro}>
+          This is an ultra simple file browser. Opening files which are not text
+          may break your phone, eat your cat, or open a black hole and swallow
+          your hand. You have been warned.
+        </Text>
+        <Text style={styles.path}>{contents[1]?.parentDir || "root"}</Text>
+        <FlatList
+          data={contents}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          ListFooterComponent={View}
+          ListFooterComponentStyle={styles.ScrollViewInner}
+        />
+      </View>
     </View>
   );
 };
 export default BrowseFileSystem;
+
+const styles = StyleSheet.create({
+  ...sharedStyles,
+  intro: {
+    padding: 10,
+  },
+  path: {
+    padding: 10,
+    textAlign: "center",
+    fontSize: 16,
+  },
+});
