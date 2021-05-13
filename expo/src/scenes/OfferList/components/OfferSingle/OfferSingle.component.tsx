@@ -4,6 +4,7 @@ import { Alert, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { colours, montserratBold } from "../../../../root.theme";
+import { isImportedOffer } from "../../../../services/library/library.utils";
 import { archiveOfferSagaAction } from "../../../../services/library/sagas/archiveOffer.saga";
 import { createNewOfferSagaAction } from "../../../../services/library/sagas/createNewOffer.saga";
 import { selectMyLibraryRepo } from "../../../../services/repo/repo.state";
@@ -23,8 +24,8 @@ const OfferSingle = ({
   const { title, bodyMarkdown, tags } = offer;
 
   const isMine = offer.mine && offer.proximity === 0;
-  const myImportedCopy = alternates?.find(
-    ({ offer }) => offer.mine && offer.proximity > 0
+  const myImportedCopy = alternates?.find(({ offer }) =>
+    isImportedOffer(offer)
   );
   const hasBeenImported = typeof myImportedCopy !== "undefined";
 
