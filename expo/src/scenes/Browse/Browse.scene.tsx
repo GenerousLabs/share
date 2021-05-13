@@ -7,6 +7,7 @@ import * as R from "remeda";
 import Header from "../../components/Header/Header.component";
 import WarningBox from "../../components/WarningBox/WarningBox.component";
 import { selectAllEnhancedOffersWithAlternates } from "../../selectors/selectAllEnhancedOffersWithAlternates.selector";
+import { isNotArchivedOffer } from "../../services/library/library.utils";
 import { rootLogger } from "../../services/log/log.service";
 import { sharedStyles } from "../../shared.styles";
 import { RootDrawerParamList } from "../../shared.types";
@@ -19,7 +20,7 @@ const selector = createSelector(
   (enhancedOffers) => {
     return R.pipe(
       enhancedOffers,
-      R.filter((enhancedOffer) => !enhancedOffer.offer.mine),
+      R.filter(({ offer }) => !offer.mine && isNotArchivedOffer(offer)),
       R.sortBy((enhancedOffer) => enhancedOffer.offer.updatedAt),
       R.reverse()
     );
