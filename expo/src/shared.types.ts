@@ -9,7 +9,6 @@ export type RootDrawerParamList = {
   Connections: undefined;
   Libraries: undefined;
   Offers: undefined;
-  Root: undefined;
   Settings: undefined;
   BrowseFileSystem: undefined;
   Log: undefined;

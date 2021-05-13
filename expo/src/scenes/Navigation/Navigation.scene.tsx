@@ -18,7 +18,6 @@ import Log from "../Settings/scenes/Log/Log.scene";
 import Settings from "../Settings/Settings.scene";
 import Setup from "../Setup/Setup.scene";
 import YourStuff from "../YourStuff/YourStuff.scene";
-import BottomTabNavigator from "./scenes/BottomTabNavigator/BottomTabNavigator.scene";
 
 const DrawerNavigator = createDrawerNavigator();
 
@@ -71,7 +70,6 @@ const Navigation = () => {
           <DrawerNavigator.Screen name="Connections" component={Connections} />
           <DrawerNavigator.Screen name="Libraries" component={Libraries} />
           <DrawerNavigator.Screen name="Offers" component={Offers} />
-          <DrawerNavigator.Screen name="Root" component={BottomTabNavigator} />
           <DrawerNavigator.Screen name="Settings" component={Settings} />
           <DrawerNavigator.Screen
             name="BrowseFileSystem"
