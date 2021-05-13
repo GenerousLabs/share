@@ -57,7 +57,7 @@
     "expo-web-browser": "~9.1.0",
     "git-encrypted": "^0.4.3",
     "gray-matter": "^4.0.2",
-    "isomorphic-git": "^1.8.0",
+    "isomorphic-git": "^1.8.2",
     "isomorphic-git-remote-encrypted": "^0.4.3",
     "js-yaml": "^3.14.0",
     "jszip": "^3.5.0",
