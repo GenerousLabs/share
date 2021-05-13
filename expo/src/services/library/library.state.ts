@@ -53,10 +53,8 @@ const libraryReducer = combineReducers({
 
 export default libraryReducer;
 
-export const {
-  selectAll: selectAllOffers,
-  selectById: selectOfferById,
-} = offerAdapter.getSelectors((state: RootState) => state.library.offers);
+export const { selectAll: selectAllOffers, selectById: selectOfferById } =
+  offerAdapter.getSelectors((state: RootState) => state.library.offers);
 export const selectAllOfferTags = createSelector(
   [selectAllOffers],
   (offers) => {
@@ -77,17 +75,18 @@ export const selectFilteredOffers = createSelector(
 );
 
 const CREATE_LIBRARY = "SHARE/library/createNewLibrary";
-export const createNewLibrarySagaAction = createAction<{
-  title: string;
-  bodyMarkdown: string;
-}>(CREATE_LIBRARY);
-export const createNewLibraryErrorAction = makeErrorActionCreator(
-  CREATE_LIBRARY
-);
+export const createNewLibrarySagaAction =
+  createAction<{
+    title: string;
+    bodyMarkdown: string;
+  }>(CREATE_LIBRARY);
+export const createNewLibraryErrorAction =
+  makeErrorActionCreator(CREATE_LIBRARY);
 
 const LOAD_OFFER = "SHARE/library/loadOffer" as const;
-export const loadOfferSagaAction = createAction<{
-  repoId: string;
-  directoryPath: string;
-}>(LOAD_OFFER);
+export const loadOfferSagaAction =
+  createAction<{
+    repoId: string;
+    directoryPath: string;
+  }>(LOAD_OFFER);
 export const loadOfferError = makeErrorActionCreator(LOAD_OFFER);
