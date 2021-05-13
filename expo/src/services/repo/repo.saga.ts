@@ -5,6 +5,7 @@ import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
+import { updateImportedOffersSagaAction } from "../library/sagas/updateImportedOffers.saga";
 import { rootLogger } from "../log/log.service";
 import { startupSagaAction } from "../startup/startup.state";
 import { getRepoPath, updateSubscribedRepo } from "./repo.service";
@@ -82,7 +83,9 @@ export function* repoStartupEffect() {
       }
     }
 
-    return;
+    // After we refreshed all the repos, now run an update check on all of our
+    // imported offers.
+    yield* putResolve(updateImportedOffersSagaAction());
   } catch (error) {
     console.error("Error in startup saga #NKhh0X", error);
   }

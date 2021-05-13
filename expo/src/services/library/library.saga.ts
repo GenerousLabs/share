@@ -17,6 +17,7 @@ import {
 import archiveOfferSaga from "./sagas/archiveOffer.saga";
 import createNewOfferSaga from "./sagas/createNewOffer.saga";
 import subscribeToLibrarySaga from "./sagas/subscribeToLibrary.saga";
+import updateImportedOffersSaga from "./sagas/updateImportedOffers.saga";
 
 const log = rootLogger.extend("library.saga");
 
@@ -78,6 +79,7 @@ export default function* librarySaga() {
     archiveOfferSaga(),
     createNewOfferSaga(),
     subscribeToLibrarySaga(),
+    updateImportedOffersSaga(),
     // TODO: Refactor this to the create saga helper
     takeEvery(createNewLibrarySagaAction, createNewLibraryEffect),
     // TODO: Refactor this to the create saga helper
