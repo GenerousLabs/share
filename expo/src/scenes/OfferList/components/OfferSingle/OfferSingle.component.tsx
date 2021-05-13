@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,105 +37,135 @@ const OfferSingle = ({
 
   const wrappingStyle = isArchived ? { opacity: 0.2 } : undefined;
 
+  const archiveButton = useCallback(() => {
+    if (!isMine || isArchived) {
+      return null;
+    }
+
+    if (isSubmitting)
+      return (
+        <ActivityIndicator
+          animating={true}
+          size="small"
+          color={colours.grey5}
+          style={[styles.actionIcon, { width: 26, height: 26 }]}
+        />
+      );
+
+    return (
+      <MaterialIcons
+        name="delete-outline"
+        color={colours.black}
+        size={26}
+        style={styles.actionIcon}
+        onPress={() => {
+          Alert.alert(
+            "Archive this item?",
+            "Do you want to archive this item? There is no undo.",
+            [
+              { text: "No" },
+              {
+                text: "Yes",
+                onPress: async () => {
+                  try {
+                    setIsSubmitting(true);
+                    await dispatch(archiveOfferSagaAction({ id: offer.id }));
+                  } catch (error) {
+                    setIsSubmitting(false);
+                    Alert.alert(
+                      "Error #xL8JbK",
+                      `There was an error.\n\n${error.message}`
+                    );
+                  }
+                },
+              },
+            ]
+          );
+        }}
+      />
+    );
+  }, [isMine, isArchived, isSubmitting, offer]);
+
+  const importButton = useCallback(() => {
+    if (!canBeImported) {
+      return null;
+    }
+
+    if (hasBeenImported) {
+      return (
+        <MaterialIcons
+          name="cloud-done"
+          color={colours.grey5}
+          size={26}
+          style={styles.actionIcon}
+        />
+      );
+    }
+
+    if (isImporting) {
+      return (
+        <ActivityIndicator
+          animating={true}
+          size="small"
+          color={colours.grey5}
+          style={[styles.actionIcon, { width: 26, height: 26 }]}
+        />
+      );
+    }
+
+    return (
+      <MaterialIcons
+        name="cloud-download"
+        color={colours.black}
+        size={26}
+        style={styles.actionIcon}
+        onPress={() => {
+          Alert.alert(
+            "Import this offer?",
+            "Do you want to import this offer and add it to your own collection to share with your community?",
+            [
+              { text: "No" },
+              {
+                text: "Yes",
+                onPress: async () => {
+                  try {
+                    setIsImporting(true);
+                    await dispatch(
+                      createNewOfferSagaAction({
+                        repoId: libraryRepo.id,
+                        importOfferId: offer.id,
+                      })
+                    );
+                  } catch (error) {
+                    setIsImporting(false);
+                    Alert.alert(
+                      "Error #ywMkO7",
+                      `There was an error.\n\n${error.message}`
+                    );
+                  }
+                },
+              },
+            ]
+          );
+        }}
+      />
+    );
+  }, [
+    canBeImported,
+    hasBeenImported,
+    isImporting,
+    setIsImporting,
+    libraryRepo,
+    offer,
+  ]);
+
   return (
     <View style={wrappingStyle}>
       <Text style={styles.sharedBy}>{getOfferSharingText(enhancedOffer)}</Text>
       <View>
         <Text style={styles.title}>{title}</Text>
-        {isMine && !isArchived ? (
-          isSubmitting ? (
-            <ActivityIndicator
-              animating={true}
-              size="small"
-              color={colours.grey5}
-              style={[styles.actionIcon, { width: 26, height: 26 }]}
-            />
-          ) : (
-            <MaterialIcons
-              name="delete-outline"
-              color={colours.black}
-              size={26}
-              style={styles.actionIcon}
-              onPress={() => {
-                Alert.alert(
-                  "Archive this item?",
-                  "Do you want to archive this item? There is no undo.",
-                  [
-                    { text: "No" },
-                    {
-                      text: "Yes",
-                      onPress: async () => {
-                        try {
-                          setIsSubmitting(true);
-                          await dispatch(
-                            archiveOfferSagaAction({ id: offer.id })
-                          );
-                        } catch (error) {
-                          setIsSubmitting(false);
-                          Alert.alert(
-                            "Error #xL8JbK",
-                            `There was an error.\n\n${error.message}`
-                          );
-                        }
-                      },
-                    },
-                  ]
-                );
-              }}
-            />
-          )
-        ) : null}
-        {!canBeImported ? null : hasBeenImported ? (
-          <MaterialIcons
-            name="cloud-done"
-            color={colours.grey5}
-            size={26}
-            style={styles.actionIcon}
-          />
-        ) : isImporting ? (
-          <ActivityIndicator
-            animating={true}
-            size="small"
-            color={colours.grey5}
-            style={[styles.actionIcon, { width: 26, height: 26 }]}
-          />
-        ) : (
-          <MaterialIcons
-            name="cloud-download"
-            color={colours.black}
-            size={26}
-            style={styles.actionIcon}
-            onPress={() => {
-              Alert.alert(
-                "Import this offer?",
-                "Do you want to import this offer and add it to your own collection to share with your community?",
-                [
-                  { text: "No" },
-                  {
-                    text: "Yes",
-                    onPress: async () => {
-                      try {
-                        setIsImporting(true);
-                        await dispatch(
-                          createNewOfferSagaAction({
-                            repoId: libraryRepo.id,
-                            importOfferId: offer.id,
-                          })
-                        );
-                      } catch (error) {
-                        setIsImporting(false);
-                        Alert.alert(
-                          "Error #ywMkO7",
-                          `There was an error.\n\n${error.message}`
-                        );
-                      }
-                    },
-                  },
-                ]
-              );
-            }}
-          />
-        )}
+        {archiveButton()}
+        {importButton()}
       </View>
       <Text style={styles.bodyMarkdown}>{bodyMarkdown}</Text>
       {tags.length > 0 ? (
