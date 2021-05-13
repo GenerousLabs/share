@@ -1,8 +1,11 @@
 import { all, takeEvery } from "redux-saga/effects";
 import { call, put, putResolve, select } from "typed-redux-saga/macro";
 import { RepoType } from "../../shared.constants";
+import { RepoInRedux } from "../../shared.types";
 import { invariantSelector } from "../../utils/invariantSelector.util";
 import { getDirectoryContents } from "../fs/fs.service";
+import { gitPush } from "../git/git.service";
+import { isNonFastForwardError } from "../git/git.utils";
 import { loadOfferEffect } from "../library/library.saga";
 import { loadOfferSagaAction } from "../library/library.state";
 import { updateImportedOffersSagaAction } from "../library/sagas/updateImportedOffers.saga";
@@ -11,7 +14,10 @@ import { startupSagaAction } from "../startup/startup.state";
 import { getRepoPath, updateSubscribedRepo } from "./repo.service";
 import {
   loadRepoContentsSagaAction,
+  selectAllMyLibraryRepos,
   selectAllSubscribedLibraries,
+  selectCommandRepo,
+  selectMeRepo,
   selectRepoById,
   updateOneRepoAction,
 } from "./repo.state";
@@ -80,6 +86,30 @@ export function* repoStartupEffect() {
         yield* putResolve(
           loadRepoFromFilesystemSagaAction({ repoYaml: library })
         );
+      }
+    }
+
+    const meRepo = yield* select(
+      invariantSelector(selectMeRepo, "Failed to get me repo #fcyM1c")
+    );
+    const commandRepo = yield* select(
+      invariantSelector(selectCommandRepo, "Failed ot get command repo #JL3QxE")
+    );
+    const libraryRepos = yield* select(selectAllMyLibraryRepos);
+    const myRepos = [meRepo, commandRepo, ...libraryRepos];
+
+    // Push all our repos in case any of our past pushes failed
+    for (const repo of myRepos) {
+      const path = getRepoPath(repo);
+
+      try {
+        yield* call(gitPush, { path });
+      } catch (error) {
+        // isomorphic-git will throw if there is nothing to push :-(
+        // https://github.com/isomorphic-git/isomorphic-git/issues/398
+        if (!isNonFastForwardError(error)) {
+          throw error;
+        }
       }
     }
 
