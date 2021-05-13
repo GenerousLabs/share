@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { colours, montserratBold } from "../../../../root.theme";
@@ -19,6 +19,8 @@ const OfferSingle = ({
 }) => {
   const dispatch: RootDispatch = useDispatch();
   const libraryRepo = useSelector(selectMyLibraryRepo);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   const { offer, alternates } = enhancedOffer;
   const { title, bodyMarkdown, tags } = offer;
@@ -41,36 +43,47 @@ const OfferSingle = ({
       <View>
         <Text style={styles.title}>{title}</Text>
         {isMine && !isArchived ? (
-          <MaterialIcons
-            name="delete-outline"
-            color={colours.black}
-            size={26}
-            style={styles.actionIcon}
-            onPress={() => {
-              Alert.alert(
-                "Archive this item?",
-                "Do you want to archive this item? There is no undo.",
-                [
-                  { text: "No" },
-                  {
-                    text: "Yes",
-                    onPress: async () => {
-                      try {
-                        await dispatch(
-                          archiveOfferSagaAction({ id: offer.id })
-                        );
-                      } catch (error) {
-                        Alert.alert(
-                          "Error #xL8JbK",
-                          `There was an error.\n\n${error.message}`
-                        );
-                      }
+          isSubmitting ? (
+            <ActivityIndicator
+              animating={true}
+              size="small"
+              color={colours.grey5}
+              style={[styles.actionIcon, { width: 26, height: 26 }]}
+            />
+          ) : (
+            <MaterialIcons
+              name="delete-outline"
+              color={colours.black}
+              size={26}
+              style={styles.actionIcon}
+              onPress={() => {
+                Alert.alert(
+                  "Archive this item?",
+                  "Do you want to archive this item? There is no undo.",
+                  [
+                    { text: "No" },
+                    {
+                      text: "Yes",
+                      onPress: async () => {
+                        try {
+                          setIsSubmitting(true);
+                          await dispatch(
+                            archiveOfferSagaAction({ id: offer.id })
+                          );
+                        } catch (error) {
+                          setIsSubmitting(false);
+                          Alert.alert(
+                            "Error #xL8JbK",
+                            `There was an error.\n\n${error.message}`
+                          );
+                        }
+                      },
                     },
-                  },
-                ]
-              );
-            }}
-          />
+                  ]
+                );
+              }}
+            />
+          )
         ) : null}
         {!canBeImported ? null : hasBeenImported ? (
           <MaterialIcons
@@ -78,6 +91,13 @@ const OfferSingle = ({
             color={colours.grey5}
             size={26}
             style={styles.actionIcon}
+          />
+        ) : isImporting ? (
+          <ActivityIndicator
+            animating={true}
+            size="small"
+            color={colours.grey5}
+            style={[styles.actionIcon, { width: 26, height: 26 }]}
           />
         ) : (
           <MaterialIcons
@@ -95,6 +115,7 @@ const OfferSingle = ({
                     text: "Yes",
                     onPress: async () => {
                       try {
+                        setIsImporting(true);
                         await dispatch(
                           createNewOfferSagaAction({
                             repoId: libraryRepo.id,
@@ -102,6 +123,7 @@ const OfferSingle = ({
                           })
                         );
                       } catch (error) {
+                        setIsImporting(false);
                         Alert.alert(
                           "Error #ywMkO7",
                           `There was an error.\n\n${error.message}`
