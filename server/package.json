@@ -2,15 +2,6 @@
   "name": "generous-share-server",
   "version": "0.1.0",
   "description": "Git based server backend for the Generous Share app",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/generouslabs/share.git"
-  },
-  "author": "Generous Labs",
-  "license": "AGPL-3.0-or-later",
-  "engines": {
-    "node": ">=14"
-  },
   "scripts": {
     "copy:clean": "rimraf static/* && mkdirp static/expo && mkdirp static/website",
     "copy:expo": "ncp ../expo/dist static/expo --stopOnErr",
@@ -21,21 +12,23 @@
     "debug": "yarn build && yarn watch-debug",
     "format": "prettier --write src/",
     "lint": "yarn format && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-    "serve": "node dist/",
-    "serve-debug": "nodemon --inspect dist/",
+    "serve": "cross-env NODE_ENV=development node dist/",
+    "serve-debug": "cross-env NODE_DEV=development nodemon --inspect dist/",
     "start": "yarn build && yarn serve",
     "test": "jest --forceExit --coverage --verbose",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn watch-node\"",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
-    "watch-node": "nodemon dist/",
+    "watch-node": "cross-env NODE_ENV=development nodemon dist/",
     "watch-test": "yarn test -- --watchAll",
     "watch-ts": "ncc build --watch src/server.ts -o dist"
   },
   "dependencies": {
     "@chmac/node-git-server": "^0.6.5",
     "async": "^3.1.0",
+    "bin-version": "^6.0.0",
     "bluebird": "^3.5.5",
     "body-parser": "^1.19.0",
+    "compare-versions": "^3.6.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -47,6 +40,7 @@
   "devDependencies": {
     "@testing-library/dom": "^7.23.0",
     "@types/async": "^3.0.2",
+    "@types/bin-version": "^3.1.0",
     "@types/bluebird": "^3.5.27",
     "@types/chai": "^4.2.3",
     "@types/concurrently": "^5.2.1",
@@ -64,6 +58,7 @@
     "@vercel/ncc": "^0.27.0",
     "chai": "^4.2.0",
     "concurrently": "^5.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.15.0",
     "jest": "^26.6.3",
     "mkdirp": "^1.0.4",
@@ -75,5 +70,14 @@
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.0",
     "typescript": "^4.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/generouslabs/share.git"
+  },
+  "author": "Generous Labs",
+  "license": "AGPL-3.0-or-later",
+  "engines": {
+    "node": ">=14"
   }
 }
