@@ -4,8 +4,14 @@ import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from "redux-saga-promise-actions";
-import { put, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
-import { call, SagaGenerator } from "typed-redux-saga/macro";
+import {
+  put,
+  take,
+  takeEvery,
+  takeLatest,
+  takeLeading,
+} from "redux-saga/effects";
+import { actionChannel, call, SagaGenerator } from "typed-redux-saga/macro";
 // NOTE: This is not specified as a dependency, it's a dependency of
 // `redux-saga-promise-actions` and only imported for types.
 import { TypeConstant } from "typesafe-actions";
@@ -22,10 +28,12 @@ export const createAsyncPromiseSaga = <P, R>({
   prefix,
   effect,
   takeType = "takeEvery",
+  useChannel = false,
 }: {
   prefix: TypeConstant;
   effect: (action: PromiseAction<TypeConstant, P, R>) => SagaGenerator<R>;
   takeType?: TakeEffectType;
+  useChannel?: boolean;
 }) => {
   const { request, success, failure } = createPromiseAction(
     `${prefix}/request`,
@@ -67,9 +75,18 @@ export const createAsyncPromiseSaga = <P, R>({
     }
   }
 
-  function* saga() {
-    yield takeEffect(request.toString(), sagaWrapper);
-  }
+  const saga = useChannel
+    ? function* sagaChannel() {
+        const channel = yield* actionChannel(request.toString());
+
+        while (true) {
+          const action: PromiseAction<TypeConstant, P, R> = yield take(channel);
+          yield* call(sagaWrapper, action);
+        }
+      }
+    : function* saga() {
+        yield takeEffect(request.toString(), sagaWrapper);
+      };
 
   return {
     request,
@@ -80,9 +97,8 @@ export const createAsyncPromiseSaga = <P, R>({
   };
 };
 
-export type ExtractPromiseResolveType<
-  T = PromiseAction<any, any, any>
-> = T extends PromiseAction<any, any, infer R> ? R : never;
+export type ExtractPromiseResolveType<T = PromiseAction<any, any, any>> =
+  T extends PromiseAction<any, any, infer R> ? R : never;
 
 /**
  * This is a bit of a headache, but I can't figure out how to get all the types
