@@ -40,15 +40,15 @@ Questions for foaf:
 
 # Scratchpad
 
+- [ ] The Home button leaves stack navigators in a weird state
+  - Maybe we want to add a `goBack()` action beforehand?
+  - Or add some "go home" action to the `Header` component?
 - [x] Show some kind of spinner after starting archiving action
   - Maybe add a state bool on that item and mark it archived immediately?
   - Replace the icon with a spinner?
   - Same for import action button?
   - Grey out the spinner?
 - [x] Add note about sharing with friends or friends of friends
-- [ ] The Home button leaves stack navigators in a weird state
-  - Maybe we want to add a `goBack()` action beforehand?
-  - Or add some "go home" action to the `Header` component?
 - [x] After successful submission go back to the list view
   - Add an offer, anywhere else? Friends maybe?
 - [x] Browser links with variables don't work on iOS
