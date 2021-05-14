@@ -7,10 +7,12 @@ export const getOfferSharingText = ({
   alternates,
 }: EnhancedOfferWithAlternates) => {
   if (offer.mine && offer.proximity === 0) {
+    const friendsOfFriends =
+      offer.shareToProximity === 1 ? "friends" : "friends of friends";
     if (offer.isSeeking) {
-      return `You are looking for`;
+      return `You are looking for (${friendsOfFriends})`;
     }
-    return `You share`;
+    return `You share (${friendsOfFriends})`;
   }
 
   invariant(connection, "Offer not mine and no connection. #8ilZoi");

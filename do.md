@@ -45,7 +45,7 @@ Questions for foaf:
   - Replace the icon with a spinner?
   - Same for import action button?
   - Grey out the spinner?
-- [ ] Add note about sharing with friends or friends of friends
+- [x] Add note about sharing with friends or friends of friends
 - [ ] The Home button leaves stack navigators in a weird state
   - Maybe we want to add a `goBack()` action beforehand?
   - Or add some "go home" action to the `Header` component?
