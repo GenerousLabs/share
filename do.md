@@ -2,12 +2,18 @@
 
 Add the option to archive content.
 
-- What happens if somebody archives something that I have imported?
+- [x] What happens if somebody archives something that I have imported?
   - How do I even notice?
   - Do I automatically "archive" my copy?
   - What happens if they remove me as a connection? Same thing?
-- What does "archiving" look like on a filesystem level?
+- [x] What does "archiving" look like on a filesystem level?
   - `archived: true` added?
+- [ ] Do we remove imported archived content from redux?
+
+Picking up archived content that I'm sharing. Perhaps at the end of the
+current startup procedure we can schedule a check of all the imported
+content. Right now that might just be for archiving, but could be expanded
+if we add editing, etc.
 
 # Sprint 3
 
@@ -34,6 +40,12 @@ Questions for foaf:
 
 # Scratchpad
 
+- [ ] Show some kind of spinner after starting archiving action
+  - Maybe add a state bool on that item and mark it archived immediately?
+  - Replace the icon with a spinner?
+  - Same for import action button?
+  - Grey out the spinner?
+- [ ] Add note about sharing with friends or friends of friends
 - [ ] The Home button leaves stack navigators in a weird state
   - Maybe we want to add a `goBack()` action beforehand?
   - Or add some "go home" action to the `Header` component?
