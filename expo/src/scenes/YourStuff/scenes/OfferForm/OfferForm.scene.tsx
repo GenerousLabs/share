@@ -68,8 +68,7 @@ const OfferForm = ({
         return;
       }
       Alert.alert("Saved", "Your offer has been saved.");
-      reset();
-      setIsSubmitting(false);
+      navigation.goBack();
     },
     [setIsSubmitting]
   );
