@@ -40,7 +40,7 @@ Questions for foaf:
 
 # Scratchpad
 
-- [ ] Show some kind of spinner after starting archiving action
+- [x] Show some kind of spinner after starting archiving action
   - Maybe add a state bool on that item and mark it archived immediately?
   - Replace the icon with a spinner?
   - Same for import action button?
